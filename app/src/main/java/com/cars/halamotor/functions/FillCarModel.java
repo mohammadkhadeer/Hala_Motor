@@ -43,87 +43,87 @@ public class FillCarModel {
 
         if (carMake.equals(context.getString(R.string.hyundai)))
         {
-            fillCarHyundaiArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarHyundaiArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.toyota)))
         {
-            fillCarToyotaArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarToyotaArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.kia)))
         {
-            fillCarKiaArrayL(carModelArrayList,context);
+            carModelArrayList = fillCarKiaArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.bmw)))
         {
-            fillCarBMWArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarBMWArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.mercedes_benz)))
         {
-            fillCarMercedes_benzArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarMercedes_benzArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.audi)))
         {
-            fillCarAudiArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarAudiArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.isuzu)))
         {
-            fillCariSuzuArrayL(carModelArrayList,context);
+            carModelArrayList =fillCariSuzuArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.infiniti)))
         {
-            fillCarInfinitiArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarInfinitiArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.opel)))
         {
-            fillCarOpelArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarOpelArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.bentley)))
         {
-            fillCarBentleyArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarBentleyArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.porsche)))
         {
-            fillCarPorscheArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarPorscheArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.pontiac)))
         {
-            fillCarPontiacArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarPontiacArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.aston_martin)))
         {
-            fillCarAston_martinArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarAston_martinArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.alfa_romeo)))
         {
-            fillCarAlfa_romeoArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarAlfa_romeoArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.pontiac)))
         {
-            fillCarPontiacArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarPontiacArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.peugeot)))
         {
-            fillCarPeugeotArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarPeugeotArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.jaguar)))
         {
-            fillCarJaguarArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarJaguarArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.great_wall)))
         {
-            fillCarGreat_wallArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarGreat_wallArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.gmc)))
         {
-            fillCarGMCArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarGMCArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.jeep)))
         {
-            fillCarJeepArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarJeepArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.daihatsu)))
         {
-            fillCarDaihatsuArrayL(carModelArrayList,context);
+            carModelArrayList =fillCarDaihatsuArrayL(carModelArrayList,context);
         }
         if (carMake.equals(context.getString(R.string.daewoo)))
         {

@@ -146,19 +146,6 @@ public class LoginWithSocialMedia extends AppCompatActivity {
         Intent intent = new Intent();
         setResult(Activity.RESULT_OK, intent);
         finish();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("whereComeFrom", "activity");
-//
-//                Intent intent = new Intent(LoginWithSocialMedia.this, SelectCityAndNeighborhood.class);
-//                intent.putExtras(bundle);
-//                startActivityForResult(intent , SELECT_LOCATION);
-//                overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
-////                finish();
-//            }
-//        }, 500);
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
