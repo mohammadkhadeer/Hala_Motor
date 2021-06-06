@@ -14,17 +14,8 @@ import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.cars.halamotor.R;
 import com.cars.halamotor.dataBase.DBHelper;
-import com.cars.halamotor.dataBase.DBHelper2;
-import com.cars.halamotor.dataBase.DBHelper3;
-import com.cars.halamotor.model.CarMake;
-import com.cars.halamotor.model.CarModel;
-import com.cars.halamotor.model.CityWithNeighborhood;
 import com.cars.halamotor.model.ItemAccAndJunk;
 import com.cars.halamotor.model.ItemCCEMT;
 import com.cars.halamotor.model.ItemPlates;
@@ -38,14 +29,19 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.json.JSONObject;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import retrofit2.Retrofit;
+
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
-import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance2;
-import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance3;
 import static com.cars.halamotor.dataBase.InsertFunctions.insertAccAndJunkItemInAccAndJunkTable;
 import static com.cars.halamotor.dataBase.InsertFunctions.insertAccAndJunkTable;
 import static com.cars.halamotor.dataBase.InsertFunctions.insertCCEMTItemInCCEMTTable;
@@ -67,15 +63,12 @@ import static com.cars.halamotor.fireBaseDB.ReadFromFireStore.getTrucksFireStore
 import static com.cars.halamotor.fireBaseDB.ReadFromFireStore.getWheelsRimFireStore;
 import static com.cars.halamotor.fireBaseDB.UpdateFireBase.updateCityNeighborhood;
 import static com.cars.halamotor.functions.FillCarMakeArrayListsInCarDerails.fillCarMakeArrayL;
-import static com.cars.halamotor.functions.FillCarModel.fillCarModelArrayL;
-import static com.cars.halamotor.functions.FillNeighborhood.fillCityAndNeighborhoodArrayL;
 import static com.cars.halamotor.functions.Functions.getNotification;
 import static com.cars.halamotor.sharedPreferences.AddressSharedPreferences.getUserAddressFromSP;
 import static com.cars.halamotor.sharedPreferences.AddressSharedPreferences.saveUserInfoInSP;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.getWelcomeNotificationsInSP;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.updateNumberUnreadNotifications;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.welcomeNotifications;
-import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOnServerSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOrNotFromSP;
 
 public class SplashScreen extends AppCompatActivity {
@@ -127,7 +120,18 @@ public class SplashScreen extends AppCompatActivity {
         {
             selectAddress();
         }else {
-            getData();
+//            Thread thread = new Thread(new Runnable(){
+//                @Override
+//                public void run() {
+//                    testd();
+//                }
+//            });
+//
+//            thread.start();
+
+            transportToLoginScreen();
+
+            //getData();
         }
 
 //        if (checkIfUserRegisterOnServerSP(this) == false)
@@ -143,6 +147,82 @@ public class SplashScreen extends AppCompatActivity {
 //            }
 //        }
     }
+
+    private void testLogin() {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("name","Obay Idris")
+                .addFormDataPart("email","user@obay-dev.com")
+                .addFormDataPart("password","123456")
+                .build();
+        Request request = new Request.Builder()
+                .url("http://174.138.4.155/api/profile")
+                .method("POST", body)
+                .addHeader("Accept", "application/json")
+                .build();
+
+        Log.i("TAG","***");
+        try {
+            Log.i("TAG","999");
+            Response response = client.newCall(request).execute();
+            Log.i("TAG Response",response.toString());
+
+        } catch (IOException e) {
+            Log.i("TAG","eee");
+            e.printStackTrace();
+            Log.i("TAG error",e.getMessage());
+        }
+    }
+
+    private void test2222(){
+        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiN2Q5ZDA1ZGI3M2MwMWMxYjZjNDA0NzI1YjcwYjQ5MWU1Mzk1N2QyNDFmYWNlYWMwODBlOTlmZTA4MjAxNjI2ZWQxZTJkZjFmNWMwMGJjNGMiLCJpYXQiOjE2MDU4OTcyNTIsIm5iZiI6MTYwNTg5NzI1MiwiZXhwIjoxNjM3NDMzMjUyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.Kv6HDyph1RTg0kfwaQgfoiUe9YNbPqpjrQi8af3LSQZMCAmLUZnhjoMBqmZlWfgK_rzjBM_b61oL6-WGv2_z6fPMdKYhpB3i_tvHbGm2PqNfXxW1qpEhtCz3DrrUCiSuuxXBbMnpHlkJYplNEEb2-zpn8YaRjG4lyVWHz_ZjLAEy9EaISqLYB0b-S-0_qI32R4iM6G4zLAuMX7V1aYMPDKCFjvMfUZI5OPC23SlZyXcXTlmueHpuKlDz8nz5zaag1HVYexU3GulCEMS3gX0hD28dgtfOu5ZtZ8xw_m2tNInfjmW_Kkw_fjRfMYoRANGoSOLo2EoMAtLvWUalr8rqLQrNIXvzpFttKLoScadqUHD9JBaPApYXj2GEv38nlwIUT_849e0xM6A7bF6kGOedbn2bMe_16UlrVphZisk3iXsdetJ7jA7mM-XUvwUzXsR-U7xfuMC3Kd5lG6v5lCgjFj_GtqwWATgXFmfyI1BBVgbUobiAvFX-_0tpq-_YnoJSgjfE-VO93QjPx9s33oZzWKHQ9O6Xm_17aQGFxj9G50ecvtv6sBva0rXl_o6m8Jz0ITZpnKzAz_M77B53YCFZ12Tboq6vfD6rDZ36C6F25n1xCoz7cCiTXWnyMEfEQF1zESlxR7wRCs-XkqlU0w8BEzMPtJdH6PUIhau0bW7frGE";
+        Log.i("TAG", "im here test2222 ");
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("http://174.138.4.155/api/profile")
+                .method("GET", null)
+                .addHeader("Accept", "application/json")
+                .addHeader("Authorization", "Bearer "+token)
+                .build();
+        try {
+            Log.i("TAG","999");
+            Response response = client.newCall(request).execute();
+            Log.i("TAG Response",response.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void testd(){
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("name","Obay Idris")
+                .addFormDataPart("email","obay@hala.ae")
+                .addFormDataPart("password","123456")
+                .addFormDataPart("platform","facebook")
+
+                .build();
+        Request request = new Request.Builder()
+                .url("http://174.138.4.155/api/login")
+                .method("POST", body)
+                .addHeader("Accept", "application/json")
+                .build();
+        try {
+            Log.i("TAG","999");
+            Response response = client.newCall(request).execute();
+            Log.i("TAG Response",response.toString());
+            Log.i("TAG Response",String.valueOf(response.body()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void volleyTest() {
         //        String url = "https:// json_url/";

@@ -59,11 +59,11 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
         createRV();
         actionListenerToSearchEdt();
         actionListenerToRemoveTextInSearchEdt();
-        actionListenerToResetAndNextButton(savedInstanceState);
+        actionListenerToResetAndNextButton();
         return view;
     }
 
-    private void actionListenerToResetAndNextButton(final Bundle savedInstanceState) {
+    private void actionListenerToResetAndNextButton() {
         resetRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

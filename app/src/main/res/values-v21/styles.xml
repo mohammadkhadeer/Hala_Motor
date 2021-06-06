@@ -38,6 +38,13 @@
         <item name="android:textColorSecondary">#233570</item>
     </style>
 
+    <style name="AppTheme23" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
 
+        <item name="colorPrimary">@color/colorWhite</item>
+        <item name="colorPrimaryDark">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorRed</item>
+
+    </style>
 
 </resources>

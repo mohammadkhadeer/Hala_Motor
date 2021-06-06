@@ -1,13 +1,9 @@
 package com.cars.halamotor.view.activity;
 
-import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -20,12 +16,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
 import com.cars.halamotor.model.UserInfo;
-import com.cars.halamotor.view.activity.selectAddress.SelectCityAndNeighborhood;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -35,33 +29,30 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.auth.User;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.Collections;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static com.cars.halamotor.fireBaseDB.InsertToFireBase.addNewUser;
 import static com.cars.halamotor.fireBaseDB.ReadFromFireBase.getUserInfo;
@@ -72,10 +63,8 @@ import static com.cars.halamotor.functions.Functions.getYEAR;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkFBLoginOrNot;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOnServerSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOrNotFromSP;
-import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserIdInServerFromSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserTokenInFromSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.saveFBInfoInSP;
-import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.saveServerIDInfoInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.saveUserInfoInSP;
 
 public class LoginWithSocialMedia extends AppCompatActivity {
@@ -108,7 +97,7 @@ public class LoginWithSocialMedia extends AppCompatActivity {
         inti();
         changeFont();
         statusBarColor();
-        actionBarTitle();
+        //actionBarTitle();
     }
 
     @Override
@@ -153,56 +142,137 @@ public class LoginWithSocialMedia extends AppCompatActivity {
         try {
             final GoogleSignInAccount acct = completedTask.getResult(ApiException.class);
             if (acct != null) {
-                mAuth.createUserWithEmailAndPassword(acct.getEmail(), "@ajfhafjb#$ASW1235")
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    String year =getYEAR();
-                                    String month = getMONTH();
-                                    String day = getDAY();
-                                    String date = year+"/"+month+"/"+day;
+                progressBar.setVisibility(View.VISIBLE);
+                Thread thread = new Thread(new Runnable(){
+                    @Override
+                    public void run() {
+                        insertUser(acct);
 
-                                    UserInfo newUser = new UserInfo(acct.getGivenName()
-                                            ,String.valueOf(acct.getPhotoUrl())
-                                            ,acct.getFamilyName(),acct.getEmail()
-                                            ,"000","notYet","notYet"
-                                            ,"notYet","notYet"
-                                            ,"notYet","notYet",getUserTokenInFromSP(getApplicationContext())
-                                            ,0,1,0,0
-                                            ,1,0,0,numberOfAllowedPosts,date);
+                        checkIfUserRegisterOrNotFromSP(getApplicationContext(), rgSharedPreferences, rgEditor, "1");
 
-                                    checkIfUserRegisterOrNotFromSP(getApplicationContext(), rgSharedPreferences, rgEditor, "1");
-
-                                    addNewUser(newUser,rgSharedPreferences,rgEditor,getApplicationContext());
-
-                                    saveUserInfoInSP(getApplicationContext(), fbSharedPreferences, fbEditor, acct.getGivenName()
-                                            , acct.getFamilyName(), acct.getEmail()
-                                            , acct.getId(), "1/1/2020"
-                                            , String.valueOf(acct.getPhotoUrl()));
-                                    moveBack();
-
-                                }else{
-                                    progressBar.setVisibility(View.VISIBLE);
-                                    ///////////////here google///////////////////////
-                                    getUserInfo(acct.getEmail(),rgSharedPreferences,rgEditor,fbSharedPreferences,fbEditor,LoginWithSocialMedia.this,acct.getId());
-                                    //moveBack();
-                                }
-                            }
-                        });
-
+                        saveUserInfoInSP(getApplicationContext(), fbSharedPreferences, fbEditor, acct.getGivenName()
+                                , acct.getFamilyName(), acct.getEmail()
+                                , acct.getId(), "1/1/2020"
+                                , String.valueOf(acct.getPhotoUrl()));
+                        //moveBack();
+                    }
+                });
+                thread.start();
+//                mAuth.createUserWithEmailAndPassword(acct.getEmail(), "@ajfhafjb#$ASW1235")
+//                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<AuthResult> task) {
+//                                if (task.isSuccessful()) {
+//                                    String year =getYEAR();
+//                                    String month = getMONTH();
+//                                    String day = getDAY();
+//                                    String date = year+"/"+month+"/"+day;
+//
+//                                    UserInfo newUser = new UserInfo(acct.getGivenName()
+//                                            ,String.valueOf(acct.getPhotoUrl())
+//                                            ,acct.getFamilyName(),acct.getEmail()
+//                                            ,"000","notYet","notYet"
+//                                            ,"notYet","notYet"
+//                                            ,"notYet","notYet",getUserTokenInFromSP(getApplicationContext())
+//                                            ,0,1,0,0
+//                                            ,1,0,0,numberOfAllowedPosts,date);
+//
+//                                    checkIfUserRegisterOrNotFromSP(getApplicationContext(), rgSharedPreferences, rgEditor, "1");
+//
+//                                    addNewUser(newUser,rgSharedPreferences,rgEditor,getApplicationContext());
+//
+//                                    saveUserInfoInSP(getApplicationContext(), fbSharedPreferences, fbEditor, acct.getGivenName()
+//                                            , acct.getFamilyName(), acct.getEmail()
+//                                            , acct.getId(), "1/1/2020"
+//                                            , String.valueOf(acct.getPhotoUrl()));
+//                                    moveBack();
+//
+//                                }else{
+//                                    progressBar.setVisibility(View.VISIBLE);
+//                                    ///////////////here google///////////////////////
+//                                    getUserInfo(acct.getEmail(),rgSharedPreferences,rgEditor,fbSharedPreferences,fbEditor,LoginWithSocialMedia.this,acct.getId());
+//                                    //moveBack();
+//                                }
+//                            }
+//                        });
             }
-
             // Signed in successfully, show authenticated UI.
             //updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w("TAG", "Error");
             Log.w("TAG", "signInResult:failed code=" + e.getStatusCode());
+            Log.w("TAG", "Error" + e.getMessage());
             //updateUI(null);
         }
 
 
+    }
+
+    private void insertUser(GoogleSignInAccount acct) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+
+        Log.i("TAG name ",acct.getGivenName() +" "+acct.getFamilyName());
+        Log.i("TAG email",acct.getEmail());
+        Log.i("TAG id",acct.getId());
+        //Log.i("TAG",acct.getIdToken());
+        Log.i("TAG",String.valueOf(acct.getPhotoUrl()));
+
+
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("name",acct.getGivenName() +" "+acct.getFamilyName())
+                .addFormDataPart("email",acct.getEmail())
+                .addFormDataPart("password","123456")
+                .addFormDataPart("platform","google")
+                .addFormDataPart("platform_id",acct.getId())
+                .addFormDataPart("platform_token",getUserTokenInFromSP(getApplicationContext()))
+                .addFormDataPart("photo",String.valueOf(acct.getPhotoUrl()))
+                .addFormDataPart("phone","000000")
+                .build();
+        Request request = new Request.Builder()
+                .url("http://174.138.4.155/api/login")
+                .method("POST", body)
+                .addHeader("Accept", "application/json")
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            Log.i("TAG Response",response.toString());
+
+            //Log.i("TAG Response body",response.body().string());
+
+            JSONObject obj ,objData ,objUser;
+
+            try {
+
+
+                 obj = new JSONObject(response.body().string());
+                Log.i("TAG STATUS ",obj.getString("STATUS"));
+                Log.i("TAG MESSAGE ",obj.getString("STATUS"));
+                objData =obj.getJSONObject("DATA");
+                objUser =objData.getJSONObject("user");
+                Log.i("TAG id",objUser.getString("id"));
+                Log.i("TAG name",objUser.getString("name"));
+                Log.i("TAG email",objUser.getString("email"));
+                Log.i("TAG phone",objUser.getString("phone"));
+                Log.i("TAG photo",objUser.getString("photo"));
+                Log.i("TAG phone_is_verified",objUser.getString("phone_is_verified"));
+                Log.i("TAG email_is_verified",objUser.getString("email_is_verified"));
+                Log.i("TAG language",objUser.getString("language"));
+                Log.i("TAG mute_notification",objUser.getString("mute_notification"));
+                Log.i("TAG area_id",objUser.getString("area_id"));
+                Log.i("TAG area",objUser.getString("area"));
+                Log.i("TAG token",objData.getString("token"));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void handelGoogleButton() {
@@ -219,8 +289,10 @@ public class LoginWithSocialMedia extends AppCompatActivity {
                 if (test ==1)
                 {
                     signOut();
+                    Log.i("TAG","signOut");
                     test =0;
                 }else{
+                    Log.i("TAG","signIn");
                     signIn();
                     //moveBack();
                     test =1;
@@ -253,7 +325,7 @@ public class LoginWithSocialMedia extends AppCompatActivity {
     }
 
     private void changeFont() {
-        welcomeTV.setTypeface(Functions.changeFontBold(getApplicationContext()));
+       // welcomeTV.setTypeface(Functions.changeFontBold(getApplicationContext()));
     }
 
     private void handelFBLoginButton() {
@@ -281,7 +353,6 @@ public class LoginWithSocialMedia extends AppCompatActivity {
     private void inti() {
         mAuth = FirebaseAuth.getInstance();
         loginButtonFB = (LoginButton) findViewById(R.id.login_with_s_m_fb);
-        welcomeTV = (TextView) findViewById(R.id.login_with_social_media_tv);
         signInButton = findViewById(R.id.login_with_s_m_g);
         progressBar = (ProgressBar) findViewById(R.id.login_with_social_media_progress);
     }
@@ -385,25 +456,25 @@ public class LoginWithSocialMedia extends AppCompatActivity {
         }
     }
 
-    private void actionBarTitle() {
-        actionBarTitleText();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        final ActionBar abar = getSupportActionBar();
-        View viewActionBar = getLayoutInflater().inflate(R.layout.actionbar_custom_title_view_centered, null);
-        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
-                ActionBar.LayoutParams.WRAP_CONTENT,
-                ActionBar.LayoutParams.MATCH_PARENT,
-                Gravity.CENTER);
-        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
-        textviewTitle.setText(actionBarTitleText());
-        textviewTitle.setTypeface(changeFontBold(this));
-        abar.setCustomView(viewActionBar, params);
-        abar.setDisplayShowCustomEnabled(true);
-        abar.setDisplayShowTitleEnabled(false);
-        abar.setDisplayHomeAsUpEnabled(true);
-        abar.setHomeButtonEnabled(true);
-    }
+//    private void actionBarTitle() {
+//        actionBarTitleText();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//
+//        final ActionBar abar = getSupportActionBar();
+//        View viewActionBar = getLayoutInflater().inflate(R.layout.actionbar_custom_title_view_centered, null);
+//        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+//                ActionBar.LayoutParams.WRAP_CONTENT,
+//                ActionBar.LayoutParams.MATCH_PARENT,
+//                Gravity.CENTER);
+//        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+//        textviewTitle.setText(actionBarTitleText());
+//        textviewTitle.setTypeface(changeFontBold(this));
+//        abar.setCustomView(viewActionBar, params);
+//        abar.setDisplayShowCustomEnabled(true);
+//        abar.setDisplayShowTitleEnabled(false);
+//        abar.setDisplayHomeAsUpEnabled(true);
+//        abar.setHomeButtonEnabled(true);
+//    }
 
     private String actionBarTitleText() {
         String titleStr = null;
@@ -418,12 +489,7 @@ public class LoginWithSocialMedia extends AppCompatActivity {
     }
 
     private void statusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Window window = this.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorRed));
-        }
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
 }
