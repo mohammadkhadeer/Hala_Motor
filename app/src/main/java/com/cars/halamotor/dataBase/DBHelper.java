@@ -34,14 +34,25 @@ public class DBHelper extends SQLiteOpenHelper {
 //    public static final String COL_C_MO_AR="CAR_MODEL_AR";
 //    public static final String COL_C_MO_S="CAR_MODEL_S";
 //
-//    public static final String TABLE_CITY_INFORMATION="cites";
-//    public static final String COL_CITY_ID="ID";
-//    public static final String COL_CITY_EN="CITY_EN";
-//    public static final String COL_CITY_AR="CITY_AR";
-//    public static final String COL_CITY_S="CITY_S";
-//    public static final String COL_NEIGHBORHOOD_EN="NEIGHBORHOOD_EN";
-//    public static final String COL_NEIGHBORHOOD_AR="NEIGHBORHOOD_AR";
-//    public static final String COL_NEIGHBORHOOD_S="NEIGHBORHOOD_S";
+    public static final String TABLE_CITYS="cites";
+    public static final String COL_CITY_COL_ID="COL_ID";
+    public static final String COL_CITY_ID="ID";
+    public static final String COL_CITY_CODE="CODE";
+    public static final String COL_CITY_NAME="NAME";
+    public static final String COL_CITY_NAME_EN="NAME_EN";
+    public static final String COL_CITY_NAME_AR="NAME_AR";
+
+    public static final String TABLE_AREAS="areas";
+    public static final String COL_AREA_COL_ID="COL_ID";
+    public static final String COL_AREA_ID="ID";
+    public static final String COL_AREA_Name="NAME";
+    public static final String COL_AREA_NAME_EN="NAME_EN";
+    public static final String COL_AREA_NAME_AR="NAME_AR";
+    public static final String COL_AREA_CITY_ID="CITY_ID";
+    public static final String COL_AREA_CITY_CODE="CITY_CODE";
+    public static final String COL_AREA_CITY_NAME="CITY_NAME";
+    public static final String COL_AREA_CITY_NAME_EN="CITY_NAME_EN";
+    public static final String COL_AREA_CITY_NAME_AR="CITY_NAME_AR";
 
     public static final String TABLE_DRIVER_INFORMATION="driver_info_table";
     public static final String COL_ITEM_DRIVER_INFORMATION_id="ID";
@@ -377,11 +388,11 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table "+TABLE_CAR_DETAILS +" (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "PROCESS_TYPE_S TEXT" + ",PROCESS_TYPE TEXT" + ",PROCESS_CONTENT TEXT" + ",PROCESS_CONTENT_S TEXT" + ",PROCESS_STATUS TEXT)");
 
-//        db.execSQL("create table "+TABLE_C_INFORMATION +" (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-//                "CAR_MAKE_EN TEXT" + ",CAR_MAKE_AR TEXT" + ",CAR_MAKE_S TEXT" + ",CAR_MODEL_EN TEXT" + ",CAR_MODEL_AR TEXT" + ",CAR_MODEL_S TEXT)");
-//
-//        db.execSQL("create table "+TABLE_CITY_INFORMATION +" (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-//                "CITY_EN TEXT" + ",CITY_AR TEXT" + ",CITY_S TEXT" + ",NEIGHBORHOOD_EN TEXT" + ",NEIGHBORHOOD_AR TEXT" + ",NEIGHBORHOOD_S TEXT)");
+        db.execSQL("create table "+TABLE_CITYS +" (COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "ID TEXT" + ",CODE TEXT" + ",NAME TEXT" + ",NAME_EN TEXT" + ",NAME_AR TEXT)");
+
+        db.execSQL("create table "+TABLE_AREAS +" (COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "ID TEXT" + ",NAME TEXT" + ",NAME_EN TEXT" +",NAME_AR TEXT" +",CITY_ID TEXT" +",CITY_CODE TEXT" +",CITY_NAME TEXT" +",CITY_NAME_EN TEXT" + ",CITY_NAME_AR TEXT)");
 
     }
 
@@ -400,51 +411,53 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_DRIVER_INFORMATION);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_CAR_DETAILS);
 
-//        db.execSQL("DROP TABLE IF EXISTS "+TABLE_C_INFORMATION);
-//        db.execSQL("DROP TABLE IF EXISTS "+TABLE_CITY_INFORMATION);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_CITYS);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_AREAS);
 
         onCreate(db);
     }
 
     ///////////////////////insert data//////////////////////////////////////////
 
-//    public boolean insertCites(String cityEn,String cityAr
-//            ,String cityS,String neighborhoodEn,String neighborhoodAr,String neighborhoodS)
-//    {
-//        SQLiteDatabase db =this.getWritableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(COL_CITY_EN,cityEn);
-//        contentValues.put(COL_CITY_AR,cityAr);
-//        contentValues.put(COL_CITY_S,cityS);
-//        contentValues.put(COL_NEIGHBORHOOD_EN,neighborhoodEn);
-//        contentValues.put(COL_NEIGHBORHOOD_AR,neighborhoodAr);
-//        contentValues.put(COL_NEIGHBORHOOD_S,neighborhoodS);
-//
-//        long result= db.insert(TABLE_C_INFORMATION,null,contentValues);
-//        if(result == -1)
-//            return false;
-//        else
-//            return true;
-//    }
-//
-//    public boolean insertCars(String carMakeEn,String carMakeAr
-//            ,String carMakeS,String carModelEn,String carModelAr,String carModelS)
-//    {
-//        SQLiteDatabase db =this.getWritableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(COL_C_MA_EN,carMakeEn);
-//        contentValues.put(COL_C_MA_AR,carMakeAr);
-//        contentValues.put(COL_C_MA_S,carMakeS);
-//        contentValues.put(COL_C_MO_EN,carModelEn);
-//        contentValues.put(COL_C_MO_AR,carModelAr);
-//        contentValues.put(COL_C_MO_S,carModelS);
-//
-//        long result= db.insert(TABLE_C_INFORMATION,null,contentValues);
-//        if(result == -1)
-//            return false;
-//        else
-//            return true;
-//    }
+    public boolean insertCites(String id,String code
+            ,String name,String name_en,String name_ar)
+    {
+        SQLiteDatabase db =this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_CITY_ID,id);
+        contentValues.put(COL_CITY_CODE,code);
+        contentValues.put(COL_CITY_NAME,name);
+        contentValues.put(COL_CITY_NAME_EN,name_en);
+        contentValues.put(COL_CITY_NAME_AR,name_ar);
+
+        long result= db.insert(TABLE_CITYS,null,contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean insertAreas(String id,String name
+            ,String name_en,String name_ar,String city_id,String city_code,String city_name,String city_name_en,String city_name_ar)
+    {
+        SQLiteDatabase db =this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_AREA_ID,id);
+        contentValues.put(COL_AREA_Name,name);
+        contentValues.put(COL_AREA_NAME_EN,name_en);
+        contentValues.put(COL_AREA_NAME_AR,name_ar);
+        contentValues.put(COL_AREA_CITY_ID,city_id);
+        contentValues.put(COL_AREA_CITY_CODE,city_code);
+        contentValues.put(COL_AREA_CITY_NAME,city_name);
+        contentValues.put(COL_AREA_CITY_NAME_EN,city_name_en);
+        contentValues.put(COL_AREA_CITY_NAME_AR,city_name_ar);
+
+        long result= db.insert(TABLE_AREAS,null,contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
+    }
 
     public boolean insertDataItem(String boostOrNot,String itemBoostType
             ,String itemType,String itemPersonGallery,String itemIdInServer,String itemCarMake,String itemCarModel,String itemCarYear,String itemCarCondition,String itemCarKilometers,String itemCarTransmission,String itemCarFuel,String itemCarLicense,String itemCarInsurance,String itemCarColor,String itemCarPaymentMethod,String itemCarOptions,String itemNumberOfComment,String itemNumberOfImage,String itemCity,String itemNeighborhood,String itemTimePost,String itemUserPhoneNumber,String itemName,String itemImage,String itemDescription,String userImage,String userName,String itemPostEdit,String itemNewPrice,String itemWheelsSize,String itemCarPlatesCity,String itemCarPlatesNumber,String itemCarPlatesSpecial,String itemBurnedPrice,String itemPrice,String userID,String itemActiveOrNot)
@@ -975,6 +988,20 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor descendingCities(){
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_CITYS, null, null,
+                null, null, null, COL_CITY_COL_ID + " DESC", null);
+        return cursor;
+    }
+
+    public Cursor descendingAreas(){
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_AREAS, null, null,
+                null, null, null, COL_AREA_COL_ID + " DESC", null);
+        return cursor;
+    }
+
     //////////////////////////////////////update/////////////////////
 
     public void updateNotification(String itemServerID,String openOrNotYet)
@@ -1191,6 +1218,18 @@ public class DBHelper extends SQLiteOpenHelper {
     public void deleteAllCarDetails(){
         SQLiteDatabase db =this.getWritableDatabase();
         db.execSQL("DELETE FROM car_details_table"); //delete all rows in a table
+        db.close();
+    }
+
+    public void deleteAllCities(){
+        SQLiteDatabase db =this.getWritableDatabase();
+        db.execSQL("DELETE FROM cites"); //delete all rows in a table
+        db.close();
+    }
+
+    public void deleteAllAreas(){
+        SQLiteDatabase db =this.getWritableDatabase();
+        db.execSQL("DELETE FROM areas"); //delete all rows in a table
         db.close();
     }
 

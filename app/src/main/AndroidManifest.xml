@@ -76,7 +76,10 @@
         <activity
             android:name=".view.activity.LoginWithSocialMedia"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme23"/>
+            android:theme="@style/AppTheme23">
+
+        </activity>
+
         <activity
             android:name=".view.activity.CarPlates"
             android:screenOrientation="portrait"
