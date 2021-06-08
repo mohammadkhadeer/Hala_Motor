@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
+import com.cars.halamotor.model.Area;
 import com.cars.halamotor.model.CityWithNeighborhood;
 import com.cars.halamotor.view.activity.LoginWithSocialMedia;
 import com.cars.halamotor.view.activity.SplashScreen;
@@ -32,7 +33,9 @@ import com.cars.halamotor.view.activity.selectAddress.expandableList.SubFavorite
 import com.cars.halamotor.view.adapters.AdapterCityWithNeighborhood;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
+import static com.cars.halamotor.dataBase.ReadCitesAndAreas.getAreasFromDataBase;
 import static com.cars.halamotor.functions.FillNeighborhood.fillCityAndNeighborhoodArrayL;
 import static com.cars.halamotor.functions.FillNeighborhood.fillNeighborhoodArrayL;
 import static com.cars.halamotor.functions.Functions.changeFontBold;
@@ -42,7 +45,7 @@ public class SelectCityAndNeighborhood extends AppCompatActivity {
     private RecyclerView recyclerView,recyclerViewAllCity;
     CardView cardViewAllCityCont,cardViewExpandableList;
     private ArrayList<SubFavoriteType> fatherSubListArrayList;
-    private ArrayList<CityWithNeighborhood> cityWithNeighborhoodsArrayList;
+    private ArrayList<Area> areasArrayList;
     private RecyclerAdapter adapter;
     EditText searchEdt;
     RelativeLayout cancelRL;
@@ -83,11 +86,12 @@ public class SelectCityAndNeighborhood extends AppCompatActivity {
     }
 
     private void createAllCityWithNeighborhoodRV() {
-        cityWithNeighborhoodsArrayList = fillCityAndNeighborhoodArrayL(cityWithNeighborhoodsArrayList,this);
+        areasArrayList = new ArrayList<>();
+        areasArrayList = getAreasFromDataBase(this);
         recyclerViewAllCity.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerViewAllCity.setLayoutManager(mLayoutManager);
-        adapterCityWithNeighborhood = new AdapterCityWithNeighborhood(this,cityWithNeighborhoodsArrayList,whereComeFrom);
+        adapterCityWithNeighborhood = new AdapterCityWithNeighborhood(this,areasArrayList,whereComeFrom);
         recyclerViewAllCity.setAdapter(adapterCityWithNeighborhood);
     }
 
@@ -127,11 +131,21 @@ public class SelectCityAndNeighborhood extends AppCompatActivity {
     }
 
     private void filter(String text) {
-        ArrayList<CityWithNeighborhood> cityWithNeighborhoodsArrayL2  = new ArrayList<CityWithNeighborhood>();
-        for (CityWithNeighborhood cityWithNeighborhood : cityWithNeighborhoodsArrayList) {
-            if (cityWithNeighborhood.getNeighborhoodStr().toLowerCase().contains(text.toLowerCase())) {
-                //adding the element to filtered list
-                cityWithNeighborhoodsArrayL2.add(cityWithNeighborhood);
+        ArrayList<Area> cityWithNeighborhoodsArrayL2  = new ArrayList<Area>();
+        for (Area cityWithNeighborhood : areasArrayList) {
+            // must to check eng and arabic
+            if (Locale.getDefault().getLanguage().equals("en"))
+            {
+                if (cityWithNeighborhood.getName_en().toLowerCase().contains(text.toLowerCase())) {
+                    //adding the element to filtered list
+                    cityWithNeighborhoodsArrayL2.add(cityWithNeighborhood);
+                }
+
+            }else{
+                if (cityWithNeighborhood.getName_ar().toLowerCase().contains(text.toLowerCase())) {
+                    //adding the element to filtered list
+                    cityWithNeighborhoodsArrayL2.add(cityWithNeighborhood);
+                }
             }
         }
         //calling a method of the adapter class and passing the filtered list

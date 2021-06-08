@@ -14,25 +14,40 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import com.cars.halamotor.R;
 import com.cars.halamotor.dataBase.DBHelper;
 import com.cars.halamotor.model.NotificationComp;
+import com.cars.halamotor.presnter.CountryCitesAndAreas;
+import com.cars.halamotor.presnter.UpdateProfile;
 import com.cars.halamotor.view.activity.selectAddress.SelectCityAndNeighborhood;
+
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
+
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor.dataBase.InsertFunctions.insertNotificationTable;
 import static com.cars.halamotor.functions.Functions.getNotification;
+import static com.cars.halamotor.presnter.CountryCitesAndArea.getCountryCitesAndAreas;
+import static com.cars.halamotor.presnter.LoginAndUpdateProfile.updateProfileSuccess;
 import static com.cars.halamotor.sharedPreferences.AddressSharedPreferences.getUserAddressFromSP;
 import static com.cars.halamotor.sharedPreferences.AddressSharedPreferences.saveUserInfoInSP;
+import static com.cars.halamotor.sharedPreferences.CountryInfo.getCountryId;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.getWelcomeNotificationsInSP;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.updateNumberUnreadNotifications;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.welcomeNotifications;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getPlatform_id;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserEmail;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserName;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOnServerSP;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreen extends AppCompatActivity implements CountryCitesAndAreas, UpdateProfile {
 
     private static final int SELECT_LOCATION = 555;
     private static final int LOGIN = 556;
@@ -40,6 +55,8 @@ public class SplashScreen extends AppCompatActivity {
     DBHelper myDB;
     SharedPreferences.Editor editor;
     SharedPreferences sharedPreferences;
+    CountryCitesAndAreas countryCitesAndAreas;
+    UpdateProfile updateProfile;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -51,28 +68,29 @@ public class SplashScreen extends AppCompatActivity {
         myDB = getDataBaseInstance(getApplicationContext());
         addWelcomeNotifications();
         deleteOldData();
+        this.countryCitesAndAreas = (CountryCitesAndAreas) this;
+        this.updateProfile = (UpdateProfile) this;
 
-        getCountryCitesAndAreas();
+        if (getCountryId(this) == "empty") {
+            getCountryCitesAndAreas(countryCitesAndAreas,myDB,getApplicationContext());
+        }
 
-//        if (checkIfUserRegisterOnServerSP(this) == false)
-//        {
-//            transportToLoginScreen();
-//        }
-//        else{
-//            if (getUserAddressFromSP(this) == null)
-//            {
-//                selectAddress();
-//            }else {
-//                getData();
-//            }
-//        }
-    }
-
-    private void getCountryCitesAndAreas() {
-
+        if (getPlatform_id(this) == "empty")
+        {
+            transportToLoginScreen();
+        }
+        else{
+            if (getUserAddressFromSP(this) == null)
+            {
+                selectAddress();
+            }else {
+                transportToMainActivity();
+            }
+        }
     }
 
     public void Get_hash_key() {
+        //to get fb hash key
         PackageInfo info;
         try {
             info = getPackageManager().getPackageInfo("com.cars.halamotor", PackageManager.GET_SIGNATURES);
@@ -93,12 +111,6 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-    public void getData(){
-
-        transportToMainActivity();
-        //test();
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -106,18 +118,21 @@ public class SplashScreen extends AppCompatActivity {
             selectAddress();
         }
         if (requestCode == SELECT_LOCATION && resultCode == Activity.RESULT_OK) {
-            String city = data.getExtras().getString("city");
-            String neighborhood = data.getExtras().getString("nei");
-            String cityS = data.getExtras().getString("cityS");
-            String neighborhoodS = data.getExtras().getString("neiS");
-            String cityAr = data.getExtras().getString("cityAr");
-            String neighborhoodAr = data.getExtras().getString("neiAr");
+            String city_en = data.getStringExtra("city_en");
+            String city_ar = data.getStringExtra("city_ar");
+            String city_code = data.getStringExtra("city_code");
+            String city_id = data.getStringExtra("city_id");
+            String area_id = data.getStringExtra("area_id");
+            String area_name_en = data.getStringExtra("area_name_en");
+            String area_name_ar = data.getStringExtra("area_name_ar");
 
-            saveUserInfoInSP(this,sharedPreferences,editor,city
-                    ,neighborhood,cityS,neighborhoodS,cityAr,neighborhoodAr);
+            saveUserInfoInSP(this,city_en,city_ar,city_code,city_id,area_id,area_name_en,area_name_ar);
+            updateProfileSuccess(
+                    getUserTokenFromServer(getApplicationContext())
+                    ,updateProfile,area_id,area_name_en);
             //updateCityNeighborhood(this,cityS,neighborhoodS);
 
-            getData();
+            transportToMainActivity();
         }
     }
 
@@ -130,12 +145,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void statusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            Window window = this.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorRed));
-        }
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
     private void selectAddress() {
@@ -197,4 +207,13 @@ public class SplashScreen extends AppCompatActivity {
     }
 
 
+    @Override
+    public void countryCitesAreasInfo() {
+        Log.w("TAG","Update complete");
+    }
+
+    @Override
+    public void updateSuccess(JSONObject obj) {
+        Log.w("TAG","Update personal info complete");
+    }
 }

@@ -1,67 +1,150 @@
 package com.cars.halamotor.presnter;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.cars.halamotor.dataBase.DBHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.cars.halamotor.API.APIS.BASE_API;
+import static com.cars.halamotor.sharedPreferences.CountryInfo.saveUserInfoSP;
 
 public class CountryCitesAndArea {
-    //to get country and cities and area from server must call this method in splash screen
-    //coz the areas will not update in short time
-    //we use this to save it in data base and will call it just one time first time
-    //will save country info in sharedPrefancec and cities,areas in database
+    public static ArrayList<JSONObject> citiesArrayL  = new ArrayList<JSONObject>();
+    public static ArrayList<JSONObject> areasArrayL  = new ArrayList<JSONObject>();
 
-    public static void getCountryCitesAndAreas(CountryCitesAndAreas countryCitesAndAreas)
+    public static void getCountryCitesAndAreas(final CountryCitesAndAreas countryCitesAndAreas, final DBHelper myDB, final Context context)
     {
-        JSONObject obj = null;
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                JSONObject obj = null;
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API+"/countries?language=en")
+                        .method("GET", null)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Accept-Language", "ar")
+                        .build();
+                try {
+                    Response response = client.newCall(request).execute();
+                    try {
+                        obj = new JSONObject(response.body().string());
 
-        Request request = new Request.Builder()
-                .url(BASE_API+"/countries?language=en")
-                .method("GET", null)
-                .addHeader("Accept", "application/json")
-                .addHeader("Accept-Language", "ar")
-                .build();
+//                        Log.w("TAG","Response "+ response);
+//                        Log.w("TAG","Obj "+  obj.getString("STATUS"));
+//                        Log.w("TAG","Obj "+  obj.getString("MESSAGE"));
+                        JSONArray jsonArrayCountry = obj.getJSONArray("DATA");
+                        JSONObject jObjectCountryInfo = new JSONObject();
+                        jObjectCountryInfo = jsonArrayCountry.getJSONObject(0);
+
+                        getCountryInfo(jObjectCountryInfo,myDB,countryCitesAndAreas,context);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        thread.start();
+
+    }
+
+    private static void getCountryInfo(JSONObject jObjectCountryInfo, DBHelper myDB, CountryCitesAndAreas countryCitesAndAreas,Context context) {
         try {
-            Response response = client.newCall(request).execute();
-            Log.w("TAG response",response.toString());
-            JSONObject  objData ,objUser;
-            try {
-                obj = new JSONObject(response.body().string());
-                Log.w("TAG",obj.toString());
-                Log.w("TAG",obj.getString("STATUS"));
-                Log.w("TAG",obj.getString("MESSAGE"));
-                objData =obj.getJSONObject("DATA");
-                Log.w("TAG",obj.getString("id"));
-                Log.w("TAG",obj.getString("code"));
-                Log.w("TAG",obj.getString("name"));
-                Log.w("TAG",obj.getString("name_en"));
-                Log.w("TAG",obj.getString("name_ar"));
+            //save country info in SP
+            saveUserInfoSP(context,jObjectCountryInfo.getString("id"),jObjectCountryInfo.getString("code")
+            ,jObjectCountryInfo.getString("name"),jObjectCountryInfo.getString("name_en")
+            ,jObjectCountryInfo.getString("name_ar"));
 
-                JSONArray jsonArray = new JSONArray(objData.getJSONArray("cities"));
-                //JSONObject jsonObject = new JSONObject(jsonArray.getJSONObject(0));
-                //JSONObject jsonObject = new JSONObject(jsonArray.getJSONObject(0).getString("id"));
-                Log.w("TAG",objData.toString());
-                countryCitesAndAreas.countryCitesAreasInfo(obj);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            Log.w("TAG","Saved in SP ");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        getCitesInfo(jObjectCountryInfo,myDB,countryCitesAndAreas);
+    }
+
+    private static void getCitesInfo(JSONObject jObjectCountryInfo, DBHelper myDB, CountryCitesAndAreas countryCitesAndAreas) {
+        try {
+            JSONArray jsonArrayCites = jObjectCountryInfo.getJSONArray("cities");
+            JSONObject jObjectCityInfo = new JSONObject();
+
+             int citiesNumberFlag = 0;
+            for (int i=0;i<jsonArrayCites.length();i++)
+            {
+                jObjectCityInfo = jsonArrayCites.getJSONObject(i);
+                citiesArrayL.add(jObjectCityInfo);
+                //save cites info in cites database
+                myDB.insertCites(jObjectCityInfo.getString("id"),jObjectCityInfo.getString("code")
+                        ,jObjectCityInfo.getString("name"),jObjectCityInfo.getString("name_en"),jObjectCityInfo.getString("name_ar"));
+
+                if (i == 7)
+                {
+                    citiesNumberFlag =1;
+                }
+
+            }
+            if (citiesNumberFlag ==1)
+            {
+                Log.w("TAG","Saved cities in Database ");
+                getAreasInfo(myDB,countryCitesAndAreas);
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Log.w("TAG error", e.toString());
+        }
+    }
+
+    private static void getAreasInfo(DBHelper myDB, CountryCitesAndAreas countryCitesAndAreas) {
+        int flage = 0;
+        for (int j=0;j < citiesArrayL.size();j++)
+        {
+            try {
+                JSONArray jsonArrayAreas = citiesArrayL.get(j).getJSONArray("areas");
+                JSONObject areaInfo = new JSONObject();
+
+                for (int i=0;i<jsonArrayAreas.length();i++)
+                {
+                    areaInfo = jsonArrayAreas.getJSONObject(i);
+                   // Log.w("TAG","space "+  "  ");
+                    areasArrayL.add(areaInfo);
+                    myDB.insertAreas(areaInfo.getString("id"),areaInfo.getString("name"),areaInfo.getString("name_en")
+                    ,areaInfo.getString("name_ar")
+                    ,citiesArrayL.get(j).getString("id"),citiesArrayL.get(j).getString("code")
+                    ,citiesArrayL.get(j).getString("name"),citiesArrayL.get(j).getString("name_en")
+                    ,citiesArrayL.get(j).getString("name_ar"));
+                }
+
+            } catch (Exception e) {
+                Log.w("TAG error", e.toString());
+            }
+            if (j==7)
+            {
+                flage =1;
+            }
+        }
+
+        if (flage ==1)
+        {
+            Log.w("TAG","Saved areas in Database ");
+            Log.w("TAG number of areas", String.valueOf(areasArrayL.size()));
+            countryCitesAndAreas.countryCitesAreasInfo();
         }
 
     }

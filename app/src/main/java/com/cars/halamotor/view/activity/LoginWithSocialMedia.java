@@ -3,23 +3,15 @@ package com.cars.halamotor.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cars.halamotor.R;
-import com.cars.halamotor.functions.Functions;
-import com.cars.halamotor.model.UserInfo;
 import com.cars.halamotor.presnter.Login;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -39,36 +31,19 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-import static com.cars.halamotor.API.APIS.BASE_API;
-import static com.cars.halamotor.fireBaseDB.InsertToFireBase.addNewUser;
-import static com.cars.halamotor.fireBaseDB.ReadFromFireBase.getUserInfo;
-import static com.cars.halamotor.functions.Functions.changeFontBold;
-import static com.cars.halamotor.functions.Functions.getDAY;
-import static com.cars.halamotor.functions.Functions.getMONTH;
-import static com.cars.halamotor.functions.Functions.getYEAR;
-import static com.cars.halamotor.presnter.LoginR.whenLoginCompleteSuccess;
+import static com.cars.halamotor.presnter.LoginAndUpdateProfile.whenLoginCompleteSuccess;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.saveUserInfoSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkFBLoginOrNot;
-import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOnServerSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOrNotFromSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserTokenInFromSP;
-import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.saveFBInfoInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.saveUserInfoInSP;
 
 public class LoginWithSocialMedia extends AppCompatActivity implements Login{
@@ -293,13 +268,13 @@ public class LoginWithSocialMedia extends AppCompatActivity implements Login{
     }
 
     @Override
-    public void whenLoginSuccess(JSONObject obj) {
+    public void whenLoginSuccess(JSONObject obj,String platform,String platform_id) {
         JSONObject objData = null,objUser=null;
         try {
             objData = obj.getJSONObject("DATA");
             objUser =objData.getJSONObject("user");
 
-            saveResponseInSP(obj,objData,objUser);
+            saveResponseInSP(objData,objUser,platform,platform_id);
 
             checkIfUserRegisterOrNotFromSP(getApplicationContext(), rgSharedPreferences, rgEditor, "1");
 
@@ -314,7 +289,7 @@ public class LoginWithSocialMedia extends AppCompatActivity implements Login{
         }
     }
 
-    private void saveResponseInSP(JSONObject obj, JSONObject objData, JSONObject objUser) {
+    private void saveResponseInSP(JSONObject objData, JSONObject objUser,String platform,String platform_id) {
         try {
             saveUserInfoSP(this,objUser.getString("id")
                     ,objUser.getString("name")
@@ -323,11 +298,13 @@ public class LoginWithSocialMedia extends AppCompatActivity implements Login{
                     ,objUser.getString("photo")
                     ,objUser.getString("phone_is_verified")
                     ,objUser.getString("email_is_verified")
-                    ,objUser.getString("language")
+                    ,Locale.getDefault().getLanguage()
                     ,objUser.getString("mute_notification")
                     ,objUser.getString("area_id")
                     ,objUser.getString("area")
-                    ,objData.getString("token"));
+                    ,objData.getString("token")
+                    ,platform
+                    ,platform_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }

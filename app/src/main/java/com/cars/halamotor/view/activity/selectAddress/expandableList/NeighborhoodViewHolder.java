@@ -55,12 +55,12 @@ public class NeighborhoodViewHolder extends ChildViewHolder {
             @Override
             public void onClick(View v) {
                 relativeLayout.setBackgroundResource(R.drawable.neighborhood_selected_bg);
-                checkIfSelectAddressOrNotFound(context,size,neighborhoodS);
+                checkIfSelectAddressOrNotFound(context,size,neighborhoodS,position);
             }
         });
     }
 
-    private void checkIfSelectAddressOrNotFound(Context context, int size, String neighborhoodS) {
+    private void checkIfSelectAddressOrNotFound(Context context, int size, String neighborhoodS,int position) {
         String city,cityS;
         if (!neighborhoodTV.getText().toString().equals(context.getResources().getString(R.string.can_not_find)))
         {
@@ -76,10 +76,12 @@ public class NeighborhoodViewHolder extends ChildViewHolder {
         }else{
             city = check(size,context);
             cityS = convertFromCityToCityS(city,context);
+            String AreaID = String.valueOf(position +1);
             myDialog = new Dialog(context);
             Intent resultIntent = new Intent();
             resultIntent.putExtra("city", city);
             resultIntent.putExtra("nei", neighborhoodTV.getText().toString());
+            resultIntent.putExtra("neiId", AreaID);
             resultIntent.putExtra("cityS",cityS );
             resultIntent.putExtra("neiS", neighborhoodS);
             ((Activity)context).setResult(Activity.RESULT_OK, resultIntent);

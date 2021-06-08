@@ -6,43 +6,30 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
-import com.cars.halamotor.model.CategoryComp;
-import com.cars.halamotor.model.CityWithNeighborhood;
-import com.cars.halamotor.view.activity.SplashScreen;
-import com.cars.halamotor.view.activity.selectAddress.SelectCityAndNeighborhood;
-
+import com.cars.halamotor.model.Area;
 import java.util.ArrayList;
-
-import static com.cars.halamotor.fireBaseDB.UpdateFireBase.updateCityNeighborhood;
-import static com.cars.halamotor.functions.Functions.check;
-import static com.cars.halamotor.sharedPreferences.AddressSharedPreferences.saveUserInfoInSP;
+import java.util.Locale;
 
 public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCityWithNeighborhood.ViewHolder>{
 
     private final Context context;
-    public ArrayList<CityWithNeighborhood> cityWithNeighborhoodsArrayL ;
+    public ArrayList<Area> areaArrayList ;
     String whereComeFrom;
-    SharedPreferences.Editor editor;
-    SharedPreferences sharedPreferences;
 
     public AdapterCityWithNeighborhood
             (Context context
-                    ,ArrayList<CityWithNeighborhood> cityWithNeighborhoodsArrayL
+                    ,ArrayList<Area> areaArrayList
                     ,String whereComeFrom)
                 {
                     this.context = context;
-                    this.cityWithNeighborhoodsArrayL = cityWithNeighborhoodsArrayL;
+                    this.areaArrayList = areaArrayList;
                     this.whereComeFrom = whereComeFrom;
                 }
 
@@ -55,8 +42,9 @@ public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCit
 
     @Override
     public void onBindViewHolder(final AdapterCityWithNeighborhood.ViewHolder holder, final int position) {
-        holder.textViewCity.setText(cityWithNeighborhoodsArrayL.get(position).getCityStr()+ " , ");
-        holder.textViewNeighborhood.setText(cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStr());
+
+        holder.textViewCity.setText(fillText(areaArrayList.get(position).getCity().getName_en(),areaArrayList.get(position).getCity().getName_ar())+ " , ");
+        holder.textViewNeighborhood.setText(fillText(areaArrayList.get(position).getName_en(),areaArrayList.get(position).getName_ar()));
         holder.textViewCity.setTypeface(Functions.changeFontBold(context));
         holder.textViewNeighborhood.setTypeface(Functions.changeFontGeneral(context));
 
@@ -76,49 +64,40 @@ public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCit
 //                    String cityS = cityWithNeighborhoodsArrayL.get(position).getCityStrS();
 //                    String neighborhoodS = cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStrS();
 
-                    Intent intent = new Intent();
 
-                    intent.putExtra("city", cityWithNeighborhoodsArrayL.get(position).getCityStr());
-                    intent.putExtra("nei", cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStr());
-                    intent.putExtra("cityS", cityWithNeighborhoodsArrayL.get(position).getCityStrS());
-                    intent.putExtra("neiS", cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStrS());
-                    intent.putExtra("cityAr", cityWithNeighborhoodsArrayL.get(position).getCityStrAr());
-                    intent.putExtra("neiAr", cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStrAr());
 
-                    ((Activity)context).setResult(Activity.RESULT_OK, intent);
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("city_en", areaArrayList.get(position).getCity().getName_en());
+                    resultIntent.putExtra("city_ar", areaArrayList.get(position).getCity().getName_ar());
+                    resultIntent.putExtra("city_code", areaArrayList.get(position).getCity().getCode());
+                    resultIntent.putExtra("city_id", areaArrayList.get(position).getCity().getId());
+                    resultIntent.putExtra("area_id", areaArrayList.get(position).getId());
+                    resultIntent.putExtra("area_name_en", areaArrayList.get(position).getName_ar());
+                    resultIntent.putExtra("area_name_ar", areaArrayList.get(position).getName_en());
+
+                    ((Activity)context).setResult(Activity.RESULT_OK, resultIntent);
                     ((Activity)context).finish();
                 }
             }
         });
     }
 
-    private void saveCityAndNeighborhoodInSPAndUpdateInServer(int position) {
-        String city = cityWithNeighborhoodsArrayL.get(position).getCityStr();
-        String neighborhood = cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStr();
-        String cityS = cityWithNeighborhoodsArrayL.get(position).getCityStrS();
-        String neighborhoodS = cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStrS();
-        String cityAr = cityWithNeighborhoodsArrayL.get(position).getCityStrAr();
-        String neighborhoodAr = cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStrAr();
-        saveUserInfoInSP(context,sharedPreferences,editor,city
-        ,neighborhood,cityS,neighborhoodS,cityAr,neighborhoodAr);
-        updateCityNeighborhood(context,cityS,neighborhoodS);
-    }
 
     private void backToSelectCityFragment(ViewHolder holder, int position) {
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("city", cityWithNeighborhoodsArrayL.get(position).getCityStr());
-        resultIntent.putExtra("nei", cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStr());
-        resultIntent.putExtra("cityS", cityWithNeighborhoodsArrayL.get(position).getCityStrS());
-        resultIntent.putExtra("neiS", cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStrS());
-        resultIntent.putExtra("cityAr", cityWithNeighborhoodsArrayL.get(position).getCityStrAr());
-        resultIntent.putExtra("neiAr", cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStrAr());
+        resultIntent.putExtra("city", areaArrayList.get(position).getCity().getName_en());
+        resultIntent.putExtra("nei", areaArrayList.get(position).getName_en());
+        resultIntent.putExtra("cityS", areaArrayList.get(position).getCity().getName_en());
+        resultIntent.putExtra("neiS", areaArrayList.get(position).getName_en());
+        resultIntent.putExtra("cityAr", areaArrayList.get(position).getCity().getName_ar());
+        resultIntent.putExtra("neiAr", areaArrayList.get(position).getName_ar());
         ((Activity)context).setResult(Activity.RESULT_OK, resultIntent);
         ((Activity)context).finish();
     }
 
     @Override
     public int getItemCount() {
-        return cityWithNeighborhoodsArrayL.size();
+        return areaArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -133,8 +112,19 @@ public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCit
 
     }
 
-    public void filterList(ArrayList<CityWithNeighborhood> cityWithNeighborhoods) {
-        this.cityWithNeighborhoodsArrayL = cityWithNeighborhoods;
+    public void filterList(ArrayList<Area> cityWithNeighborhoods) {
+        this.areaArrayList = cityWithNeighborhoods;
         notifyDataSetChanged();
+    }
+
+    private String fillText(String textEn,String textAr){
+        String text="k";
+        if (Locale.getDefault().getLanguage().equals("en"))
+        {
+            text = textEn;
+        }else{
+            text = textAr;
+        }
+        return text;
     }
 }

@@ -13,10 +13,10 @@ public class PersonalSP {
 
     public static void saveUserInfoSP(Context context, String id, String name,String email,String phone,String photo
             ,String phone_is_verified,String email_is_verified,String language,String mute_notification,String area_id
-            ,String area,String token) {
+            ,String area,String token,String platform,String platform_id) {
         SharedPreferences = context.getSharedPreferences(REGISTER, MODE_PRIVATE);
         editor = SharedPreferences.edit();
-        editor.putString("id",name);
+        editor.putString("id",id);
         editor.putString("name",name);
         editor.putString("email",email);
         editor.putString("phone",phone);
@@ -28,9 +28,37 @@ public class PersonalSP {
         editor.putString("area_id",area_id);
         editor.putString("area",area);
         editor.putString("token",token);
+        editor.putString("platform",platform);
+        editor.putString("platform_id",platform_id);
         editor.commit();
     }
 
+
+    public static String getPlatform_id(Context context) {
+        String req;
+        SharedPreferences shared = context.getSharedPreferences(REGISTER, MODE_PRIVATE);
+        //can use any comp from user info to check
+        req = (shared.getString("platform_id", ""));
+        if (req.equals("") || req == null) {
+            return  "empty";
+        }
+        else {
+            return  req;
+        }
+    }
+
+    public static String getPlatform(Context context) {
+        String req;
+        SharedPreferences shared = context.getSharedPreferences(REGISTER, MODE_PRIVATE);
+        //can use any comp from user info to check
+        req = (shared.getString("platform", ""));
+        if (req.equals("") || req == null) {
+            return  "empty";
+        }
+        else {
+            return  req;
+        }
+    }
 
     public static String getUserID(Context context) {
         String req;
@@ -175,7 +203,7 @@ public class PersonalSP {
         }
     }
 
-    public static String getUserToken(Context context) {
+    public static String getUserTokenFromServer(Context context) {
         String req;
         SharedPreferences shared = context.getSharedPreferences(REGISTER, MODE_PRIVATE);
         //can use any comp from user info to check

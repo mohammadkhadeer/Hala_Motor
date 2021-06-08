@@ -16,7 +16,7 @@ import okhttp3.Response;
 
 import static com.cars.halamotor.API.APIS.BASE_API;
 
-public class LoginR {
+public class LoginAndUpdateProfile {
 
     public static void whenLoginCompleteSuccess(String name, String email, String password, String platform, String platform_id,
                                                 String userToken, String photo, String phone,Login login)
@@ -43,7 +43,8 @@ public class LoginR {
             Response response = client.newCall(request).execute();
             try {
                 obj = new JSONObject(response.body().string());
-                login.whenLoginSuccess(obj);
+                //send response by interface
+                login.whenLoginSuccess(obj,platform,platform_id);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -51,6 +52,48 @@ public class LoginR {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public static void updateProfileSuccess(final String userTokenInServer, final UpdateProfile updateProfile
+            , final String areaId, final String area) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                JSONObject obj = null;
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                        .addFormDataPart("area_id", areaId)
+                        .addFormDataPart("area", area)
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API + "/profile")
+                        .method("POST", body)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer " + userTokenInServer)
+                        .build();
+                try {
+                    Response response = client.newCall(request).execute();
+
+                    try {
+                        Log.w("TAG", "Response " + response);
+
+                        obj = new JSONObject(response.body().string());
+
+                        JSONObject data = obj.getJSONObject("DATA");
+
+                        updateProfile.updateSuccess(obj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        thread.start();
     }
 }
