@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
 import android.telephony.PhoneNumberUtils;
 import android.text.Html;
@@ -65,6 +66,20 @@ import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getTit
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserImage;
 
 public class Functions {
+
+    public static boolean checkIfAndroidVBiggerThan9() {
+        // we use this method cos OkHttpClient not allwed less than 9
+        boolean value = false;
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            value = true;
+        }else{
+            value = false;
+        }
+        return value;
+    }
 
     public static String replace(String category) {
 
@@ -671,15 +686,44 @@ public class Functions {
 
     public static ArrayList<CategoryComp> fillCategoryArrayList(ArrayList<CategoryComp> categoryCompsArrayL,Context context) {
         categoryCompsArrayL = new ArrayList<CategoryComp>();
-        CategoryComp carForSaleCCAL = new CategoryComp(R.drawable.car_for_sale,context.getResources().getString(R.string.car_for_sale));
-        CategoryComp carForRentCCAL = new CategoryComp(R.drawable.car_rent,context.getResources().getString(R.string.car_for_rent));
-        CategoryComp carForExchangeCCAL = new CategoryComp(R.drawable.exchange_car,context.getResources().getString(R.string.exchange_car));
-        CategoryComp motorcycleCCAL = new CategoryComp(R.drawable.motorcycle,context.getResources().getString(R.string.motorcycle));
-        CategoryComp carPlatesCCAL = new CategoryComp(R.drawable.vip,context.getResources().getString(R.string.car_plates));
-        CategoryComp accessoriesCCAL = new CategoryComp(R.drawable.accessories,context.getResources().getString(R.string.accessories));
-        CategoryComp wheelsRimCCAL = new CategoryComp(R.drawable.wheels_rim,context.getResources().getString(R.string.wheels_rim));
-        CategoryComp truckComp = new CategoryComp(R.drawable.trucks,context.getResources().getString(R.string.trucks));
-        CategoryComp junkCarComp = new CategoryComp(R.drawable.junk_car,context.getResources().getString(R.string.junk_car));
+
+        CategoryComp carForSaleCCAL = new CategoryComp(R.drawable.car_for_sale,"1",context.getResources().getString(R.string.car_for_sale_s)
+        ,context.getResources().getString(R.string.car_for_sale_name),context.getResources().getString(R.string.car_for_sale_name)
+        ,context.getResources().getString(R.string.car_for_sale_ar));
+
+        CategoryComp carForRentCCAL = new CategoryComp(R.drawable.car_rent,"2",context.getResources().getString(R.string.car_for_rent_s)
+                ,context.getResources().getString(R.string.car_for_rent_name),context.getResources().getString(R.string.car_for_rent_name)
+                ,context.getResources().getString(R.string.car_for_rent_ar));
+
+        CategoryComp carForExchangeCCAL = new CategoryComp(R.drawable.exchange_car,"3",context.getResources().getString(R.string.exchange_car_s)
+                ,context.getResources().getString(R.string.exchange_car_name),context.getResources().getString(R.string.exchange_car_name)
+                ,context.getResources().getString(R.string.exchange_car_ar));
+
+        CategoryComp motorcycleCCAL = new CategoryComp(R.drawable.motorcycle,"4",context.getResources().getString(R.string.motorcycle_s)
+                ,context.getResources().getString(R.string.motorcycle_name),context.getResources().getString(R.string.motorcycle_name)
+                ,context.getResources().getString(R.string.motorcycle_ar));
+
+        CategoryComp carPlatesCCAL = new CategoryComp(R.drawable.vip,"5",context.getResources().getString(R.string.car_plates_s)
+                ,context.getResources().getString(R.string.car_plates_name),context.getResources().getString(R.string.car_plates_name)
+                ,context.getResources().getString(R.string.car_plates_ar));
+
+        CategoryComp accessoriesCCAL = new CategoryComp(R.drawable.accessories,"6",context.getResources().getString(R.string.accessories_s)
+                ,context.getResources().getString(R.string.accessories_name),context.getResources().getString(R.string.accessories_name)
+                ,context.getResources().getString(R.string.accessories_ar));
+
+        CategoryComp wheelsRimCCAL = new CategoryComp(R.drawable.wheels_rim,"7",context.getResources().getString(R.string.wheels_rim_s)
+                ,context.getResources().getString(R.string.wheels_rim_name),context.getResources().getString(R.string.wheels_rim_name)
+                ,context.getResources().getString(R.string.wheels_rim_ar));
+
+        CategoryComp truckComp = new CategoryComp(R.drawable.trucks,"8",context.getResources().getString(R.string.trucks_s)
+                ,context.getResources().getString(R.string.trucks_name),context.getResources().getString(R.string.trucks_name)
+                ,context.getResources().getString(R.string.trucks_ar));
+
+        CategoryComp junkCarComp = new CategoryComp(R.drawable.junk_car,"9",context.getResources().getString(R.string.junk_car_s)
+                ,context.getResources().getString(R.string.junk_car_name),context.getResources().getString(R.string.junk_car_name)
+                ,context.getResources().getString(R.string.junk_car_ar));
+
+
         categoryCompsArrayL.add(carForSaleCCAL);
         categoryCompsArrayL.add(carForRentCCAL);
         categoryCompsArrayL.add(carForExchangeCCAL);

@@ -268,20 +268,20 @@ public class LoginWithSocialMedia extends AppCompatActivity implements Login{
     }
 
     @Override
-    public void whenLoginSuccess(JSONObject obj,String platform,String platform_id) {
+    public void whenLoginSuccess(JSONObject obj,String platform,String platform_id,String photo) {
         JSONObject objData = null,objUser=null;
         try {
             objData = obj.getJSONObject("DATA");
             objUser =objData.getJSONObject("user");
 
-            saveResponseInSP(objData,objUser,platform,platform_id);
+            saveResponseInSP(objData,objUser,platform,platform_id,photo);
 
             checkIfUserRegisterOrNotFromSP(getApplicationContext(), rgSharedPreferences, rgEditor, "1");
 
             saveUserInfoInSP(getApplicationContext(), fbSharedPreferences, fbEditor, objUser.getString("name")
                     , objUser.getString("name"), objUser.getString("email")
                     , objUser.getString("id"), "1/1/2020"
-                    , objUser.getString("photo"));
+                    , photo);
 
             moveBack();
         } catch (JSONException e) {
@@ -289,13 +289,13 @@ public class LoginWithSocialMedia extends AppCompatActivity implements Login{
         }
     }
 
-    private void saveResponseInSP(JSONObject objData, JSONObject objUser,String platform,String platform_id) {
+    private void saveResponseInSP(JSONObject objData, JSONObject objUser,String platform,String platform_id,String photo) {
         try {
             saveUserInfoSP(this,objUser.getString("id")
                     ,objUser.getString("name")
                     ,objUser.getString("email")
                     ,objUser.getString("phone")
-                    ,objUser.getString("photo")
+                    ,photo
                     ,objUser.getString("phone_is_verified")
                     ,objUser.getString("email_is_verified")
                     ,Locale.getDefault().getLanguage()

@@ -50,6 +50,7 @@ import com.cars.halamotor.model.WheelsInfo;
 import com.cars.halamotor.model.WheelsRimModel;
 import com.cars.halamotor.permission.CheckPermission;
 import com.cars.halamotor.presnter.NumberOfAllowedAds;
+import com.cars.halamotor.presnter.PassCategories;
 import com.cars.halamotor.utils.Utils;
 import com.cars.halamotor.view.adapters.AdapterSelectCategory;
 import com.cars.halamotor.view.adapters.SelectedImageAdapter;
@@ -76,6 +77,7 @@ import static com.cars.halamotor.fireBaseDB.UploadToStorage.uploadImagesBeforeUp
 import static com.cars.halamotor.fireBaseDB.UploadToStorage.uploadImagesBeforeUploadWheelsRimModel;
 import static com.cars.halamotor.functions.FillCarModel.fillAllCarArrayL;
 import static com.cars.halamotor.functions.FillNeighborhood.fillCityAndNeighborhoodArrayL;
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.functions.Functions.checkBurnedPrice;
 import static com.cars.halamotor.functions.Functions.checkPhoneNumberRealOrNot;
 import static com.cars.halamotor.functions.Functions.checkTitleAndDescription;
@@ -112,7 +114,7 @@ import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUse
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserTokenInFromSP;
 
 public class AddItem extends AppCompatActivity implements
-        ShowSelectedCarDetailsFragment.OnDataPass , NumberOfAllowedAds {
+        ShowSelectedCarDetailsFragment.OnDataPass , NumberOfAllowedAds , PassCategories {
 
     RelativeLayout cancelRL, selectImageFGRL, selectVideoRL, coverVideoViewRL, cancelVideoRL, cancelSelectedCategoryRL, add_activity_complete_car_dCV, cityPhoneNumberRL;
     RelativeLayout showSelectedCarDetailsRL, messageContainerRL, messageContentRL;
@@ -162,6 +164,8 @@ public class AddItem extends AppCompatActivity implements
     NumberOfAllowedAds numberOfAllowedAds;
     int numberOfAllowedAdsInt,numberOfOldAds,canInsertAndOrNot,canInsertBurnedPrice;
 
+    CategoryComp categoryCompNow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,7 +179,6 @@ public class AddItem extends AppCompatActivity implements
         changeFontType();
         actionListener();
         createSelectCategoryRV();
-        actionListenerToRVShowSelectedCategoryAfterUserChoose();
 
         //get user info from server
         getNumberOfAllowedAdsFromServer(this,numberOfAllowedAds);
@@ -232,8 +235,8 @@ public class AddItem extends AppCompatActivity implements
     }
 
     private void checkBeforUpload() {
+        String selectCategory ;
         if (isNetworkAvailable(getApplicationContext())) {
-            String selectCategory = "empty";
             if (selectedCategoryPositionInt != 100) {
                 if (checkTitleAndDescription(getApplicationContext()) == null) {
                     if (checkTitleAndDescriptionRealOrNot(getApplicationContext()) == null) {
@@ -242,8 +245,7 @@ public class AddItem extends AppCompatActivity implements
                                 if (checkPhoneNumberRealOrNot(getApplicationContext()) == null) {
                                     if (numberOfOldAds < numberOfAllowedAdsInt) {
                                         if (canInsertAndOrNot == 1) {
-                                            selectCategory = categoryCompsArrayL.get(selectedCategoryPositionInt)
-                                                    .getCategoryNameStr();
+                                            selectCategory = categoryCompNow.getCode();
                                             if (getBurnedPriceInSP(getApplicationContext()) != null) {
                                                 if (canInsertBurnedPrice == 1) {
                                                     itemLiveOrMustToWaitIfBurnedPriceOn =0;
@@ -514,35 +516,6 @@ public class AddItem extends AppCompatActivity implements
 
     }
 
-    private void actionListenerToRVShowSelectedCategoryAfterUserChoose() {
-        selectCategoryRV.addOnItemTouchListener(
-                new AdapterSelectCategory.RecyclerItemClickListener
-                        (AddItem.this, selectCategoryRV,
-                                new AdapterSelectCategory.RecyclerItemClickListener.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(View view, int position) {
-                                        if (checkIfWheelsOrCarP(position)) {
-                                            selectedCategoryPositionInt = position;
-                                            goneRVAndVisableSelectedCategoryAndFillSelectedInfo(position);
-                                            checkIfNeedToMakeCompleteCarDetailsToBeVisable(position);
-                                        } else {
-                                            if (categoryCompsArrayL.get(position).getCategoryNameStr().equals(getResources().getString(R.string.wheels_rim))) {
-                                                translateToWheelsRimActivity();
-                                            }
-                                            if (categoryCompsArrayL.get(position).getCategoryNameStr().equals(getResources().getString(R.string.car_plates))) {
-                                                translateToCarPlatesActivity();
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onLongItemClick(View view, int position) {
-                                        // do whatever
-                                    }
-                                })
-        );
-    }
-
     private void translateToCarPlatesActivity() {
         Bundle bundle = new Bundle();
         bundle.putString("specialIntOrNot", "normal");
@@ -557,15 +530,6 @@ public class AddItem extends AppCompatActivity implements
         Intent intent = new Intent(AddItem.this, WheelsRim.class);
         startActivityForResult(intent, REQUEST_WHEELS_RIM);
         overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
-    }
-
-    private boolean checkIfWheelsOrCarP(int position) {
-        if (categoryCompsArrayL.get(position).getCategoryNameStr().equals(getResources().getString(R.string.car_plates))
-                || categoryCompsArrayL.get(position).getCategoryNameStr().equals(getResources().getString(R.string.wheels_rim))) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     private void completeMessage(String string) {
@@ -595,11 +559,13 @@ public class AddItem extends AppCompatActivity implements
 
     }
 
-    private void checkIfNeedToMakeCompleteCarDetailsToBeVisable(int position) {
-        if (!categoryCompsArrayL.get(position).getCategoryNameStr().equals(getResources().getString(R.string.car_plates))
-                && !categoryCompsArrayL.get(position).getCategoryNameStr().equals(getResources().getString(R.string.accessories))
-                && !categoryCompsArrayL.get(position).getCategoryNameStr().equals(getResources().getString(R.string.wheels_rim))
-                && !categoryCompsArrayL.get(position).getCategoryNameStr().equals(getResources().getString(R.string.junk_car))) {
+    private void checkIfNeedToMakeCompleteCarDetailsToBeVisable(CategoryComp categoryComp) {
+        if (!categoryComp.getCode().equals("car_plates")
+                && !categoryComp.getCode().equals("accessories")
+                && !categoryComp.getCode().equals("wheels_rim")
+                && !categoryComp.getCode().equals("exchange_car")
+                && !categoryComp.getCode().equals("junk_car"))
+        {
             makeCompleteCarDetailsVisable();
         } else {
             productDetailsComplete = 1;
@@ -616,11 +582,11 @@ public class AddItem extends AppCompatActivity implements
         completeCarDetailsCV.setVisibility(View.VISIBLE);
     }
 
-    private void goneRVAndVisableSelectedCategoryAndFillSelectedInfo(int position) {
+    private void goneRVAndVisableSelectedCategoryAndFillSelectedInfo(CategoryComp categoryComp) {
         viewSelectedCategoryCV.setVisibility(View.VISIBLE);
         selectCategoryRV.setVisibility(View.GONE);
-        imageCategorySelectedIV.setBackgroundResource(categoryCompsArrayL.get(position).getImageIdInt());
-        categorySelectedNameTV.setText(categoryCompsArrayL.get(position).getCategoryNameStr());
+        imageCategorySelectedIV.setBackgroundResource(categoryComp.getImageIdInt());
+        categorySelectedNameTV.setText(getTextEngOrLocal(getApplicationContext(),categoryComp.getName_en(),categoryComp.getName_ar()));
         textTitleTV.setText(getResources().getText(R.string.process_now));
     }
 
@@ -632,7 +598,7 @@ public class AddItem extends AppCompatActivity implements
                 LinearLayoutManager.HORIZONTAL, false);
         selectCategoryRV.setLayoutManager(layoutManagerCategory);
         adapterSelectCategory = new AdapterSelectCategory(AddItem.this
-                , categoryCompsArrayL);
+                , categoryCompsArrayL,this);
         selectCategoryRV.setAdapter(adapterSelectCategory);
     }
 
@@ -839,8 +805,7 @@ public class AddItem extends AppCompatActivity implements
             carDetailsModel = (CarDetailsModel) data.getParcelableExtra("carDetailsObject");
             getIntent().putExtra("carDetailsObject", carDetailsModel);
             Bundle bundle = new Bundle();
-            bundle.putString("category", categoryCompsArrayL.get(selectedCategoryPositionInt)
-                    .getCategoryNameStr());
+            bundle.putString("category", categoryCompNow.getCode());
             fragmentShowSelectedDetails.setArguments(bundle);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -945,5 +910,21 @@ public class AddItem extends AppCompatActivity implements
     @Override
     public void canInsertBurnedPrice(String canOrNot) {
         canInsertBurnedPrice = Integer.parseInt(canOrNot);
+    }
+
+    @Override
+    public void passCategoriesInfo(CategoryComp categoryComp) {
+        categoryCompNow = categoryComp;
+        if (categoryComp.getCode().equals("wheels_rim") || categoryComp.getCode().equals("car_plates")) {
+            if (categoryComp.getCode().equals("wheels_rim")) {
+                translateToWheelsRimActivity();
+            }
+            if (categoryComp.getCode().equals("car_plates")) {
+                translateToCarPlatesActivity();
+            }
+        } else {
+            goneRVAndVisableSelectedCategoryAndFillSelectedInfo(categoryComp);
+            checkIfNeedToMakeCompleteCarDetailsToBeVisable(categoryComp);
+        }
     }
 }

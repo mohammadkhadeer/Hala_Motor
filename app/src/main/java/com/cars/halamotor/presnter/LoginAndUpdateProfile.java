@@ -44,7 +44,7 @@ public class LoginAndUpdateProfile {
             try {
                 obj = new JSONObject(response.body().string());
                 //send response by interface
-                login.whenLoginSuccess(obj,platform,platform_id);
+                login.whenLoginSuccess(obj,platform,platform_id,photo);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

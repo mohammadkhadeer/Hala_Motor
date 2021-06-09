@@ -5,5 +5,5 @@ import com.cars.halamotor.model.ItemCCEMT;
 import org.json.JSONObject;
 
 public interface Login {
-    void whenLoginSuccess(JSONObject obj,String platform,String platformID);
+    void whenLoginSuccess(JSONObject obj,String platform,String platformID,String photo);
 }

@@ -7,6 +7,14 @@
     android:layout_marginLeft="4dp"
     android:layout_marginStart="4dp">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/category_cover"
+        android:background="?android:attr/selectableItemBackground"
+        >
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -43,7 +51,5 @@
             android:layout_marginTop="90dp"/>
 
     </RelativeLayout>
-
-
 
 </RelativeLayout>

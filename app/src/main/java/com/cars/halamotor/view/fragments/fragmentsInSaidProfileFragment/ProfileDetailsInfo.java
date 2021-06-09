@@ -1,9 +1,11 @@
 package com.cars.halamotor.view.fragments.fragmentsInSaidProfileFragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,10 @@ import java.util.ArrayList;
 
 import static com.cars.halamotor.dataBase.ReadFunction.getFollowing;
 import static com.cars.halamotor.fireBaseDB.FireBaseDBPaths.getUserPathInServer;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getPlatform;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserName;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserPhoto;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkFBLoginOrNot;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOrNotFromSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserIdInServerFromSP;
@@ -39,7 +45,7 @@ public class ProfileDetailsInfo extends Fragment {
     View view;
     RelativeLayout buildTrustRL,numberOfPostRL,numberOfFollowerRL,numberOfFollowingRL;
     CardView userInfoCV;
-    ImageView userImageIV;
+    ImageView userImageIV,login_platformImageV;
     TextView userNameTV,editProfileTV,buildTrustTV,numberOfPostTV,postTV
             ,numberOfFollowingTV,followingTV,followerTV,numberOfFollowerTV;
     ArrayList<Following> followingArrayList = new ArrayList<Following>();
@@ -142,7 +148,7 @@ public class ProfileDetailsInfo extends Fragment {
     }
 
     private void checkIfRegisterOrNot() {
-        if (checkIfUserRegisterOrNotFromSP(getActivity()))
+        if (getUserTokenFromServer(getActivity()) != "empty")
         {
             makeUserInfoOn();
             fillUserInfoFromFB();
@@ -152,18 +158,37 @@ public class ProfileDetailsInfo extends Fragment {
     }
 
     private void fillUserInfoFromFB() {
+
         followingArrayList =getFollowing(getActivity());
-        UserFaceBookInfo userFaceBookInfo = getUserInfo(getActivity());
-        userNameTV.setText(userFaceBookInfo.getFirstNameStr());
+        userNameTV.setText(getUserName(getActivity()));
         followingTV.setText(String.valueOf(followingArrayList.size()));
-        fillImageUser(userFaceBookInfo.getUserImageStr());
+        fillImageUser(getUserPhoto(getActivity()));
+        fillPlatformImage();
+    }
+
+    private void fillPlatformImage() {
+        if (getPlatform(getActivity()).equals("google"))
+        {
+            Picasso.get()
+                    .load(R.drawable.g)
+                    .fit()
+                    .centerCrop()
+                    .into(login_platformImageV);
+        }else{
+            Picasso.get()
+                    .load(R.drawable.fb_logo)
+                    .fit()
+                    .centerCrop()
+                    .into(login_platformImageV);
+        }
     }
 
     private void fillImageUser(String userImageStr) {
         if (getUserImage(getActivity()) != null)
         {
+            Uri uri = Uri.parse(userImageStr);
             Picasso.get()
-                    .load(userImageStr)
+                    .load(uri)
                     .fit()
                     .centerCrop()
                     .into(userImageIV);
@@ -191,6 +216,8 @@ public class ProfileDetailsInfo extends Fragment {
     private void inti() {
         userInfoCV = (CardView) view.findViewById(R.id.profile_details_info_details_CV);
         userImageIV = (ImageView) view.findViewById(R.id.profile_details_user_image_IV);
+        login_platformImageV = (ImageView) view.findViewById(R.id.login_platform);
+
         userNameTV = (TextView) view.findViewById(R.id.profile_details_user_name_TV);
         editProfileTV = (TextView) view.findViewById(R.id.profile_details_info_edit_profile_TV);
         buildTrustTV = (TextView) view.findViewById(R.id.profile_details_info_build_trust_TV);

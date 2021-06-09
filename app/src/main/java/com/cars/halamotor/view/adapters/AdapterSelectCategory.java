@@ -17,20 +17,24 @@ import android.widget.TextView;
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
 import com.cars.halamotor.model.CategoryComp;
+import com.cars.halamotor.presnter.PassCategories;
 
 import java.util.ArrayList;
+
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 
 public class AdapterSelectCategory extends RecyclerView.Adapter<AdapterSelectCategory.ViewHolder>{
 
     private final Context context;
     public ArrayList<CategoryComp> categoryCompsArrayL ;
+    PassCategories passCategories;
 
     public AdapterSelectCategory
-            (Context context,ArrayList<CategoryComp> categoryCompsArryL)
+            (Context context,ArrayList<CategoryComp> categoryCompsArryL,PassCategories passCategories)
                 {
                      this.context = context;
-                     this.categoryCompsArrayL = categoryCompsArryL;
-                    notifyDataSetChanged();
+                    this.categoryCompsArrayL = categoryCompsArryL;
+                    this.passCategories = passCategories;
                 }
 
     public AdapterSelectCategory.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
@@ -44,8 +48,18 @@ public class AdapterSelectCategory extends RecyclerView.Adapter<AdapterSelectCat
     public void onBindViewHolder(final AdapterSelectCategory.ViewHolder holder, final int position) {
 
         holder.imageView.setBackgroundResource(categoryCompsArrayL.get(position).getImageIdInt());
-        holder.textView.setText(categoryCompsArrayL.get(position).getCategoryNameStr());
+        holder.textView.setText(getTextEngOrLocal(context,categoryCompsArrayL.get(position).getName_en(),categoryCompsArrayL.get(position).getName_ar()));
         holder.textView.setTypeface(Functions.changeFontGeneral(context));
+        actionListenerToCategory(position,holder,context);
+    }
+
+    private void actionListenerToCategory(final int position, ViewHolder holder, Context context) {
+        holder.category_cover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passCategories.passCategoriesInfo(categoryCompsArrayL.get(position));
+            }
+        });
     }
 
     @Override
@@ -55,61 +69,16 @@ public class AdapterSelectCategory extends RecyclerView.Adapter<AdapterSelectCat
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        RelativeLayout radioRL;
+        RelativeLayout radioRL,category_cover;
         TextView textView;
         public ViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.adapter_select_category_NameTV);
             imageView = (ImageView) itemView.findViewById(R.id.adapter_select_category_image_category) ;
             radioRL = (RelativeLayout) itemView.findViewById(R.id.adapter_select_category_radioRelative) ;
+            category_cover = (RelativeLayout) itemView.findViewById(R.id.category_cover) ;
         }
 
-    }
-
-    //add this inner class to can access rv from addItem activity
-    public static class RecyclerItemClickListener implements RecyclerView.OnItemTouchListener {
-        private OnItemClickListener mListener;
-
-        public interface OnItemClickListener {
-            public void onItemClick(View view, int position);
-
-            public void onLongItemClick(View view, int position);
-        }
-
-        GestureDetector mGestureDetector;
-
-        public RecyclerItemClickListener(Context context, final RecyclerView recyclerView
-                , OnItemClickListener listener) {
-            mListener = listener;
-            mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && mListener != null) {
-                        mListener.onLongItemClick(child, recyclerView.getChildAdapterPosition(child));
-                    }
-                }
-            });
-        }
-
-        @Override public boolean onInterceptTouchEvent(RecyclerView view, MotionEvent e) {
-            View childView = view.findChildViewUnder(e.getX(), e.getY());
-            if (childView != null && mListener != null && mGestureDetector.onTouchEvent(e)) {
-                mListener.onItemClick(childView, view.getChildAdapterPosition(childView));
-                return true;
-            }
-            return false;
-        }
-
-        @Override public void onTouchEvent(RecyclerView view, MotionEvent motionEvent) { }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent (boolean disallowIntercept){}
     }
 
 

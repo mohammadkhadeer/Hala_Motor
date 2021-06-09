@@ -2,6 +2,7 @@ package com.cars.halamotor.presnter;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.cars.halamotor.dataBase.DBHelper;
 
@@ -17,6 +18,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import static com.cars.halamotor.API.APIS.BASE_API;
+import static com.cars.halamotor.functions.Functions.checkIfAndroidVBiggerThan9;
 import static com.cars.halamotor.sharedPreferences.CountryInfo.saveUserInfoSP;
 
 public class CountryCitesAndArea {
@@ -25,44 +27,38 @@ public class CountryCitesAndArea {
 
     public static void getCountryCitesAndAreas(final CountryCitesAndAreas countryCitesAndAreas, final DBHelper myDB, final Context context)
     {
-        Thread thread = new Thread(new Runnable(){
-            @Override
-            public void run() {
-                JSONObject obj = null;
-                OkHttpClient client = new OkHttpClient().newBuilder()
-                        .build();
-                Request request = new Request.Builder()
-                        .url(BASE_API+"/countries?language=en")
-                        .method("GET", null)
-                        .addHeader("Accept", "application/json")
-                        .addHeader("Accept-Language", "ar")
-                        .build();
+        if (checkIfAndroidVBiggerThan9()) {
+            JSONObject obj = null;
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url(BASE_API+"/countries?language=en")
+                    .method("GET", null)
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Accept-Language", "ar")
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
                 try {
-                    Response response = client.newCall(request).execute();
-                    try {
-                        obj = new JSONObject(response.body().string());
+                    obj = new JSONObject(response.body().string());
 
 //                        Log.w("TAG","Response "+ response);
 //                        Log.w("TAG","Obj "+  obj.getString("STATUS"));
 //                        Log.w("TAG","Obj "+  obj.getString("MESSAGE"));
-                        JSONArray jsonArrayCountry = obj.getJSONArray("DATA");
-                        JSONObject jObjectCountryInfo = new JSONObject();
-                        jObjectCountryInfo = jsonArrayCountry.getJSONObject(0);
+                    JSONArray jsonArrayCountry = obj.getJSONArray("DATA");
+                    JSONObject jObjectCountryInfo = new JSONObject();
+                    jObjectCountryInfo = jsonArrayCountry.getJSONObject(0);
 
-                        getCountryInfo(jObjectCountryInfo,myDB,countryCitesAndAreas,context);
+                    getCountryInfo(jObjectCountryInfo,myDB,countryCitesAndAreas,context);
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                } catch (IOException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });
-        thread.start();
-
+        }
     }
 
     private static void getCountryInfo(JSONObject jObjectCountryInfo, DBHelper myDB, CountryCitesAndAreas countryCitesAndAreas,Context context) {

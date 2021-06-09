@@ -34,7 +34,7 @@ public class DBHelper extends SQLiteOpenHelper {
 //    public static final String COL_C_MO_AR="CAR_MODEL_AR";
 //    public static final String COL_C_MO_S="CAR_MODEL_S";
 //
-    public static final String TABLE_CITYS="cites";
+public static final String TABLE_CITYS="cites";
     public static final String COL_CITY_COL_ID="COL_ID";
     public static final String COL_CITY_ID="ID";
     public static final String COL_CITY_CODE="CODE";
@@ -53,6 +53,24 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COL_AREA_CITY_NAME="CITY_NAME";
     public static final String COL_AREA_CITY_NAME_EN="CITY_NAME_EN";
     public static final String COL_AREA_CITY_NAME_AR="CITY_NAME_AR";
+
+    public static final String TABLE_CARS_BRAND="cars_brand";
+    public static final String COL_BRAND_COL_ID="COL_ID";
+    public static final String COL_BRAND_ID="ID";
+    public static final String COL_BRAND_NAME="CODE";
+    public static final String COL_BRAND_NAME_EN="NAME_EN";
+    public static final String COL_BRAND_NAME_AR="NAME_AR";
+
+    public static final String TABLE_CARS_MODEL="cars_model";
+    public static final String COL_MODEL_COL_ID="COL_ID";
+    public static final String COL_MODEL_BRAND_ID="BRAND_ID";
+    public static final String COL_MODEL_BRAND_NAME="BRAND_NAME";
+    public static final String COL_MODEL_BRAND_NAME_EN="BRAND_NAME_EN";
+    public static final String COL_MODEL_BRAND_NAME_AR="BRAND_NAME_AR";
+    public static final String COL_MODEL_ID="MODEL_ID";
+    public static final String COL_MODEL_NAME="MODEL_NAME";
+    public static final String COL_MODEL_NAME_EN="MODEL_NAME_EN";
+    public static final String COL_MODEL_NAME_AR="MODEL_NAME_AR";
 
     public static final String TABLE_DRIVER_INFORMATION="driver_info_table";
     public static final String COL_ITEM_DRIVER_INFORMATION_id="ID";
@@ -394,6 +412,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table "+TABLE_AREAS +" (COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "ID TEXT" + ",NAME TEXT" + ",NAME_EN TEXT" +",NAME_AR TEXT" +",CITY_ID TEXT" +",CITY_CODE TEXT" +",CITY_NAME TEXT" +",CITY_NAME_EN TEXT" + ",CITY_NAME_AR TEXT)");
 
+        db.execSQL("create table "+TABLE_CARS_BRAND +" (COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "ID TEXT" + ",CODE TEXT" + ",NAME_EN TEXT" + ",NAME_AR TEXT)");
+
+        db.execSQL("create table "+TABLE_CARS_MODEL +" (COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "BRAND_ID TEXT" + ",BRAND_NAME TEXT" + ",BRAND_NAME_EN TEXT" +",NAME_AR TEXT" +",BRAND_NAME_AR TEXT" +",MODEL_ID TEXT" +",MODEL_NAME TEXT" +",MODEL_NAME_EN TEXT" + ",MODEL_NAME_AR TEXT)");
+
     }
 
     @Override
@@ -414,10 +438,51 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_CITYS);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_AREAS);
 
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_CARS_BRAND);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_CARS_MODEL);
+
         onCreate(db);
     }
 
     ///////////////////////insert data//////////////////////////////////////////
+
+    public boolean insertCarsBrand(String id,String name
+            ,String name_en,String name_ar)
+    {
+        SQLiteDatabase db =this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_BRAND_ID,id);
+        contentValues.put(COL_BRAND_NAME,name);
+        contentValues.put(COL_BRAND_NAME_EN,name_en);
+        contentValues.put(COL_BRAND_NAME_AR,name_ar);
+
+        long result= db.insert(TABLE_CARS_BRAND,null,contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean insertCarsModel(String id,String name
+            ,String name_en,String name_ar,String model_id,String model_name,String model_name_en,String model_name_ar)
+    {
+        SQLiteDatabase db =this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_MODEL_BRAND_ID,id);
+        contentValues.put(COL_MODEL_BRAND_NAME,name);
+        contentValues.put(COL_MODEL_BRAND_NAME_EN,name_en);
+        contentValues.put(COL_MODEL_BRAND_NAME_AR,name_ar);
+        contentValues.put(COL_MODEL_ID,model_id);
+        contentValues.put(COL_MODEL_NAME,model_name);
+        contentValues.put(COL_MODEL_NAME_EN,model_name_en);
+        contentValues.put(COL_MODEL_NAME_AR,model_name_ar);
+
+        long result= db.insert(TABLE_CARS_MODEL,null,contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
+    }
 
     public boolean insertCites(String id,String code
             ,String name,String name_en,String name_ar)
@@ -1002,6 +1067,20 @@ public class DBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor descendingBrands(){
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_CARS_BRAND, null, null,
+                null, null, null, COL_BRAND_COL_ID + " DESC", null);
+        return cursor;
+    }
+
+    public Cursor descendingBrandsModel(){
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_CARS_MODEL, null, null,
+                null, null, null, COL_MODEL_COL_ID + " DESC", null);
+        return cursor;
+    }
+
     //////////////////////////////////////update/////////////////////
 
     public void updateNotification(String itemServerID,String openOrNotYet)
@@ -1230,6 +1309,18 @@ public class DBHelper extends SQLiteOpenHelper {
     public void deleteAllAreas(){
         SQLiteDatabase db =this.getWritableDatabase();
         db.execSQL("DELETE FROM areas"); //delete all rows in a table
+        db.close();
+    }
+
+    public void deleteAllCarsBrands(){
+        SQLiteDatabase db =this.getWritableDatabase();
+        db.execSQL("DELETE FROM cars_brand"); //delete all rows in a table
+        db.close();
+    }
+
+    public void deleteAllCarsModel(){
+        SQLiteDatabase db =this.getWritableDatabase();
+        db.execSQL("DELETE FROM cars_model"); //delete all rows in a table
         db.close();
     }
 

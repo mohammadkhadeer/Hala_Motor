@@ -17,11 +17,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
+
 import com.cars.halamotor.R;
 import com.cars.halamotor.dataBase.DBHelper;
+import com.cars.halamotor.functions.Functions;
 import com.cars.halamotor.model.NotificationComp;
 import com.cars.halamotor.presnter.CountryCitesAndAreas;
+import com.cars.halamotor.presnter.ModelsInstald;
 import com.cars.halamotor.presnter.UpdateProfile;
+import com.cars.halamotor.service.CarBrandsAndModelService;
 import com.cars.halamotor.view.activity.selectAddress.SelectCityAndNeighborhood;
 
 import org.json.JSONObject;
@@ -33,10 +38,13 @@ import java.util.Locale;
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor.dataBase.InsertFunctions.insertNotificationTable;
 import static com.cars.halamotor.functions.Functions.getNotification;
+import static com.cars.halamotor.presnter.CarsBrandsAndModels.getCarsBrandsAndModel;
 import static com.cars.halamotor.presnter.CountryCitesAndArea.getCountryCitesAndAreas;
 import static com.cars.halamotor.presnter.LoginAndUpdateProfile.updateProfileSuccess;
 import static com.cars.halamotor.sharedPreferences.AddressSharedPreferences.getUserAddressFromSP;
 import static com.cars.halamotor.sharedPreferences.AddressSharedPreferences.saveUserInfoInSP;
+import static com.cars.halamotor.sharedPreferences.CarsAndModels.getNumberOfUse;
+import static com.cars.halamotor.sharedPreferences.CarsAndModels.saveUserInfoSP;
 import static com.cars.halamotor.sharedPreferences.CountryInfo.getCountryId;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.getWelcomeNotificationsInSP;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.updateNumberUnreadNotifications;
@@ -47,7 +55,7 @@ import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserName;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOnServerSP;
 
-public class SplashScreen extends AppCompatActivity implements CountryCitesAndAreas, UpdateProfile {
+public class SplashScreen extends AppCompatActivity implements CountryCitesAndAreas, UpdateProfile ,ModelsInstald{
 
     private static final int SELECT_LOCATION = 555;
     private static final int LOGIN = 556;
@@ -57,6 +65,8 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     SharedPreferences sharedPreferences;
     CountryCitesAndAreas countryCitesAndAreas;
     UpdateProfile updateProfile;
+    ModelsInstald modelsInstald;
+    TextView setup_messageTextView,setup_message_per;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -68,13 +78,77 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         myDB = getDataBaseInstance(getApplicationContext());
         addWelcomeNotifications();
         deleteOldData();
-        this.countryCitesAndAreas = (CountryCitesAndAreas) this;
-        this.updateProfile = (UpdateProfile) this;
+        init();
+        changeFont();
+        intiPersenters();
 
+        //get all cites and area just run one time when open app first time
         if (getCountryId(this) == "empty") {
             getCountryCitesAndAreas(countryCitesAndAreas,myDB,getApplicationContext());
         }
 
+//        to update brands every user open app 10 the table updates every 10's
+        if (getNumberOfUse(this) == "empty" || getNumberOfUse(this).equals("70")) {
+            reqToServerToGetCarsBrandsAndModels();
+        }else{
+            updateNumberOfOpenApp();
+            Log.w("TAG","number of use insaid else"+ getNumberOfUse(this));
+            loginCheck();
+        }
+
+    }
+
+    private void init() {
+        setup_messageTextView = (TextView) findViewById(R.id.setup_message);
+        setup_message_per = (TextView) findViewById(R.id.setup_message_per);
+    }
+
+    private void changeFont() {
+        setup_messageTextView.setTypeface(Functions.changeFontGeneral(getApplicationContext()));
+        setup_message_per.setTypeface(Functions.changeFontGeneral(getApplicationContext()));
+    }
+
+    private void updateNumberOfOpenApp() {
+        if (getNumberOfUse(this) != "empty") {
+            String numberOfUse = getNumberOfUse(this);
+            int i = Integer.parseInt(numberOfUse);
+            i = i + 1;
+            saveUserInfoSP(this, String.valueOf(i));
+        }else{
+            saveUserInfoSP(this, String.valueOf(1));
+        }
+    }
+
+    private void reqToServerToGetCarsBrandsAndModels() {
+        myDB.deleteAllCarsBrands();
+        myDB.deleteAllCarsModel();
+
+        Intent intent = new Intent(this, CarBrandsAndModelService.class);
+        this.startService(intent);
+        //CarBrandsAndModelService
+
+        setup_messageTextView.setText(getApplicationContext().getResources().getString(R.string.setup_message_1));
+        setup_message_per.setText(getApplicationContext().getResources().getString(R.string.setup_message_2));
+        updateNumberOfOpenApp();
+//        new Handler().postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                getCarsBrandsAndModel(myDB);
+//            }
+//        }, 1500);
+    }
+
+    private void intiPersenters() {
+        this.countryCitesAndAreas = (CountryCitesAndAreas) this;
+        this.updateProfile = (UpdateProfile) this;
+        this.modelsInstald = (ModelsInstald) this;
+    }
+
+    private void loginCheck() {
+        Log.w("TAG","loginCheck");
+        Log.w("TAG","getPlatform_id(this): "+getPlatform_id(this));
+        Log.w("TAG","getUserAddressFromSP(this): "+getUserAddressFromSP(this));
         if (getPlatform_id(this) == "empty")
         {
             transportToLoginScreen();
@@ -203,17 +277,28 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
                 overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
                 finish();
             }
-        }, 2000);
+        }, 1000);
     }
 
 
     @Override
     public void countryCitesAreasInfo() {
-        Log.w("TAG","Update complete");
+        Log.w("TAG","Area and Citeis complete");
+        loginCheck();
     }
 
     @Override
     public void updateSuccess(JSONObject obj) {
         Log.w("TAG","Update personal info complete");
     }
+
+    @Override
+    public void insertedSuccess() {
+        Log.w("TAG","installed Success ...");
+        //setup_messageTextView.setVisibility(View.GONE);
+        //setup_message_per.setVisibility(View.GONE);
+
+        loginCheck();
+    }
+
 }

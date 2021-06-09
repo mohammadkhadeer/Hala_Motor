@@ -7,6 +7,8 @@
     <string name="email_contact_us">customer\@halaMotor\.com</string>
 
     <string name="tab_home">Home</string>
+    <string name="setup_message_1">welcome just a seconds</string>
+    <string name="setup_message_2">To setup your profile</string>
     <string name="tab_message">Messages</string>
     <string name="tab_adv">Add Post</string>
     <string name="tab_notifications_">Notices</string>
@@ -15,27 +17,56 @@
     <string name="just_search">Search</string>
     <string name="search_depends">Search depends on \:</string>
     <string name="insert">Insert an Ad</string>
+    <string name="car_for_sale_ar">سيارات للبيع</string>
+
     <string name="car_for_sale">Car for sale</string>
-    <string name="car_for_sale_s">Car for sale</string>
+    <string name="car_for_sale_name">Car for sale</string>
+    <string name="car_for_sale_s">car_for_sale</string>
+    <string name="exchange_car_name">Exchange car</string>
     <string name="exchange_car">Exchange car</string>
-    <string name="exchange_car_s">Exchange car</string>
+    <string name="exchange_car_ar">تبديل سيارات</string>
+
+    <string name="exchange_car_s">exchange_car</string>
+    <string name="car_for_rent_name">Car for rent</string>
+    <string name="car_for_rent_ar">سيارات للايجار</string>
     <string name="car_for_rent">Car for rent</string>
-    <string name="car_for_rent_s">Car for rent</string>
+    <string name="car_for_rent_s">car_for_rent</string>
+
+
     <string name="motorcycle">Motorcycle</string>
-    <string name="motorcycle_s">Motorcycle</string>
+    <string name="motorcycle_name">Motorcycle</string>
+    <string name="motorcycle_s">motorcycle</string>
+    <string name="motorcycle_ar">درجات</string>
     <string name="car_plates">Car plates</string>
     <string name="car_plates2">Plates</string>
-    <string name="car_plates_s">Plates</string>
+    <string name="car_plates_s">car_plates</string>
+    <string name="car_plates_name">Plates</string>
+    <string name="car_plates_ar">لوحات</string>
+
     <string name="accessories">Accessories</string>
-    <string name="accessories_s">Accessories</string>
+    <string name="accessories_s">accessories</string>
+    <string name="accessories_name">Accessories</string>
+    <string name="accessories_ar">اكسسوارات</string>
+
     <string name="wheels_rim">Wheels rim</string>
-    <string name="wheels_rim_s">Wheels_Rim</string>
+    <string name="wheels_rim_s">wheels_rim</string>
+    <string name="wheels_rim_name">Wheels rim</string>
+    <string name="wheels_rim_ar">اطارات</string>
+
     <string name="wheels_rim2">Wheels_Rim</string>
     <string name="wheels_rim_size">Wheels rim size</string>
     <string name="trucks">Trucks</string>
-    <string name="trucks_s">Trucks</string>
+
+    <string name="trucks_name">Trucks</string>
+    <string name="trucks_ar">شاحنات</string>
+    <string name="trucks_s">trucks</string>
+
     <string name="junk_car">Junk car</string>
-    <string name="junk_car_s">Junk car</string>
+    <string name="junk_car_s">junk_car</string>
+    <string name="junk_car_name">Junk car</string>
+    <string name="junk_car_ar">"سيارة خردة "</string>
+
+
     <string name="suggested_to_you">Suggested to you</string>
     <string name="next">Next</string>
     <string name="finish">Finish</string>
