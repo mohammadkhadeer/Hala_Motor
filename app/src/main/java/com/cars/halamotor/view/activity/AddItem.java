@@ -318,8 +318,8 @@ public class AddItem extends AppCompatActivity implements
                 ,getUserName(getApplicationContext())
                 ,"0","123","0","0"
                 ,selectedCategory, selectedCategory
-                , carDetailsModel.getCarMakeStr().getMakeStr()
-                , carDetailsModel.getModelStr().getCarModelStr()
+                , carDetailsModel.getCarMakeStr().getName_en()
+                , carDetailsModel.getModelStr().getModel_name_en()
                 , carDetailsModel.getYearStr()
                 , carDetailsModel.getConditionStr().getCarConditionStr()
                 , carDetailsModel.getKilometersStr()
@@ -342,8 +342,8 @@ public class AddItem extends AppCompatActivity implements
                 ,selectedCategory
                 ,getCitySFromSP(getApplicationContext())
                 ,getNeighborhoodSFromSP(getApplicationContext())
-                ,carDetailsModel.getCarMakeStr().getMakeStrS()
-                ,carDetailsModel.getModelStr().getCarModelStrS()
+                ,carDetailsModel.getCarMakeStr().getName_en()
+                ,carDetailsModel.getModelStr().getModel_name_en()
                 ,"person"
                 ,carDetailsModel.getPaymentMethod().getPaymentMethodStrS()
                 ,carDetailsModel.getFuelStr().getCarFuelStrS()

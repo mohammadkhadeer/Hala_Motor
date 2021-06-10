@@ -24,8 +24,15 @@ public class CarBrandsAndModelService extends Service {
 
         if(intent != null){
             Log.i("TAG", "getCarsBrandsAndModel service: ");
-            DBHelper myDB= getDataBaseInstance(getApplicationContext());
-            getCarsBrandsAndModel(myDB);
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    DBHelper myDB= getDataBaseInstance(getApplicationContext());
+                    getCarsBrandsAndModel(myDB);
+                }
+            });
+            thread.start();
+
         }
         return super.onStartCommand(intent, flags, startId);
     }

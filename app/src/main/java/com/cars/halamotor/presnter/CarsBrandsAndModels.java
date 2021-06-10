@@ -68,13 +68,16 @@ public class CarsBrandsAndModels {
                 //carsBrandsArrayL.add(jObjectSingleBrand);
                 //insert car brand to database
                 JSONArray jsonArrayAllModels = jObjectSingleBrand.getJSONArray("models");
-
+//                carsBrandsArrayL.add(jObjectSingleBrand);
                 myDB.insertCarsBrand(jObjectSingleBrand.getString("id"),jObjectSingleBrand.getString("name")
                 ,jObjectSingleBrand.getString("name_en"),jObjectSingleBrand.getString("name_ar"));
+
                 for (int j =0;j<jsonArrayAllModels.length();j++)
                 {
                     //insert models to data base
                     jObjectSingleModel = jsonArrayAllModels.getJSONObject(j);
+                    areasArrayL.add(jObjectSingleModel);
+
                     myDB.insertCarsModel(jObjectSingleModel.getString("id"),jObjectSingleModel.getString("name")
                     ,jObjectSingleModel.getString("name_en"),jObjectSingleModel.getString("name_ar")
                     ,jObjectSingleBrand.getString("id"),jObjectSingleBrand.getString("name")
@@ -91,6 +94,8 @@ public class CarsBrandsAndModels {
             if (flag==1)
             {
                 Log.w("TAG","Al7mdo llah");
+//                Log.w("TAG","carsBrandsArrayL: "+String.valueOf(carsBrandsArrayL.size()));
+//                Log.w("TAG","areasArrayL: "+String.valueOf(areasArrayL.size()));
             }
 
         } catch (JSONException e) {

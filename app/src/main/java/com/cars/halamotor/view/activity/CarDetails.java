@@ -23,6 +23,9 @@ import com.cars.halamotor.model.CarLicensed;
 import com.cars.halamotor.model.CarMake;
 import com.cars.halamotor.model.CarModel;
 import com.cars.halamotor.model.PaymentMethod;
+import com.cars.halamotor.presnter.CarsBrandsAndModels;
+import com.cars.halamotor.presnter.carDetails.CarBrand;
+import com.cars.halamotor.presnter.carDetails.CarModelDetails;
 import com.cars.halamotor.view.fragments.ShowSelectedCarDetailsFragment;
 import com.cars.halamotor.view.fragments.carDetailsFragment.FragmentCarCondition;
 import com.cars.halamotor.view.fragments.carDetailsFragment.FragmentCarMake;
@@ -40,10 +43,12 @@ import com.cars.halamotor.view.fragments.carDetailsFragment.FragmentYear;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.functions.NewFunction.convertYearToEng;
 
 
-public class CarDetails extends AppCompatActivity {
+public class CarDetails extends AppCompatActivity implements CarBrand , CarModelDetails {
+
    RelativeLayout backRl,cancelRl;
    TextView titleTV;
 
@@ -349,26 +354,26 @@ public class CarDetails extends AppCompatActivity {
         }
     }
 
-    public void getCarModelStrFromFragmentCarModelAndMoveToFragmentYear(CarModel carModel)
-    {
-        if (whereComeFromStr.equals("fromAShowSelected"))
-        {
-            carDetailsModel.setModelStr(carModel);
-            passObjectFromCarDetailsToAddItem("model","modelS"
-                    ,carModel.getCarModelStr(),carModel.getCarModelStrS());
-        }else {
-            moveFromModelFragmentToYearFragment();
-            changeHeadTitle(getResources().getString(R.string.year));
-            carDetailsModel.setModelStr(carModel);
-        }
-    }
+//    public void getCarModelStrFromFragmentCarModelAndMoveToFragmentYear(CarModel carModel)
+//    {
+//        if (whereComeFromStr.equals("fromAShowSelected"))
+//        {
+//            carDetailsModel.setModelStr(carModel);
+//            passObjectFromCarDetailsToAddItem("model","modelS"
+//                    ,carModel.getCarModelStr(),carModel.getCarModelStrS());
+//        }else {
+//            moveFromModelFragmentToYearFragment();
+//            changeHeadTitle(getResources().getString(R.string.year));
+//            carDetailsModel.setModelStr(carModel);
+//        }
+//    }
 
-    public void getCarMakeObjFromFragmentCarMakeAndMoveToFragmentModel(CarMake carMake)
-    {
-        passCarMakeToModeFragmentAndMove(carMake);
-        changeHeadTitle(getResources().getString(R.string.model));
-        carDetailsModel.setCarMakeStr(carMake);
-    }
+//    public void getCarMakeObjFromFragmentCarMakeAndMoveToFragmentModel(CarMake carMake)
+//    {
+//        passCarMakeToModeFragmentAndMove(carMake);
+//        changeHeadTitle(getResources().getString(R.string.model));
+//        carDetailsModel.setCarMakeStr(carMake);
+//    }
 
     private void actionListener() {
         backRl.setOnClickListener(new View.OnClickListener() {
@@ -406,7 +411,7 @@ public class CarDetails extends AppCompatActivity {
         carDetailsProNowArrayL.add(getResources().getString(R.string.model));
         //pass value to model fragment
         Bundle bundle = new Bundle();
-        bundle.putString("carMake", carMake.getMakeStr());
+        bundle.putString("carMake", carMake.getName_en());
         fragmentModel.setArguments(bundle);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -552,5 +557,26 @@ public class CarDetails extends AppCompatActivity {
             return;
         }
         checkIfLastFragmentFinshActivityElseMoveToPrivuseFragment();
+    }
+
+    @Override
+    public void passCarBrand(CarMake carMake) {
+        passCarMakeToModeFragmentAndMove(carMake);
+        changeHeadTitle(getResources().getString(R.string.model));
+        carDetailsModel.setCarMakeStr(carMake);
+    }
+
+    @Override
+    public void passCarModelDetails(CarModel carModel) {
+        if (whereComeFromStr.equals("fromAShowSelected"))
+        {
+            carDetailsModel.setModelStr(carModel);
+            passObjectFromCarDetailsToAddItem("model","modelS"
+                    ,getTextEngOrLocal(getApplicationContext(),carModel.getBrand_name_en(),carModel.getBrand_name()),carModel.getBrand_name_en());
+        }else {
+            moveFromModelFragmentToYearFragment();
+            changeHeadTitle(getResources().getString(R.string.year));
+            carDetailsModel.setModelStr(carModel);
+        }
     }
 }

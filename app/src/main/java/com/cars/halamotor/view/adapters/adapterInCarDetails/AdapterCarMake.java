@@ -17,6 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+
 public class AdapterCarMake extends RecyclerView.Adapter<AdapterCarMake.ViewHolder>{
 
     private final Context context;
@@ -42,7 +44,7 @@ public class AdapterCarMake extends RecyclerView.Adapter<AdapterCarMake.ViewHold
 
         fillImage(context,position,holder);
 
-        holder.makeTV.setText(carMakeArrayList.get(position).getMakeStr());
+        holder.makeTV.setText(getTextEngOrLocal(context,carMakeArrayList.get(position).getName_en(),carMakeArrayList.get(position).getName_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +57,7 @@ public class AdapterCarMake extends RecyclerView.Adapter<AdapterCarMake.ViewHold
 
     private void fillImage(Context context, int position, ViewHolder holder) {
 
-        holder.carMakeIV.setBackgroundResource(carMakeArrayList.get(position).getImageIdInt());
+//        holder.carMakeIV.setBackgroundResource(carMakeArrayList.get(position).getImageIdInt());
 
     }
 

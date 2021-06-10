@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cars.halamotor.R;
@@ -67,7 +68,9 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     UpdateProfile updateProfile;
     ModelsInstald modelsInstald;
     TextView setup_messageTextView,setup_message_per;
+    RelativeLayout setup_profile_message_rl;
 
+    int splashScreenTime=0;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +92,23 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
 
 //        to update brands every user open app 10 the table updates every 10's
         if (getNumberOfUse(this) == "empty" || getNumberOfUse(this).equals("70")) {
-            reqToServerToGetCarsBrandsAndModels();
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+//                    getCarsBrandsAndModel(myDB);
+                    splashScreenTime =5000;
+                    setup_profile_message_rl.setVisibility(View.VISIBLE);
+                    setup_messageTextView.setText(getResources().getString(R.string.setup_message_1));
+                    setup_message_per.setText(getResources().getString(R.string.setup_message_2));
+
+                    reqToServerToGetCarsBrandsAndModels();
+                }
+            }, 100);
+
         }else{
+            splashScreenTime =1000;
+            setup_profile_message_rl.setVisibility(View.GONE);
             updateNumberOfOpenApp();
             Log.w("TAG","number of use insaid else"+ getNumberOfUse(this));
             loginCheck();
@@ -101,6 +119,8 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     private void init() {
         setup_messageTextView = (TextView) findViewById(R.id.setup_message);
         setup_message_per = (TextView) findViewById(R.id.setup_message_per);
+        setup_profile_message_rl = (RelativeLayout) findViewById(R.id.setup_profile_message_rl);
+
     }
 
     private void changeFont() {
@@ -130,13 +150,6 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         setup_messageTextView.setText(getApplicationContext().getResources().getString(R.string.setup_message_1));
         setup_message_per.setText(getApplicationContext().getResources().getString(R.string.setup_message_2));
         updateNumberOfOpenApp();
-//        new Handler().postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                getCarsBrandsAndModel(myDB);
-//            }
-//        }, 1500);
     }
 
     private void intiPersenters() {
@@ -146,9 +159,8 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     }
 
     private void loginCheck() {
-        Log.w("TAG","loginCheck");
-        Log.w("TAG","getPlatform_id(this): "+getPlatform_id(this));
-        Log.w("TAG","getUserAddressFromSP(this): "+getUserAddressFromSP(this));
+        setup_profile_message_rl.setVisibility(View.GONE);
+
         if (getPlatform_id(this) == "empty")
         {
             transportToLoginScreen();
@@ -256,7 +268,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         {
             NotificationComp welcomeNotification = getNotification(
                     "welcome", "Hala Motor" ,this,"welcome","welcome","welcome"
-                    ,"R.dra  wable.logo"
+                    ,"R.drawable.logo"
             );
             if (insertNotificationTable(welcomeNotification,getDataBaseInstance(this)) == true)
             {
@@ -277,7 +289,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
                 overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
                 finish();
             }
-        }, 1000);
+        }, splashScreenTime);
     }
 
 

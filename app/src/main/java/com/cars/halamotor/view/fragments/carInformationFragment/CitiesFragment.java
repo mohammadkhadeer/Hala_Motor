@@ -27,8 +27,7 @@ import com.cars.halamotor.view.adapters.adapterInsurance.AdapterCities;
 import java.util.ArrayList;
 
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
-import static com.cars.halamotor.dataBase.ReadFunction.getAllCarProcess;
-import static com.cars.halamotor.functions.FillCarModel.fillCarModelArrayL;
+
 import static com.cars.halamotor.functions.InsuranceFunctions.fillCitiesArrayL;
 
 public class CitiesFragment extends Fragment implements AdapterCities.PassCities{

@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.cars.halamotor.model.Area;
+import com.cars.halamotor.model.CarMake;
+import com.cars.halamotor.model.CarModel;
 import com.cars.halamotor.model.City;
 
 import java.util.ArrayList;
@@ -13,43 +15,25 @@ import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
 
 public class ReadCarsAndCarModels {
 
-    public static ArrayList<City> getBrands(Context context) {
+    public static ArrayList<CarMake> getBrands(Context context) {
 
-        ArrayList<City> citiesArrayList = new ArrayList<City>();
+        ArrayList<CarMake> carBrandArrayList = new ArrayList<CarMake>();
 
         Cursor res = getDataBaseInstance(context).descendingBrands();
 
         while (res.moveToNext()) {
+            CarMake carMake = new CarMake(
+                    res.getString(1).replace("\n", "")
+                    ,res.getString(2).replace("\n", "")
+                    ,res.getString(3).replace("\n", "")
+                    ,res.getString(4).replace("\n", "")
+            );
 
-
-
-            //citiesArrayList.add(city);
+            carBrandArrayList.add(carMake);
         }
 
-        return citiesArrayList;
+        return carBrandArrayList;
     }
-
-//    public static ArrayList<City> getBrands(Context context) {
-//
-//        ArrayList<City> citiesArrayList = new ArrayList<City>();
-//
-//        Cursor res = getDataBaseInstance(context).descendingCities();
-//
-//        while (res.moveToNext()) {
-//
-//            City city= new City(
-//                    res.getString(1).replace("\n", "")
-//                    ,res.getString(2).replace("\n", "")
-//                    ,res.getString(3).replace("\n", "")
-//                    ,res.getString(4).replace("\n", "")
-//                    ,res.getString(5).replace("\n", "")
-//            );
-//
-//            //citiesArrayList.add(city);
-//        }
-//
-//        return citiesArrayList;
-//    }
 
     public static void getModels(Context context) {
         Cursor res = getDataBaseInstance(context).descendingBrandsModel();
@@ -61,33 +45,53 @@ public class ReadCarsAndCarModels {
         }
     }
 
-//    public static ArrayList<Area> getModels(Context context) {
-//
-//        ArrayList<Area> areasArrayList = new ArrayList<Area>();
-//
-//        Cursor res = getDataBaseInstance(context).descendingAreas();
-//
-//        while (res.moveToNext()) {
-//
-//            City city= new City(
-//                    res.getString(5).replace("\n", "")
-//                    ,res.getString(6).replace("\n", "")
-//                    ,res.getString(7).replace("\n", "")
-//                    ,res.getString(8).replace("\n", "")
-//                    ,res.getString(9).replace("\n", "")
-//            );
-//
-//            Area area= new Area(
-//                    res.getString(1).replace("\n", "")
-//                    ,res.getString(2).replace("\n", "")
-//                    ,res.getString(3).replace("\n", "")
-//                    ,res.getString(4).replace("\n", "")
-//                    ,city
-//            );
-//
-//            areasArrayList.add(area);
-//        }
-//
-//        return areasArrayList;
-//    }
+    public static ArrayList<CarModel> getModelsToSpecificBrand(Context context,String carBrandName) {
+
+        ArrayList<CarModel> modelsArrayList = new ArrayList<CarModel>();
+
+        Cursor res = getDataBaseInstance(context).descendingBrandsModel();
+        Log.w("TAG","CarBrand from activity: "+carBrandName);
+
+        while (res.moveToNext()) {
+            if (carBrandName.equals(res.getString(7).replace("\n", "")))
+            {
+                CarModel carModel= new CarModel(
+                        res.getString(1).replace("\n", "")
+                        ,res.getString(2).replace("\n", "")
+                        ,res.getString(3).replace("\n", "")
+                        ,res.getString(4).replace("\n", "")
+                        ,res.getString(5).replace("\n", "")
+                        ,res.getString(6).replace("\n", "")
+                        ,res.getString(7).replace("\n", "")
+                        ,res.getString(8).replace("\n", "")
+                );
+                modelsArrayList.add(carModel);
+            }
+        }
+
+        return modelsArrayList;
+    }
+
+    public static ArrayList<CarModel> getAllModels(Context context) {
+
+        ArrayList<CarModel> modelsArrayList = new ArrayList<CarModel>();
+
+        Cursor res = getDataBaseInstance(context).descendingBrandsModel();
+
+        while (res.moveToNext()) {
+            CarModel carModel= new CarModel(
+                    res.getString(1).replace("\n", "")
+                    ,res.getString(2).replace("\n", "")
+                    ,res.getString(3).replace("\n", "")
+                    ,res.getString(4).replace("\n", "")
+                    ,res.getString(5).replace("\n", "")
+                    ,res.getString(6).replace("\n", "")
+                    ,res.getString(7).replace("\n", "")
+                    ,res.getString(8).replace("\n", "")
+            );
+            modelsArrayList.add(carModel);
+        }
+
+        return modelsArrayList;
+    }
 }

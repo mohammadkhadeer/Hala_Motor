@@ -17,10 +17,15 @@ import android.widget.RelativeLayout;
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
 import com.cars.halamotor.model.CarMake;
+import com.cars.halamotor.presnter.WheelsComp;
+import com.cars.halamotor.presnter.carDetails.CarBrand;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarMake;
 import java.util.ArrayList;
+
+import static com.cars.halamotor.dataBase.ReadCarsAndCarModels.getBrands;
 import static com.cars.halamotor.functions.FillCarMakeArrayListsInCarDerails.fillCarMakeArrayL;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class FragmentCarMake extends Fragment implements AdapterCarMake.PassCarMake {
 
@@ -31,9 +36,28 @@ public class FragmentCarMake extends Fragment implements AdapterCarMake.PassCarM
     EditText searchEdt;
     RelativeLayout cancelRL;
     ImageView cancelIV;
+    CarBrand carBrand;
 
     public FragmentCarMake(){
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CarBrand) {
+            carBrand = (CarBrand) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carBrand = null;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +83,7 @@ public class FragmentCarMake extends Fragment implements AdapterCarMake.PassCarM
     }
 
     private void CreateRV() {
-        carDetailsArrayList= fillCarMakeArrayL(carDetailsArrayList,getActivity());
+        carDetailsArrayList= getBrands(getActivity());
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -69,8 +93,9 @@ public class FragmentCarMake extends Fragment implements AdapterCarMake.PassCarM
 
     @Override
     public void onCarMakeClicked(CarMake carMake) {
-            CarDetails carDetails = (CarDetails) getActivity();
-            carDetails.getCarMakeObjFromFragmentCarMakeAndMoveToFragmentModel(carMake);
+        carBrand.passCarBrand(carMake);
+//            CarDetails carDetails = (CarDetails) getActivity();
+//            carDetails.getCarMakeObjFromFragmentCarMakeAndMoveToFragmentModel(carMake);
     }
 
     //car make search comp down 4 methodes to handel search
@@ -103,9 +128,17 @@ public class FragmentCarMake extends Fragment implements AdapterCarMake.PassCarM
         ArrayList<CarMake> carDetailsArrayList2  = new ArrayList<CarMake>();
         for (CarMake carMake : carDetailsArrayList) {
             //if the existing elements contains the search input
-            if (carMake.getMakeStr().toLowerCase().contains(text.toLowerCase())) {
-                //adding the element to filtered list
-                carDetailsArrayList2.add(carMake);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (carMake.getName_en().toLowerCase().contains(text.toLowerCase())) {
+                    //adding the element to filtered list
+                    carDetailsArrayList2.add(carMake);
+                }
+            }else{
+                if (carMake.getName_ar().toLowerCase().contains(text.toLowerCase())) {
+                    //adding the element to filtered list
+                    carDetailsArrayList2.add(carMake);
+                }
             }
         }
         //calling a method of the adapter class and passing the filtered list

@@ -19,15 +19,14 @@ import android.widget.Toast;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.model.CarModel;
-import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.activity.CompleteInsuranceInfo;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarModel;
 
 import java.util.ArrayList;
 
-import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
+import static com.cars.halamotor.dataBase.ReadCarsAndCarModels.getModelsToSpecificBrand;
 import static com.cars.halamotor.dataBase.ReadFunction.getAllCarProcess;
-import static com.cars.halamotor.functions.FillCarModel.fillCarModelArrayL;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class ModelFragment extends Fragment implements AdapterCarModel.PassCarModel{
 
@@ -90,9 +89,17 @@ public class ModelFragment extends Fragment implements AdapterCarModel.PassCarMo
         ArrayList<CarModel> carModelArrayList2  = new ArrayList<CarModel>();
         for (CarModel carModel : carModelArrayL) {
             //if the existing elements contains the search input
-            if (carModel.getCarModelStr().toLowerCase().contains(text.toLowerCase())) {
-                //adding the element to filtered list
-                carModelArrayList2.add(carModel);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (carModel.getBrand_name_en().toLowerCase().contains(text.toLowerCase())) {
+                    //adding the element to filtered list
+                    carModelArrayList2.add(carModel);
+                }
+            }else{
+                if (carModel.getBrand_name_ar().toLowerCase().contains(text.toLowerCase())) {
+                    //adding the element to filtered list
+                    carModelArrayList2.add(carModel);
+                }
             }
         }
         //calling a method of the adapter class and passing the filtered list
@@ -117,7 +124,7 @@ public class ModelFragment extends Fragment implements AdapterCarModel.PassCarMo
     }
 
     private void createRV() {
-        carModelArrayL= fillCarModelArrayL(carModelArrayL,getActivity(),carMakeStr);
+        carModelArrayL= getModelsToSpecificBrand(getActivity(),carMakeStr);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -143,7 +150,7 @@ public class ModelFragment extends Fragment implements AdapterCarModel.PassCarMo
 
     @Override
     public void onModeClicked(CarModel carModel) {
-        saveInDataBase(carModel);
+//        saveInDataBase(carModel);
         if (getProcessTypeFromIntent().equals("fill"))
         {
             CompleteInsuranceInfo completeInsuranceInfo = (CompleteInsuranceInfo) getActivity();
@@ -156,12 +163,12 @@ public class ModelFragment extends Fragment implements AdapterCarModel.PassCarMo
         }
     }
 
-    private void saveInDataBase(CarModel carModel) {
-        getDataBaseInstance(getActivity()).updateCarDetails(
-                "Car model",getActivity().getResources().getString(R.string.car_model_process)
-                ,carModel.getCarModelStr()
-                ,carModel.getCarModelStrS(),"true");
-    }
+//    private void saveInDataBase(CarModel carModel) {
+//        getDataBaseInstance(getActivity()).updateCarDetails(
+//                "Car model",getActivity().getResources().getString(R.string.car_model_process)
+//                ,carModel.getCarModelStr()
+//                ,carModel.getCarModelStrS(),"true");
+//    }
 
     public void endDriverNationality(){
         Intent resultIntent = new Intent();

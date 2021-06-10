@@ -28,7 +28,6 @@ import java.util.ArrayList;
 
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor.dataBase.ReadFunction.getAllCarProcess;
-import static com.cars.halamotor.functions.FillCarModel.fillCarModelArrayL;
 import static com.cars.halamotor.functions.InsuranceFunctions.fillCylinderNumberArrayL;
 
 public class CylinderNumberFragment extends Fragment implements AdapterCylinderNumber.PassCylinderNumber{

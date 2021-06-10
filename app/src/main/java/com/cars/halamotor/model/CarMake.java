@@ -4,34 +4,20 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class CarMake implements Parcelable {
-    int imageIdInt;
-    String makeStr,makeStrS,makeAr;
+    String id,name,name_en,name_ar;
 
-    public CarMake(int imageIdInt, String makeStr, String makeStrS, String makeAr) {
-        this.imageIdInt = imageIdInt;
-        this.makeStr = makeStr;
-        this.makeStrS = makeStrS;
-        this.makeAr = makeAr;
+    public CarMake(String id, String name, String name_en, String name_ar) {
+        this.id = id;
+        this.name = name;
+        this.name_en = name_en;
+        this.name_ar = name_ar;
     }
 
     protected CarMake(Parcel in) {
-        imageIdInt = in.readInt();
-        makeStr = in.readString();
-        makeStrS = in.readString();
-        makeAr = in.readString();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(imageIdInt);
-        dest.writeString(makeStr);
-        dest.writeString(makeStrS);
-        dest.writeString(makeAr);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        id = in.readString();
+        name = in.readString();
+        name_en = in.readString();
+        name_ar = in.readString();
     }
 
     public static final Creator<CarMake> CREATOR = new Creator<CarMake>() {
@@ -46,35 +32,48 @@ public class CarMake implements Parcelable {
         }
     };
 
-    public int getImageIdInt() {
-        return imageIdInt;
+    public String getId() {
+        return id;
     }
 
-    public void setImageIdInt(int imageIdInt) {
-        this.imageIdInt = imageIdInt;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getMakeStr() {
-        return makeStr;
+    public String getName() {
+        return name;
     }
 
-    public void setMakeStr(String makeStr) {
-        this.makeStr = makeStr;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getMakeStrS() {
-        return makeStrS;
+    public String getName_en() {
+        return name_en;
     }
 
-    public void setMakeStrS(String makeStrS) {
-        this.makeStrS = makeStrS;
+    public void setName_en(String name_en) {
+        this.name_en = name_en;
     }
 
-    public String getMakeAr() {
-        return makeAr;
+    public String getName_ar() {
+        return name_ar;
     }
 
-    public void setMakeAr(String makeAr) {
-        this.makeAr = makeAr;
+    public void setName_ar(String name_ar) {
+        this.name_ar = name_ar;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(name_en);
+        dest.writeString(name_ar);
     }
 }

@@ -30,8 +30,10 @@ import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarMake;
 import java.util.ArrayList;
 
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
+import static com.cars.halamotor.dataBase.ReadCarsAndCarModels.getBrands;
 import static com.cars.halamotor.dataBase.ReadFunction.getAllCarProcess;
 import static com.cars.halamotor.functions.FillCarMakeArrayListsInCarDerails.fillCarMakeArrayL;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class CarMakeFragment extends Fragment implements AdapterCarMake.PassCarMake {
 
@@ -71,7 +73,7 @@ public class CarMakeFragment extends Fragment implements AdapterCarMake.PassCarM
     }
 
     private void CreateRV() {
-        carDetailsArrayList= fillCarMakeArrayL(carDetailsArrayList,getActivity());
+        carDetailsArrayList= getBrands(getActivity());
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -109,10 +111,19 @@ public class CarMakeFragment extends Fragment implements AdapterCarMake.PassCarM
         ArrayList<CarMake> carDetailsArrayList2  = new ArrayList<CarMake>();
         for (CarMake carMake : carDetailsArrayList) {
             //if the existing elements contains the search input
-            if (carMake.getMakeStr().toLowerCase().contains(text.toLowerCase())) {
-                //adding the element to filtered list
-                carDetailsArrayList2.add(carMake);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (carMake.getName_en().toLowerCase().contains(text.toLowerCase())) {
+                    //adding the element to filtered list
+                    carDetailsArrayList2.add(carMake);
+                }
+            }else{
+                if (carMake.getName_ar().toLowerCase().contains(text.toLowerCase())) {
+                    //adding the element to filtered list
+                    carDetailsArrayList2.add(carMake);
+                }
             }
+
         }
         //calling a method of the adapter class and passing the filtered list
         adapterCarMake.filterList(carDetailsArrayList2);
@@ -147,7 +158,6 @@ public class CarMakeFragment extends Fragment implements AdapterCarMake.PassCarM
     @Override
     public void onCarMakeClicked(CarMake carMake) {
         deleteCarModelIfSelected();
-        saveInDataBase(carMake);
         if (getProcessTypeFromIntent().equals("fill"))
         {
             CompleteInsuranceInfo completeInsuranceInfo = (CompleteInsuranceInfo) getActivity();
@@ -171,12 +181,7 @@ public class CarMakeFragment extends Fragment implements AdapterCarMake.PassCarM
         }
     }
 
-    private void saveInDataBase(CarMake carMake) {
-        getDataBaseInstance(getActivity()).updateCarDetails(
-                "Car make",getActivity().getResources().getString(R.string.car_make_process)
-                ,carMake.getMakeStr()
-                ,carMake.getMakeStrS(),"true");
-    }
+
 
     public void endDriverNationality(){
         Intent resultIntent = new Intent();

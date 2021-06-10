@@ -9,6 +9,15 @@
     android:fitsSystemWindows="true"
     tools:context=".view.activity.SplashScreen">
 
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="300dp"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:background="@drawable/logo_test">-->
+
+<!--    </ImageView>-->
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
+        android:id="@+id/setup_profile_message_rl"
         android:layout_marginBottom="150dp">
 
         <LinearLayout

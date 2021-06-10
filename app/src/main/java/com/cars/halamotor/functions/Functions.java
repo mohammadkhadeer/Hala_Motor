@@ -214,8 +214,8 @@ public class Functions {
 
         if (whatUserWantToChange.equals("model"))
         {
-            CarModel carModel = new CarModel(valueInWhatUserWantToChange,valueInWhatUserWantToChange2,valueInWhatUserWantToChange2);
-            carDetailsModel.setModelStr(carModel);
+            //CarModel carModel = new CarModel(valueInWhatUserWantToChange,valueInWhatUserWantToChange2,valueInWhatUserWantToChange2);
+            //carDetailsModel.setModelStr(carModel);
         }
         if (whatUserWantToChange.equals("year"))
         {

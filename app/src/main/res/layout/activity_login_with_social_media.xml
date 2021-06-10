@@ -29,6 +29,13 @@
                     android:layout_marginTop="80dp"
                     android:background="@drawable/logo">
 
+<!--                <ImageView-->
+<!--                    android:layout_width="300dp"-->
+<!--                    android:layout_height="220dp"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_marginTop="80dp"-->
+<!--                    android:background="@drawable/logo_test">-->
+
                 </ImageView>
 
             </RelativeLayout>

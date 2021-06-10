@@ -209,7 +209,7 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
         modelRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carMakeStr = carDetailsModel.getCarMakeStr().getMakeStr();
+                carMakeStr = carDetailsModel.getCarMakeStr().getName_en();
                 moveToCarDetailsSpecificFragment("fromAShowSelected",getActivity().getResources().getString(R.string.model),"model");
             }
         });
@@ -314,8 +314,8 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
     }
 
     private void fillDetails() {
-        carMakeTV.setText(carDetailsModel.getCarMakeStr().getMakeStr());
-        modelTV.setText(carDetailsModel.getModelStr().getCarModelStr());
+        carMakeTV.setText(carDetailsModel.getCarMakeStr().getName_en());
+        modelTV.setText(carDetailsModel.getModelStr().getBrand_name_en());
         yearTV.setText(carDetailsModel.getYearStr());
         conditionTV.setText(carDetailsModel.getConditionStr().getCarConditionStr());
         kilometersTV.setText(carDetailsModel.getKilometersStr());

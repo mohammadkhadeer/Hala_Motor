@@ -17,10 +17,13 @@ import android.widget.RelativeLayout;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.model.CarModel;
-import com.cars.halamotor.view.activity.CarDetails;
+import com.cars.halamotor.presnter.carDetails.CarBrand;
+import com.cars.halamotor.presnter.carDetails.CarModelDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarModel;
 import java.util.ArrayList;
-import static com.cars.halamotor.functions.FillCarModel.fillCarModelArrayL;
+
+import static com.cars.halamotor.dataBase.ReadCarsAndCarModels.getModelsToSpecificBrand;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class FragmentModel extends Fragment implements AdapterCarModel.PassCarModel{
 
@@ -32,13 +35,26 @@ public class FragmentModel extends Fragment implements AdapterCarModel.PassCarMo
     RelativeLayout cancelRL;
     ImageView cancelIV;
     View view;
+    CarModelDetails carModelDetails;
 
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
             carMakeStr = getArguments().getString("carMake");
         }
+        if (context instanceof CarModelDetails) {
+            carModelDetails = (CarModelDetails) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
         super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carModelDetails = null;
     }
 
     public FragmentModel(){}
@@ -83,10 +99,19 @@ public class FragmentModel extends Fragment implements AdapterCarModel.PassCarMo
         ArrayList<CarModel> carModelArrayList2  = new ArrayList<CarModel>();
         for (CarModel carModel : carModelArrayL) {
             //if the existing elements contains the search input
-            if (carModel.getCarModelStr().toLowerCase().contains(text.toLowerCase())) {
-                //adding the element to filtered list
-                carModelArrayList2.add(carModel);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (carModel.getBrand_name_en().toLowerCase().contains(text.toLowerCase())) {
+                    //adding the element to filtered list
+                    carModelArrayList2.add(carModel);
+                }
+            }else{
+                if (carModel.getBrand_name_ar().toLowerCase().contains(text.toLowerCase())) {
+                    //adding the element to filtered list
+                    carModelArrayList2.add(carModel);
+                }
             }
+
         }
         //calling a method of the adapter class and passing the filtered list
         adapterCarModel.filterList(carModelArrayList2);
@@ -110,7 +135,7 @@ public class FragmentModel extends Fragment implements AdapterCarModel.PassCarMo
     }
 
     private void createRV() {
-        carModelArrayL= fillCarModelArrayL(carModelArrayL,getActivity(),carMakeStr);
+        carModelArrayL= getModelsToSpecificBrand(getActivity(),carMakeStr);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -127,7 +152,8 @@ public class FragmentModel extends Fragment implements AdapterCarModel.PassCarMo
 
     @Override
     public void onModeClicked(CarModel carModel) {
-        CarDetails carDetails = (CarDetails) getActivity();
-        carDetails.getCarModelStrFromFragmentCarModelAndMoveToFragmentYear(carModel);
+        carModelDetails.passCarModelDetails(carModel);
+//        CarDetails carDetails = (CarDetails) getActivity();
+//        carDetails.getCarModelStrFromFragmentCarModelAndMoveToFragmentYear(carModel);
     }
 }
