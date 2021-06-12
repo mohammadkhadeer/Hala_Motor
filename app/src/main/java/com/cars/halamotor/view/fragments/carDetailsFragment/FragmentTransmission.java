@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.fragments.carDetailsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,24 +15,47 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.cars.halamotor.R;
+import com.cars.halamotor.model.CarTransmission;
+import com.cars.halamotor.presnter.carDetails.CarBrand;
+import com.cars.halamotor.presnter.carDetails.CarKilometers;
+import com.cars.halamotor.presnter.carDetails.CarTransmissionPresnter;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarTransmission;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.dataBase.ReadSetting.getCarTransmissionFromDataBase;
 import static com.cars.halamotor.functions.Functions.fillTransmissionArrayL;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class FragmentTransmission extends Fragment implements AdapterCarTransmission.PassTransmission{
 
-    public ArrayList<String> carTransmissionArrayL  = new ArrayList<String>();
+    public ArrayList<CarTransmission> carTransmissionArrayL  = new ArrayList<CarTransmission>();
     RecyclerView recyclerView;
     AdapterCarTransmission adapterCarTransmission;
     EditText searchEdt;
     RelativeLayout cancelRL;
     ImageView cancelIV;
     View view;
-
+    CarTransmissionPresnter carTransmissionPresnter;
     public FragmentTransmission(){}
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CarTransmissionPresnter) {
+            carTransmissionPresnter = (CarTransmissionPresnter) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carTransmissionPresnter = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,10 +94,18 @@ public class FragmentTransmission extends Fragment implements AdapterCarTransmis
     }
 
     private void filter(String text) {
-        ArrayList<String> carKilometersArrayList2  = new ArrayList<String>();
-        for (String Kilometers : carTransmissionArrayL) {
-            if (Kilometers.toLowerCase().contains(text.toLowerCase())) {
-                carKilometersArrayList2.add(Kilometers);
+        ArrayList<CarTransmission> carKilometersArrayList2  = new ArrayList<CarTransmission>();
+        for (CarTransmission Kilometers : carTransmissionArrayL) {
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (Kilometers.getSetting_content_name_en().contains(text.toLowerCase())) {
+                    carKilometersArrayList2.add(Kilometers);
+                }
+                else{
+                    if (Kilometers.getSetting_content_name_ar().contains(text.toLowerCase())) {
+                        carKilometersArrayList2.add(Kilometers);
+                    }
+               }
             }
         }
         adapterCarTransmission.filterList(carKilometersArrayList2);
@@ -97,7 +129,7 @@ public class FragmentTransmission extends Fragment implements AdapterCarTransmis
     }
 
     private void createRV() {
-        carTransmissionArrayL =fillTransmissionArrayL(carTransmissionArrayL,getActivity());
+        carTransmissionArrayL =getCarTransmissionFromDataBase(getActivity());
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -113,8 +145,7 @@ public class FragmentTransmission extends Fragment implements AdapterCarTransmis
     }
 
     @Override
-    public void onTransmissionClicked(String carTransmissionStr) {
-        CarDetails carDetails = (CarDetails) getActivity();
-        carDetails.getCarTransmissionStrFromFragmentTransmissionAndMoveToFragmentFuel(carTransmissionStr);
+    public void onTransmissionClicked(CarTransmission carTransmission) {
+        carTransmissionPresnter.passCarCondition(carTransmission);
     }
 }

@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.fragments.carDetailsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,9 +16,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.cars.halamotor.R;
 import com.cars.halamotor.model.CarCondition;
+import com.cars.halamotor.presnter.carDetails.CarConditionPresnter;
+import com.cars.halamotor.presnter.carDetails.CarYear;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarCondition;
 import java.util.ArrayList;
+
+import static com.cars.halamotor.dataBase.ReadSetting.getCarConditionFromDataBase;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class FragmentCarCondition extends Fragment implements AdapterCarCondition.PassCarCondition{
 
@@ -27,10 +33,28 @@ public class FragmentCarCondition extends Fragment implements AdapterCarConditio
     EditText searchEdt;
     RelativeLayout cancelRL;
     ImageView cancelIV;
+    CarConditionPresnter carConditionPresnter;
 
     View view;
 
     public FragmentCarCondition(){}
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CarConditionPresnter) {
+            carConditionPresnter = (CarConditionPresnter) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carConditionPresnter = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,8 +96,15 @@ public class FragmentCarCondition extends Fragment implements AdapterCarConditio
     private void filter(String text) {
         ArrayList<CarCondition> carConditionArrayList2  = new ArrayList<CarCondition>();
         for (CarCondition carCondition : carConditionsArrayL) {
-            if (carCondition.getCarConditionStr().toLowerCase().contains(text.toLowerCase())) {
-                carConditionArrayList2.add(carCondition);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (carCondition.getSetting_content_name_en().toLowerCase().contains(text.toLowerCase())) {
+                    carConditionArrayList2.add(carCondition);
+                }
+            }else{
+                    if (carCondition.getSetting_content_name_ar().toLowerCase().contains(text.toLowerCase())) {
+                        carConditionArrayList2.add(carCondition);
+                    }
             }
         }
         adapterCarCondition.filterList(carConditionArrayList2);
@@ -97,18 +128,12 @@ public class FragmentCarCondition extends Fragment implements AdapterCarConditio
     }
 
     private void createRV() {
-        fillArrayList();
+        carConditionsArrayL =  getCarConditionFromDataBase(getActivity());
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         adapterCarCondition = new AdapterCarCondition(getActivity(), carConditionsArrayL,this);
         recyclerView.setAdapter(adapterCarCondition);
-    }
-
-    private void fillArrayList() {
-        carConditionsArrayL  = new ArrayList<CarCondition>();
-        carConditionsArrayL.add(new CarCondition(getActivity().getResources().getString(R.string.used),getActivity().getResources().getString(R.string.used_s)));
-        carConditionsArrayL.add(new CarCondition(getActivity().getResources().getString(R.string.car_new),getActivity().getResources().getString(R.string.car_new_s)));
     }
 
     private void inti() {
@@ -120,7 +145,6 @@ public class FragmentCarCondition extends Fragment implements AdapterCarConditio
 
     @Override
     public void onConditionClicked(CarCondition carCarCondition) {
-        CarDetails carDetails = (CarDetails) getActivity();
-        carDetails.getCarConditionStrFromFragmentCarConditionAndMoveToFragmentKilometers(carCarCondition);
+        carConditionPresnter.passCarCondition(carCarCondition);
     }
 }

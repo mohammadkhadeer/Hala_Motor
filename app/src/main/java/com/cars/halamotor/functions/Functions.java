@@ -223,8 +223,8 @@ public class Functions {
         }
         if (whatUserWantToChange.equals("condition"))
         {
-            CarCondition carCondition = new CarCondition(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
-            carDetailsModel.setConditionStr(carCondition);
+//            CarCondition carCondition = new CarCondition(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
+//            carDetailsModel.setConditionStr(carCondition);
         }
         if (whatUserWantToChange.equals("kilometers"))
         {
@@ -236,8 +236,8 @@ public class Functions {
         }
         if (whatUserWantToChange.equals("fuel"))
         {
-            CarFuel carFuel = new CarFuel(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
-            carDetailsModel.setFuelStr(carFuel);
+//            CarFuel carFuel = new CarFuel(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
+//            carDetailsModel.setFuelStr(carFuel);
         }
         if (whatUserWantToChange.equals("options"))
         {
@@ -245,13 +245,13 @@ public class Functions {
         }
         if (whatUserWantToChange.equals("licensed"))
         {
-            CarLicensed carLicensed = new CarLicensed(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
-            carDetailsModel.setLicenseStr(carLicensed);
+//            CarLicensed carLicensed = new CarLicensed(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
+//            carDetailsModel.setLicenseStr(carLicensed);
         }
         if (whatUserWantToChange.equals("insurance"))
         {
-            CarInsurance carInsurance = new CarInsurance(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
-            carDetailsModel.setInsurance(carInsurance);
+//            CarInsurance carInsurance = new CarInsurance(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
+//            carDetailsModel.setInsurance(carInsurance);
         }
         if (whatUserWantToChange.equals("color"))
         {
@@ -259,8 +259,8 @@ public class Functions {
         }
         if (whatUserWantToChange.equals("payment"))
         {
-            PaymentMethod paymentMethod = new PaymentMethod(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
-            carDetailsModel.setPaymentMethod(paymentMethod);
+//            PaymentMethod paymentMethod = new PaymentMethod(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
+//            carDetailsModel.setPaymentMethod(paymentMethod);
         }
 
         return carDetailsModel;
@@ -790,10 +790,10 @@ public class Functions {
     public static ArrayList<CarFuel> fillFuelArrayL(ArrayList<CarFuel> carFuelArrayL, Context context) {
         carFuelArrayL = new ArrayList<CarFuel>();
 
-        carFuelArrayL.add(new CarFuel(context.getResources().getString(R.string.gasoline),context.getResources().getString(R.string.gasoline_s)));
-        carFuelArrayL.add(new CarFuel(context.getResources().getString(R.string.diesel),context.getResources().getString(R.string.diesel_s)));
-        carFuelArrayL.add(new CarFuel(context.getResources().getString(R.string.hybrid),context.getResources().getString(R.string.hybrid_s)));
-        carFuelArrayL.add(new CarFuel(context.getResources().getString(R.string.electric),context.getResources().getString(R.string.electric_s)));
+//        carFuelArrayL.add(new CarFuel(context.getResources().getString(R.string.gasoline),context.getResources().getString(R.string.gasoline_s)));
+//        carFuelArrayL.add(new CarFuel(context.getResources().getString(R.string.diesel),context.getResources().getString(R.string.diesel_s)));
+//        carFuelArrayL.add(new CarFuel(context.getResources().getString(R.string.hybrid),context.getResources().getString(R.string.hybrid_s)));
+//        carFuelArrayL.add(new CarFuel(context.getResources().getString(R.string.electric),context.getResources().getString(R.string.electric_s)));
 
         return carFuelArrayL;
     }
@@ -801,120 +801,158 @@ public class Functions {
     public static ArrayList<CarInsurance> fillInsuranceArrayL(ArrayList<CarInsurance> fillInsuranceArrayL, Context context) {
         fillInsuranceArrayL = new ArrayList<CarInsurance>();
 
-        fillInsuranceArrayL.add(new CarInsurance(context.getResources().getString(R.string.insurance_compulsory),context.getResources().getString(R.string.insurance_compulsory_s)));
-        fillInsuranceArrayL.add(new CarInsurance(context.getResources().getString(R.string.insurance_comprehensive),context.getResources().getString(R.string.insurance_comprehensive_s)));
-        fillInsuranceArrayL.add(new CarInsurance(context.getResources().getString(R.string.insurance_not),context.getResources().getString(R.string.insurance_not_s)));
+//        fillInsuranceArrayL.add(new CarInsurance(context.getResources().getString(R.string.insurance_compulsory),context.getResources().getString(R.string.insurance_compulsory_s)));
+//        fillInsuranceArrayL.add(new CarInsurance(context.getResources().getString(R.string.insurance_comprehensive),context.getResources().getString(R.string.insurance_comprehensive_s)));
+//        fillInsuranceArrayL.add(new CarInsurance(context.getResources().getString(R.string.insurance_not),context.getResources().getString(R.string.insurance_not_s)));
 
         return fillInsuranceArrayL;
     }
 
-    public static ArrayList<CarColor> fillColorArrayL(ArrayList<CarColor> fillColorArrayL, Context context) {
-        fillColorArrayL = new ArrayList<CarColor>();
+//    public static ArrayList<CarColor> fillColorArrayL(ArrayList<CarColor> fillColorArrayL, Context context) {
+//        fillColorArrayL = new ArrayList<CarColor>();
+//
+//        CarColor carColor1 = new CarColor(context.getResources().getString(R.string.color_beige)
+//                ,context.getResources().getColor(R.color.colorBeige));
+//        CarColor carColor2 = new CarColor(context.getResources().getString(R.string.color_black)
+//                ,context.getResources().getColor(R.color.colorBlack));
+//        CarColor carColor3 = new CarColor(context.getResources().getString(R.string.color_blue)
+//                ,context.getResources().getColor(R.color.colorBlue_));
+//        CarColor carColor4 = new CarColor(context.getResources().getString(R.string.color_brown)
+//                ,context.getResources().getColor(R.color.colorBrown));
+//        CarColor carColor5 = new CarColor(context.getResources().getString(R.string.color_green)
+//                ,context.getResources().getColor(R.color.colorGreen_));
+//        CarColor carColor6 = new CarColor(context.getResources().getString(R.string.color_grey)
+//                ,context.getResources().getColor(R.color.colorGrey));
+//        CarColor carColor7 = new CarColor(context.getResources().getString(R.string.color_maroon)
+//                ,context.getResources().getColor(R.color.colorMaroon));
+//        CarColor carColor8 = new CarColor(context.getResources().getString(R.string.color_orange)
+//                ,context.getResources().getColor(R.color.colorOrange));
+//        CarColor carColor9 = new CarColor(context.getResources().getString(R.string.color_pink)
+//                ,context.getResources().getColor(R.color.colorPink));
+//        CarColor carColor10 = new CarColor(context.getResources().getString(R.string.color_purple)
+//
+//                ,context.getResources().getColor(R.color.colorPurple));
+//        CarColor carColor11 = new CarColor(context.getResources().getString(R.string.color_red)
+//                ,context.getResources().getColor(R.color.colorRed));
+//        CarColor carColor12 = new CarColor(context.getResources().getString(R.string.color_silver)
+//                ,context.getResources().getColor(R.color.colorSilver_));
+//        CarColor carColor13 = new CarColor(context.getResources().getString(R.string.color_turquoise)
+//                ,context.getResources().getColor(R.color.colorTurquoise));
+//        CarColor carColor14 = new CarColor(context.getResources().getString(R.string.color_white)
+//                ,context.getResources().getColor(R.color.colorWhite));
+//        CarColor carColor15 = new CarColor(context.getResources().getString(R.string.color_yellow)
+//                ,context.getResources().getColor(R.color.colorYellow));
+//        CarColor carColor16 = new CarColor(context.getResources().getString(R.string.color_gold)
+//                ,context.getResources().getColor(R.color.colorGold));
+//
+//        fillColorArrayL.add(carColor1);
+//        fillColorArrayL.add(carColor2);
+//        fillColorArrayL.add(carColor3);
+//        fillColorArrayL.add(carColor4);
+//        fillColorArrayL.add(carColor5);
+//        fillColorArrayL.add(carColor6);
+//        fillColorArrayL.add(carColor7);
+//        fillColorArrayL.add(carColor8);
+//        fillColorArrayL.add(carColor9);
+//        fillColorArrayL.add(carColor10);
+//        fillColorArrayL.add(carColor11);
+//        fillColorArrayL.add(carColor12);
+//        fillColorArrayL.add(carColor13);
+//        fillColorArrayL.add(carColor14);
+//        fillColorArrayL.add(carColor15);
+//        fillColorArrayL.add(carColor16);
+//
+//        return fillColorArrayL;
+//    }
 
-        CarColor carColor1 = new CarColor(context.getResources().getString(R.string.color_beige)
-                ,context.getResources().getColor(R.color.colorBeige));
-        CarColor carColor2 = new CarColor(context.getResources().getString(R.string.color_black)
-                ,context.getResources().getColor(R.color.colorBlack));
-        CarColor carColor3 = new CarColor(context.getResources().getString(R.string.color_blue)
-                ,context.getResources().getColor(R.color.colorBlue_));
-        CarColor carColor4 = new CarColor(context.getResources().getString(R.string.color_brown)
-                ,context.getResources().getColor(R.color.colorBrown));
-        CarColor carColor5 = new CarColor(context.getResources().getString(R.string.color_green)
-                ,context.getResources().getColor(R.color.colorGreen_));
-        CarColor carColor6 = new CarColor(context.getResources().getString(R.string.color_grey)
-                ,context.getResources().getColor(R.color.colorGrey));
-        CarColor carColor7 = new CarColor(context.getResources().getString(R.string.color_maroon)
-                ,context.getResources().getColor(R.color.colorMaroon));
-        CarColor carColor8 = new CarColor(context.getResources().getString(R.string.color_orange)
-                ,context.getResources().getColor(R.color.colorOrange));
-        CarColor carColor9 = new CarColor(context.getResources().getString(R.string.color_pink)
-                ,context.getResources().getColor(R.color.colorPink));
-        CarColor carColor10 = new CarColor(context.getResources().getString(R.string.color_purple)
+    public static int fillColorCode(String colorName, Context context) {
+        int color = 0;
+        if (colorName.equals("beige"))
+        { color = context.getResources().getColor(R.color.colorBeige); }
+        if (colorName.equals("black"))
+        { color = context.getResources().getColor(R.color.colorBlack); }
+        if (colorName.equals("blue"))
+        { color = context.getResources().getColor(R.color.colorBlue_); }
+        if (colorName.equals("brown"))
+        { color = context.getResources().getColor(R.color.colorBrown); }
+        if (colorName.equals("green"))
+        { color = context.getResources().getColor(R.color.colorGreen_); }
+        if (colorName.equals("grey"))
+        { color = context.getResources().getColor(R.color.colorGrey); }
+        if (colorName.equals("maroon"))
+        { color = context.getResources().getColor(R.color.colorMaroon); }
+        if (colorName.equals("orange"))
+        { color = context.getResources().getColor(R.color.colorOrange); }
+        if (colorName.equals("pink"))
+        { color = context.getResources().getColor(R.color.colorPink); }
+        if (colorName.equals("purple"))
+        { color = context.getResources().getColor(R.color.colorPurple); }
+        if (colorName.equals("red"))
+        { color = context.getResources().getColor(R.color.colorRed); }
+        if (colorName.equals("silver"))
+        { color = context.getResources().getColor(R.color.colorSilver_); }
+        if (colorName.equals("turquoise"))
+        { color = context.getResources().getColor(R.color.colorTurquoise); }
+        if (colorName.equals("white"))
+        { color = context.getResources().getColor(R.color.colorWhite); }
+        if (colorName.equals("yello"))
+        { color = context.getResources().getColor(R.color.colorYellow); }
+        if (colorName.equals("gold"))
+        { color = context.getResources().getColor(R.color.colorGold); }
 
-                ,context.getResources().getColor(R.color.colorPurple));
-        CarColor carColor11 = new CarColor(context.getResources().getString(R.string.color_red)
-                ,context.getResources().getColor(R.color.colorRed));
-        CarColor carColor12 = new CarColor(context.getResources().getString(R.string.color_silver)
-                ,context.getResources().getColor(R.color.colorSilver_));
-        CarColor carColor13 = new CarColor(context.getResources().getString(R.string.color_turquoise)
-                ,context.getResources().getColor(R.color.colorTurquoise));
-        CarColor carColor14 = new CarColor(context.getResources().getString(R.string.color_white)
-                ,context.getResources().getColor(R.color.colorWhite));
-        CarColor carColor15 = new CarColor(context.getResources().getString(R.string.color_yellow)
-                ,context.getResources().getColor(R.color.colorYellow));
-        CarColor carColor16 = new CarColor(context.getResources().getString(R.string.color_gold)
-                ,context.getResources().getColor(R.color.colorGold));
-
-        fillColorArrayL.add(carColor1);
-        fillColorArrayL.add(carColor2);
-        fillColorArrayL.add(carColor3);
-        fillColorArrayL.add(carColor4);
-        fillColorArrayL.add(carColor5);
-        fillColorArrayL.add(carColor6);
-        fillColorArrayL.add(carColor7);
-        fillColorArrayL.add(carColor8);
-        fillColorArrayL.add(carColor9);
-        fillColorArrayL.add(carColor10);
-        fillColorArrayL.add(carColor11);
-        fillColorArrayL.add(carColor12);
-        fillColorArrayL.add(carColor13);
-        fillColorArrayL.add(carColor14);
-        fillColorArrayL.add(carColor15);
-        fillColorArrayL.add(carColor16);
-
-        return fillColorArrayL;
+        return color;
     }
 
-    public static ArrayList<CarOption> fillOptionsArrayL(ArrayList<CarOption> carOptionsArrayL, Context context) {
-        carOptionsArrayL = new ArrayList<CarOption>();
-
-        CarOption carOption1 = new CarOption(context.getResources().getString(R.string.option_1),0);
-        CarOption carOption2 = new CarOption(context.getResources().getString(R.string.option_2),0);
-        CarOption carOption3 = new CarOption(context.getResources().getString(R.string.option_3),0);
-        CarOption carOption4 = new CarOption(context.getResources().getString(R.string.option_4),0);
-        CarOption carOption5 = new CarOption(context.getResources().getString(R.string.option_5),0);
-        CarOption carOption6 = new CarOption(context.getResources().getString(R.string.option_6),0);
-        CarOption carOption7 = new CarOption(context.getResources().getString(R.string.option_7),0);
-        CarOption carOption8 = new CarOption(context.getResources().getString(R.string.option_8),0);
-        CarOption carOption9 = new CarOption(context.getResources().getString(R.string.option_9),0);
-        CarOption carOption10 = new CarOption(context.getResources().getString(R.string.option_10),0);
-        CarOption carOption11 = new CarOption(context.getResources().getString(R.string.option_11),0);
-        CarOption carOption12 = new CarOption(context.getResources().getString(R.string.option_12),0);
-        CarOption carOption13 = new CarOption(context.getResources().getString(R.string.option_13),0);
-        CarOption carOption14 = new CarOption(context.getResources().getString(R.string.option_14),0);
-        CarOption carOption15 = new CarOption(context.getResources().getString(R.string.option_15),0);
-        CarOption carOption16 = new CarOption(context.getResources().getString(R.string.option_16),0);
-        CarOption carOption17 = new CarOption(context.getResources().getString(R.string.option_17),0);
-        CarOption carOption18 = new CarOption(context.getResources().getString(R.string.option_18),0);
-
-        carOptionsArrayL.add(carOption1);
-        carOptionsArrayL.add(carOption2);
-        carOptionsArrayL.add(carOption3);
-        carOptionsArrayL.add(carOption4);
-        carOptionsArrayL.add(carOption5);
-        carOptionsArrayL.add(carOption6);
-        carOptionsArrayL.add(carOption7);
-        carOptionsArrayL.add(carOption8);
-        carOptionsArrayL.add(carOption9);
-        carOptionsArrayL.add(carOption10);
-        carOptionsArrayL.add(carOption11);
-        carOptionsArrayL.add(carOption12);
-        carOptionsArrayL.add(carOption13);
-        carOptionsArrayL.add(carOption14);
-        carOptionsArrayL.add(carOption15);
-        carOptionsArrayL.add(carOption16);
-        carOptionsArrayL.add(carOption17);
-        carOptionsArrayL.add(carOption18);
-
-
-        return carOptionsArrayL;
-    }
+//    public static ArrayList<CarOption> fillOptionsArrayL(ArrayList<CarOption> carOptionsArrayL, Context context) {
+//        carOptionsArrayL = new ArrayList<CarOption>();
+//
+//        CarOption carOption1 = new CarOption(context.getResources().getString(R.string.option_1),0);
+//        CarOption carOption2 = new CarOption(context.getResources().getString(R.string.option_2),0);
+//        CarOption carOption3 = new CarOption(context.getResources().getString(R.string.option_3),0);
+//        CarOption carOption4 = new CarOption(context.getResources().getString(R.string.option_4),0);
+//        CarOption carOption5 = new CarOption(context.getResources().getString(R.string.option_5),0);
+//        CarOption carOption6 = new CarOption(context.getResources().getString(R.string.option_6),0);
+//        CarOption carOption7 = new CarOption(context.getResources().getString(R.string.option_7),0);
+//        CarOption carOption8 = new CarOption(context.getResources().getString(R.string.option_8),0);
+//        CarOption carOption9 = new CarOption(context.getResources().getString(R.string.option_9),0);
+//        CarOption carOption10 = new CarOption(context.getResources().getString(R.string.option_10),0);
+//        CarOption carOption11 = new CarOption(context.getResources().getString(R.string.option_11),0);
+//        CarOption carOption12 = new CarOption(context.getResources().getString(R.string.option_12),0);
+//        CarOption carOption13 = new CarOption(context.getResources().getString(R.string.option_13),0);
+//        CarOption carOption14 = new CarOption(context.getResources().getString(R.string.option_14),0);
+//        CarOption carOption15 = new CarOption(context.getResources().getString(R.string.option_15),0);
+//        CarOption carOption16 = new CarOption(context.getResources().getString(R.string.option_16),0);
+//        CarOption carOption17 = new CarOption(context.getResources().getString(R.string.option_17),0);
+//        CarOption carOption18 = new CarOption(context.getResources().getString(R.string.option_18),0);
+//
+//        carOptionsArrayL.add(carOption1);
+//        carOptionsArrayL.add(carOption2);
+//        carOptionsArrayL.add(carOption3);
+//        carOptionsArrayL.add(carOption4);
+//        carOptionsArrayL.add(carOption5);
+//        carOptionsArrayL.add(carOption6);
+//        carOptionsArrayL.add(carOption7);
+//        carOptionsArrayL.add(carOption8);
+//        carOptionsArrayL.add(carOption9);
+//        carOptionsArrayL.add(carOption10);
+//        carOptionsArrayL.add(carOption11);
+//        carOptionsArrayL.add(carOption12);
+//        carOptionsArrayL.add(carOption13);
+//        carOptionsArrayL.add(carOption14);
+//        carOptionsArrayL.add(carOption15);
+//        carOptionsArrayL.add(carOption16);
+//        carOptionsArrayL.add(carOption17);
+//        carOptionsArrayL.add(carOption18);
+//
+//
+//        return carOptionsArrayL;
+//    }
 
     public static ArrayList<CarLicensed> fillLicensedArrayL(ArrayList<CarLicensed> carLicensedArrayL, Context context) {
         carLicensedArrayL = new ArrayList<CarLicensed>();
 
-        carLicensedArrayL.add(new CarLicensed(context.getResources().getString(R.string.licensed),context.getResources().getString(R.string.licensed_s)));
-        carLicensedArrayL.add(new CarLicensed(context.getResources().getString(R.string.no_licensed),context.getResources().getString(R.string.no_licensed_s)));
+//        carLicensedArrayL.add(new CarLicensed(context.getResources().getString(R.string.licensed),context.getResources().getString(R.string.licensed_s)));
+//        carLicensedArrayL.add(new CarLicensed(context.getResources().getString(R.string.no_licensed),context.getResources().getString(R.string.no_licensed_s)));
 
 
         return carLicensedArrayL;
@@ -923,10 +961,10 @@ public class Functions {
     public static ArrayList<PaymentMethod> fillPaymentArrayL(ArrayList<PaymentMethod> carPaymentArrayL, Context context) {
         carPaymentArrayL = new ArrayList<PaymentMethod>();
 
-        carPaymentArrayL.add(new PaymentMethod(context.getResources().getString(R.string.payment_method_1),context.getResources().getString(R.string.payment_method_1_s)));
-        carPaymentArrayL.add(new PaymentMethod(context.getResources().getString(R.string.payment_method_2),context.getResources().getString(R.string.payment_method_2_s)));
-        carPaymentArrayL.add(new PaymentMethod(context.getResources().getString(R.string.payment_method_3),context.getResources().getString(R.string.payment_method_3_s)));
-
+//        carPaymentArrayL.add(new PaymentMethod(context.getResources().getString(R.string.payment_method_1),context.getResources().getString(R.string.payment_method_1_s)));
+//        carPaymentArrayL.add(new PaymentMethod(context.getResources().getString(R.string.payment_method_2),context.getResources().getString(R.string.payment_method_2_s)));
+//        carPaymentArrayL.add(new PaymentMethod(context.getResources().getString(R.string.payment_method_3),context.getResources().getString(R.string.payment_method_3_s)));
+//
 
         return carPaymentArrayL;
     }

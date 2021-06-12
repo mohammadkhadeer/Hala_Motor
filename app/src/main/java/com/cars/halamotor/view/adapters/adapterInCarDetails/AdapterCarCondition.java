@@ -15,6 +15,8 @@ import com.cars.halamotor.model.CarCondition;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+
 public class AdapterCarCondition extends RecyclerView.Adapter<AdapterCarCondition.ViewHolder>{
 
     private final Context context;
@@ -38,7 +40,7 @@ public class AdapterCarCondition extends RecyclerView.Adapter<AdapterCarConditio
     @Override
     public void onBindViewHolder(final AdapterCarCondition.ViewHolder holder, final int position) {
 
-        holder.modelTV.setText(carConditionArrayL.get(position).getCarConditionStr());
+        holder.modelTV.setText(getTextEngOrLocal(context,carConditionArrayL.get(position).getSetting_content_name_en(),carConditionArrayL.get(position).getSetting_content_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

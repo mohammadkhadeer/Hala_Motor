@@ -15,6 +15,8 @@ import com.cars.halamotor.model.CarLicensed;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+
 public class AdapterCarLicensed extends RecyclerView.Adapter<AdapterCarLicensed.ViewHolder>{
 
     private final Context context;
@@ -38,7 +40,7 @@ public class AdapterCarLicensed extends RecyclerView.Adapter<AdapterCarLicensed.
     @Override
     public void onBindViewHolder(final AdapterCarLicensed.ViewHolder holder, final int position) {
 
-        holder.modelTV.setText(carLicensedArrayL.get(position).getCarLicensedStr());
+        holder.modelTV.setText(getTextEngOrLocal(context,carLicensedArrayL.get(position).getSetting_content_name_en(),carLicensedArrayL.get(position).getSetting_content_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.fragments.carDetailsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,14 +16,18 @@ import android.widget.RelativeLayout;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.model.PaymentMethod;
+import com.cars.halamotor.presnter.carDetails.CarFuelPresnter;
+import com.cars.halamotor.presnter.carDetails.CarPaymentMethodPresnter;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarFuel;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterPaymentMethod;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.dataBase.ReadSetting.getCarPaymentMethodFromDataBase;
 import static com.cars.halamotor.functions.Functions.fillFuelArrayL;
 import static com.cars.halamotor.functions.Functions.fillPaymentArrayL;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class FragmentPaymentMethod extends Fragment implements AdapterPaymentMethod.PassPayment{
 
@@ -33,8 +38,26 @@ public class FragmentPaymentMethod extends Fragment implements AdapterPaymentMet
     RelativeLayout cancelRL;
     ImageView cancelIV;
     View view;
+    CarPaymentMethodPresnter carPaymentMethodPresnter;
 
     public FragmentPaymentMethod(){}
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CarPaymentMethodPresnter) {
+            carPaymentMethodPresnter = (CarPaymentMethodPresnter) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carPaymentMethodPresnter = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,8 +99,15 @@ public class FragmentPaymentMethod extends Fragment implements AdapterPaymentMet
     private void filter(String text) {
         ArrayList<PaymentMethod> carPaymentArrayList2  = new ArrayList<PaymentMethod>();
         for (PaymentMethod payment : carPaymentArrayL) {
-            if (payment.getPaymentMethodStr().toLowerCase().contains(text.toLowerCase())) {
-                carPaymentArrayList2.add(payment);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (payment.getSetting_content_name_en().toLowerCase().contains(text.toLowerCase())) {
+                    carPaymentArrayList2.add(payment);
+                }
+            }else{
+                if (payment.getSetting_content_name_ar().toLowerCase().contains(text.toLowerCase())) {
+                    carPaymentArrayList2.add(payment);
+                }
             }
         }
         adapterPaymentMethod.filterList(carPaymentArrayList2);
@@ -101,7 +131,7 @@ public class FragmentPaymentMethod extends Fragment implements AdapterPaymentMet
     }
 
     private void createRV() {
-        carPaymentArrayL =fillPaymentArrayL(carPaymentArrayL,getActivity());
+        carPaymentArrayL =getCarPaymentMethodFromDataBase(getActivity());
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -117,8 +147,7 @@ public class FragmentPaymentMethod extends Fragment implements AdapterPaymentMet
     }
 
     @Override
-    public void onPaymentClicked(PaymentMethod carPaymentStr) {
-        CarDetails carDetails = (CarDetails) getActivity();
-        carDetails.getCarPaymentStrFromFragmentPaymentMethodAndFinish(carPaymentStr);
+    public void onPaymentClicked(PaymentMethod paymentMethod) {
+        carPaymentMethodPresnter.passPaymentMethod(paymentMethod);
     }
 }

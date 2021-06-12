@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.fragments.carDetailsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,12 +16,16 @@ import android.widget.RelativeLayout;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.model.CarInsurance;
+import com.cars.halamotor.presnter.carDetails.CarInsurancePresnter;
+import com.cars.halamotor.presnter.carDetails.CarLicensedPresnter;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarInsurance;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.dataBase.ReadSetting.getCarInsuranceFromDataBase;
 import static com.cars.halamotor.functions.Functions.fillInsuranceArrayL;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class FragmentInsurance extends Fragment implements AdapterCarInsurance.PassIncense{
 
@@ -31,8 +36,26 @@ public class FragmentInsurance extends Fragment implements AdapterCarInsurance.P
     RelativeLayout cancelRL;
     ImageView cancelIV;
     View view;
+    CarInsurancePresnter carInsurancePresnter;
 
     public FragmentInsurance(){}
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CarInsurancePresnter) {
+            carInsurancePresnter = (CarInsurancePresnter) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carInsurancePresnter = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,8 +97,15 @@ public class FragmentInsurance extends Fragment implements AdapterCarInsurance.P
     private void filter(String text) {
         ArrayList<CarInsurance> carInsuranceArrayList2  = new ArrayList<CarInsurance>();
         for (CarInsurance carInsurance : carInsuranceArrayL) {
-            if (carInsurance.getCarInsuranceStr().toLowerCase().contains(text.toLowerCase())) {
-                carInsuranceArrayList2.add(carInsurance);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (carInsurance.getSetting_content_name_en().toLowerCase().contains(text.toLowerCase())) {
+                    carInsuranceArrayList2.add(carInsurance);
+                }
+            }else{
+                if (carInsurance.getSetting_content_name_ar().toLowerCase().contains(text.toLowerCase())) {
+                    carInsuranceArrayList2.add(carInsurance);
+                }
             }
         }
         adapterCarInsurance.filterList(carInsuranceArrayList2);
@@ -99,7 +129,7 @@ public class FragmentInsurance extends Fragment implements AdapterCarInsurance.P
     }
 
     private void createRV() {
-        carInsuranceArrayL =fillInsuranceArrayL(carInsuranceArrayL,getActivity());
+        carInsuranceArrayL =getCarInsuranceFromDataBase(getActivity());
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -115,8 +145,7 @@ public class FragmentInsurance extends Fragment implements AdapterCarInsurance.P
     }
 
     @Override
-    public void onIncenseClicked(CarInsurance carIncense) {
-        CarDetails carDetails = (CarDetails) getActivity();
-        carDetails.getCarInsuranceStrFromFragmentInsuranceAndMoveToFragmentColor(carIncense);
+    public void onIncenseClicked(CarInsurance carInsurance) {
+        carInsurancePresnter.passCarInsurance(carInsurance);
     }
 }

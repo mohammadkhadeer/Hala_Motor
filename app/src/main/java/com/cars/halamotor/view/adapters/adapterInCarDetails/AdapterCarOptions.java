@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+
 public class AdapterCarOptions extends RecyclerView.Adapter<AdapterCarOptions.ViewHolder> {
 
     private final Context context;
@@ -44,7 +46,7 @@ public class AdapterCarOptions extends RecyclerView.Adapter<AdapterCarOptions.Vi
     @Override
     public void onBindViewHolder(final AdapterCarOptions.ViewHolder holder, final int position) {
 
-        holder.modelTV.setText(carOptionsArrayL.get(position).getCarOptionStr());
+        holder.modelTV.setText(getTextEngOrLocal(context,carOptionsArrayL.get(position).getSetting_content_name_en(),carOptionsArrayL.get(position).getSetting_content_name_ar()));
         checkIfAlredyCheckedOrNot(holder,position);
         actionListenerOption(holder,position);
         changeFont(holder);

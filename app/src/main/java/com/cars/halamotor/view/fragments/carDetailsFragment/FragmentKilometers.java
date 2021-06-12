@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.fragments.carDetailsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.cars.halamotor.R;
+import com.cars.halamotor.presnter.carDetails.CarBrand;
+import com.cars.halamotor.presnter.carDetails.CarKilometers;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarKilometers;
 import java.util.ArrayList;
@@ -27,8 +30,26 @@ public class FragmentKilometers extends Fragment implements AdapterCarKilometers
     RelativeLayout cancelRL;
     ImageView cancelIV;
     View view;
+    CarKilometers carKilometers;
 
     public FragmentKilometers(){}
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CarBrand) {
+            carKilometers = (CarKilometers) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carKilometers = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -112,7 +133,6 @@ public class FragmentKilometers extends Fragment implements AdapterCarKilometers
 
     @Override
     public void onKilometersClicked(String carKilometersStr) {
-        CarDetails carDetails = (CarDetails) getActivity();
-        carDetails.getCarKilometersStrFromFragmentKilometersAndMoveToFragmentTransmission(carKilometersStr);
+        carKilometers.passCarKilometers(carKilometersStr);
     }
 }

@@ -11,17 +11,20 @@ import android.widget.TextView;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
+import com.cars.halamotor.model.CarTransmission;
 
 import java.util.ArrayList;
+
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 
 public class AdapterCarTransmission extends RecyclerView.Adapter<AdapterCarTransmission.ViewHolder>{
 
     private final Context context;
-    public ArrayList<String> carTransmissionArrayL ;
+    public ArrayList<CarTransmission> carTransmissionArrayL ;
     PassTransmission PassTransmission;
 
     public AdapterCarTransmission
-            (Context context, ArrayList<String> carTransmissionArrayL,PassTransmission PassTransmission)
+            (Context context, ArrayList<CarTransmission> carTransmissionArrayL,PassTransmission PassTransmission)
     {   this.context = context;
         this.carTransmissionArrayL = carTransmissionArrayL;
         this.PassTransmission = PassTransmission;
@@ -37,7 +40,7 @@ public class AdapterCarTransmission extends RecyclerView.Adapter<AdapterCarTrans
     @Override
     public void onBindViewHolder(final AdapterCarTransmission.ViewHolder holder, final int position) {
 
-        holder.modelTV.setText(carTransmissionArrayL.get(position));
+        holder.modelTV.setText(getTextEngOrLocal(context,carTransmissionArrayL.get(position).getSetting_content_name_en(),carTransmissionArrayL.get(position).getSetting_content_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,10 +69,10 @@ public class AdapterCarTransmission extends RecyclerView.Adapter<AdapterCarTrans
     }
 
     public interface PassTransmission {
-        void onTransmissionClicked(String carTransmissionStr);
+        void onTransmissionClicked(CarTransmission carTransmission);
     }
 
-    public void filterList(ArrayList<String> filterdNames) {
+    public void filterList(ArrayList<CarTransmission> filterdNames) {
         this.carTransmissionArrayL = filterdNames;
         notifyDataSetChanged();
     }

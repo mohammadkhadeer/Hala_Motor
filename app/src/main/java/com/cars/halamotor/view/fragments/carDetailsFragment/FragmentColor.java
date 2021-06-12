@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.fragments.carDetailsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,17 +13,16 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
 import com.cars.halamotor.R;
 import com.cars.halamotor.model.CarColor;
+import com.cars.halamotor.presnter.carDetails.CarColorPresnter;
+import com.cars.halamotor.presnter.carDetails.CarFuelPresnter;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarColor;
-import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarFuel;
-
 import java.util.ArrayList;
+import static com.cars.halamotor.dataBase.ReadSetting.getCarColorFromDataBase;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
-import static com.cars.halamotor.functions.Functions.fillColorArrayL;
-import static com.cars.halamotor.functions.Functions.fillFuelArrayL;
 
 public class FragmentColor extends Fragment implements AdapterCarColor.PassColor{
 
@@ -33,8 +33,26 @@ public class FragmentColor extends Fragment implements AdapterCarColor.PassColor
     RelativeLayout cancelRL;
     ImageView cancelIV;
     View view;
+    CarColorPresnter carColorPresnter;
 
     public FragmentColor(){}
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CarColorPresnter) {
+            carColorPresnter = (CarColorPresnter) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carColorPresnter = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,8 +94,15 @@ public class FragmentColor extends Fragment implements AdapterCarColor.PassColor
     private void filter(String text) {
         ArrayList<CarColor> carColorsArrayList2  = new ArrayList<CarColor>();
         for (CarColor carColor : carColorsArrayL) {
-            if (carColor.getColorNameStr().toLowerCase().contains(text.toLowerCase())) {
-                carColorsArrayList2.add(carColor);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (carColor.getSetting_content_name_en().toLowerCase().contains(text.toLowerCase())) {
+                    carColorsArrayList2.add(carColor);
+                }
+            }else{
+                if (carColor.getSetting_content_name_ar().toLowerCase().contains(text.toLowerCase())) {
+                    carColorsArrayList2.add(carColor);
+                }
             }
         }
         adapterCarColor.filterList(carColorsArrayList2);
@@ -101,7 +126,7 @@ public class FragmentColor extends Fragment implements AdapterCarColor.PassColor
     }
 
     private void createRV() {
-        carColorsArrayL =fillColorArrayL(carColorsArrayL,getActivity());
+        carColorsArrayL =getCarColorFromDataBase(getActivity());
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -118,7 +143,6 @@ public class FragmentColor extends Fragment implements AdapterCarColor.PassColor
 
     @Override
     public void onColorClicked(CarColor carColor) {
-        CarDetails carDetails = (CarDetails) getActivity();
-        carDetails.getCarColorStrFromFragmentColorAndMoveToFragmentPaymentMethod(carColor);
+        carColorPresnter.passCarColor(carColor);
     }
 }

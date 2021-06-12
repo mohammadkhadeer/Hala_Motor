@@ -15,6 +15,8 @@ import com.cars.halamotor.model.CarInsurance;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+
 public class AdapterCarInsurance extends RecyclerView.Adapter<AdapterCarInsurance.ViewHolder>{
 
     private final Context context;
@@ -38,7 +40,7 @@ public class AdapterCarInsurance extends RecyclerView.Adapter<AdapterCarInsuranc
     @Override
     public void onBindViewHolder(final AdapterCarInsurance.ViewHolder holder, final int position) {
 
-        holder.modelTV.setText(carIncenseArrayL.get(position).getCarInsuranceStr());
+        holder.modelTV.setText(getTextEngOrLocal(context,carIncenseArrayL.get(position).getSetting_content_name_en(),carIncenseArrayL.get(position).getSetting_content_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

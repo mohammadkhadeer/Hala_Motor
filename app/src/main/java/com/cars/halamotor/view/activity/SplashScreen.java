@@ -42,6 +42,7 @@ import static com.cars.halamotor.functions.Functions.getNotification;
 import static com.cars.halamotor.presnter.CarsBrandsAndModels.getCarsBrandsAndModel;
 import static com.cars.halamotor.presnter.CountryCitesAndArea.getCountryCitesAndAreas;
 import static com.cars.halamotor.presnter.LoginAndUpdateProfile.updateProfileSuccess;
+import static com.cars.halamotor.presnter.Setting.getSetting;
 import static com.cars.halamotor.sharedPreferences.AddressSharedPreferences.getUserAddressFromSP;
 import static com.cars.halamotor.sharedPreferences.AddressSharedPreferences.saveUserInfoInSP;
 import static com.cars.halamotor.sharedPreferences.CarsAndModels.getNumberOfUse;
@@ -56,7 +57,7 @@ import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserName;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOnServerSP;
 
-public class SplashScreen extends AppCompatActivity implements CountryCitesAndAreas, UpdateProfile ,ModelsInstald{
+public class SplashScreen extends AppCompatActivity implements CountryCitesAndAreas, UpdateProfile {
 
     private static final int SELECT_LOCATION = 555;
     private static final int LOGIN = 556;
@@ -86,9 +87,11 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         intiPersenters();
 
         //get all cites and area just run one time when open app first time
-        if (getCountryId(this) == "empty") {
-            getCountryCitesAndAreas(countryCitesAndAreas,myDB,getApplicationContext());
-        }
+        getCitesAndAreasAndCarsSetting();
+
+        setup_profile_message_rl.setVisibility(View.VISIBLE);
+        setup_messageTextView.setText(getResources().getString(R.string.setup_message_1));
+        setup_message_per.setText(getResources().getString(R.string.setup_message_2));
 
 //        to update brands every user open app 10 the table updates every 10's
         if (getNumberOfUse(this) == "empty" || getNumberOfUse(this).equals("70")) {
@@ -97,23 +100,34 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
                 @Override
                 public void run() {
 //                    getCarsBrandsAndModel(myDB);
-                    splashScreenTime =5000;
-                    setup_profile_message_rl.setVisibility(View.VISIBLE);
-                    setup_messageTextView.setText(getResources().getString(R.string.setup_message_1));
-                    setup_message_per.setText(getResources().getString(R.string.setup_message_2));
+                    splashScreenTime =6000;
+
 
                     reqToServerToGetCarsBrandsAndModels();
-                }
-            }, 100);
 
+                }
+            }, 2500);
         }else{
             splashScreenTime =1000;
             setup_profile_message_rl.setVisibility(View.GONE);
             updateNumberOfOpenApp();
             Log.w("TAG","number of use insaid else"+ getNumberOfUse(this));
-            loginCheck();
+            loginCheck("After check in cars already installed insaid else");
         }
 
+    }
+
+    private void getCitesAndAreasAndCarsSetting() {
+        if (getCountryId(this) == "empty") {
+            getCountryCitesAndAreas(countryCitesAndAreas,myDB,getApplicationContext());
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    getSetting(myDB);
+                }
+            });
+            thread.start();
+        }
     }
 
     private void init() {
@@ -147,20 +161,17 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         this.startService(intent);
         //CarBrandsAndModelService
 
-        setup_messageTextView.setText(getApplicationContext().getResources().getString(R.string.setup_message_1));
-        setup_message_per.setText(getApplicationContext().getResources().getString(R.string.setup_message_2));
         updateNumberOfOpenApp();
+        loginCheck("First login after get cars start");
     }
 
     private void intiPersenters() {
         this.countryCitesAndAreas = (CountryCitesAndAreas) this;
         this.updateProfile = (UpdateProfile) this;
-        this.modelsInstald = (ModelsInstald) this;
     }
 
-    private void loginCheck() {
-        setup_profile_message_rl.setVisibility(View.GONE);
-
+    private void loginCheck(String from) {
+        Log.w("TAG","login Check from "+from);
         if (getPlatform_id(this) == "empty")
         {
             transportToLoginScreen();
@@ -217,7 +228,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
                     getUserTokenFromServer(getApplicationContext())
                     ,updateProfile,area_id,area_name_en);
             //updateCityNeighborhood(this,cityS,neighborhoodS);
-
+            splashScreenTime =1000;
             transportToMainActivity();
         }
     }
@@ -250,6 +261,8 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
 
             @Override
             public void run() {
+                setup_profile_message_rl.setVisibility(View.GONE);
+
                 Bundle bundle = new Bundle();
                 bundle.putString("address", "splash");
 
@@ -259,7 +272,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
                 overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
 //                finish();
             }
-        }, 1000);
+        }, splashScreenTime);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -296,21 +309,12 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     @Override
     public void countryCitesAreasInfo() {
         Log.w("TAG","Area and Citeis complete");
-        loginCheck();
+
     }
 
     @Override
     public void updateSuccess(JSONObject obj) {
         Log.w("TAG","Update personal info complete");
-    }
-
-    @Override
-    public void insertedSuccess() {
-        Log.w("TAG","installed Success ...");
-        //setup_messageTextView.setVisibility(View.GONE);
-        //setup_message_per.setVisibility(View.GONE);
-
-        loginCheck();
     }
 
 }

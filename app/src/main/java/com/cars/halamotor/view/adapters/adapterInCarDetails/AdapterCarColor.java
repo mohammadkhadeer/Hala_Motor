@@ -15,6 +15,8 @@ import com.cars.halamotor.model.CarColor;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+
 public class AdapterCarColor extends RecyclerView.Adapter<AdapterCarColor.ViewHolder>{
 
     private final Context context;
@@ -38,7 +40,7 @@ public class AdapterCarColor extends RecyclerView.Adapter<AdapterCarColor.ViewHo
     @Override
     public void onBindViewHolder(final AdapterCarColor.ViewHolder holder, final int position) {
         changeColorBG(context,holder,position);
-        holder.modelTV.setText(carColorArrayL.get(position).getColorNameStr());
+        holder.modelTV.setText(getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,67 +52,67 @@ public class AdapterCarColor extends RecyclerView.Adapter<AdapterCarColor.ViewHo
     }
 
     private void changeColorBG(Context context, ViewHolder holder, int position) {
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_beige)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_beige)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_beige_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_black)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_black)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_black_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_blue)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_blue)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_blue_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_brown)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_brown)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_brown_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_green)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_green)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_green_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_grey)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_grey)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_grey_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_maroon)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_maroon)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_maroon_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_orange)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_orange)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_orange_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_pink)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_pink)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_pink_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_purple)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_purple)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_purple_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_red)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_red)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_red_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_silver)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_silver)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_silver_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_turquoise)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_turquoise)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_turquoise_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_white)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_white)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_white_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_yellow)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_yellow)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_yellow_bg);
         }
-        if (carColorArrayL.get(position).getColorNameStr().equals(context.getResources().getString(R.string.color_gold)))
+        if (getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()).equals(context.getResources().getString(R.string.color_gold)))
         {
             holder.relativeLayoutColor.setBackgroundResource(R.drawable.circl_gold_bg);
         }

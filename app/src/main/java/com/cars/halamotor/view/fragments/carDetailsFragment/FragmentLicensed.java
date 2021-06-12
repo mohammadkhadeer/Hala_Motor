@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.fragments.carDetailsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,14 +16,18 @@ import android.widget.RelativeLayout;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.model.CarLicensed;
+import com.cars.halamotor.presnter.carDetails.CarFuelPresnter;
+import com.cars.halamotor.presnter.carDetails.CarLicensedPresnter;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarFuel;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarLicensed;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.dataBase.ReadSetting.getCarLicensedFromDataBase;
 import static com.cars.halamotor.functions.Functions.fillFuelArrayL;
 import static com.cars.halamotor.functions.Functions.fillLicensedArrayL;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class FragmentLicensed extends Fragment implements AdapterCarLicensed.PassLicensed {
 
@@ -33,8 +38,26 @@ public class FragmentLicensed extends Fragment implements AdapterCarLicensed.Pas
     RelativeLayout cancelRL;
     ImageView cancelIV;
     View view;
+    CarLicensedPresnter carLicensedPresnter;
 
     public FragmentLicensed(){}
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CarLicensedPresnter) {
+            carLicensedPresnter = (CarLicensedPresnter) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carLicensedPresnter = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,8 +99,15 @@ public class FragmentLicensed extends Fragment implements AdapterCarLicensed.Pas
     private void filter(String text) {
         ArrayList<CarLicensed> carLicensedArrayL2  = new ArrayList<CarLicensed>();
         for (CarLicensed tex : carLicensedArrayL) {
-            if (tex.getCarLicensedStr().toLowerCase().contains(text.toLowerCase())) {
-                carLicensedArrayL2.add(tex);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (tex.getSetting_content_name_en().toLowerCase().contains(text.toLowerCase())) {
+                    carLicensedArrayL2.add(tex);
+                }
+            }else{
+                if (tex.getSetting_content_name_ar().toLowerCase().contains(text.toLowerCase())) {
+                    carLicensedArrayL2.add(tex);
+                }
             }
         }
         adapterCarLicensed.filterList(carLicensedArrayL2);
@@ -101,7 +131,7 @@ public class FragmentLicensed extends Fragment implements AdapterCarLicensed.Pas
     }
 
     private void createRV() {
-        carLicensedArrayL =fillLicensedArrayL(carLicensedArrayL,getActivity());
+        carLicensedArrayL =getCarLicensedFromDataBase(getActivity());
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -118,7 +148,6 @@ public class FragmentLicensed extends Fragment implements AdapterCarLicensed.Pas
 
     @Override
     public void onLicensedClicked(CarLicensed carLicensed) {
-        CarDetails carDetails = (CarDetails) getActivity();
-        carDetails.getCarLicensedStrFromFragmentLicensedAndMoveToFragmentInsurance(carLicensed);
+        carLicensedPresnter.passCarLicensed(carLicensed);
     }
 }

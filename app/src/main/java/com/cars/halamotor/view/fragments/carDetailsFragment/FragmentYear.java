@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.cars.halamotor.R;
+import com.cars.halamotor.presnter.carDetails.CarBrand;
+import com.cars.halamotor.presnter.carDetails.CarYear;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarYear;
 import java.util.ArrayList;
@@ -31,9 +33,26 @@ public class FragmentYear extends Fragment implements AdapterCarYear.PassCarYear
     ImageView cancelIV;
     View view;
     String wherComeFromStr;
-
+    CarYear carYear;
 
     public FragmentYear() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CarYear) {
+            carYear = (CarYear) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carYear = null;
     }
 
     @Override
@@ -116,8 +135,9 @@ public class FragmentYear extends Fragment implements AdapterCarYear.PassCarYear
     }
 
     @Override
-    public void onYearClicked(String carYear) {
-        CarDetails carDetails = (CarDetails) getActivity();
-        carDetails.getCarYearStrFromFragmentCarYearAndMoveToFragmentCondition(carYear);
+    public void onYearClicked(String carYearStr) {
+        carYear.passCarYear(carYearStr);
+//        CarDetails carDetails = (CarDetails) getActivity();
+//        carDetails.getCarYearStrFromFragmentCarYearAndMoveToFragmentCondition(carYear);
     }
 }

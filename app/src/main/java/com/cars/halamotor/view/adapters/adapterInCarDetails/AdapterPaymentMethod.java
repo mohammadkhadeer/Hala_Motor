@@ -15,6 +15,8 @@ import com.cars.halamotor.model.PaymentMethod;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+
 public class AdapterPaymentMethod extends RecyclerView.Adapter<AdapterPaymentMethod.ViewHolder>{
 
     private final Context context;
@@ -38,7 +40,7 @@ public class AdapterPaymentMethod extends RecyclerView.Adapter<AdapterPaymentMet
     @Override
     public void onBindViewHolder(final AdapterPaymentMethod.ViewHolder holder, final int position) {
 
-        holder.modelTV.setText(carPaymentArrayL.get(position).getPaymentMethodStr());
+        holder.modelTV.setText(getTextEngOrLocal(context,carPaymentArrayL.get(position).getSetting_content_name_en(),carPaymentArrayL.get(position).getSetting_content_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

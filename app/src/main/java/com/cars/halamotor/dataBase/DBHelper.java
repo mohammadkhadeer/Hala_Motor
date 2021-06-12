@@ -72,6 +72,20 @@ public static final String TABLE_CITYS="cites";
     public static final String COL_MODEL_NAME_EN="MODEL_NAME_EN";
     public static final String COL_MODEL_NAME_AR="MODEL_NAME_AR";
 
+    public static final String TABLE_MODEL_SETTING="model_setting";
+    public static final String TABLE_MODEL_SETTING_COL_ID="COL_ID";
+    public static final String TABLE_MODEL_SETTING_ID="SETTING_ID";
+    public static final String TABLE_MODEL_SETTING_CODE="SETTING_CODE";
+    public static final String TABLE_MODEL_SETTING_NAME="SETTING_NAME";
+    public static final String TABLE_MODEL_SETTING_NAME_EN="SETTING_NAME_EN";
+    public static final String TABLE_MODEL_SETTING_NAME_AR="SETTING_NAME_AR";
+    public static final String TABLE_MODEL_SETTING_CONTENT_ID="SETTING_CONTENT_ID";
+    public static final String TABLE_MODEL_SETTING_CONTENT_CODE="SETTING_CONTENT_CODE";
+    public static final String TABLE_MODEL_SETTING_CONTENT_NAME="SETTING_CONTENT_NAME";
+    public static final String TABLE_MODEL_SETTING_CONTENT_NAME_EN="SETTING_CONTENT_NAME_EN";
+    public static final String TABLE_MODEL_SETTING_CONTENT_NAME_AR="SETTING_CONTENT_NAME_AR";
+
+
     public static final String TABLE_DRIVER_INFORMATION="driver_info_table";
     public static final String COL_ITEM_DRIVER_INFORMATION_id="ID";
     public static final String COL_ITEM_DRIVER_INFORMATION_PROCESS_TYPE_S="PROCESS_TYPE_S";
@@ -418,6 +432,9 @@ public static final String TABLE_CITYS="cites";
         db.execSQL("create table "+TABLE_CARS_MODEL +" (COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "BRAND_ID TEXT" + ",BRAND_NAME TEXT" + ",BRAND_NAME_EN TEXT" +",BRAND_NAME_AR TEXT" +",MODEL_ID TEXT" +",MODEL_NAME TEXT" +",MODEL_NAME_EN TEXT" + ",MODEL_NAME_AR TEXT)");
 
+        db.execSQL("create table "+TABLE_MODEL_SETTING +" (COL_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "SETTING_ID TEXT" + ",SETTING_CODE TEXT" + ",SETTING_NAME TEXT" + ",SETTING_NAME_EN TEXT" + ",SETTING_NAME_AR TEXT" +",SETTING_CONTENT_ID TEXT" +",SETTING_CONTENT_CODE TEXT" +",SETTING_CONTENT_NAME TEXT" +",SETTING_CONTENT_NAME_EN TEXT" + ",SETTING_CONTENT_NAME_AR TEXT)");
+
     }
 
     @Override
@@ -440,11 +457,36 @@ public static final String TABLE_CITYS="cites";
 
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_CARS_BRAND);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_CARS_MODEL);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_MODEL_SETTING);
 
         onCreate(db);
     }
 
     ///////////////////////insert data//////////////////////////////////////////
+
+    public boolean insertSetting(String setting_id,String setting_code,String setting_name,String setting_name_en,String setting_name_ar
+            ,String setting_content_id,String setting_content_code,String setting_content_name,String setting_content_name_en,String setting_content_name_ar)
+    {
+        SQLiteDatabase db =this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TABLE_MODEL_SETTING_ID,setting_id);
+        contentValues.put(TABLE_MODEL_SETTING_CODE,setting_code);
+        contentValues.put(TABLE_MODEL_SETTING_NAME,setting_name);
+        contentValues.put(TABLE_MODEL_SETTING_NAME_EN,setting_name_en);
+        contentValues.put(TABLE_MODEL_SETTING_NAME_AR,setting_name_ar);
+        contentValues.put(TABLE_MODEL_SETTING_CONTENT_ID,setting_content_id);
+        contentValues.put(TABLE_MODEL_SETTING_CONTENT_CODE,setting_content_code);
+        contentValues.put(TABLE_MODEL_SETTING_CONTENT_NAME,setting_content_name);
+        contentValues.put(TABLE_MODEL_SETTING_CONTENT_NAME_EN,setting_content_name_en);
+        contentValues.put(TABLE_MODEL_SETTING_CONTENT_NAME_AR,setting_content_name_ar);
+
+
+        long result= db.insert(TABLE_MODEL_SETTING,null,contentValues);
+        if(result == -1)
+            return false;
+        else
+            return true;
+    }
 
     public boolean insertCarsBrand(String id,String name
             ,String name_en,String name_ar)
@@ -1081,6 +1123,13 @@ public static final String TABLE_CITYS="cites";
         return cursor;
     }
 
+    public Cursor descendingSetting(){
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_MODEL_SETTING, null, null,
+                null, null, null, TABLE_MODEL_SETTING_COL_ID + " DESC", null);
+        return cursor;
+    }
+
     //////////////////////////////////////update/////////////////////
 
     public void updateNotification(String itemServerID,String openOrNotYet)
@@ -1321,6 +1370,12 @@ public static final String TABLE_CITYS="cites";
     public void deleteAllCarsModel(){
         SQLiteDatabase db =this.getWritableDatabase();
         db.execSQL("DELETE FROM cars_model"); //delete all rows in a table
+        db.close();
+    }
+
+    public void deleteAllSetting(){
+        SQLiteDatabase db =this.getWritableDatabase();
+        db.execSQL("DELETE FROM model_setting"); //delete all rows in a table
         db.close();
     }
 

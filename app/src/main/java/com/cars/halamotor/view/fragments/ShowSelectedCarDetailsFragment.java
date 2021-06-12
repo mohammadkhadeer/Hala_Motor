@@ -317,15 +317,15 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
         carMakeTV.setText(carDetailsModel.getCarMakeStr().getName_en());
         modelTV.setText(carDetailsModel.getModelStr().getBrand_name_en());
         yearTV.setText(carDetailsModel.getYearStr());
-        conditionTV.setText(carDetailsModel.getConditionStr().getCarConditionStr());
+        conditionTV.setText(carDetailsModel.getConditionStr().getSetting_content_name_en());
         kilometersTV.setText(carDetailsModel.getKilometersStr());
         transmissionTV.setText(carDetailsModel.getTransmissionStr());
-        fuelTV.setText(carDetailsModel.getFuelStr().getCarFuelStr());
+        fuelTV.setText(carDetailsModel.getFuelStr().getSetting_content_name_en());
         carOptionsTV.setText(carDetailsModel.getCarOptionsStr());
-        carLicenseTV.setText(carDetailsModel.getLicenseStr().getCarLicensedStr());
-        insuranceTV.setText(carDetailsModel.getInsurance().getCarInsuranceStr());
+        carLicenseTV.setText(carDetailsModel.getLicenseStr().getSetting_content_name_en());
+        insuranceTV.setText(carDetailsModel.getInsurance().getSetting_content_name_en());
         colorTV.setText(carDetailsModel.getCarColorStr());
-        paymentMethodTV.setText(carDetailsModel.getPaymentMethod().getPaymentMethodStr());
+        paymentMethodTV.setText(carDetailsModel.getPaymentMethod().getSetting_content_name_en());
     }
 
     private void inti() {

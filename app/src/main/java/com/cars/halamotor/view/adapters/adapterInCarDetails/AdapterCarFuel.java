@@ -15,6 +15,8 @@ import com.cars.halamotor.model.CarFuel;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+
 public class AdapterCarFuel extends RecyclerView.Adapter<AdapterCarFuel.ViewHolder>{
 
     private final Context context;
@@ -38,7 +40,7 @@ public class AdapterCarFuel extends RecyclerView.Adapter<AdapterCarFuel.ViewHold
     @Override
     public void onBindViewHolder(final AdapterCarFuel.ViewHolder holder, final int position) {
 
-        holder.modelTV.setText(carFuelArrayL.get(position).getCarFuelStr());
+        holder.modelTV.setText(getTextEngOrLocal(context,carFuelArrayL.get(position).getSetting_content_name_en(),carFuelArrayL.get(position).getSetting_content_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

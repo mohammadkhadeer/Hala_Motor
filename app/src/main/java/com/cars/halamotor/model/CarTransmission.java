@@ -3,11 +3,11 @@ package com.cars.halamotor.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class CarCondition implements Parcelable {
+public class CarTransmission implements Parcelable {
     String setting_id,setting_code,setting_name,setting_name_en,setting_name_ar
             ,setting_content_id,setting_content_code,setting_content_name,setting_content_name_en,setting_content_name_ar;
 
-    public CarCondition(String setting_id, String setting_code, String setting_name, String setting_name_en, String setting_name_ar, String setting_content_id, String setting_content_code, String setting_content_name, String setting_content_name_en, String setting_content_name_ar) {
+    public CarTransmission(String setting_id, String setting_code, String setting_name, String setting_name_en, String setting_name_ar, String setting_content_id, String setting_content_code, String setting_content_name, String setting_content_name_en, String setting_content_name_ar) {
         this.setting_id = setting_id;
         this.setting_code = setting_code;
         this.setting_name = setting_name;
@@ -20,7 +20,7 @@ public class CarCondition implements Parcelable {
         this.setting_content_name_ar = setting_content_name_ar;
     }
 
-    protected CarCondition(Parcel in) {
+    protected CarTransmission(Parcel in) {
         setting_id = in.readString();
         setting_code = in.readString();
         setting_name = in.readString();
@@ -33,15 +33,15 @@ public class CarCondition implements Parcelable {
         setting_content_name_ar = in.readString();
     }
 
-    public static final Creator<CarCondition> CREATOR = new Creator<CarCondition>() {
+    public static final Creator<CarTransmission> CREATOR = new Creator<CarTransmission>() {
         @Override
-        public CarCondition createFromParcel(Parcel in) {
-            return new CarCondition(in);
+        public CarTransmission createFromParcel(Parcel in) {
+            return new CarTransmission(in);
         }
 
         @Override
-        public CarCondition[] newArray(int size) {
-            return new CarCondition[size];
+        public CarTransmission[] newArray(int size) {
+            return new CarTransmission[size];
         }
     };
 

@@ -17,14 +17,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.cars.halamotor.R;
 import com.cars.halamotor.model.CarOption;
-import com.cars.halamotor.view.activity.CarDetails;
+import com.cars.halamotor.presnter.carDetails.CarOptionsPresnter;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarOptions;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import static com.cars.halamotor.dataBase.ReadSetting.getCarOptionsFromDataBase;
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.functions.Functions.fillOptionArrayL;
-import static com.cars.halamotor.functions.Functions.fillOptionsArrayL;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class FragmentOptions extends Fragment implements AdapterCarOptions.PassOptions{
 
@@ -37,6 +37,7 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
     ImageView cancelIV;
     View view;
     private static String optionsListStr;
+    CarOptionsPresnter carOptionsPresnter;
 
     public FragmentOptions(){}
 
@@ -47,7 +48,20 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
             optionsListStr = getArguments().getString("options");
             Log.i("TAG",optionsListStr);
         }
+        if (context instanceof CarOptionsPresnter) {
+            carOptionsPresnter = (CarOptionsPresnter) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+
         super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carOptionsPresnter = null;
     }
 
     @Override
@@ -74,17 +88,15 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
         nextRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CarDetails carDetails = (CarDetails) getActivity();
                 String options = "";
                 for (int i = 0; i < carOptionsArrayL.size(); i++) {
                     if (carOptionsArrayL.get(i).getIsSelected() == 1)
                     {
-                        options = options + carOptionsArrayL.get(i).getCarOptionStr() + " | ";
+                        options = options + getTextEngOrLocal(getActivity(),carOptionsArrayL.get(i).getSetting_content_name_en(),carOptionsArrayL.get(i).getSetting_content_name_ar()) + " | ";
                     }
                 }
                 optionsListStr = options;
-                carDetails.getCarOptionsStrFromFragmentOptionsAndMoveToFragmentOptions(options);
-
+                carOptionsPresnter.passCarOptions(options);
             }
         });
     }
@@ -122,9 +134,17 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
     private void filter(String text) {
         ArrayList<CarOption> carOptionsArrayList2  = new ArrayList<CarOption>();
         for (CarOption carOption : carOptionsArrayL) {
-            if (carOption.getCarOptionStr().toLowerCase().contains(text.toLowerCase())) {
-                carOptionsArrayList2.add(carOption);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (carOption.getSetting_content_name_en().toLowerCase().contains(text.toLowerCase())) {
+                    carOptionsArrayList2.add(carOption);
+                }
+            }else{
+                if (carOption.getSetting_content_name_ar().toLowerCase().contains(text.toLowerCase())) {
+                    carOptionsArrayList2.add(carOption);
+                }
             }
+
         }
         adapterCarOptions.filterList(carOptionsArrayList2);
     }
@@ -147,7 +167,7 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
     }
 
     private void createRV() {
-        carOptionsArrayL =fillOptionsArrayL(carOptionsArrayL,getActivity());
+        carOptionsArrayL =getCarOptionsFromDataBase(getActivity());
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -184,7 +204,7 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
             {
                 for (int j=0;j<carOptionsArrayL.size();j++)
                 {
-                    if (carOptionsSavedArrayL.get(i).replace(" ", "").equals(carOptionsArrayL.get(j).getCarOptionStr().replace(" ", "")))
+                    if (carOptionsSavedArrayL.get(i).replace(" ", "").equals(getTextEngOrLocal(getActivity(),carOptionsArrayL.get(j).getSetting_content_name_en().replace(" ", ""),carOptionsArrayL.get(j).getSetting_content_name_ar().replace(" ", ""))))
                     {
                         carOptionsArrayL.get(j).setIsSelected(1);
                         adapterCarOptions.notifyItemChanged(j);

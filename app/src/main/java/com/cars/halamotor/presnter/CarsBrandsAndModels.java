@@ -93,7 +93,7 @@ public class CarsBrandsAndModels {
 
             if (flag==1)
             {
-                Log.w("TAG","Al7mdo llah");
+                Log.w("TAG","Cars done");
 //                Log.w("TAG","carsBrandsArrayL: "+String.valueOf(carsBrandsArrayL.size()));
 //                Log.w("TAG","areasArrayL: "+String.valueOf(areasArrayL.size()));
             }

@@ -32,6 +32,7 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:id="@+id/setup_profile_message_rl"
+        android:visibility="gone"
         android:layout_marginBottom="150dp">
 
         <LinearLayout

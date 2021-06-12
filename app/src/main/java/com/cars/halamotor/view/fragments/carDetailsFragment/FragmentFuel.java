@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.fragments.carDetailsFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,11 +15,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.cars.halamotor.R;
 import com.cars.halamotor.model.CarFuel;
+import com.cars.halamotor.presnter.carDetails.CarFuelPresnter;
+import com.cars.halamotor.presnter.carDetails.CarTransmissionPresnter;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarFuel;
 import java.util.ArrayList;
 
+import static com.cars.halamotor.dataBase.ReadSetting.getCarFuelFromDataBase;
 import static com.cars.halamotor.functions.Functions.fillFuelArrayL;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class FragmentFuel extends Fragment implements AdapterCarFuel.PassFuel{
 
@@ -29,8 +34,26 @@ public class FragmentFuel extends Fragment implements AdapterCarFuel.PassFuel{
     RelativeLayout cancelRL;
     ImageView cancelIV;
     View view;
+    CarFuelPresnter carTransmissionPresnter;
 
     public FragmentFuel(){}
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CarFuelPresnter) {
+            carTransmissionPresnter = (CarFuelPresnter) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        carTransmissionPresnter = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,9 +95,17 @@ public class FragmentFuel extends Fragment implements AdapterCarFuel.PassFuel{
     private void filter(String text) {
         ArrayList<CarFuel> carFuelArrayList2  = new ArrayList<CarFuel>();
         for (CarFuel carFuel : carFuelArrayL) {
-            if (carFuel.getCarFuelStr().toLowerCase().contains(text.toLowerCase())) {
-                carFuelArrayList2.add(carFuel);
+            if (getUserLanguage(getActivity()).equals("en"))
+            {
+                if (carFuel.getSetting_content_name_en().toLowerCase().contains(text.toLowerCase())) {
+                    carFuelArrayList2.add(carFuel);
+                }
+            }else{
+                if (carFuel.getSetting_content_name_ar().toLowerCase().contains(text.toLowerCase())) {
+                    carFuelArrayList2.add(carFuel);
+                }
             }
+
         }
         adapterCarFuel.filterList(carFuelArrayList2);
     }
@@ -97,7 +128,7 @@ public class FragmentFuel extends Fragment implements AdapterCarFuel.PassFuel{
     }
 
     private void createRV() {
-        carFuelArrayL =fillFuelArrayL(carFuelArrayL,getActivity());
+        carFuelArrayL =getCarFuelFromDataBase(getActivity());
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -114,7 +145,6 @@ public class FragmentFuel extends Fragment implements AdapterCarFuel.PassFuel{
 
     @Override
     public void onFuelClicked(CarFuel carFuel) {
-        CarDetails carDetails = (CarDetails) getActivity();
-        carDetails.getCarFuelStrFromFragmentFuelAndMoveToFragmentOptions(carFuel);
+        carTransmissionPresnter.passCarFuel(carFuel);
     }
 }
