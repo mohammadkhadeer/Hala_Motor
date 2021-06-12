@@ -232,7 +232,7 @@ public class Functions {
         }
         if (whatUserWantToChange.equals("transmission"))
         {
-            carDetailsModel.setTransmissionStr(valueInWhatUserWantToChange);
+//            carDetailsModel.setTransmissionStr(valueInWhatUserWantToChange);
         }
         if (whatUserWantToChange.equals("fuel"))
         {

@@ -209,7 +209,7 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
         modelRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                carMakeStr = carDetailsModel.getCarMakeStr().getName_en();
+                carMakeStr = carDetailsModel.getCarMake().getName_en();
                 moveToCarDetailsSpecificFragment("fromAShowSelected",getActivity().getResources().getString(R.string.model),"model");
             }
         });
@@ -314,16 +314,16 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
     }
 
     private void fillDetails() {
-        carMakeTV.setText(carDetailsModel.getCarMakeStr().getName_en());
-        modelTV.setText(carDetailsModel.getModelStr().getBrand_name_en());
+        carMakeTV.setText(carDetailsModel.getCarMake().getName_en());
+        modelTV.setText(carDetailsModel.getCarModel().getBrand_name_en());
         yearTV.setText(carDetailsModel.getYearStr());
-        conditionTV.setText(carDetailsModel.getConditionStr().getSetting_content_name_en());
+        conditionTV.setText(carDetailsModel.getCarCondition().getSetting_content_name_en());
         kilometersTV.setText(carDetailsModel.getKilometersStr());
-        transmissionTV.setText(carDetailsModel.getTransmissionStr());
-        fuelTV.setText(carDetailsModel.getFuelStr().getSetting_content_name_en());
+        transmissionTV.setText(carDetailsModel.getCarTransmission().getSetting_content_name_en());
+        fuelTV.setText(carDetailsModel.getCarFuel().getSetting_content_name_en());
         carOptionsTV.setText(carDetailsModel.getCarOptionsStr());
-        carLicenseTV.setText(carDetailsModel.getLicenseStr().getSetting_content_name_en());
-        insuranceTV.setText(carDetailsModel.getInsurance().getSetting_content_name_en());
+        carLicenseTV.setText(carDetailsModel.getCarLicensed().getSetting_content_name_en());
+        insuranceTV.setText(carDetailsModel.getCarInsurance().getSetting_content_name_en());
         colorTV.setText(carDetailsModel.getCarColorStr());
         paymentMethodTV.setText(carDetailsModel.getPaymentMethod().getSetting_content_name_en());
     }

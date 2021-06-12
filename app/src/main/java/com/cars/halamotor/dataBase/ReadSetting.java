@@ -2,6 +2,7 @@ package com.cars.halamotor.dataBase;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.cars.halamotor.model.Area;
 import com.cars.halamotor.model.CarColor;

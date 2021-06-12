@@ -24,6 +24,7 @@ import com.cars.halamotor.view.activity.AddItem;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.activity.selectAddress.SelectCityAndNeighborhood;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.cleanAddress;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.cleanPhoneNumber;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.saveAddressInSP;
@@ -85,10 +86,17 @@ public class FragmentCityPhoneNumber extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPDATE_LOCATION && resultCode == Activity.RESULT_OK) {
-            cityTV.setText(data.getExtras().getString("city") + " >> " + data.getExtras().getString("nei"));
+            String city_name_en,city_name_ar,area_name_en,area_name_ar,area_id;
+            city_name_ar = data.getExtras().getString("city");
+            city_name_en = data.getExtras().getString("cityS");
+            area_name_ar = data.getExtras().getString("nei");
+            area_name_en = data.getExtras().getString("neiS");
+            area_id = data.getExtras().getString("neiId");
+
+            cityTV.setText(getTextEngOrLocal(getActivity(),city_name_en,city_name_ar) + " >> " + getTextEngOrLocal(getActivity(),area_name_en,area_name_ar));
             saveAddressInSP(getActivity(),sharedPreferences,editor
-                    ,data.getExtras().getString("city"),data.getExtras().getString("nei")
-                    ,data.getExtras().getString("cityS"),data.getExtras().getString("neiS"));
+                    ,city_name_en,area_name_en
+                    ,city_name_ar,area_name_ar,area_id);
         }
     }
 

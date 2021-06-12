@@ -83,6 +83,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragmentCarMake;
     String whereComeFromStr,fragmentTypeStr,carMakeStr,carOptionStr;
+    String []option_array;
     CarDetailsModel carDetailsModel= new CarDetailsModel();
 
     @Override
@@ -197,6 +198,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
                 Bundle bundle = new Bundle();
                 bundle.putString("whereComeFrom", "fromFragment");
                 bundle.putString("options", carOptionStr);
+                bundle.putStringArray("options_array", option_array);
                 fragmentOptions.setArguments(bundle);
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -231,6 +233,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         if (fragmentTypeStr.equals(getResources().getString(R.string.car_options)))
         {
             carOptionStr =bundle.getString("options");
+            option_array =bundle.getStringArray("options_array");
         }
     }
 
@@ -422,20 +425,20 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     public void passCarBrand(CarMake carMake) {
         passCarMakeToModeFragmentAndMove(carMake);
         changeHeadTitle(getResources().getString(R.string.model));
-        carDetailsModel.setCarMakeStr(carMake);
+        carDetailsModel.setCarMake(carMake);
     }
 
     @Override
     public void passCarModelDetails(CarModel carModel) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            carDetailsModel.setModelStr(carModel);
+            carDetailsModel.setCarModel(carModel);
             passObjectFromCarDetailsToAddItem("model","modelS"
                     ,getTextEngOrLocal(getApplicationContext(),carModel.getBrand_name_en(),carModel.getBrand_name()),carModel.getBrand_name_en());
         }else {
             moveFromModelFragmentToYearFragment();
             changeHeadTitle(getResources().getString(R.string.year));
-            carDetailsModel.setModelStr(carModel);
+            carDetailsModel.setCarModel(carModel);
         }
     }
 
@@ -462,7 +465,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         }else {
             moveFromConditionFragmentToKilometersFragment();
             changeHeadTitle(getResources().getString(R.string.kilometers));
-            carDetailsModel.setConditionStr(carCondition);
+            carDetailsModel.setCarCondition(carCondition);
         }
     }
 
@@ -488,7 +491,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         }else {
             moveFromTransmissionFragmentToFuelFragment();
             changeHeadTitle(getResources().getString(R.string.fuel));
-            carDetailsModel.setTransmissionStr(carTransmission.getSetting_content_name_en());
+            carDetailsModel.setCarTransmission(carTransmission);
         }
     }
 
@@ -501,12 +504,12 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         }else {
             moveFromFuelFragmentToOptionsFragment();
             changeHeadTitle(getResources().getString(R.string.car_options));
-            carDetailsModel.setFuelStr(carFuel);
+            carDetailsModel.setCarFuel(carFuel);
         }
     }
 
     @Override
-    public void passCarOptions(String carOptions) {
+    public void passCarOptions(String carOptions,String []options_array) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
             passObjectFromCarDetailsToAddItem("options","optionsS"
@@ -515,6 +518,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
             moveFromOptionsFragmentToLicensedFragment();
             changeHeadTitle(getResources().getString(R.string.car_license));
             carDetailsModel.setCarOptionsStr(carOptions);
+            carDetailsModel.setOption_array(options_array);
         }
     }
 
@@ -527,7 +531,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         }else {
             moveFromLicensedFragmentToInsuranceFragment();
             changeHeadTitle(getResources().getString(R.string.insurance));
-            carDetailsModel.setLicenseStr(carLicensed);
+            carDetailsModel.setCarLicensed(carLicensed);
         }
     }
 
@@ -540,7 +544,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         }else {
             moveFromInsuranceFragmentToColorFragment();
             changeHeadTitle(getResources().getString(R.string.color));
-            carDetailsModel.setInsurance(carInsurance);
+            carDetailsModel.setCarInsurance(carInsurance);
         }
     }
 

@@ -49,14 +49,19 @@ import com.cars.halamotor.model.ItemWheelsRim;
 import com.cars.halamotor.model.WheelsInfo;
 import com.cars.halamotor.model.WheelsRimModel;
 import com.cars.halamotor.permission.CheckPermission;
+import com.cars.halamotor.presnter.Login;
 import com.cars.halamotor.presnter.NumberOfAllowedAds;
 import com.cars.halamotor.presnter.PassCategories;
+import com.cars.halamotor.presnter.UploadCCMETObjectToServer;
 import com.cars.halamotor.utils.Utils;
 import com.cars.halamotor.view.adapters.AdapterSelectCategory;
 import com.cars.halamotor.view.adapters.SelectedImageAdapter;
 import com.cars.halamotor.view.fragments.FragmentCityPhoneNumber;
 import com.cars.halamotor.view.fragments.ShowSelectedCarDetailsFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -98,7 +103,10 @@ import static com.cars.halamotor.functions.Functions.splitString;
 import static com.cars.halamotor.functions.Functions.updateCarDetailsModel;
 import static com.cars.halamotor.functions.NewFunction.convertYearToEng;
 import static com.cars.halamotor.functions.UploadDamiData.uploadDamiDataForTest;
+import static com.cars.halamotor.presnter.UploadCCMET.postCCMET;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getAddressInSP;
+import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getAreaIDInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getBurnedPriceInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getCityFromSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getCitySFromSP;
@@ -114,7 +122,7 @@ import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUse
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserTokenInFromSP;
 
 public class AddItem extends AppCompatActivity implements
-        ShowSelectedCarDetailsFragment.OnDataPass , NumberOfAllowedAds , PassCategories {
+        ShowSelectedCarDetailsFragment.OnDataPass , NumberOfAllowedAds , PassCategories , UploadCCMETObjectToServer {
 
     RelativeLayout cancelRL, selectImageFGRL, selectVideoRL, coverVideoViewRL, cancelVideoRL, cancelSelectedCategoryRL, add_activity_complete_car_dCV, cityPhoneNumberRL;
     RelativeLayout showSelectedCarDetailsRL, messageContainerRL, messageContentRL;
@@ -165,6 +173,7 @@ public class AddItem extends AppCompatActivity implements
     int numberOfAllowedAdsInt,numberOfOldAds,canInsertAndOrNot,canInsertBurnedPrice;
 
     CategoryComp categoryCompNow;
+    UploadCCMETObjectToServer uploadCCMETObjectToServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +182,7 @@ public class AddItem extends AppCompatActivity implements
         ButterKnife.bind(this);
         numberOfAllowedAds = (NumberOfAllowedAds) this;
         statusBarColor();
+        this.uploadCCMETObjectToServer = (UploadCCMETObjectToServer) this;
         inti();
         hideVideoShowBeforeSelected();
         initImageLoader();
@@ -237,53 +247,60 @@ public class AddItem extends AppCompatActivity implements
     private void checkBeforUpload() {
         String selectCategory ;
         if (isNetworkAvailable(getApplicationContext())) {
-            if (selectedCategoryPositionInt != 100) {
-                if (checkTitleAndDescription(getApplicationContext()) == null) {
-                    if (checkTitleAndDescriptionRealOrNot(getApplicationContext()) == null) {
-                        if (productDetailsComplete == 1) {
-                            if (getAddressInSP(getApplicationContext()) != null) {
-                                if (checkPhoneNumberRealOrNot(getApplicationContext()) == null) {
-                                    if (numberOfOldAds < numberOfAllowedAdsInt) {
-                                        if (canInsertAndOrNot == 1) {
-                                            selectCategory = categoryCompNow.getCode();
-                                            if (getBurnedPriceInSP(getApplicationContext()) != null) {
-                                                if (canInsertBurnedPrice == 1) {
-                                                    itemLiveOrMustToWaitIfBurnedPriceOn =0;
-                                                    checkCategoryAndUpload(selectCategory);
-                                                } else {
-                                                    completeMessage(getResources().getString(R.string.blocked_bp));
-                                                }
-                                            } else {
-                                                itemLiveOrMustToWaitIfBurnedPriceOn =1;
-                                                checkCategoryAndUpload(selectCategory);
-                                            }
-                                        } else {
-                                            completeMessage(getResources().getString(R.string.blocked));
-                                        }
-                                    } else {
-                                        completeMessage(getResources().getString(R.string.upgrade_ur_account));
-                                    }
-                                } else {
-                                    completeMessage(checkPhoneNumberRealOrNot(getApplicationContext()));
-                                }
-                            } else {
-                                completeMessage(getResources().getString(R.string.select_address));
-                            }
-                        } else {
-                            completeMessage(getResources().getString(R.string.complete_product_details));
-                        }
-                    } else {
-                        completeMessage(checkTitleAndDescriptionRealOrNot(getApplicationContext()));
-                    }
-                } else {
-                    completeMessage(checkTitleAndDescription(getApplicationContext()));
-                }
-            } else {
-                completeMessage(getResources().getString(R.string.select_category));
-            }
+
+            createCCMETObject(categoryCompNow.getId());
+//            if (selectedCategoryPositionInt != 100) {
+//                if (checkTitleAndDescription(getApplicationContext()) == null) {
+//                    if (checkTitleAndDescriptionRealOrNot(getApplicationContext()) == null) {
+//                        if (productDetailsComplete == 1) {
+//                            if (getAddressInSP(getApplicationContext()) != null) {
+//                                if (checkPhoneNumberRealOrNot(getApplicationContext()) == null) {
+//                                    if (numberOfOldAds < numberOfAllowedAdsInt) {
+//                                        if (canInsertAndOrNot == 1) {
+//                                            selectCategory = categoryCompNow.getCode();
+//                                            if (getBurnedPriceInSP(getApplicationContext()) != null) {
+//                                                if (canInsertBurnedPrice == 1) {
+//                                                    itemLiveOrMustToWaitIfBurnedPriceOn =0;
+//                                                    checkCategoryAndUpload(selectCategory);
+//                                                } else {
+//                                                    completeMessage(getResources().getString(R.string.blocked_bp));
+//                                                }
+//                                            } else {
+//                                                itemLiveOrMustToWaitIfBurnedPriceOn =1;
+//                                                checkCategoryAndUpload(selectCategory);
+//                                            }
+//                                        } else {
+//                                            completeMessage(getResources().getString(R.string.blocked));
+//                                        }
+//                                    } else {
+//                                        completeMessage(getResources().getString(R.string.upgrade_ur_account));
+//                                    }
+//                                } else {
+//                                    completeMessage(checkPhoneNumberRealOrNot(getApplicationContext()));
+//                                }
+//                            } else {
+//                                completeMessage(getResources().getString(R.string.select_address));
+//                            }
+//                        } else {
+//                            completeMessage(getResources().getString(R.string.complete_product_details));
+//                        }
+//                    } else {
+//                        completeMessage(checkTitleAndDescriptionRealOrNot(getApplicationContext()));
+//                    }
+//                } else {
+//                    completeMessage(checkTitleAndDescription(getApplicationContext()));
+//                }
+//            } else {
+//                completeMessage(getResources().getString(R.string.select_category));
+//            }
+
+
         } else {
             completeMessage(getResources().getString(R.string.message_no_internet));
         }
+    }
+
+    private void uploadToServer() {
     }
 
     private void createCCMETObject(String selectedCategory) {
@@ -306,6 +323,29 @@ public class AddItem extends AppCompatActivity implements
                 secondNumber = "200000" ;
             }
         }
+
+        postCCMET(
+                carDetailsModel.getCarModel().getModel_id()
+                ,categoryCompNow.getId()
+                ,getAreaIDInSP(getApplicationContext())
+                ,getTitleInSP(getApplicationContext())
+        ,getDesInSP(getApplicationContext())
+        ,imagePathArrL
+        ,getPriceAfterConvertedToDoubleInSP(getApplicationContext())
+        ,carDetailsModel.getYearStr()
+        ,carDetailsModel.getCarInsurance().getSetting_content_code()
+        ,carDetailsModel.getCarLicensed().getSetting_content_code()
+                ,carDetailsModel.getOption_array()
+                ,carDetailsModel.getCarOptionsStr()
+        ,carDetailsModel.getCarFuel().getSetting_content_code()
+        ,carDetailsModel.getCarTransmission().getSetting_content_code()
+        ,carDetailsModel.getCarCondition().getSetting_content_code()
+        ,carDetailsModel.getPaymentMethod().getSetting_content_code()
+        ,firstNumber
+        ,secondNumber
+        ,getUserTokenFromServer(getApplicationContext())
+        ,uploadCCMETObjectToServer);
+
 //        itemCCEMT = new ItemCCEMT(
 //                "NOTYET"
 //                ,getCityFromSP(getApplicationContext())
@@ -926,5 +966,11 @@ public class AddItem extends AppCompatActivity implements
             goneRVAndVisableSelectedCategoryAndFillSelectedInfo(categoryComp);
             checkIfNeedToMakeCompleteCarDetailsToBeVisable(categoryComp);
         }
+    }
+
+    @Override
+    public void updateCCEMTSuccess(JSONObject obj) {
+        Log.w("TAG","Insaid add item activity");
+        Log.w("TAG",obj.toString());
     }
 }

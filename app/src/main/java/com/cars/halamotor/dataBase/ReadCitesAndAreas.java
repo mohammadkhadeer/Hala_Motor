@@ -66,4 +66,38 @@ public class ReadCitesAndAreas {
 
         return areasArrayList;
     }
+
+
+    public static ArrayList<Area> getAreasToSpecCityFromDataBase(Context context,String city_code) {
+
+        ArrayList<Area> areasArrayList = new ArrayList<Area>();
+
+        Cursor res = getDataBaseInstance(context).descendingAreas();
+
+        while (res.moveToNext()) {
+
+            if (city_code.equals(res.getString(6).replace("\n", "")))
+            {
+                City city= new City(
+                        res.getString(5).replace("\n", "")
+                        ,res.getString(6).replace("\n", "")
+                        ,res.getString(7).replace("\n", "")
+                        ,res.getString(8).replace("\n", "")
+                        ,res.getString(9).replace("\n", "")
+                );
+
+                Area area= new Area(
+                        res.getString(1).replace("\n", "")
+                        ,res.getString(2).replace("\n", "")
+                        ,res.getString(3).replace("\n", "")
+                        ,res.getString(4).replace("\n", "")
+                        ,city
+                );
+
+                areasArrayList.add(area);
+            }
+        }
+
+        return areasArrayList;
+    }
 }

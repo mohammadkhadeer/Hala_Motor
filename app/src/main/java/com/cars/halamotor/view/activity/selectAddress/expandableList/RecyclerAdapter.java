@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.cars.halamotor.R;
+import com.cars.halamotor.model.Area;
 import com.cars.halamotor.model.Neighborhood;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
@@ -39,8 +40,8 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<CityViewHolde
 
     @Override
     public void onBindChildViewHolder(NeighborhoodViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-        final Neighborhood neighborhood = ((SubFavoriteType) group).getItems().get(childIndex);
-        holder.onBind(neighborhood,group,activity,flatPosition);
+        final Area area = ((SubFavoriteType) group).getItems().get(childIndex);
+        holder.onBind(area,group,activity,flatPosition);
     }
 
     @Override

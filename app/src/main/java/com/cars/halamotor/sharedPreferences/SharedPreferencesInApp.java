@@ -330,14 +330,28 @@ public class SharedPreferencesInApp {
 
     public static void saveAddressInSP(Context context,SharedPreferences SharedPreferences,
              SharedPreferences.Editor editor,String cityStr,String neighborhoodStr
-            ,String cityStrS,String neighborhoodStrS) {
+            ,String cityStrS,String neighborhoodStrS,String area_id) {
         SharedPreferences = context.getSharedPreferences(PHONE_AND_ADDRESS, MODE_PRIVATE);
         editor = SharedPreferences.edit();
         editor.putString("city",cityStr);
         editor.putString("neighborhood",neighborhoodStr);
         editor.putString("cityS",cityStrS);
         editor.putString("neighborhoodS",neighborhoodStrS);
+        editor.putString("area_id",area_id);
         editor.commit();
+    }
+
+    public static String getAreaIDInSP(Context context) {
+        String req;
+        SharedPreferences shared = context.getSharedPreferences(PHONE_AND_ADDRESS, MODE_PRIVATE);
+        //can use any comp from user info to check
+        req = (shared.getString("area_id", ""));
+        if (req.equals("") || req == null) {
+            return  null;
+        }
+        else {
+            return  req;
+        }
     }
 
     public static String getAddressInSP(Context context) {

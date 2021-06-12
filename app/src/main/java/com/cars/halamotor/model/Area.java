@@ -1,6 +1,9 @@
 package com.cars.halamotor.model;
 
-public class Area {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Area implements Parcelable{
     String id,name,name_en,name_ar;
     City city;
 
@@ -11,6 +14,25 @@ public class Area {
         this.name_ar = name_ar;
         this.city = city;
     }
+
+    protected Area(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        name_en = in.readString();
+        name_ar = in.readString();
+    }
+
+    public static final Creator<Area> CREATOR = new Creator<Area>() {
+        @Override
+        public Area createFromParcel(Parcel in) {
+            return new Area(in);
+        }
+
+        @Override
+        public Area[] newArray(int size) {
+            return new Area[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -50,5 +72,18 @@ public class Area {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(name_en);
+        dest.writeString(name_ar);
     }
 }

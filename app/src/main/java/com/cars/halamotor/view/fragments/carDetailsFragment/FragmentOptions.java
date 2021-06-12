@@ -37,6 +37,8 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
     ImageView cancelIV;
     View view;
     private static String optionsListStr;
+    private static String [] optionsArray;
+
     CarOptionsPresnter carOptionsPresnter;
 
     public FragmentOptions(){}
@@ -47,6 +49,7 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
         if (getArguments() != null) {
             optionsListStr = getArguments().getString("options");
             Log.i("TAG",optionsListStr);
+            optionsArray = getArguments().getStringArray("options_array");
         }
         if (context instanceof CarOptionsPresnter) {
             carOptionsPresnter = (CarOptionsPresnter) context;
@@ -89,14 +92,16 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
             @Override
             public void onClick(View v) {
                 String options = "";
+                optionsArray= new String[carOptionsArrayL.size()];
                 for (int i = 0; i < carOptionsArrayL.size(); i++) {
                     if (carOptionsArrayL.get(i).getIsSelected() == 1)
                     {
                         options = options + getTextEngOrLocal(getActivity(),carOptionsArrayL.get(i).getSetting_content_name_en(),carOptionsArrayL.get(i).getSetting_content_name_ar()) + " | ";
+                        optionsArray[i] = carOptionsArrayL.get(i).getSetting_content_code();
                     }
                 }
                 optionsListStr = options;
-                carOptionsPresnter.passCarOptions(options);
+                carOptionsPresnter.passCarOptions(options,optionsArray);
             }
         });
     }
@@ -219,5 +224,9 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
     public void onDestroy() {
         super.onDestroy();
         optionsListStr = null;
+        for (int i=0;i<optionsArray.length;i++)
+        {
+            optionsArray[i] =null;
+        }
     }
 }

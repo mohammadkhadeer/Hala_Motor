@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import static com.cars.halamotor.dataBase.ReadCitesAndAreas.getAreasFromDataBase;
-import static com.cars.halamotor.functions.FillNeighborhood.fillCityAndNeighborhoodArrayL;
+import static com.cars.halamotor.dataBase.ReadCitesAndAreas.getAreasToSpecCityFromDataBase;
 import static com.cars.halamotor.functions.FillNeighborhood.fillNeighborhoodArrayL;
 import static com.cars.halamotor.functions.Functions.changeFontBold;
 
@@ -67,7 +67,7 @@ public class SelectCityAndNeighborhood extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        setData();
+        setAreasToExp();
         if(whereComeFrom.equals("activity")){
             makeAllCityWithNeighborhoodVISIBLE();
             createAllCityWithNeighborhoodRV();
@@ -170,27 +170,27 @@ public class SelectCityAndNeighborhood extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void setData() {
+    private void setAreasToExp() {
         fatherSubListArrayList = new ArrayList<>();
 
         ArrayList<Neighborhood> neighborhoodArrayList = new ArrayList<>();
 
         fatherSubListArrayList.add(new SubFavoriteType(getResources().getString(R.string.dubai),
-                fillNeighborhoodArrayL(neighborhoodArrayList,this,getResources().getString(R.string.dubai))));
+                getAreasToSpecCityFromDataBase(this,getResources().getString(R.string.dubai_s))));
         fatherSubListArrayList.add(new SubFavoriteType(getResources().getString(R.string.abu_dhabi),
-                fillNeighborhoodArrayL(neighborhoodArrayList,this,getResources().getString(R.string.abu_dhabi))));
+                getAreasToSpecCityFromDataBase(this,getResources().getString(R.string.abu_dhabi_s))));
         fatherSubListArrayList.add(new SubFavoriteType(getResources().getString(R.string.sharjah),
-                fillNeighborhoodArrayL(neighborhoodArrayList,this,getResources().getString(R.string.sharjah))));
+                getAreasToSpecCityFromDataBase(this,getResources().getString(R.string.sharjah_s))));
         fatherSubListArrayList.add(new SubFavoriteType(getResources().getString(R.string.al_ain),
-                fillNeighborhoodArrayL(neighborhoodArrayList,this,getResources().getString(R.string.al_ain))));
+                getAreasToSpecCityFromDataBase(this,getResources().getString(R.string.al_ain_s))));
         fatherSubListArrayList.add(new SubFavoriteType(getResources().getString(R.string.ajman),
-                fillNeighborhoodArrayL(neighborhoodArrayList,this,getResources().getString(R.string.ajman))));
+                getAreasToSpecCityFromDataBase(this,getResources().getString(R.string.ajman_s))));
         fatherSubListArrayList.add(new SubFavoriteType(getResources().getString(R.string.ras_al_khaimah),
-                fillNeighborhoodArrayL(neighborhoodArrayList,this,getResources().getString(R.string.ras_al_khaimah))));
+                getAreasToSpecCityFromDataBase(this,getResources().getString(R.string.ras_al_khaimah_s))));
         fatherSubListArrayList.add(new SubFavoriteType(getResources().getString(R.string.um_al_quwain),
-                fillNeighborhoodArrayL(neighborhoodArrayList,this,getResources().getString(R.string.um_al_quwain))));
+                getAreasToSpecCityFromDataBase(this,getResources().getString(R.string.um_al_quwain_s))));
         fatherSubListArrayList.add(new SubFavoriteType(getResources().getString(R.string.fujairah),
-                fillNeighborhoodArrayL(neighborhoodArrayList,this,getResources().getString(R.string.fujairah))));
+                getAreasToSpecCityFromDataBase(this,getResources().getString(R.string.fujairah_s))));
     }
 
     private void inti() {

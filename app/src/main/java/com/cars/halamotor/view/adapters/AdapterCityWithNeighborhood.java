@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,8 @@ import com.cars.halamotor.functions.Functions;
 import com.cars.halamotor.model.Area;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 
 public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCityWithNeighborhood.ViewHolder>{
 
@@ -41,10 +44,10 @@ public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCit
     }
 
     @Override
-    public void onBindViewHolder(final AdapterCityWithNeighborhood.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final AdapterCityWithNeighborhood.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
 
-        holder.textViewCity.setText(fillText(areaArrayList.get(position).getCity().getName_en(),areaArrayList.get(position).getCity().getName_ar())+ " , ");
-        holder.textViewNeighborhood.setText(fillText(areaArrayList.get(position).getName_en(),areaArrayList.get(position).getName_ar()));
+        holder.textViewCity.setText(getTextEngOrLocal(context,areaArrayList.get(position).getCity().getName_en(),areaArrayList.get(position).getCity().getName_ar())+ " , ");
+        holder.textViewNeighborhood.setText(getTextEngOrLocal(context,areaArrayList.get(position).getName_en(),areaArrayList.get(position).getName_ar()));
         holder.textViewCity.setTypeface(Functions.changeFontBold(context));
         holder.textViewNeighborhood.setTypeface(Functions.changeFontGeneral(context));
 
@@ -57,8 +60,8 @@ public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCit
                 }
                 if (whereComeFrom.equals("activity"))
                 {
-                    //saveCityAndNeighborhoodInSPAndUpdateInServer(position);
-
+//                    saveCityAndNeighborhoodInSPAndUpdateInServer(position);
+//
 //                    String city = cityWithNeighborhoodsArrayL.get(position).getCityStr();
 //                    String neighborhood = cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStr();
 //                    String cityS = cityWithNeighborhoodsArrayL.get(position).getCityStrS();
@@ -117,14 +120,4 @@ public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCit
         notifyDataSetChanged();
     }
 
-    private String fillText(String textEn,String textAr){
-        String text="k";
-        if (Locale.getDefault().getLanguage().equals("en"))
-        {
-            text = textEn;
-        }else{
-            text = textAr;
-        }
-        return text;
-    }
 }

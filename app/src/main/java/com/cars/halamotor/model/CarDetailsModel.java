@@ -12,32 +12,30 @@ public class CarDetailsModel implements Parcelable {
     CarModel carModel;
     String yearStr,carOptionsStr;
     CarCondition carCondition;
-    String kilometersStr,transmissionStr;
+    String kilometersStr;
+    CarTransmission carTransmission;
     CarFuel carFuel;
     CarLicensed carLicensed;
     CarInsurance carInsurance;
     PaymentMethod paymentMethod;
-
+    String [] option_array;
     public CarDetailsModel(){}
 
-    public CarDetailsModel(CarMake carMake,String carOptionsStr, String carColorStr, CarModel carModel, String yearStr
-            , CarCondition conditionStr, String kilometersStr, String transmissionStr, CarFuel fuelStr, CarLicensed licenseStr
-            , CarInsurance insurance, PaymentMethod paymentMethod)
-    {
+    public CarDetailsModel(CarMake carMake, String carColorStr, CarModel carModel, String yearStr, String carOptionsStr, CarCondition carCondition, String kilometersStr, CarTransmission carTransmission, CarFuel carFuel, CarLicensed carLicensed, CarInsurance carInsurance, PaymentMethod paymentMethod, String[] option_array) {
         this.carMake = carMake;
-        this.carOptionsStr = carOptionsStr;
         this.carColorStr = carColorStr;
         this.carModel = carModel;
         this.yearStr = yearStr;
-        this.carCondition = conditionStr;
+        this.carOptionsStr = carOptionsStr;
+        this.carCondition = carCondition;
         this.kilometersStr = kilometersStr;
-        this.transmissionStr = transmissionStr;
-        this.carFuel = fuelStr;
-        this.carLicensed = licenseStr;
-        this.carInsurance = insurance;
+        this.carTransmission = carTransmission;
+        this.carFuel = carFuel;
+        this.carLicensed = carLicensed;
+        this.carInsurance = carInsurance;
         this.paymentMethod = paymentMethod;
+        this.option_array = option_array;
     }
-
 
     protected CarDetailsModel(Parcel in) {
         carMake = in.readParcelable(CarMake.class.getClassLoader());
@@ -47,11 +45,34 @@ public class CarDetailsModel implements Parcelable {
         carOptionsStr = in.readString();
         carCondition = in.readParcelable(CarCondition.class.getClassLoader());
         kilometersStr = in.readString();
-        transmissionStr = in.readString();
+        carTransmission = in.readParcelable(CarTransmission.class.getClassLoader());
         carFuel = in.readParcelable(CarFuel.class.getClassLoader());
         carLicensed = in.readParcelable(CarLicensed.class.getClassLoader());
         carInsurance = in.readParcelable(CarInsurance.class.getClassLoader());
         paymentMethod = in.readParcelable(PaymentMethod.class.getClassLoader());
+        option_array = in.createStringArray();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(carMake, flags);
+        dest.writeString(carColorStr);
+        dest.writeParcelable(carModel, flags);
+        dest.writeString(yearStr);
+        dest.writeString(carOptionsStr);
+        dest.writeParcelable(carCondition, flags);
+        dest.writeString(kilometersStr);
+        dest.writeParcelable(carTransmission, flags);
+        dest.writeParcelable(carFuel, flags);
+        dest.writeParcelable(carLicensed, flags);
+        dest.writeParcelable(carInsurance, flags);
+        dest.writeParcelable(paymentMethod, flags);
+        dest.writeStringArray(option_array);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<CarDetailsModel> CREATOR = new Creator<CarDetailsModel>() {
@@ -66,11 +87,11 @@ public class CarDetailsModel implements Parcelable {
         }
     };
 
-    public CarMake getCarMakeStr() {
+    public CarMake getCarMake() {
         return carMake;
     }
 
-    public void setCarMakeStr(CarMake carMake) {
+    public void setCarMake(CarMake carMake) {
         this.carMake = carMake;
     }
 
@@ -82,11 +103,11 @@ public class CarDetailsModel implements Parcelable {
         this.carColorStr = carColorStr;
     }
 
-    public CarModel getModelStr() {
+    public CarModel getCarModel() {
         return carModel;
     }
 
-    public void setModelStr(CarModel carModel) {
+    public void setCarModel(CarModel carModel) {
         this.carModel = carModel;
     }
 
@@ -106,12 +127,12 @@ public class CarDetailsModel implements Parcelable {
         this.carOptionsStr = carOptionsStr;
     }
 
-    public CarCondition getConditionStr() {
+    public CarCondition getCarCondition() {
         return carCondition;
     }
 
-    public void setConditionStr(CarCondition conditionStr) {
-        this.carCondition = conditionStr;
+    public void setCarCondition(CarCondition carCondition) {
+        this.carCondition = carCondition;
     }
 
     public String getKilometersStr() {
@@ -122,36 +143,36 @@ public class CarDetailsModel implements Parcelable {
         this.kilometersStr = kilometersStr;
     }
 
-    public String getTransmissionStr() {
-        return transmissionStr;
+    public CarTransmission getCarTransmission() {
+        return carTransmission;
     }
 
-    public void setTransmissionStr(String transmissionStr) {
-        this.transmissionStr = transmissionStr;
+    public void setCarTransmission(CarTransmission carTransmission) {
+        this.carTransmission = carTransmission;
     }
 
-    public CarFuel getFuelStr() {
+    public CarFuel getCarFuel() {
         return carFuel;
     }
 
-    public void setFuelStr(CarFuel fuelStr) {
-        this.carFuel = fuelStr;
+    public void setCarFuel(CarFuel carFuel) {
+        this.carFuel = carFuel;
     }
 
-    public CarLicensed getLicenseStr() {
+    public CarLicensed getCarLicensed() {
         return carLicensed;
     }
 
-    public void setLicenseStr(CarLicensed licenseStr) {
-        this.carLicensed = licenseStr;
+    public void setCarLicensed(CarLicensed carLicensed) {
+        this.carLicensed = carLicensed;
     }
 
-    public CarInsurance getInsurance() {
+    public CarInsurance getCarInsurance() {
         return carInsurance;
     }
 
-    public void setInsurance(CarInsurance insurance) {
-        this.carInsurance = insurance;
+    public void setCarInsurance(CarInsurance carInsurance) {
+        this.carInsurance = carInsurance;
     }
 
     public PaymentMethod getPaymentMethod() {
@@ -162,24 +183,11 @@ public class CarDetailsModel implements Parcelable {
         this.paymentMethod = paymentMethod;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String[] getOption_array() {
+        return option_array;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(carMake,flags);
-        dest.writeString(carColorStr);
-        dest.writeParcelable(carModel,flags);
-        dest.writeString(yearStr);
-        dest.writeString(carOptionsStr);
-        dest.writeParcelable(carCondition,flags);
-        dest.writeString(kilometersStr);
-        dest.writeString(transmissionStr);
-        dest.writeParcelable(carFuel,flags);
-        dest.writeParcelable(carLicensed,flags);
-        dest.writeParcelable(carInsurance,flags);
-        dest.writeParcelable(paymentMethod,flags);
+    public void setOption_array(String[] option_array) {
+        this.option_array = option_array;
     }
 }
