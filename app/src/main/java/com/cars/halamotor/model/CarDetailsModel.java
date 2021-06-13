@@ -3,7 +3,7 @@ package com.cars.halamotor.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
 public class CarDetailsModel implements Parcelable {
 
@@ -18,10 +18,10 @@ public class CarDetailsModel implements Parcelable {
     CarLicensed carLicensed;
     CarInsurance carInsurance;
     PaymentMethod paymentMethod;
-    String [] option_array;
     public CarDetailsModel(){}
+    ArrayList<String> car_options_array;
 
-    public CarDetailsModel(CarMake carMake, String carColorStr, CarModel carModel, String yearStr, String carOptionsStr, CarCondition carCondition, String kilometersStr, CarTransmission carTransmission, CarFuel carFuel, CarLicensed carLicensed, CarInsurance carInsurance, PaymentMethod paymentMethod, String[] option_array) {
+    public CarDetailsModel(CarMake carMake, String carColorStr, CarModel carModel, String yearStr, String carOptionsStr, CarCondition carCondition, String kilometersStr, CarTransmission carTransmission, CarFuel carFuel, CarLicensed carLicensed, CarInsurance carInsurance, PaymentMethod paymentMethod, ArrayList<String> car_options_array) {
         this.carMake = carMake;
         this.carColorStr = carColorStr;
         this.carModel = carModel;
@@ -34,7 +34,7 @@ public class CarDetailsModel implements Parcelable {
         this.carLicensed = carLicensed;
         this.carInsurance = carInsurance;
         this.paymentMethod = paymentMethod;
-        this.option_array = option_array;
+        this.car_options_array = car_options_array;
     }
 
     protected CarDetailsModel(Parcel in) {
@@ -50,7 +50,7 @@ public class CarDetailsModel implements Parcelable {
         carLicensed = in.readParcelable(CarLicensed.class.getClassLoader());
         carInsurance = in.readParcelable(CarInsurance.class.getClassLoader());
         paymentMethod = in.readParcelable(PaymentMethod.class.getClassLoader());
-        option_array = in.createStringArray();
+        car_options_array = in.createStringArrayList();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class CarDetailsModel implements Parcelable {
         dest.writeParcelable(carLicensed, flags);
         dest.writeParcelable(carInsurance, flags);
         dest.writeParcelable(paymentMethod, flags);
-        dest.writeStringArray(option_array);
+        dest.writeStringList(car_options_array);
     }
 
     @Override
@@ -183,11 +183,11 @@ public class CarDetailsModel implements Parcelable {
         this.paymentMethod = paymentMethod;
     }
 
-    public String[] getOption_array() {
-        return option_array;
+    public ArrayList<String> getCar_options_array() {
+        return car_options_array;
     }
 
-    public void setOption_array(String[] option_array) {
-        this.option_array = option_array;
+    public void setCar_options_array(ArrayList<String> car_options_array) {
+        this.car_options_array = car_options_array;
     }
 }

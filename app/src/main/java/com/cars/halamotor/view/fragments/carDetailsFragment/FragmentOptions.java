@@ -37,7 +37,7 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
     ImageView cancelIV;
     View view;
     private static String optionsListStr;
-    private static String [] optionsArray;
+    public static ArrayList<String> carSelectedOptionsArrayL  = new ArrayList<String>();
 
     CarOptionsPresnter carOptionsPresnter;
 
@@ -49,7 +49,7 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
         if (getArguments() != null) {
             optionsListStr = getArguments().getString("options");
             Log.i("TAG",optionsListStr);
-            optionsArray = getArguments().getStringArray("options_array");
+            carSelectedOptionsArrayL = getArguments().getStringArrayList("options_array");
         }
         if (context instanceof CarOptionsPresnter) {
             carOptionsPresnter = (CarOptionsPresnter) context;
@@ -91,17 +91,19 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
         nextRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                carSelectedOptionsArrayL = new ArrayList<>();
                 String options = "";
-                optionsArray= new String[carOptionsArrayL.size()];
+                int numberOfSelectedOptions =0;
                 for (int i = 0; i < carOptionsArrayL.size(); i++) {
                     if (carOptionsArrayL.get(i).getIsSelected() == 1)
                     {
+                        numberOfSelectedOptions = numberOfSelectedOptions+1;
                         options = options + getTextEngOrLocal(getActivity(),carOptionsArrayL.get(i).getSetting_content_name_en(),carOptionsArrayL.get(i).getSetting_content_name_ar()) + " | ";
-                        optionsArray[i] = carOptionsArrayL.get(i).getSetting_content_code();
+                        carSelectedOptionsArrayL.add(carOptionsArrayL.get(i).getSetting_content_code());
                     }
                 }
                 optionsListStr = options;
-                carOptionsPresnter.passCarOptions(options,optionsArray);
+                carOptionsPresnter.passCarOptions(options,carSelectedOptionsArrayL);
             }
         });
     }
@@ -224,9 +226,6 @@ public class FragmentOptions extends Fragment implements AdapterCarOptions.PassO
     public void onDestroy() {
         super.onDestroy();
         optionsListStr = null;
-        for (int i=0;i<optionsArray.length;i++)
-        {
-            optionsArray[i] =null;
-        }
+        carSelectedOptionsArrayL.clear();
     }
 }

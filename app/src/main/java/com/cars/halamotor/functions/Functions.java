@@ -214,8 +214,8 @@ public class Functions {
 
         if (whatUserWantToChange.equals("model"))
         {
-            //CarModel carModel = new CarModel(valueInWhatUserWantToChange,valueInWhatUserWantToChange2,valueInWhatUserWantToChange2);
-            //carDetailsModel.setModelStr(carModel);
+//            CarModel carModel = new CarModel(valueInWhatUserWantToChange,valueInWhatUserWantToChange2,valueInWhatUserWantToChange2);
+//            carDetailsModel.setModelStr(carModel);
         }
         if (whatUserWantToChange.equals("year"))
         {
@@ -408,7 +408,7 @@ public class Functions {
         return stringAfterSplit;
     }
 
-    public static String[] splitString2(String textStr,String signal) {
+    public static String[] splitString2(String textStr) {
         String[] items = textStr.split("|");
         String text=" ";
         for (String item : items)

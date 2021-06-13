@@ -19,13 +19,15 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.saveAddressInSP;
 
 public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCityWithNeighborhood.ViewHolder>{
 
     private final Context context;
     public ArrayList<Area> areaArrayList ;
     String whereComeFrom;
-
+    SharedPreferences SharedPreferences;
+    SharedPreferences.Editor editor;
     public AdapterCityWithNeighborhood
             (Context context
                     ,ArrayList<Area> areaArrayList
@@ -60,23 +62,14 @@ public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCit
                 }
                 if (whereComeFrom.equals("activity"))
                 {
-//                    saveCityAndNeighborhoodInSPAndUpdateInServer(position);
-//
-//                    String city = cityWithNeighborhoodsArrayL.get(position).getCityStr();
-//                    String neighborhood = cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStr();
-//                    String cityS = cityWithNeighborhoodsArrayL.get(position).getCityStrS();
-//                    String neighborhoodS = cityWithNeighborhoodsArrayL.get(position).getNeighborhoodStrS();
-
-
-
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("city_en", areaArrayList.get(position).getCity().getName_en());
                     resultIntent.putExtra("city_ar", areaArrayList.get(position).getCity().getName_ar());
                     resultIntent.putExtra("city_code", areaArrayList.get(position).getCity().getCode());
                     resultIntent.putExtra("city_id", areaArrayList.get(position).getCity().getId());
                     resultIntent.putExtra("area_id", areaArrayList.get(position).getId());
-                    resultIntent.putExtra("area_name_en", areaArrayList.get(position).getName_ar());
-                    resultIntent.putExtra("area_name_ar", areaArrayList.get(position).getName_en());
+                    resultIntent.putExtra("area_name_en", areaArrayList.get(position).getName_en());
+                    resultIntent.putExtra("area_name_ar", areaArrayList.get(position).getName_ar());
 
                     ((Activity)context).setResult(Activity.RESULT_OK, resultIntent);
                     ((Activity)context).finish();
@@ -87,13 +80,13 @@ public class AdapterCityWithNeighborhood extends RecyclerView.Adapter<AdapterCit
 
 
     private void backToSelectCityFragment(ViewHolder holder, int position) {
+
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("city", areaArrayList.get(position).getCity().getName_en());
-        resultIntent.putExtra("nei", areaArrayList.get(position).getName_en());
-        resultIntent.putExtra("cityS", areaArrayList.get(position).getCity().getName_en());
-        resultIntent.putExtra("neiS", areaArrayList.get(position).getName_en());
-        resultIntent.putExtra("cityAr", areaArrayList.get(position).getCity().getName_ar());
-        resultIntent.putExtra("neiAr", areaArrayList.get(position).getName_ar());
+        resultIntent.putExtra("city_en", areaArrayList.get(position).getCity().getName_en());
+        resultIntent.putExtra("city_ar", areaArrayList.get(position).getCity().getName_ar());
+        resultIntent.putExtra("area_id", areaArrayList.get(position).getId());
+        resultIntent.putExtra("area_name_en", areaArrayList.get(position).getName_en());
+        resultIntent.putExtra("area_name_ar", areaArrayList.get(position).getName_ar());
         ((Activity)context).setResult(Activity.RESULT_OK, resultIntent);
         ((Activity)context).finish();
     }

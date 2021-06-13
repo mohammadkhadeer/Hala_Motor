@@ -15,10 +15,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cars.halamotor.R;
+import com.cars.halamotor.model.CarColor;
+import com.cars.halamotor.model.CarCondition;
 import com.cars.halamotor.model.CarDetailsModel;
+import com.cars.halamotor.model.CarFuel;
+import com.cars.halamotor.model.CarInsurance;
+import com.cars.halamotor.model.CarLicensed;
+import com.cars.halamotor.model.CarModel;
 import com.cars.halamotor.model.CarPlatesDetails;
+import com.cars.halamotor.model.CarTransmission;
 import com.cars.halamotor.model.EditValueInCDM;
 import com.cars.halamotor.model.ItemDetails;
+import com.cars.halamotor.model.PaymentMethod;
 import com.cars.halamotor.model.WheelsInfo;
 import com.cars.halamotor.presnter.WheelsComp;
 import com.cars.halamotor.view.activity.CarDetails;
@@ -27,6 +35,7 @@ import com.cars.halamotor.view.activity.WheelsRim;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.functions.Functions.splitString;
 
 public class ShowSelectedCarDetailsFragment extends Fragment {
@@ -314,18 +323,18 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
     }
 
     private void fillDetails() {
-        carMakeTV.setText(carDetailsModel.getCarMake().getName_en());
-        modelTV.setText(carDetailsModel.getCarModel().getBrand_name_en());
-        yearTV.setText(carDetailsModel.getYearStr());
-        conditionTV.setText(carDetailsModel.getCarCondition().getSetting_content_name_en());
+        carMakeTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getCarMake().getName_en(),carDetailsModel.getCarMake().getName_ar()));
+        modelTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getCarModel().getModel_name_en(),carDetailsModel.getCarModel().getModel_name_ar()));
+        yearTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getYearStr(),carDetailsModel.getYearStr()));
+        conditionTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getCarCondition().getSetting_content_name_en(),carDetailsModel.getCarCondition().getSetting_content_name_ar()));
         kilometersTV.setText(carDetailsModel.getKilometersStr());
-        transmissionTV.setText(carDetailsModel.getCarTransmission().getSetting_content_name_en());
-        fuelTV.setText(carDetailsModel.getCarFuel().getSetting_content_name_en());
+        transmissionTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getCarTransmission().getSetting_content_name_en(),carDetailsModel.getCarTransmission().getSetting_content_name_ar()));
+        fuelTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getCarFuel().getSetting_content_name_en(),carDetailsModel.getCarFuel().getSetting_content_name_ar()));
         carOptionsTV.setText(carDetailsModel.getCarOptionsStr());
-        carLicenseTV.setText(carDetailsModel.getCarLicensed().getSetting_content_name_en());
-        insuranceTV.setText(carDetailsModel.getCarInsurance().getSetting_content_name_en());
+        carLicenseTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getCarLicensed().getSetting_content_name_en(),carDetailsModel.getCarLicensed().getSetting_content_name_ar()));
+        insuranceTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getCarInsurance().getSetting_content_name_en(),carDetailsModel.getCarInsurance().getSetting_content_name_ar()));
         colorTV.setText(carDetailsModel.getCarColorStr());
-        paymentMethodTV.setText(carDetailsModel.getPaymentMethod().getSetting_content_name_en());
+        paymentMethodTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getPaymentMethod().getSetting_content_name_en(),carDetailsModel.getPaymentMethod().getSetting_content_name_ar()));
     }
 
     private void inti() {
@@ -372,16 +381,20 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
         if (requestCode == EDIT_CAR_DETAILS) {
             if (null!=data)
             {
-                String whatUserWantToChangeValue2Str = whatUserWantToChangeStr+"S";
-                String value = data.getStringExtra(whatUserWantToChangeStr);
-                String value2 = data.getStringExtra(whatUserWantToChangeValue2Str);
-                String makeStr = data.getStringExtra("make");
-                EditValueInCDM dataEdit = new EditValueInCDM(whatUserWantToChangeStr,value);
-                EditValueInCDM dataEdit2 = new EditValueInCDM(whatUserWantToChangeStr,value);
-                dataPasser.onDataPass(dataEdit,dataEdit2);
-                checkWhereAChangeHappenedAndChangeIt(value,makeStr);
+                String where_edit_happened = data.getStringExtra("where_edit");
+
+//                String whatUserWantToChangeValue2Str = whatUserWantToChangeStr+"S";
+//                String value = data.getStringExtra(whatUserWantToChangeStr);
+//                String value2 = data.getStringExtra(whatUserWantToChangeValue2Str);
+//                String makeStr = data.getStringExtra("make");
+//                EditValueInCDM dataEdit = new EditValueInCDM(whatUserWantToChangeStr,value);
+//                EditValueInCDM dataEdit2 = new EditValueInCDM(whatUserWantToChangeStr,value);
+//                dataPasser.onDataPass(dataEdit,dataEdit2);
+
+                checkWhereAChangeHappenedAndChangeIt(where_edit_happened,data);
             }
         }
+
         if (requestCode == REQUEST_WHEELS_RIM) {
             if (data != null && !data.equals("")) {
                 inchSizeStr = data.getExtras().getString("inchSize");
@@ -400,6 +413,7 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
                 }, 100);
             }
         }
+
         if (requestCode == REQUEST_CAR_PLATES) {
             if (data != null && !data.equals("")) {
                 carPlatesCityStr = data.getExtras().getString("carPlatesCity");
@@ -430,60 +444,94 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
         }
     }
 
-    private void checkWhereAChangeHappenedAndChangeIt(String value,String makeStr) {
-        if (whatUserWantToChangeStr.equals("make"))
-        {
-            carMakeTV.setText(makeStr);
-            modelTV.setText(value);
-        }
+    private void checkWhereAChangeHappenedAndChangeIt(String where_edit_happened,Intent data) {
+//        if (whatUserWantToChangeStr.equals("make"))
+//        {
+//            carMakeTV.setText(makeStr);
+//            modelTV.setText(value);
+//        }
 
-        if (whatUserWantToChangeStr.equals("model"))
+        if (where_edit_happened.equals("model"))
         {
-            modelTV.setText(value);
+            CarModel carModel = data.getExtras().getParcelable("model");
+            dataPasser.onCarModelChange(carModel);
+            modelTV.setText(getTextEngOrLocal(getActivity(),carModel.getModel_name_en(),carModel.getModel_name_ar()));
         }
         if (whatUserWantToChangeStr.equals("year"))
         {
-            yearTV.setText(value);
+            String year = data.getStringExtra("year");
+            dataPasser.onYearChange(year);
+            yearTV.setText(year);
         }
         if (whatUserWantToChangeStr.equals("condition"))
         {
-            conditionTV.setText(value);
+            CarCondition carCondition = data.getExtras().getParcelable("car_condition");
+            dataPasser.onConditionChange(carCondition);
+            conditionTV.setText(getTextEngOrLocal(getActivity(),carCondition.getSetting_content_name_en(),carCondition.getSetting_content_name_ar()));
         }
         if (whatUserWantToChangeStr.equals("kilometers"))
         {
-            kilometersTV.setText(value);
+            String kilometers = data.getStringExtra("kilometers");
+            dataPasser.onKilometersChange(kilometers);
+            kilometersTV.setText(kilometers);
         }
         if (whatUserWantToChangeStr.equals("transmission"))
         {
-            transmissionTV.setText(value);
+            CarTransmission carTransmission = data.getExtras().getParcelable("transmission");
+            dataPasser.onTransmissionChange(carTransmission);
+            transmissionTV.setText(getTextEngOrLocal(getActivity(),carTransmission.getSetting_content_name_en(),carTransmission.getSetting_content_name_ar()));
         }
         if (whatUserWantToChangeStr.equals("fuel"))
         {
-            fuelTV.setText(value);
+            CarFuel carFuel = data.getExtras().getParcelable("fuel");
+            dataPasser.onFuelChange(carFuel);
+            fuelTV.setText(getTextEngOrLocal(getActivity(),carFuel.getSetting_content_name_en(),carFuel.getSetting_content_name_ar()));
         }
         if (whatUserWantToChangeStr.equals("options"))
         {
-            carOptionsTV.setText(value);
+            String options = data.getStringExtra("options");
+            ArrayList<String> selectedOptionsCode = data.getStringArrayListExtra("option_array_list");
+            dataPasser.onOptionsChange(options,selectedOptionsCode);
+            carOptionsTV.setText(options);
         }
         if (whatUserWantToChangeStr.equals("licensed"))
         {
-            carLicenseTV.setText(value);
+            CarLicensed carLicensed = data.getExtras().getParcelable("licensed");
+            dataPasser.onLicensedChange(carLicensed);
+            carLicenseTV.setText(getTextEngOrLocal(getActivity(),carLicensed.getSetting_content_name_en(),carLicensed.getSetting_content_name_ar()));
         }
         if (whatUserWantToChangeStr.equals("insurance"))
         {
-            insuranceTV.setText(value);
+            CarInsurance carInsurance = data.getExtras().getParcelable("insurance");
+            dataPasser.onInsuranceChange(carInsurance);
+            insuranceTV.setText(getTextEngOrLocal(getActivity(),carInsurance.getSetting_content_name_en(),carInsurance.getSetting_content_name_ar()));
         }
         if (whatUserWantToChangeStr.equals("color"))
         {
-            colorTV.setText(value);
+            CarColor carColor = data.getExtras().getParcelable("color");
+            dataPasser.onColorChange(carColor);
+            colorTV.setText(getTextEngOrLocal(getActivity(),carColor.getSetting_content_name_en(),carColor.getSetting_content_name_ar()));
         }
         if (whatUserWantToChangeStr.equals("payment"))
         {
-            paymentMethodTV.setText(value);
+            PaymentMethod paymentMethod = data.getExtras().getParcelable("payment");
+            dataPasser.onPaymentMethodChange(paymentMethod);
+            paymentMethodTV.setText(getTextEngOrLocal(getActivity(),paymentMethod.getSetting_content_name_en(),paymentMethod.getSetting_content_name_ar()));
         }
     }
 
     public interface OnDataPass {
+        public void onCarModelChange(CarModel carModel);
+        public void onYearChange(String year);
+        public void onConditionChange(CarCondition carCondition);
+        public void onKilometersChange(String kilometers);
+        public void onTransmissionChange(CarTransmission carTransmission);
+        public void onFuelChange(CarFuel carFuel);
+        public void onOptionsChange(String options,ArrayList<String> selectedOptionCode);
+        public void onLicensedChange(CarLicensed carLicensed);
+        public void onInsuranceChange(CarInsurance carInsurance);
+        public void onColorChange(CarColor carColor);
+        public void onPaymentMethodChange(PaymentMethod paymentMethod);
         public void onDataPass(EditValueInCDM data,EditValueInCDM data2);
         public void onDataPassCarPlates(CarPlatesDetails carPlatesDetails);
         public void onWheelsDataChange(WheelsInfo wheelsInfo);

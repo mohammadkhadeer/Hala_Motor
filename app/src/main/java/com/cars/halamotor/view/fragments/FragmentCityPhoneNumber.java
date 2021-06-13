@@ -86,17 +86,16 @@ public class FragmentCityPhoneNumber extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == UPDATE_LOCATION && resultCode == Activity.RESULT_OK) {
-            String city_name_en,city_name_ar,area_name_en,area_name_ar,area_id;
-            city_name_ar = data.getExtras().getString("city");
-            city_name_en = data.getExtras().getString("cityS");
-            area_name_ar = data.getExtras().getString("nei");
-            area_name_en = data.getExtras().getString("neiS");
-            area_id = data.getExtras().getString("neiId");
+            String city_en = data.getStringExtra("city_en");
+            String city_ar = data.getStringExtra("city_ar");
+            String area_id = data.getStringExtra("area_id");
+            String area_name_en = data.getStringExtra("area_name_en");
+            String area_name_ar = data.getStringExtra("area_name_ar");
 
-            cityTV.setText(getTextEngOrLocal(getActivity(),city_name_en,city_name_ar) + " >> " + getTextEngOrLocal(getActivity(),area_name_en,area_name_ar));
+            cityTV.setText(getTextEngOrLocal(getActivity(),city_en,city_ar) + " >> " + getTextEngOrLocal(getActivity(),area_name_en,area_name_ar));
             saveAddressInSP(getActivity(),sharedPreferences,editor
-                    ,city_name_en,area_name_en
-                    ,city_name_ar,area_name_ar,area_id);
+                    ,city_en,area_name_en
+                    ,city_ar,area_name_ar,area_id);
         }
     }
 

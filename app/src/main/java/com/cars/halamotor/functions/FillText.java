@@ -1,6 +1,7 @@
 package com.cars.halamotor.functions;
 
 import android.content.Context;
+import android.util.Log;
 
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 

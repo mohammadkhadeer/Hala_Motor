@@ -234,10 +234,10 @@
                         android:background="@drawable/upload_photo_bg">
 
                         <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="30dp"
                             android:background="@drawable/upload_photo_image">
 
                         </ImageView>
@@ -246,11 +246,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="60dp"
+                            android:layout_marginTop="50dp"
                             android:text="@string/upload_photo"
                             android:textColor="@color/colorWhite"
                             android:id="@+id/add_activity_upload_photo_text_TV"
-                            android:textSize="17dp">
+                            android:textSize="13dp">
 
                         </TextView>
 

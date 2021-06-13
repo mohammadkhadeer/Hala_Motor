@@ -101,7 +101,7 @@ public class FragmentModel extends Fragment implements AdapterCarModel.PassCarMo
             //if the existing elements contains the search input
             if (getUserLanguage(getActivity()).equals("en"))
             {
-                if (carModel.getBrand_name_en().toLowerCase().contains(text.toLowerCase())) {
+                if (carModel.getModel_name_en().toLowerCase().contains(text.toLowerCase())) {
                     //adding the element to filtered list
                     carModelArrayList2.add(carModel);
                 }

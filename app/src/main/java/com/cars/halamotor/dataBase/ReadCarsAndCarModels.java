@@ -50,20 +50,19 @@ public class ReadCarsAndCarModels {
         ArrayList<CarModel> modelsArrayList = new ArrayList<CarModel>();
 
         Cursor res = getDataBaseInstance(context).descendingBrandsModel();
-        Log.w("TAG","CarBrand from activity: "+carBrandName);
 
         while (res.moveToNext()) {
             if (carBrandName.equals(res.getString(7).replace("\n", "")))
             {
                 CarModel carModel= new CarModel(
-                        res.getString(1).replace("\n", "")
-                        ,res.getString(2).replace("\n", "")
-                        ,res.getString(3).replace("\n", "")
-                        ,res.getString(4).replace("\n", "")
-                        ,res.getString(5).replace("\n", "")
+                        res.getString(5).replace("\n", "")
                         ,res.getString(6).replace("\n", "")
                         ,res.getString(7).replace("\n", "")
                         ,res.getString(8).replace("\n", "")
+                        ,res.getString(1).replace("\n", "")
+                        ,res.getString(2).replace("\n", "")
+                        ,res.getString(3).replace("\n", "")
+                        ,res.getString(4).replace("\n", "")
                 );
                 modelsArrayList.add(carModel);
             }

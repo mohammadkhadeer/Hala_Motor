@@ -39,7 +39,7 @@ public class AdapterCarModel extends RecyclerView.Adapter<AdapterCarModel.ViewHo
     @Override
     public void onBindViewHolder(final AdapterCarModel.ViewHolder holder, final int position) {
 
-        holder.modelTV.setText(getTextEngOrLocal(context,carModelArrayL.get(position).getBrand_name_en(),carModelArrayL.get(position).getBrand_name_ar()));
+        holder.modelTV.setText(getTextEngOrLocal(context,carModelArrayL.get(position).getModel_name_en(),carModelArrayL.get(position).getModel_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

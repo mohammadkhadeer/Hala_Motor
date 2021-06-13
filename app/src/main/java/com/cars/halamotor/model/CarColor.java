@@ -1,6 +1,9 @@
 package com.cars.halamotor.model;
 
-public class CarColor {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class CarColor implements Parcelable {
     String setting_id,setting_code,setting_name,setting_name_en,setting_name_ar
             ,setting_content_id,setting_content_code,setting_content_name,setting_content_name_en,setting_content_name_ar;
     int colorIDInt ;
@@ -18,6 +21,32 @@ public class CarColor {
         this.setting_content_name_ar = setting_content_name_ar;
         this.colorIDInt = colorIDInt;
     }
+
+    protected CarColor(Parcel in) {
+        setting_id = in.readString();
+        setting_code = in.readString();
+        setting_name = in.readString();
+        setting_name_en = in.readString();
+        setting_name_ar = in.readString();
+        setting_content_id = in.readString();
+        setting_content_code = in.readString();
+        setting_content_name = in.readString();
+        setting_content_name_en = in.readString();
+        setting_content_name_ar = in.readString();
+        colorIDInt = in.readInt();
+    }
+
+    public static final Creator<CarColor> CREATOR = new Creator<CarColor>() {
+        @Override
+        public CarColor createFromParcel(Parcel in) {
+            return new CarColor(in);
+        }
+
+        @Override
+        public CarColor[] newArray(int size) {
+            return new CarColor[size];
+        }
+    };
 
     public String getSetting_id() {
         return setting_id;
@@ -105,5 +134,25 @@ public class CarColor {
 
     public void setColorIDInt(int colorIDInt) {
         this.colorIDInt = colorIDInt;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(setting_id);
+        dest.writeString(setting_code);
+        dest.writeString(setting_name);
+        dest.writeString(setting_name_en);
+        dest.writeString(setting_name_ar);
+        dest.writeString(setting_content_id);
+        dest.writeString(setting_content_code);
+        dest.writeString(setting_content_name);
+        dest.writeString(setting_content_name_en);
+        dest.writeString(setting_content_name_ar);
+        dest.writeInt(colorIDInt);
     }
 }

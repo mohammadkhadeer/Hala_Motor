@@ -34,10 +34,17 @@ import com.cars.halamotor.functions.Action;
 import com.cars.halamotor.functions.Functions;
 import com.cars.halamotor.model.AccAndJunk;
 import com.cars.halamotor.model.CCEMT;
+import com.cars.halamotor.model.CarColor;
+import com.cars.halamotor.model.CarCondition;
 import com.cars.halamotor.model.CarDetailsModel;
+import com.cars.halamotor.model.CarFuel;
+import com.cars.halamotor.model.CarInsurance;
+import com.cars.halamotor.model.CarLicensed;
 import com.cars.halamotor.model.CarMakeAndCarModel;
+import com.cars.halamotor.model.CarModel;
 import com.cars.halamotor.model.CarPlatesDetails;
 import com.cars.halamotor.model.CarPlatesModel;
+import com.cars.halamotor.model.CarTransmission;
 import com.cars.halamotor.model.CategoryComp;
 import com.cars.halamotor.model.CityWithNeighborhood;
 import com.cars.halamotor.model.CustomGallery;
@@ -46,6 +53,7 @@ import com.cars.halamotor.model.ItemAccAndJunk;
 import com.cars.halamotor.model.ItemCCEMT;
 import com.cars.halamotor.model.ItemPlates;
 import com.cars.halamotor.model.ItemWheelsRim;
+import com.cars.halamotor.model.PaymentMethod;
 import com.cars.halamotor.model.WheelsInfo;
 import com.cars.halamotor.model.WheelsRimModel;
 import com.cars.halamotor.permission.CheckPermission;
@@ -53,6 +61,7 @@ import com.cars.halamotor.presnter.Login;
 import com.cars.halamotor.presnter.NumberOfAllowedAds;
 import com.cars.halamotor.presnter.PassCategories;
 import com.cars.halamotor.presnter.UploadCCMETObjectToServer;
+import com.cars.halamotor.presnter.carDetails.CarModelDetails;
 import com.cars.halamotor.utils.Utils;
 import com.cars.halamotor.view.adapters.AdapterSelectCategory;
 import com.cars.halamotor.view.adapters.SelectedImageAdapter;
@@ -335,7 +344,7 @@ public class AddItem extends AppCompatActivity implements
         ,carDetailsModel.getYearStr()
         ,carDetailsModel.getCarInsurance().getSetting_content_code()
         ,carDetailsModel.getCarLicensed().getSetting_content_code()
-                ,carDetailsModel.getOption_array()
+                ,carDetailsModel.getCar_options_array()
                 ,carDetailsModel.getCarOptionsStr()
         ,carDetailsModel.getCarFuel().getSetting_content_code()
         ,carDetailsModel.getCarTransmission().getSetting_content_code()
@@ -344,55 +353,9 @@ public class AddItem extends AppCompatActivity implements
         ,firstNumber
         ,secondNumber
         ,getUserTokenFromServer(getApplicationContext())
-        ,uploadCCMETObjectToServer);
+        ,uploadCCMETObjectToServer
+        ,String.valueOf(checkBurnedPrice(getApplicationContext())));
 
-//        itemCCEMT = new ItemCCEMT(
-//                "NOTYET"
-//                ,getCityFromSP(getApplicationContext())
-//                ,getNeighborhoodFromSP(getApplicationContext())
-//                ,getUserTokenInFromSP(getApplicationContext())
-//                ,getTime(), getPhoneNumberInSP(getApplicationContext())
-//                , getTitleInSP(getApplicationContext())
-//                , getDesInSP(getApplicationContext())
-//                , getUserImage(getApplicationContext())
-//                ,getUserName(getApplicationContext())
-//                ,"0","123","0","0"
-//                ,selectedCategory, selectedCategory
-//                , carDetailsModel.getCarMakeStr().getName_en()
-//                , carDetailsModel.getModelStr().getModel_name_en()
-//                , carDetailsModel.getYearStr()
-//                , carDetailsModel.getConditionStr().getCarConditionStr()
-//                , carDetailsModel.getKilometersStr()
-//                , carDetailsModel.getTransmissionStr()
-//                , carDetailsModel.getFuelStr().getCarFuelStr()
-//                , carDetailsModel.getLicenseStr().getCarLicensedStr()
-//                , carDetailsModel.getInsurance().getCarInsuranceStr()
-//                , carDetailsModel.getCarColorStr()
-//                , carDetailsModel.getPaymentMethod().getPaymentMethodStr()
-//                , carDetailsModel.getCarOptionsStr()
-//                ,"person", getTimeStamp()
-//                , getUserIdInServerFromSP(getApplicationContext())
-//                ,getImagePathsNoImage()
-//                ,checkBurnedPrice(getApplicationContext())
-//                ,0,Integer.parseInt(getYEAR()), Integer.parseInt(getMONTH())
-//                , Integer.parseInt(getDAY())
-//                ,getPriceAfterConvertedToDoubleInSP(getApplicationContext())
-//                , Double.parseDouble(firstNumber), Double.parseDouble(secondNumber)
-//                ,String.valueOf(itemLiveOrMustToWaitIfBurnedPriceOn)
-//                ,selectedCategory
-//                ,getCitySFromSP(getApplicationContext())
-//                ,getNeighborhoodSFromSP(getApplicationContext())
-//                ,carDetailsModel.getCarMakeStr().getName_en()
-//                ,carDetailsModel.getModelStr().getModel_name_en()
-//                ,"person"
-//                ,carDetailsModel.getPaymentMethod().getPaymentMethodStrS()
-//                ,carDetailsModel.getFuelStr().getCarFuelStrS()
-//                ,carDetailsModel.getConditionStr().getCarConditionStrS()
-//                ,carDetailsModel.getInsurance().getCarInsuranceStrS()
-//                ,carDetailsModel.getLicenseStr().getCarLicensedStrS()
-//                ,Integer.parseInt(convertYearToEng(carDetailsModel.getYearStr()))
-//                , Locale.getDefault().getLanguage()
-//        );
     }
 
     private void checkCategoryAndUpload(String selectCategory) {
@@ -916,11 +879,6 @@ public class AddItem extends AppCompatActivity implements
     }
 
     @Override
-    public void onDataPass(EditValueInCDM data,EditValueInCDM data2) {
-        carDetailsModel =updateCarDetailsModel(carDetailsModel,data.getWhatUserWantToChangeStr(),data.getValueInWhatUserWantToChangeStr(),data2.getValueInWhatUserWantToChangeStr());
-    }
-
-    @Override
     public void onDataPassCarPlates(CarPlatesDetails carPlatesDetailsAfterEdit) {
         carPlatesDetails = carPlatesDetailsAfterEdit;
     }
@@ -969,8 +927,70 @@ public class AddItem extends AppCompatActivity implements
     }
 
     @Override
+    public void onCarModelChange(CarModel carModel) {
+        carDetailsModel.setCarModel(carModel);
+    }
+
+    @Override
+    public void onYearChange(String year) {
+        carDetailsModel.setYearStr(year);
+    }
+
+    @Override
+    public void onConditionChange(CarCondition carCondition) {
+        carDetailsModel.setCarCondition(carCondition);
+    }
+
+    @Override
+    public void onKilometersChange(String kilometers) {
+        carDetailsModel.setKilometersStr(kilometers);
+    }
+
+    @Override
+    public void onTransmissionChange(CarTransmission carTransmission) {
+        carDetailsModel.setCarTransmission(carTransmission);
+    }
+
+    @Override
+    public void onFuelChange(CarFuel carFuel) {
+        carDetailsModel.setCarFuel(carFuel);
+    }
+
+    @Override
+    public void onOptionsChange(String options, ArrayList<String> selectedOptionCode) {
+        carDetailsModel.setCarOptionsStr(options);
+        carDetailsModel.setCar_options_array(selectedOptionCode);
+    }
+
+    @Override
+    public void onLicensedChange(CarLicensed carLicensed) {
+        carDetailsModel.setCarLicensed(carLicensed);
+    }
+
+    @Override
+    public void onInsuranceChange(CarInsurance carInsurance) {
+        carDetailsModel.setCarInsurance(carInsurance);
+    }
+
+    @Override
+    public void onColorChange(CarColor carColor) {
+        carDetailsModel.setCarColorStr(carColor.getSetting_content_code());
+    }
+
+    @Override
+    public void onPaymentMethodChange(PaymentMethod paymentMethod) {
+        carDetailsModel.setPaymentMethod(paymentMethod);
+    }
+
+    @Override
+    public void onDataPass(EditValueInCDM data,EditValueInCDM data2) {
+        carDetailsModel =updateCarDetailsModel(carDetailsModel,data.getWhatUserWantToChangeStr(),data.getValueInWhatUserWantToChangeStr(),data2.getValueInWhatUserWantToChangeStr());
+    }
+
+    @Override
     public void updateCCEMTSuccess(JSONObject obj) {
         Log.w("TAG","Insaid add item activity");
         Log.w("TAG",obj.toString());
     }
+
 }

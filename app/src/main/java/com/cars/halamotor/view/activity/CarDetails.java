@@ -83,7 +83,6 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragmentCarMake;
     String whereComeFromStr,fragmentTypeStr,carMakeStr,carOptionStr;
-    String []option_array;
     CarDetailsModel carDetailsModel= new CarDetailsModel();
 
     @Override
@@ -198,7 +197,6 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
                 Bundle bundle = new Bundle();
                 bundle.putString("whereComeFrom", "fromFragment");
                 bundle.putString("options", carOptionStr);
-                bundle.putStringArray("options_array", option_array);
                 fragmentOptions.setArguments(bundle);
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -233,7 +231,6 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         if (fragmentTypeStr.equals(getResources().getString(R.string.car_options)))
         {
             carOptionStr =bundle.getString("options");
-            option_array =bundle.getStringArray("options_array");
         }
     }
 
@@ -428,13 +425,31 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         carDetailsModel.setCarMake(carMake);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void passCarModelDetails(CarModel carModel) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            carDetailsModel.setCarModel(carModel);
-            passObjectFromCarDetailsToAddItem("model","modelS"
-                    ,getTextEngOrLocal(getApplicationContext(),carModel.getBrand_name_en(),carModel.getBrand_name()),carModel.getBrand_name_en());
+            passEditedCarModel(carModel);
         }else {
             moveFromModelFragmentToYearFragment();
             changeHeadTitle(getResources().getString(R.string.year));
@@ -446,9 +461,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     public void passCarYear(String carYear) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            carDetailsModel.setYearStr(carYear);
-            passObjectFromCarDetailsToAddItem("year","yearS",carYear,
-                    convertYearToEng(carYear));
+            passEditedYear(carYear);
         }else{
             moveFromYearFragmentToCondtionFragment();
             changeHeadTitle(getResources().getString(R.string.condition));
@@ -460,8 +473,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     public void passCarCondition(CarCondition carCondition) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            passObjectFromCarDetailsToAddItem("condition","conditionS"
-                    ,getTextEngOrLocal(getApplicationContext(),carCondition.getSetting_content_name_en(),carCondition.getSetting_content_name_ar()),carCondition.getSetting_content_code());
+            passEditedCondition(carCondition);
         }else {
             moveFromConditionFragmentToKilometersFragment();
             changeHeadTitle(getResources().getString(R.string.kilometers));
@@ -473,8 +485,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     public void passCarKilometers(String carKilometers) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            passObjectFromCarDetailsToAddItem("kilometers","kilometersS"
-                    ,carKilometers,carKilometers);
+            passEditedKilometers(carKilometers);
         }else {
             moveFromConditionFragmentToTransmissionFragment();
             changeHeadTitle(getResources().getString(R.string.transmission));
@@ -486,8 +497,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     public void passCarCondition(CarTransmission carTransmission) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            passObjectFromCarDetailsToAddItem("transmission","transmissionS"
-                    ,getTextEngOrLocal(getApplicationContext(),carTransmission.getSetting_content_name_en(),carTransmission.getSetting_content_name_ar()),carTransmission.getSetting_content_code());
+            passEditedTransmission(carTransmission);
         }else {
             moveFromTransmissionFragmentToFuelFragment();
             changeHeadTitle(getResources().getString(R.string.fuel));
@@ -499,8 +509,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     public void passCarFuel(CarFuel carFuel) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            passObjectFromCarDetailsToAddItem("fuel","fuelS"
-                    ,getTextEngOrLocal(getApplicationContext(),carFuel.getSetting_content_name_en(),carFuel.getSetting_content_name_ar()),carFuel.getSetting_content_code());
+            passEditedFuel(carFuel);
         }else {
             moveFromFuelFragmentToOptionsFragment();
             changeHeadTitle(getResources().getString(R.string.car_options));
@@ -509,16 +518,15 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     }
 
     @Override
-    public void passCarOptions(String carOptions,String []options_array) {
+    public void passCarOptions(String carOptions,ArrayList<String> selectedOptions) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            passObjectFromCarDetailsToAddItem("options","optionsS"
-                    ,carOptions,carOptions);
+            passEditedOptions(carOptions,selectedOptions);
         }else {
             moveFromOptionsFragmentToLicensedFragment();
             changeHeadTitle(getResources().getString(R.string.car_license));
             carDetailsModel.setCarOptionsStr(carOptions);
-            carDetailsModel.setOption_array(options_array);
+            carDetailsModel.setCar_options_array(selectedOptions);
         }
     }
 
@@ -526,8 +534,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     public void passCarLicensed(CarLicensed carLicensed) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            passObjectFromCarDetailsToAddItem("licensed","licensedS"
-                    ,getTextEngOrLocal(getApplicationContext(),carLicensed.getSetting_content_name_en(),carLicensed.getSetting_content_name_ar()),carLicensed.getSetting_content_code());
+            passEditedLicensed(carLicensed);
         }else {
             moveFromLicensedFragmentToInsuranceFragment();
             changeHeadTitle(getResources().getString(R.string.insurance));
@@ -539,8 +546,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     public void passCarInsurance(CarInsurance carInsurance) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            passObjectFromCarDetailsToAddItem("insurance","insurance"
-                    , getTextEngOrLocal(getApplicationContext(),carInsurance.getSetting_content_name_en(),carInsurance.getSetting_content_name_ar()),carInsurance.getSetting_content_code());
+            passEditedInsurance(carInsurance);
         }else {
             moveFromInsuranceFragmentToColorFragment();
             changeHeadTitle(getResources().getString(R.string.color));
@@ -552,8 +558,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     public void passCarColor(CarColor carColor) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            passObjectFromCarDetailsToAddItem("color","colorS"
-                    ,getTextEngOrLocal(getApplicationContext(),carColor.getSetting_content_name_en(),carColor.getSetting_content_name_ar()),carColor.getSetting_content_code());
+            passEditedColor(carColor);
         }else {
             moveFromColorFragmentToPaymentFragment();
             changeHeadTitle(getResources().getString(R.string.payment_method));
@@ -565,8 +570,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     public void passPaymentMethod(PaymentMethod paymentMethod) {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
-            passObjectFromCarDetailsToAddItem("payment","paymentS"
-                    ,getTextEngOrLocal(getApplicationContext(),paymentMethod.getSetting_content_name_en(),paymentMethod.getSetting_content_name_ar()),paymentMethod.getSetting_content_code());
+            passEditedPaymentMethod(paymentMethod);
         }else {
             carDetailsModel.setPaymentMethod(paymentMethod);
             Intent resultIntent = new Intent();
@@ -575,4 +579,96 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
             finish();
         }
     }
+
+
+
+    private void passEditedCarModel(CarModel carModel) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "model");
+        resultIntent.putExtra("model", carModel);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private void passEditedYear(String year) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "year");
+        resultIntent.putExtra("year", year);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private void passEditedCondition(CarCondition carCondition) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "condition");
+        resultIntent.putExtra("car_condition", carCondition);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private void passEditedKilometers(String kilometers) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "kilometers");
+        resultIntent.putExtra("kilometers", kilometers);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private void passEditedTransmission(CarTransmission carTransmission) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "transmission");
+        resultIntent.putExtra("transmission", carTransmission);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private void passEditedFuel(CarFuel carFuel) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "fuel");
+        resultIntent.putExtra("fuel", carFuel);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private void passEditedOptions(String options, ArrayList<String> selectedOptionCode) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "options");
+        resultIntent.putExtra("options", options);
+        resultIntent.putStringArrayListExtra("option_array_list", selectedOptionCode);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private void passEditedLicensed(CarLicensed carLicensed) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "licensed");
+        resultIntent.putExtra("licensed", carLicensed);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private void passEditedInsurance(CarInsurance carInsurance) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "insurance");
+        resultIntent.putExtra("insurance", carInsurance);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private void passEditedColor(CarColor carColor) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "color");
+        resultIntent.putExtra("color", carColor);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
+    private void passEditedPaymentMethod(PaymentMethod paymentMethod) {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("where_edit", "payment");
+        resultIntent.putExtra("payment", paymentMethod);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
 }

@@ -73,21 +73,21 @@ public class NeighborhoodViewHolder extends ChildViewHolder {
         if (!neighborhoodTV.getText().toString().equals(context.getResources().getString(R.string.can_not_find)))
         {
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("city", city_ar);
-            resultIntent.putExtra("nei", area_ar);
-            resultIntent.putExtra("neiId", area_id);
-            resultIntent.putExtra("cityS", city_en);
-            resultIntent.putExtra("neiS", area_en);
+            resultIntent.putExtra("city_en", city_en);
+            resultIntent.putExtra("city_ar", city_ar);
+            resultIntent.putExtra("area_id", area_id);
+            resultIntent.putExtra("area_name_en", area_en);
+            resultIntent.putExtra("area_name_ar", area_ar);
             ((Activity)context).setResult(Activity.RESULT_OK, resultIntent);
             ((Activity)context).finish();
         }else{
             myDialog = new Dialog(context);
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("city", city_ar);
-            resultIntent.putExtra("nei", area_ar);
-            resultIntent.putExtra("neiId", area_id);
-            resultIntent.putExtra("cityS",city_en );
-            resultIntent.putExtra("neiS", area_en);
+            resultIntent.putExtra("city_en", city_en);
+            resultIntent.putExtra("city_ar", city_ar);
+            resultIntent.putExtra("area_id", area_id);
+            resultIntent.putExtra("area_name_en", area_en);
+            resultIntent.putExtra("area_name_ar", area_ar);
             ((Activity)context).setResult(Activity.RESULT_OK, resultIntent);
             ((Activity)context).finish();
              neighborhoodTV.setTextColor(Color.WHITE);
