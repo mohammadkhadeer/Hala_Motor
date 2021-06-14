@@ -39,6 +39,7 @@ import static com.cars.halamotor.dataBase.ReadCitesAndAreas.getAreasFromDataBase
 import static com.cars.halamotor.dataBase.ReadCitesAndAreas.getAreasToSpecCityFromDataBase;
 import static com.cars.halamotor.functions.FillNeighborhood.fillNeighborhoodArrayL;
 import static com.cars.halamotor.functions.Functions.changeFontBold;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class SelectCityAndNeighborhood extends AppCompatActivity {
 
@@ -134,7 +135,7 @@ public class SelectCityAndNeighborhood extends AppCompatActivity {
         ArrayList<Area> cityWithNeighborhoodsArrayL2  = new ArrayList<Area>();
         for (Area cityWithNeighborhood : areasArrayList) {
             // must to check eng and arabic
-            if (Locale.getDefault().getLanguage().equals("en"))
+            if (getUserLanguage(getApplicationContext()).equals("en"))
             {
                 if (cityWithNeighborhood.getName_en().toLowerCase().contains(text.toLowerCase())) {
                     //adding the element to filtered list

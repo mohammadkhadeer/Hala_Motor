@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class CarDetailsModel implements Parcelable {
 
     CarMake carMake;
-    String carColorStr;
+    CarColor carColor;
     CarModel carModel;
     String yearStr,carOptionsStr;
     CarCondition carCondition;
@@ -21,9 +21,9 @@ public class CarDetailsModel implements Parcelable {
     public CarDetailsModel(){}
     ArrayList<String> car_options_array;
 
-    public CarDetailsModel(CarMake carMake, String carColorStr, CarModel carModel, String yearStr, String carOptionsStr, CarCondition carCondition, String kilometersStr, CarTransmission carTransmission, CarFuel carFuel, CarLicensed carLicensed, CarInsurance carInsurance, PaymentMethod paymentMethod, ArrayList<String> car_options_array) {
+    public CarDetailsModel(CarMake carMake, CarColor carColor, CarModel carModel, String yearStr, String carOptionsStr, CarCondition carCondition, String kilometersStr, CarTransmission carTransmission, CarFuel carFuel, CarLicensed carLicensed, CarInsurance carInsurance, PaymentMethod paymentMethod, ArrayList<String> car_options_array) {
         this.carMake = carMake;
-        this.carColorStr = carColorStr;
+        this.carColor = carColor;
         this.carModel = carModel;
         this.yearStr = yearStr;
         this.carOptionsStr = carOptionsStr;
@@ -39,7 +39,7 @@ public class CarDetailsModel implements Parcelable {
 
     protected CarDetailsModel(Parcel in) {
         carMake = in.readParcelable(CarMake.class.getClassLoader());
-        carColorStr = in.readString();
+        carColor = in.readParcelable(CarColor.class.getClassLoader());
         carModel = in.readParcelable(CarModel.class.getClassLoader());
         yearStr = in.readString();
         carOptionsStr = in.readString();
@@ -56,7 +56,7 @@ public class CarDetailsModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(carMake, flags);
-        dest.writeString(carColorStr);
+        dest.writeParcelable(carColor, flags);
         dest.writeParcelable(carModel, flags);
         dest.writeString(yearStr);
         dest.writeString(carOptionsStr);
@@ -95,12 +95,12 @@ public class CarDetailsModel implements Parcelable {
         this.carMake = carMake;
     }
 
-    public String getCarColorStr() {
-        return carColorStr;
+    public CarColor getCarColor() {
+        return carColor;
     }
 
-    public void setCarColorStr(String carColorStr) {
-        this.carColorStr = carColorStr;
+    public void setCarColor(CarColor carColor) {
+        this.carColor = carColor;
     }
 
     public CarModel getCarModel() {

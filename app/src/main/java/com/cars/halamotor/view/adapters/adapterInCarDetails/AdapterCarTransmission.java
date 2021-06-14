@@ -2,6 +2,7 @@ package com.cars.halamotor.view.adapters.adapterInCarDetails;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,9 @@ public class AdapterCarTransmission extends RecyclerView.Adapter<AdapterCarTrans
     @Override
     public void onBindViewHolder(final AdapterCarTransmission.ViewHolder holder, final int position) {
         fillImageView(context,holder.arrowIV);
+//        Log.w("TAG","carTransmissionArrayL.get(position).getSetting_content_name_en() "+carTransmissionArrayL.get(position).getSetting_content_name_en());
+//        Log.w("TAG","carTransmissionArrayL.get(position).getSetting_content_name_ar() "+carTransmissionArrayL.get(position).getSetting_content_name_ar());
+//        Log.w("TAG","getTextEngOrLocal "+getTextEngOrLocal(context,carTransmissionArrayL.get(position).getSetting_content_name_en(),carTransmissionArrayL.get(position).getSetting_content_name_ar()));
         holder.modelTV.setText(getTextEngOrLocal(context,carTransmissionArrayL.get(position).getSetting_content_name_en(),carTransmissionArrayL.get(position).getSetting_content_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override

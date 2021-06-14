@@ -106,7 +106,7 @@ public class FragmentModel extends Fragment implements AdapterCarModel.PassCarMo
                     carModelArrayList2.add(carModel);
                 }
             }else{
-                if (carModel.getBrand_name_ar().toLowerCase().contains(text.toLowerCase())) {
+                if (carModel.getModel_name_ar().toLowerCase().contains(text.toLowerCase())) {
                     //adding the element to filtered list
                     carModelArrayList2.add(carModel);
                 }

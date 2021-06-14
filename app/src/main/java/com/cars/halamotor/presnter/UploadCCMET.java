@@ -1,8 +1,12 @@
 package com.cars.halamotor.presnter;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.cars.halamotor.model.CarDetailsModel;
+import com.cars.halamotor.model.CategoryComp;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,19 +24,24 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.cars.halamotor.API.APIS.BASE_API;
+import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
+import static com.cars.halamotor.dataBase.InsertFunctions.insertNotificationTable;
 import static com.cars.halamotor.functions.Functions.checkIfAndroidVBiggerThan9;
+import static com.cars.halamotor.functions.Functions.getNotification;
+import static com.cars.halamotor.functions.Functions.getNotificationObject;
 
 public class UploadCCMET {
 
     public static void postCCMET(String model_id, String category_id, String area_id, String title, String description,
-                                 ArrayList<String> photos, double price, String year,String insurance_type
-                                 ,String license_type,ArrayList<String> car_options_array,String options,String fuel_type,String transmission_type
-                                 ,String condition_type,String payment_method,String kilometers_from,String kilometers_to
-                                 ,String userTokenInServer,UploadCCMETObjectToServer uploadCCMETObjectToServer
-                                 ,String isHotPrice)
+                                 ArrayList<String> photos, double price, String year, String insurance_type
+                                 , String license_type, ArrayList<String> car_options_array, String options, String fuel_type, String transmission_type
+                                 , String condition_type, String payment_method, String kilometers_from, String kilometers_to
+                                 , String userTokenInServer, UploadCCMETObjectToServer uploadCCMETObjectToServer
+                                 , String isHotPrice, String color_code, CarDetailsModel carDetailsModel, CategoryComp categoryCompNow
+                                 , Context context)
     {
 
-        Log.w("TAG","model_id: "+model_id);
+        Log.w("TAG","model_id: "+carDetailsModel);
         Log.w("TAG","category_id: "+category_id);
         Log.w("TAG","area_id: "+area_id);
         Log.w("TAG","title: "+title);
@@ -101,6 +110,8 @@ public class UploadCCMET {
             body.addFormDataPart("payment_method",payment_method);
             body.addFormDataPart("kilometers_from",kilometers_from);
             body.addFormDataPart("kilometers_to",kilometers_to);
+            body.addFormDataPart("car_color",color_code);
+
 
             RequestBody body1 = body.setType(MultipartBody.FORM).build();
 
@@ -116,15 +127,33 @@ public class UploadCCMET {
                 Log.w("TAG", "Response upload: " + response);
 
                 JSONObject obj = null,data= null;
+                JSONArray jsonArray= null;
+                String image_path = null;
+
                 try {
                     obj = new JSONObject(response.body().string());
                     data = obj.getJSONObject("DATA");
+                    jsonArray= data.getJSONArray("photos");
+
+                    //insert process eng and ar
+                    if (jsonArray != null) {
+                        image_path =jsonArray.getString(0);
+                    }else{
+                        image_path ="no_image";
+                    }
+
+                    Log.w("TAG", "DATA: " + data.toString());
+                    Log.w("TAG", "image_path: " + image_path);
+                    Log.w("TAG", "post id: " + data.getString("id"));
+
+
+                    insertNotificationTable(getNotificationObject(categoryCompNow.getName_en()+"#"+categoryCompNow.getName_ar(),title,data.getString("id"),"out","item",image_path),getDataBaseInstance(context));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                uploadCCMETObjectToServer.updateCCEMTSuccess(data);
+                uploadCCMETObjectToServer.updateCCEMTSuccess();
 
             } catch (IOException e) {
                 e.printStackTrace();

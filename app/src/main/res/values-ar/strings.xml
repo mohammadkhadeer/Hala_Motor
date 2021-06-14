@@ -337,6 +337,29 @@
     <string name="wj_8000">\+ ٨\,٠٠٠</string>
     <string name="wj_9000">\+ ٩\,٠٠٠</string>
     <string name="wj_10000">\+ ١٠\,٠٠٠</string>
+
+    <string name="k_0_s">0</string>
+    <string name="k_1K_10K_s">1\,000 \- 9\,999</string>
+    <string name="k_10K_20K_s">10\,000 \- 19\,999</string>
+    <string name="k_20K_30K_s">20\,000 \- 29\,999</string>
+    <string name="k_30K_40K_s">30\,000 \- 39\,999</string>
+    <string name="k_40K_50K_s">40\,000 \- 49\,999</string>
+    <string name="k_50K_60K_s">50\,000 \- 59\,999</string>
+    <string name="k_60K_70K_s">60\,000 \- 69\,999</string>
+    <string name="k_70K_80K_s">70\,000 \- 79\,999</string>
+    <string name="k_80K_90K_s">80\,000 \- 89\,999</string>
+    <string name="k_90K_100K_s">90\,000 \- 99\,999</string>
+    <string name="k_100K_110K_s">100\,000 \- 109\,999</string>
+    <string name="k_110K_120K_s">110\,000 \- 119\,999</string>
+    <string name="k_120K_130K_s">130\,000 \- 129\,999</string>
+    <string name="k_130K_140K_s">130\,000 \- 139\,999</string>
+    <string name="k_140K_150K_s">140\,000 \- 149\,999</string>
+    <string name="k_150K_160K_s">150\,000 \- 159\,999</string>
+    <string name="k_160K_170K_s">160\,000 \- 169\,999</string>
+    <string name="k_170K_180K_s">170\,000 \- 179\,999</string>
+    <string name="k_180K_190K_s">180\,000 \- 189\,999</string>
+    <string name="k_190K_200K_s">190\,000 \- 199\,999</string>
+    <string name="k_up_200K_s">\+200\,000</string>
     <string name="wj_500_s">5</string>
     <string name="wj_600_s">600</string>
     <string name="wj_700_s">700</string>
@@ -357,6 +380,7 @@
     <string name="wj_8000_s">8000</string>
     <string name="wj_9000_s">9000</string>
     <string name="wj_10000_s">10000</string>
+
     <string name="hour">ساعات</string>
     <string name="min">دقائق</string>
     <string name="just_now">الان</string>

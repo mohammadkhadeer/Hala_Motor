@@ -493,13 +493,6 @@
 
         </ScrollView>
 
-        <ProgressBar
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:visibility="gone"
-            android:id="@+id/add_item_activity_progress_bar"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -521,6 +514,25 @@
 
             </Button>
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:alpha="0.5"
+            android:id="@+id/freez_all_button_when_user_press_upload"
+            android:visibility="gone"
+            >
+
+        </RelativeLayout>
+
+        <ProgressBar
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:id="@+id/add_item_activity_progress_bar"/>
 
     </RelativeLayout>
 

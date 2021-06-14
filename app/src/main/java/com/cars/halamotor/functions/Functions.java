@@ -211,8 +211,20 @@ public class Functions {
     }
 
     public static NotificationComp getNotification(String process, String notificationTitle
-                        , Context context,String itemIdInServer,String outOrCome,String AuctionOrItem
-                        ,String itemImage)
+            , Context context,String itemIdInServer,String outOrCome,String AuctionOrItem
+            ,String itemImage)
+    {
+        NotificationComp notificationComp = new NotificationComp(
+                process,"0",notificationTitle
+                ,"person","if we want can set user image"
+                ,itemImage,getTimeStamp(),outOrCome,itemIdInServer,AuctionOrItem,getDATE()
+        );
+        return notificationComp;
+    }
+
+    public static NotificationComp getNotificationObject(String process, String notificationTitle
+            ,String itemIdInServer,String outOrCome,String AuctionOrItem
+            ,String itemImage)
     {
         NotificationComp notificationComp = new NotificationComp(
                 process,"0",notificationTitle
@@ -709,26 +721,26 @@ public class Functions {
     public static ArrayList<String> fillKilometersArrayL(ArrayList<String> carKilometersArrayL, Context context)   {
         carKilometersArrayL = new ArrayList<String>();
 
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_0));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_1K_10K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_20K_30K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_30K_40K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_40K_50K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_50K_60K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_60K_70K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_70K_80K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_80K_90K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_90K_100K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_100K_110K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_120K_130K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_130K_140K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_140K_150K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_150K_160K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_160K_170K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_170K_180K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_180K_190K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_190K_200K));
-        carKilometersArrayL.add(context.getResources().getString(R.string.k_up_200K));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_0_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_1K_10K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_20K_30K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_30K_40K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_40K_50K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_50K_60K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_60K_70K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_70K_80K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_80K_90K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_90K_100K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_100K_110K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_120K_130K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_130K_140K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_140K_150K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_150K_160K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_160K_170K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_170K_180K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_180K_190K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_190K_200K_s));
+        carKilometersArrayL.add(context.getResources().getString(R.string.k_up_200K_s));
 
         return carKilometersArrayL;
     }

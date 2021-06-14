@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.cars.halamotor.presnter.carDetails.CarBrand;
 import com.cars.halamotor.presnter.carDetails.CarKilometers;
 import com.cars.halamotor.presnter.carDetails.CarTransmissionPresnter;
 import com.cars.halamotor.view.activity.CarDetails;
+import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarFuel;
 import com.cars.halamotor.view.adapters.adapterInCarDetails.AdapterCarTransmission;
 
 import java.util.ArrayList;
@@ -38,17 +40,19 @@ public class FragmentTransmission extends Fragment implements AdapterCarTransmis
     ImageView cancelIV;
     View view;
     CarTransmissionPresnter carTransmissionPresnter;
+
     public FragmentTransmission(){}
 
     @Override
     public void onAttach(Context context) {
-        super.onAttach(context);
         if (context instanceof CarTransmissionPresnter) {
             carTransmissionPresnter = (CarTransmissionPresnter) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement FragmentAListener");
         }
+
+        super.onAttach(context);
     }
 
     @Override
@@ -94,21 +98,21 @@ public class FragmentTransmission extends Fragment implements AdapterCarTransmis
     }
 
     private void filter(String text) {
-        ArrayList<CarTransmission> carKilometersArrayList2  = new ArrayList<CarTransmission>();
-        for (CarTransmission Kilometers : carTransmissionArrayL) {
+        ArrayList<CarTransmission> carTransmissionsArrayList  = new ArrayList<CarTransmission>();
+        for (CarTransmission transmission : carTransmissionArrayL) {
             if (getUserLanguage(getActivity()).equals("en"))
             {
-                if (Kilometers.getSetting_content_name_en().contains(text.toLowerCase())) {
-                    carKilometersArrayList2.add(Kilometers);
+                if (transmission.getSetting_content_name_en().contains(text.toLowerCase())) {
+                    carTransmissionsArrayList.add(transmission);
                 }
                 else{
-                    if (Kilometers.getSetting_content_name_ar().contains(text.toLowerCase())) {
-                        carKilometersArrayList2.add(Kilometers);
+                    if (transmission.getSetting_content_name_ar().contains(text.toLowerCase())) {
+                        carTransmissionsArrayList.add(transmission);
                     }
                }
             }
         }
-        adapterCarTransmission.filterList(carKilometersArrayList2);
+        adapterCarTransmission.filterList(carTransmissionsArrayList);
     }
 
     private void makeCancelTitleIVGONE() {
@@ -130,7 +134,7 @@ public class FragmentTransmission extends Fragment implements AdapterCarTransmis
 
     private void createRV() {
         carTransmissionArrayL =getCarTransmissionFromDataBase(getActivity());
-        recyclerView.setHasFixedSize(true);
+        //here when back to this fragment in arabic case i don't know why but can go insaid adapter
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);
         adapterCarTransmission = new AdapterCarTransmission(getActivity(), carTransmissionArrayL,this);
@@ -138,7 +142,7 @@ public class FragmentTransmission extends Fragment implements AdapterCarTransmis
     }
 
     private void inti() {
-        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_car_transmission_RV);
+        recyclerView = (RecyclerView) view.findViewById(R.id.fragment_car_transmission_RV_);
         searchEdt = (EditText) view.findViewById(R.id.fragment_car_transmission_searchEdt);
         cancelRL = (RelativeLayout) view.findViewById(R.id.fragment_transmission_cancel_RL);
         cancelIV = (ImageView) view.findViewById(R.id.fragment_car_transmission_ImageV);

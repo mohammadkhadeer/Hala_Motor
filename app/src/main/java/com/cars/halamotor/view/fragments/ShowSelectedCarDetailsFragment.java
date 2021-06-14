@@ -351,7 +351,7 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
         carOptionsTV.setText(carDetailsModel.getCarOptionsStr());
         carLicenseTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getCarLicensed().getSetting_content_name_en(),carDetailsModel.getCarLicensed().getSetting_content_name_ar()));
         insuranceTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getCarInsurance().getSetting_content_name_en(),carDetailsModel.getCarInsurance().getSetting_content_name_ar()));
-        colorTV.setText(carDetailsModel.getCarColorStr());
+        colorTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getCarColor().getSetting_content_name_en(),carDetailsModel.getCarColor().getSetting_content_name_ar()));
         paymentMethodTV.setText(getTextEngOrLocal(getActivity(),carDetailsModel.getPaymentMethod().getSetting_content_name_en(),carDetailsModel.getPaymentMethod().getSetting_content_name_ar()));
     }
 

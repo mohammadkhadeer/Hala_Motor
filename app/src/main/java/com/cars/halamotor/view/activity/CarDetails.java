@@ -394,6 +394,10 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
+
+
+
+
     private void checkIfLastFragmentFinshActivityElseMoveToPrivuseFragment() {
         if (whereComeFromStr.equals("fromAShowSelected"))
         {
@@ -570,7 +574,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         }else {
             moveFromColorFragmentToPaymentFragment();
             changeHeadTitle(getResources().getString(R.string.payment_method));
-            carDetailsModel.setCarColorStr(getTextEngOrLocal(getApplicationContext(),carColor.getSetting_content_name_en(),carColor.getSetting_content_name_ar()));
+            carDetailsModel.setCarColor(carColor);
         }
     }
 

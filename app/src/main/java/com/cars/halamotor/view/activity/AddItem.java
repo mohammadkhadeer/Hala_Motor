@@ -78,6 +78,8 @@ import static com.cars.halamotor.fireBaseDB.UploadToStorage.uploadImagesBeforeUp
 import static com.cars.halamotor.functions.FillText.fillImageView;
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.functions.Functions.checkBurnedPrice;
+import static com.cars.halamotor.functions.Functions.checkTitleAndDescription;
+import static com.cars.halamotor.functions.Functions.checkTitleAndDescriptionRealOrNot;
 import static com.cars.halamotor.functions.Functions.cityS;
 import static com.cars.halamotor.functions.Functions.fillCategoryArrayList;
 import static com.cars.halamotor.functions.Functions.getDAY;
@@ -91,6 +93,7 @@ import static com.cars.halamotor.functions.Functions.isNetworkAvailable;
 import static com.cars.halamotor.functions.Functions.splitString;
 import static com.cars.halamotor.presnter.UploadCCMET.postCCMET;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
+import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getAddressInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getAreaIDInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getCityFromSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getCitySFromSP;
@@ -109,7 +112,7 @@ public class AddItem extends AppCompatActivity implements
         ShowSelectedCarDetailsFragment.OnDataPass , NumberOfAllowedAds , PassCategories , UploadCCMETObjectToServer {
 
     RelativeLayout cancelRL, selectImageFGRL, selectVideoRL, coverVideoViewRL, cancelVideoRL, cancelSelectedCategoryRL, add_activity_complete_car_dCV, cityPhoneNumberRL;
-    RelativeLayout showSelectedCarDetailsRL, messageContainerRL, messageContentRL;
+    RelativeLayout showSelectedCarDetailsRL, messageContainerRL, messageContentRL,freez_all_button_when_user_press_upload;
     LinearLayout categoryContLL, headLL;
     TextView insertAddTV, textTitleTV, categorySelectedNameTV, completeCarDetailsTV, generalMessageTV;
     RecyclerView viewSelectedImageRV, selectCategoryRV;
@@ -230,62 +233,60 @@ public class AddItem extends AppCompatActivity implements
     }
 
     private void checkBeforUpload() {
-        String selectCategory ;
         if (isNetworkAvailable(getApplicationContext())) {
+            if (categoryCompNow != null) {
+                if (checkTitleAndDescription(getApplicationContext()) == null) {
+                    if (checkTitleAndDescriptionRealOrNot(getApplicationContext()) == null) {
+                        if (productDetailsComplete == 1) {
+                            if (getAddressInSP(getApplicationContext()) != null) {
 
-            createCCMETObject(categoryCompNow.getId());
-//            if (selectedCategoryPositionInt != 100) {
-//                if (checkTitleAndDescription(getApplicationContext()) == null) {
-//                    if (checkTitleAndDescriptionRealOrNot(getApplicationContext()) == null) {
-//                        if (productDetailsComplete == 1) {
-//                            if (getAddressInSP(getApplicationContext()) != null) {
-//                                if (checkPhoneNumberRealOrNot(getApplicationContext()) == null) {
-//                                    if (numberOfOldAds < numberOfAllowedAdsInt) {
-//                                        if (canInsertAndOrNot == 1) {
-//                                            selectCategory = categoryCompNow.getCode();
-//                                            if (getBurnedPriceInSP(getApplicationContext()) != null) {
-//                                                if (canInsertBurnedPrice == 1) {
-//                                                    itemLiveOrMustToWaitIfBurnedPriceOn =0;
-//                                                    checkCategoryAndUpload(selectCategory);
-//                                                } else {
-//                                                    completeMessage(getResources().getString(R.string.blocked_bp));
-//                                                }
-//                                            } else {
-//                                                itemLiveOrMustToWaitIfBurnedPriceOn =1;
-//                                                checkCategoryAndUpload(selectCategory);
-//                                            }
-//                                        } else {
-//                                            completeMessage(getResources().getString(R.string.blocked));
-//                                        }
-//                                    } else {
-//                                        completeMessage(getResources().getString(R.string.upgrade_ur_account));
-//                                    }
-//                                } else {
-//                                    completeMessage(checkPhoneNumberRealOrNot(getApplicationContext()));
-//                                }
-//                            } else {
-//                                completeMessage(getResources().getString(R.string.select_address));
-//                            }
-//                        } else {
-//                            completeMessage(getResources().getString(R.string.complete_product_details));
-//                        }
-//                    } else {
-//                        completeMessage(checkTitleAndDescriptionRealOrNot(getApplicationContext()));
-//                    }
-//                } else {
-//                    completeMessage(checkTitleAndDescription(getApplicationContext()));
-//                }
-//            } else {
-//                completeMessage(getResources().getString(R.string.select_category));
-//            }
+                                checkCategoryAndUpload(getTextEngOrLocal(getApplicationContext(),categoryCompNow.getName_en(),categoryCompNow.getName_ar()));
 
+                            } else {
+                                completeMessage(getResources().getString(R.string.select_address));
+                            }
+                        } else {
+                            completeMessage(getResources().getString(R.string.complete_product_details));
+                        }
+                    } else {
+                        completeMessage(checkTitleAndDescriptionRealOrNot(getApplicationContext()));
+                    }
+                } else {
+                    completeMessage(checkTitleAndDescription(getApplicationContext()));
+                }
+            } else {
+                completeMessage(getResources().getString(R.string.select_category));
+            }
 
         } else {
             completeMessage(getResources().getString(R.string.message_no_internet));
         }
-    }
 
-    private void uploadToServer() {
+//        if (checkPhoneNumberRealOrNot(getApplicationContext()) == null) {
+//            if (numberOfOldAds < numberOfAllowedAdsInt) {
+//                if (canInsertAndOrNot == 1) {
+//                    selectCategory = categoryCompNow.getCode();
+//                    if (getBurnedPriceInSP(getApplicationContext()) != null) {
+//                        if (canInsertBurnedPrice == 1) {
+//                            itemLiveOrMustToWaitIfBurnedPriceOn =0;
+//                            checkCategoryAndUpload(selectCategory);
+//                        } else {
+//                            completeMessage(getResources().getString(R.string.blocked_bp));
+//                        }
+//                    } else {
+//                        itemLiveOrMustToWaitIfBurnedPriceOn =1;
+//                        checkCategoryAndUpload(selectCategory);
+//                    }
+//                } else {
+//                    completeMessage(getResources().getString(R.string.blocked));
+//                }
+//            } else {
+//                completeMessage(getResources().getString(R.string.upgrade_ur_account));
+//            }
+//        } else {
+//            completeMessage(checkPhoneNumberRealOrNot(getApplicationContext()));
+//        }
+
     }
 
     private void createCCMETObject(String selectedCategory) {
@@ -330,7 +331,9 @@ public class AddItem extends AppCompatActivity implements
         ,secondNumber
         ,getUserTokenFromServer(getApplicationContext())
         ,uploadCCMETObjectToServer
-        ,String.valueOf(checkBurnedPrice(getApplicationContext())));
+        ,String.valueOf(checkBurnedPrice(getApplicationContext()))
+        ,carDetailsModel.getCarColor().getSetting_content_code(),carDetailsModel,categoryCompNow
+        ,getApplicationContext());
 
     }
 
@@ -338,30 +341,22 @@ public class AddItem extends AppCompatActivity implements
         //we have 4 model 1.car plates 2.accessories/junk car 3.wheels-rim
         // 4.car for sale/car for rent/exchange/motorcycle/trucks ... in model well be name CCEMT
         progressBar.setVisibility(View.VISIBLE);
+        freez_all_button_when_user_press_upload.setVisibility(View.VISIBLE);
+
         if (selectCategory.equals(getResources().getString(R.string.car_for_sale))) {
             createCCMETObject("Car for sale");
-            uploadImagesBeforeUploadCarForSaleModel(imagePathArrL, itemCCEMT, "Car_For_Sale"
-                    , getUserIdInServerFromSP(getApplicationContext()), numberOfOldAds,getApplicationContext());
         }
         if (selectCategory.equals(getResources().getString(R.string.car_for_rent))) {
-            createCCMETObject("Car for rent");
-            uploadImagesBeforeUploadCarForRentModel(imagePathArrL, itemCCEMT, "Car_For_Rent"
-                    , getUserIdInServerFromSP(getApplicationContext()), numberOfOldAds,getApplicationContext());
+            createCCMETObject(categoryCompNow.getId());
         }
         if (selectCategory.equals(getResources().getString(R.string.exchange_car))) {
-            createCCMETObject("Exchange car");
-            uploadImagesBeforeUploadCarForExchangeModel(imagePathArrL, itemCCEMT, "Car_For_Exchange"
-                    , getUserIdInServerFromSP(getApplicationContext()), numberOfOldAds,getApplicationContext());
+            createCCMETObject(categoryCompNow.getId());
         }
         if (selectCategory.equals(getResources().getString(R.string.motorcycle))) {
-            createCCMETObject("Motorcycle");
-            uploadImagesBeforeUploadCarForMotorcycleModel(imagePathArrL, itemCCEMT, "Car_For_Motorcycle"
-                    , getUserIdInServerFromSP(getApplicationContext()), numberOfOldAds,getApplicationContext());
+            createCCMETObject(categoryCompNow.getId());
         }
         if (selectCategory.equals(getResources().getString(R.string.trucks))) {
-            createCCMETObject("Trucks");
-            uploadImagesBeforeUploadCarForTrucksModel(imagePathArrL, itemCCEMT, "Trucks"
-                    , getUserIdInServerFromSP(getApplicationContext()), numberOfOldAds,getApplicationContext());
+            createCCMETObject(categoryCompNow.getId());
         }
         if (selectCategory.equals(getResources().getString(R.string.car_plates))) {
             createCarPlatesObject("Car plates");
@@ -383,15 +378,6 @@ public class AddItem extends AppCompatActivity implements
             uploadImagesBeforeUploadJunkCarModel(imagePathArrL, itemAccAndJunk, "JunkCar"
                     , getUserIdInServerFromSP(getApplicationContext()), numberOfOldAds,getApplicationContext());
         }
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.GONE);
-                Intent resultIntent = new Intent();
-                setResult(Activity.RESULT_OK, resultIntent);
-                finish();
-            }
-        }, 5000);
 
     }
 
@@ -687,6 +673,7 @@ public class AddItem extends AppCompatActivity implements
 
     private void inti() {
         viewSelectedImageRV = (RecyclerView) findViewById(R.id.add_activity_view_selected_image_RV);
+        freez_all_button_when_user_press_upload= (RelativeLayout) findViewById(R.id.freez_all_button_when_user_press_upload);
         selectCategoryRV = (RecyclerView) findViewById(R.id.add_activity_view_select_category_RV);
         cancelRL = (RelativeLayout) findViewById(R.id.add_activity_cancelRL);
         textTitleTV = (TextView) findViewById(R.id.add_activity_titleTV);
@@ -953,7 +940,7 @@ public class AddItem extends AppCompatActivity implements
 
     @Override
     public void onColorChange(CarColor carColor) {
-        carDetailsModel.setCarColorStr(carColor.getSetting_content_code());
+        carDetailsModel.setCarColor(carColor);
     }
 
     @Override
@@ -962,9 +949,14 @@ public class AddItem extends AppCompatActivity implements
     }
 
     @Override
-    public void updateCCEMTSuccess(JSONObject obj) {
+    public void updateCCEMTSuccess() {
         Log.w("TAG","Insaid add item activity");
-        Log.w("TAG",obj.toString());
+        progressBar.setVisibility(View.GONE);
+        freez_all_button_when_user_press_upload.setVisibility(View.GONE);
+
+        Intent resultIntent = new Intent();
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
 
 }

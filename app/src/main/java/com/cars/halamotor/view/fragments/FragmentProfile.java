@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.cars.halamotor.view.activity.ShowFCS;
 import com.cars.halamotor.view.activity.ShowPostsActivity;
 import com.cars.halamotor.view.fragments.fragmentsInSaidProfileFragment.ProfileDetailsInfo;
 
+import static com.cars.halamotor.functions.FillText.fillImageView;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOrNotFromSP;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -36,6 +38,8 @@ public class FragmentProfile extends Fragment {
     TextView postAdTV,recentVTV,recentSTV,favouriteTV,myAdsTV
             ,myWalletTV,inviteTV,helpTV,contactTV,aboutTV
             ,settingTV,callsTV,messageTV;
+    ImageView imageView1,imageView2,imageView3,imageView4,imageView5,imageView6
+            ,imageView7,imageView8,imageView9,imageView10,imageView11,imageView12,imageView13;
 
     View view;
 
@@ -47,6 +51,7 @@ public class FragmentProfile extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         inti();
+        fillArrowsInIV();
         actionListener();
         head();
         changeFont();
@@ -250,6 +255,20 @@ public class FragmentProfile extends Fragment {
         settingTV = (TextView) view.findViewById(R.id.fragment_profile_setting_TV);
         callsTV = (TextView) view.findViewById(R.id.fragment_profile_call_TV);
         messageTV = (TextView) view.findViewById(R.id.fragment_profile_message_TV);
+
+        imageView1= (ImageView) view.findViewById(R.id.fragment_profile_post_free_arrow_IV);
+        imageView2= (ImageView) view.findViewById(R.id.fragment_profile_recent_arrow_IV);
+        imageView3= (ImageView) view.findViewById(R.id.fragment_profile_recent_search_arrow_IV);
+        imageView4= (ImageView) view.findViewById(R.id.fragment_profile_favourite_arrow_IV_1);
+        imageView5= (ImageView) view.findViewById(R.id.fragment_profile_calls_arrow_IV);
+        imageView6= (ImageView) view.findViewById(R.id.fragment_profile_favourite_arrow_IV);
+        imageView7= (ImageView) view.findViewById(R.id.fragment_profile_my_ads_arrow_IV);
+        imageView8= (ImageView) view.findViewById(R.id.fragment_profile_wallet_arrow_IV);
+        imageView9= (ImageView) view.findViewById(R.id.fragment_profile_invite_friends_arrow_IV);
+        imageView10= (ImageView) view.findViewById(R.id.fragment_profile_help_arrow_IV);
+        imageView11= (ImageView) view.findViewById(R.id.fragment_profile_contact_us_arrow_IV);
+        imageView12= (ImageView) view.findViewById(R.id.fragment_profile_invite_about_app_arrow_IV);
+        imageView13= (ImageView) view.findViewById(R.id.fragment_profile_setting_arrow_IV);
     }
 
     private void head() {
@@ -258,5 +277,21 @@ public class FragmentProfile extends Fragment {
         transaction.show(fragmentLoginWithSocialMedia);
         //transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private void fillArrowsInIV() {
+        fillImageView(getActivity(),imageView1);
+        fillImageView(getActivity(),imageView2);
+        fillImageView(getActivity(),imageView3);
+        fillImageView(getActivity(),imageView4);
+        fillImageView(getActivity(),imageView5);
+        fillImageView(getActivity(),imageView6);
+        fillImageView(getActivity(),imageView7);
+        fillImageView(getActivity(),imageView8);
+        fillImageView(getActivity(),imageView9);
+        fillImageView(getActivity(),imageView10);
+        fillImageView(getActivity(),imageView11);
+        fillImageView(getActivity(),imageView12);
+        fillImageView(getActivity(),imageView13);
     }
 }

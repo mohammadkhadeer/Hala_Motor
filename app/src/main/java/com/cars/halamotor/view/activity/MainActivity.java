@@ -428,21 +428,10 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
                 int unreadNotification = Integer.parseInt(getUnreadNotificationsInSP(MainActivity.this));
                 unreadNotification = unreadNotification + 1;
                 updateNumberUnreadNotifications(MainActivity.this,sharedPreferences,editor,String.valueOf(unreadNotification));
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateNumberUnCheckedNotifications();
-
-                    }
-                }, 6000);
+                updateNumberUnCheckedNotifications();
             }else{
                 updateNumberUnreadNotifications(MainActivity.this,sharedPreferences,editor,String.valueOf(1));
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        updateNumberUnCheckedNotifications();
-                    }
-                }, 6000);
+                updateNumberUnCheckedNotifications();
             }
         }
     }
