@@ -34,6 +34,7 @@ import com.cars.halamotor.view.fragments.driverInformationFragment.PhoneNumber;
 import com.cars.halamotor.view.fragments.driverInformationFragment.RegisterDate;
 import com.cars.halamotor.view.fragments.insuranceFargment.CounterProcess;
 
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.functions.InsuranceFunctions.numberOfCarProcessSelected;
 import static com.cars.halamotor.functions.InsuranceFunctions.numberOfDriverProcessSelected;
 
@@ -70,6 +71,7 @@ public class CompleteInsuranceInfo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_complete_insurance_info);
 
         inti();

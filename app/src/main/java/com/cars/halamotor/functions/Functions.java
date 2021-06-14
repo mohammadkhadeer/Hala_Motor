@@ -1,10 +1,12 @@
 package com.cars.halamotor.functions;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -55,8 +57,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getAddressInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getBurnedPriceInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getDesInSP;
@@ -66,6 +70,18 @@ import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getTit
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserImage;
 
 public class Functions {
+
+    public static void setLocale(Activity context) {
+        Locale locale;
+        //Log.e("Lan",session.getLanguage());
+        locale = new Locale(getUserLanguage(context));
+        Configuration config = new Configuration(context.getResources().getConfiguration());
+        Locale.setDefault(locale);
+        config.setLocale(locale);
+
+        context.getBaseContext().getResources().updateConfiguration(config,
+                context.getBaseContext().getResources().getDisplayMetrics());
+    }
 
     public static boolean checkIfAndroidVBiggerThan9() {
         // we use this method cos OkHttpClient not allwed less than 9
@@ -204,66 +220,6 @@ public class Functions {
                 ,itemImage,getTimeStamp(),outOrCome,itemIdInServer,AuctionOrItem,getDATE()
         );
         return notificationComp;
-    }
-
-
-    public static CarDetailsModel updateCarDetailsModel(CarDetailsModel carDetailsModel
-            , String whatUserWantToChange
-            , String valueInWhatUserWantToChange
-            , String valueInWhatUserWantToChange2) {
-
-        if (whatUserWantToChange.equals("model"))
-        {
-//            CarModel carModel = new CarModel(valueInWhatUserWantToChange,valueInWhatUserWantToChange2,valueInWhatUserWantToChange2);
-//            carDetailsModel.setModelStr(carModel);
-        }
-        if (whatUserWantToChange.equals("year"))
-        {
-            carDetailsModel.setYearStr(valueInWhatUserWantToChange);
-        }
-        if (whatUserWantToChange.equals("condition"))
-        {
-//            CarCondition carCondition = new CarCondition(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
-//            carDetailsModel.setConditionStr(carCondition);
-        }
-        if (whatUserWantToChange.equals("kilometers"))
-        {
-            carDetailsModel.setKilometersStr(valueInWhatUserWantToChange);
-        }
-        if (whatUserWantToChange.equals("transmission"))
-        {
-//            carDetailsModel.setTransmissionStr(valueInWhatUserWantToChange);
-        }
-        if (whatUserWantToChange.equals("fuel"))
-        {
-//            CarFuel carFuel = new CarFuel(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
-//            carDetailsModel.setFuelStr(carFuel);
-        }
-        if (whatUserWantToChange.equals("options"))
-        {
-            carDetailsModel.setCarOptionsStr(valueInWhatUserWantToChange);
-        }
-        if (whatUserWantToChange.equals("licensed"))
-        {
-//            CarLicensed carLicensed = new CarLicensed(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
-//            carDetailsModel.setLicenseStr(carLicensed);
-        }
-        if (whatUserWantToChange.equals("insurance"))
-        {
-//            CarInsurance carInsurance = new CarInsurance(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
-//            carDetailsModel.setInsurance(carInsurance);
-        }
-        if (whatUserWantToChange.equals("color"))
-        {
-            carDetailsModel.setCarColorStr(valueInWhatUserWantToChange);
-        }
-        if (whatUserWantToChange.equals("payment"))
-        {
-//            PaymentMethod paymentMethod = new PaymentMethod(valueInWhatUserWantToChange,valueInWhatUserWantToChange2);
-//            carDetailsModel.setPaymentMethod(paymentMethod);
-        }
-
-        return carDetailsModel;
     }
 
     public static int checkBurnedPrice(Context context) {

@@ -39,6 +39,7 @@ import java.util.Locale;
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor.dataBase.InsertFunctions.insertNotificationTable;
 import static com.cars.halamotor.functions.Functions.getNotification;
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.presnter.CarsBrandsAndModels.getCarsBrandsAndModel;
 import static com.cars.halamotor.presnter.CountryCitesAndArea.getCountryCitesAndAreas;
 import static com.cars.halamotor.presnter.LoginAndUpdateProfile.updateProfileSuccess;
@@ -76,6 +77,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_splash_screen);
         statusBarColor();
 

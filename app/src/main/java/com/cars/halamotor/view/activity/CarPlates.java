@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 import static com.cars.halamotor.functions.Functions.changeFontBold;
 import static com.cars.halamotor.functions.Functions.fillEmiratesEmirate;
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.functions.NewFunction.fillPlatesChar;
 
 public class CarPlates extends AppCompatActivity implements AdapterPlatesChar.PassChar{
@@ -59,6 +60,7 @@ public class CarPlates extends AppCompatActivity implements AdapterPlatesChar.Pa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_car_plates);
 
         statusBarColor();

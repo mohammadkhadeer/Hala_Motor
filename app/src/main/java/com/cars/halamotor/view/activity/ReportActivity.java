@@ -28,6 +28,7 @@ import java.util.Locale;
 import static com.cars.halamotor.fireBaseDB.InsertToFireBase.addReportToFireStore;
 import static com.cars.halamotor.functions.Functions.fillFuelArrayL;
 import static com.cars.halamotor.functions.Functions.getDATE;
+import static com.cars.halamotor.functions.Functions.setLocale;
 
 public class ReportActivity extends AppCompatActivity implements AdapterReportType.PassReport{
 
@@ -42,6 +43,7 @@ public class ReportActivity extends AppCompatActivity implements AdapterReportTy
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_report);
         //remove shadow under actionBar
         getSupportActionBar().setElevation(15);

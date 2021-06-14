@@ -68,7 +68,7 @@
     <string name="call">اتصال</string>
     <string name="upload_video">اضف فيديو</string>
     <string name="upload_photo">اضف صورة</string>
-    <string name="what_do">ما الذي تريد الاعلان عنه \\?</string>
+    <string name="what_do">ما الذي تريد الاعلان عنه ؟</string>
     <string name="complete_car_details">اكمل معلومات المركبة</string>
     <string name="upload_ad">ارفع الاعلان</string>
     <string name="process_now">"سوف تعلن عن "</string>
@@ -10833,6 +10833,11 @@
     We wish if can get best service to you</string>
     <string name="setup_message_1">اهلا فقط بضع ثوان</string>
     <string name="setup_message_2">لتجهيز ملفك الخاص</string>
+    <string name="log_out">تسجيل خروج</string>
+    <string name="language">اللغة</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الانجليزيه</string>
+    <string name="uae">الدولة   الامارات العربية المتحدة</string>
 
 
 </resources>

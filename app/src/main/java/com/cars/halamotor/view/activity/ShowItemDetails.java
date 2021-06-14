@@ -53,6 +53,7 @@ import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.getCCEMTObject;
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.getCarPlatesObject;
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.getWheelsSizeObject;
 import static com.cars.halamotor.functions.FillSimilarNeeded.intiEmptyObject;
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.functions.HandelItemObjectBeforePass.getAccAndJunkFirstCaseFromDB;
 import static com.cars.halamotor.functions.HandelItemObjectBeforePass.getCCEMTFirstCaseFromDB;
 import static com.cars.halamotor.functions.HandelItemObjectBeforePass.getCarPlatesFirstCaseFromDB;
@@ -97,6 +98,7 @@ public class ShowItemDetails extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_show_item_details);
 
         makeKeyBordDownEditText();

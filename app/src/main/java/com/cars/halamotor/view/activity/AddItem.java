@@ -2,7 +2,6 @@ package com.cars.halamotor.view.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -32,50 +31,37 @@ import android.widget.VideoView;
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Action;
 import com.cars.halamotor.functions.Functions;
-import com.cars.halamotor.model.AccAndJunk;
-import com.cars.halamotor.model.CCEMT;
 import com.cars.halamotor.model.CarColor;
 import com.cars.halamotor.model.CarCondition;
 import com.cars.halamotor.model.CarDetailsModel;
 import com.cars.halamotor.model.CarFuel;
 import com.cars.halamotor.model.CarInsurance;
 import com.cars.halamotor.model.CarLicensed;
-import com.cars.halamotor.model.CarMakeAndCarModel;
 import com.cars.halamotor.model.CarModel;
 import com.cars.halamotor.model.CarPlatesDetails;
-import com.cars.halamotor.model.CarPlatesModel;
 import com.cars.halamotor.model.CarTransmission;
 import com.cars.halamotor.model.CategoryComp;
-import com.cars.halamotor.model.CityWithNeighborhood;
 import com.cars.halamotor.model.CustomGallery;
-import com.cars.halamotor.model.EditValueInCDM;
 import com.cars.halamotor.model.ItemAccAndJunk;
 import com.cars.halamotor.model.ItemCCEMT;
 import com.cars.halamotor.model.ItemPlates;
 import com.cars.halamotor.model.ItemWheelsRim;
 import com.cars.halamotor.model.PaymentMethod;
 import com.cars.halamotor.model.WheelsInfo;
-import com.cars.halamotor.model.WheelsRimModel;
 import com.cars.halamotor.permission.CheckPermission;
-import com.cars.halamotor.presnter.Login;
 import com.cars.halamotor.presnter.NumberOfAllowedAds;
 import com.cars.halamotor.presnter.PassCategories;
 import com.cars.halamotor.presnter.UploadCCMETObjectToServer;
-import com.cars.halamotor.presnter.carDetails.CarModelDetails;
 import com.cars.halamotor.utils.Utils;
 import com.cars.halamotor.view.adapters.AdapterSelectCategory;
 import com.cars.halamotor.view.adapters.SelectedImageAdapter;
 import com.cars.halamotor.view.fragments.FragmentCityPhoneNumber;
 import com.cars.halamotor.view.fragments.ShowSelectedCarDetailsFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Locale;
-
 import butterknife.ButterKnife;
-
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.checkUserCanInsertAddOrNot;
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.checkUserCanInsertBurnedPrice;
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.getNumberOfAllowedAdsFromServer;
@@ -89,18 +75,12 @@ import static com.cars.halamotor.fireBaseDB.UploadToStorage.uploadImagesBeforeUp
 import static com.cars.halamotor.fireBaseDB.UploadToStorage.uploadImagesBeforeUploadCarPlatesModel;
 import static com.cars.halamotor.fireBaseDB.UploadToStorage.uploadImagesBeforeUploadJunkCarModel;
 import static com.cars.halamotor.fireBaseDB.UploadToStorage.uploadImagesBeforeUploadWheelsRimModel;
-import static com.cars.halamotor.functions.FillCarModel.fillAllCarArrayL;
-import static com.cars.halamotor.functions.FillNeighborhood.fillCityAndNeighborhoodArrayL;
+import static com.cars.halamotor.functions.FillText.fillImageView;
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.functions.Functions.checkBurnedPrice;
-import static com.cars.halamotor.functions.Functions.checkPhoneNumberRealOrNot;
-import static com.cars.halamotor.functions.Functions.checkTitleAndDescription;
-import static com.cars.halamotor.functions.Functions.checkTitleAndDescriptionRealOrNot;
 import static com.cars.halamotor.functions.Functions.cityS;
 import static com.cars.halamotor.functions.Functions.fillCategoryArrayList;
 import static com.cars.halamotor.functions.Functions.getDAY;
-import static com.cars.halamotor.functions.Functions.getDefaultBoostPostArrayL;
-import static com.cars.halamotor.functions.Functions.getDefaultCommentCompArrayL;
 import static com.cars.halamotor.functions.Functions.getImagePathsNoImage;
 import static com.cars.halamotor.functions.Functions.getMONTH;
 import static com.cars.halamotor.functions.Functions.getTime;
@@ -109,14 +89,9 @@ import static com.cars.halamotor.functions.Functions.getVideoPath;
 import static com.cars.halamotor.functions.Functions.getYEAR;
 import static com.cars.halamotor.functions.Functions.isNetworkAvailable;
 import static com.cars.halamotor.functions.Functions.splitString;
-import static com.cars.halamotor.functions.Functions.updateCarDetailsModel;
-import static com.cars.halamotor.functions.NewFunction.convertYearToEng;
-import static com.cars.halamotor.functions.UploadDamiData.uploadDamiDataForTest;
 import static com.cars.halamotor.presnter.UploadCCMET.postCCMET;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
-import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getAddressInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getAreaIDInSP;
-import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getBurnedPriceInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getCityFromSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getCitySFromSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getDesInSP;
@@ -139,7 +114,7 @@ public class AddItem extends AppCompatActivity implements
     TextView insertAddTV, textTitleTV, categorySelectedNameTV, completeCarDetailsTV, generalMessageTV;
     RecyclerView viewSelectedImageRV, selectCategoryRV;
     VideoView viewVideoSelected;
-    ImageView imageCategorySelectedIV;
+    ImageView imageCategorySelectedIV,arrow_image_view;
     CardView viewSelectedCategoryCV, completeCarDetailsCV;
     Button insertItemBtn;
     RecyclerView.LayoutManager layoutManager, layoutManagerCategory;
@@ -193,6 +168,7 @@ public class AddItem extends AppCompatActivity implements
         statusBarColor();
         this.uploadCCMETObjectToServer = (UploadCCMETObjectToServer) this;
         inti();
+        fillImageView(getApplicationContext(),arrow_image_view);
         hideVideoShowBeforeSelected();
         initImageLoader();
         changeFontType();
@@ -715,6 +691,7 @@ public class AddItem extends AppCompatActivity implements
         cancelRL = (RelativeLayout) findViewById(R.id.add_activity_cancelRL);
         textTitleTV = (TextView) findViewById(R.id.add_activity_titleTV);
         completeCarDetailsTV = (TextView) findViewById(R.id.add_activity_complete_car_dTV);
+        arrow_image_view = (ImageView) findViewById(R.id.arrow);
         insertAddTV = (TextView) findViewById(R.id.add_activity_insert_titleTV);
         categorySelectedNameTV = (TextView) findViewById(R.id.add_activity_view_select_category_from_RV_TV);
         selectImageFGRL = (RelativeLayout) findViewById(R.id.add_activity_selectIFG_RL);
@@ -980,11 +957,6 @@ public class AddItem extends AppCompatActivity implements
     @Override
     public void onPaymentMethodChange(PaymentMethod paymentMethod) {
         carDetailsModel.setPaymentMethod(paymentMethod);
-    }
-
-    @Override
-    public void onDataPass(EditValueInCDM data,EditValueInCDM data2) {
-        carDetailsModel =updateCarDetailsModel(carDetailsModel,data.getWhatUserWantToChangeStr(),data.getValueInWhatUserWantToChangeStr(),data2.getValueInWhatUserWantToChangeStr());
     }
 
     @Override

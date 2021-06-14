@@ -33,6 +33,13 @@ public class PersonalSP {
         editor.commit();
     }
 
+    public static void setUserLanguage(Context context,String language) {
+        String req;
+        SharedPreferences = context.getSharedPreferences(REGISTER, MODE_PRIVATE);
+        editor = SharedPreferences.edit();
+        editor.putString("language",language);
+        editor.commit();
+    }
 
     public static String getPlatform_id(Context context) {
         String req;

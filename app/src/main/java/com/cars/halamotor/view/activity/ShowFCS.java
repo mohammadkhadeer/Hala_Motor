@@ -48,6 +48,7 @@ import static com.cars.halamotor.fireBaseDB.FireStorePaths.getDataStoreInstance;
 import static com.cars.halamotor.fireBaseDB.ReadFromFireBase.getFCSItems;
 import static com.cars.halamotor.functions.FCSFunctions.convertCat;
 import static com.cars.halamotor.functions.FillSimilarNeeded.intiEmptyObject;
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.functions.NewFunction.actionBarTitleInFCS;
 import static com.cars.halamotor.functions.NewFunction.getNumberOfObject;
 import static com.cars.halamotor.functions.NewFunction.handelNumberOfObject;
@@ -75,6 +76,7 @@ public class ShowFCS extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_show_fcs);
         similarNeeded = intiEmptyObject();
 

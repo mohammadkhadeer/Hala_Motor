@@ -39,6 +39,7 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.Locale;
 
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.presnter.LoginAndUpdateProfile.whenLoginCompleteSuccess;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.saveUserInfoSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkFBLoginOrNot;
@@ -71,6 +72,7 @@ public class LoginWithSocialMedia extends AppCompatActivity implements Login{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_login_with_social_media);
 
         getStringFromIntent();

@@ -55,6 +55,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.functions.NewFunction.convertYearToEng;
 
 
@@ -88,6 +89,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_car_details);
 
         statusBarColor();

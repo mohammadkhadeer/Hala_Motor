@@ -35,6 +35,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Locale;
 
 import static com.cars.halamotor.fireBaseDB.FireStorePaths.getObjectPathInServerFireStore;
+import static com.cars.halamotor.functions.Functions.setLocale;
 
 public class EditPostActivity extends AppCompatActivity {
 
@@ -52,6 +53,7 @@ public class EditPostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_edit_post);
 
         statusBarColor();

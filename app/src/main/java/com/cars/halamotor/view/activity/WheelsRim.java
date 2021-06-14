@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 import static com.cars.halamotor.functions.Functions.changeFontBold;
 import static com.cars.halamotor.functions.Functions.fillWheelsInchesArrayL;
+import static com.cars.halamotor.functions.Functions.setLocale;
 
 public class WheelsRim extends AppCompatActivity implements WheelsComp {
 
@@ -44,6 +45,7 @@ public class WheelsRim extends AppCompatActivity implements WheelsComp {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_wheels_rim);
 
         statusBarColor();

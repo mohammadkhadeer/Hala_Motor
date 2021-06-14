@@ -33,6 +33,8 @@ import com.cars.halamotor.view.fragments.driverInformationFragment.RegisterDate;
 
 import java.util.Locale;
 
+import static com.cars.halamotor.functions.Functions.setLocale;
+
 public class EditInsuranceInfoCarOrDriver extends AppCompatActivity {
 
     DriverNationality driverNationality = new DriverNationality();
@@ -61,6 +63,7 @@ public class EditInsuranceInfoCarOrDriver extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_edit_driver_info);
 
         statusBarColor();

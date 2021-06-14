@@ -8,12 +8,15 @@ import android.widget.TextView;
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
 
+import static com.cars.halamotor.functions.Functions.setLocale;
+
 public class AboutUs extends AppCompatActivity {
 
     TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_about_us);
         statusBarColor();
         inti();

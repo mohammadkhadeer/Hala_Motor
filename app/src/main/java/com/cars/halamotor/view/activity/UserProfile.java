@@ -13,6 +13,7 @@ import com.cars.halamotor.view.fragments.userProfileFragment.UserProfileDetailsI
 import com.cars.halamotor.view.fragments.userProfileFragment.UserProfilePostsList;
 
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.getProfileUserInfo;
+import static com.cars.halamotor.functions.Functions.setLocale;
 
 public class UserProfile extends AppCompatActivity implements UserInfo {
 
@@ -24,6 +25,7 @@ public class UserProfile extends AppCompatActivity implements UserInfo {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_user_profile);
         getInfoFromIntent();
         fillStatusBar();

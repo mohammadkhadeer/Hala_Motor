@@ -12,18 +12,19 @@
         android:allowBackup="true"
         android:icon="@drawable/logo_t"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/logo_t"
-        android:requestLegacyExternalStorage="true"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@drawable/logo_t"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".view.activity.CompleteInsuranceInfo"
+        <activity android:name=".view.activity.Language"></activity>
+        <activity
+            android:name=".view.activity.Setting"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.CompleteInsuranceInfo"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.activity.EditInsuranceInfoCarOrDriver"
             android:screenOrientation="portrait"
@@ -53,34 +54,25 @@
         <activity
             android:name=".view.activity.Insurance"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme24">
-
-        </activity>
+            android:theme="@style/AppTheme24" />
         <activity
             android:name=".view.activity.ShowItemDetails"
             android:label="@string/title_activity_show_item_details"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.activity.SplashScreen"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme23" >
-
+            android:theme="@style/AppTheme23">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".view.activity.LoginWithSocialMedia"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme23">
-
-        </activity>
-
+            android:theme="@style/AppTheme23" />
         <activity
             android:name=".view.activity.CarPlates"
             android:screenOrientation="portrait"
@@ -99,13 +91,7 @@
             android:theme="@style/AppTheme2" />
         <activity
             android:name=".view.activity.AddItem"
-            android:theme="@style/AppTheme2" >
-
-
-
-        </activity>
-
-
+            android:theme="@style/AppTheme2" />
         <activity
             android:name=".view.activity.MainActivity"
             android:screenOrientation="portrait"
@@ -148,9 +134,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".service.CarBrandsAndModelService" />
-
     </application>
 
 </manifest>

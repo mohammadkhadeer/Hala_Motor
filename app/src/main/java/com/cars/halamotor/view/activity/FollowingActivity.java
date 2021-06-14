@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import static com.cars.halamotor.fireBaseDB.FireBaseDBPaths.getUserPathInServer;
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserIdInServerFromSP;
 
 public class FollowingActivity extends AppCompatActivity {
@@ -43,6 +44,7 @@ public class FollowingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_followers);
 
         statusBarColor();

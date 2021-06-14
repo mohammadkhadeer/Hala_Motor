@@ -50,6 +50,7 @@ import com.roughike.bottombar.OnTabSelectListener;
 import java.util.ArrayList;
 
 import static com.cars.halamotor.dataBase.ReadCarsAndCarModels.getModels;
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.getUnreadNotificationsInSP;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.updateAllUnreadNotificationsToChecked;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.updateNumberUnreadNotifications;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_main);
 
         statusBarColor();

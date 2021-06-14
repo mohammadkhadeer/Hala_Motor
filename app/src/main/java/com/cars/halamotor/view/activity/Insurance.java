@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.sharedPreferences.InsuranceSP.getInsuranceStatusSP;
 import static com.cars.halamotor.sharedPreferences.InsuranceSP.saveInsuranceSP;
 
@@ -47,6 +48,7 @@ public class Insurance extends AppCompatActivity implements CarDetailsInsurance.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_insurance);
 
 //        getDataBaseInstance(this).deleteAllDriverInfo();

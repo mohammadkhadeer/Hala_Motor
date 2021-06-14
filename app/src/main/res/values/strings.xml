@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Hala motor</string>
 
+    <string name="log_out">Log out</string>
+    <string name="language">Language</string>
+
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="uae">Country   United arab emirates</string>
+
     <string name="facebook_app_id">648618505975230</string>
     <string name="fb_login_protocol_scheme">fb648618505975230</string>
 
@@ -604,8 +611,6 @@
     <string name="fujairah_ar">الفجيرة</string>
 
 
-
-
     //*********************************************
 
 
@@ -852,7 +857,6 @@
     <string name="dubai_sceince_park">Sceince Park</string>
     <string name="dubai_residence_complex">Residence Complex</string>
     <string name="dubai_al_manara">Al Manara</string>
-
 
 
     //*******************************************************************
@@ -1246,11 +1250,7 @@
     <string name="abu_dhabi_al_forsan_s">Al\-Forsan</string>
 
 
-
-
-
     //**************************************************
-
 
 
     <string name="sharjah_abu_shagra_ar">ابو شغارة</string>
@@ -1328,7 +1328,6 @@
     <string name="sharjah_al_ramaqiya_ar">الرماقية</string>
     <string name="sharjah_al_falaj_ar">الفلج</string>
     <string name="sharjah_al_yash_ar">الياش</string>
-
 
 
     <string name="sharjah_abu_shagra">Abu Shagra</string>
@@ -1485,8 +1484,6 @@
     <string name="sharjah_al_yash_s">Al Yash</string>
 
 
-
-
     //*********************************************
 
 
@@ -1513,7 +1510,6 @@
     <string name="al_ain_tawam_ar">توام</string>
     <string name="al_ain_wahat_al_zaweya_ar">واحة الزاوية</string>
     <string name="al_ain_zakher_ar">زاخر</string>
-
 
 
     <string name="al_ain_al_ain_industrial_area">Al Ain Industrial Area</string>
@@ -1566,11 +1562,7 @@
     <string name="al_ain_zakher_s">Zakher</string>
 
 
-
-
-
     //**************************************
-
 
 
     <string name="ajman_ain_ajman_ar">عين عجمان</string>
@@ -1610,7 +1602,6 @@
     <string name="ajman_sheikh_maktoum_bin_rashid_rd_ar">شارع الشيخ مكتوم بن راشد</string>
     <string name="ajman_al_amerah_ar">العامرة</string>
     <string name="ajman_al_amerah_village_ar">قرية العامرة</string>
-
 
 
     <string name="ajman_ain_ajman">Ain Ajman</string>
@@ -1689,9 +1680,6 @@
     <string name="ajman_sheikh_maktoum_bin_rashid_rd_s">Sheikh Maktoum Bin Rashid Rd</string>
     <string name="ajman_al_amerah_s">Al Amerah</string>
     <string name="ajman_al_amerah_village_s">Al Amerah Village</string>
-
-
-
 
 
     //***********************************************************
@@ -1778,7 +1766,6 @@
     <string name="ras_al_khaimah_city_downtown_s">City Downtown</string>
 
 
-
     //*****************************************************************
 
 
@@ -1849,8 +1836,6 @@
     <string name="um_al_quwain_ramla_s">Ramla</string>
 
 
-
-
     //*****************************************************************
 
 
@@ -1892,14 +1877,7 @@
     <string name="fujairah_sheikh_hamad_bin_abdullah_st_s">Sheikh Hamad Bin Abdullah St</string>
 
 
-
-
     //*****************************************************************
-
-
-
-
-
 
 
     <string name="detect_address">Detect address</string>
@@ -2046,13 +2024,7 @@
     <string name="k_up_200K">\+200\,000</string>
 
 
-
-
-
-
-
     //*****************************************************************
-
 
 
     <string name="hyundai_ar">هيونداي</string>
@@ -2330,11 +2302,7 @@
     <string name="haval_s">Haval</string>
 
 
-
-
-
     //*****************************************************************
-
 
 
     <string name="h_1_starex_ar">H\-1 ستاركس</string>
@@ -2380,8 +2348,6 @@
     <string name="click_ar">كليك</string>
     <string name="entourage_ar">انترواج</string>
     <string name="county_ar">كونتي</string>
-
-
 
 
     <string name="h_1_starex">H\-1 Starex</string>
@@ -2473,12 +2439,7 @@
     <string name="county_s">County</string>
 
 
-
-
-
     //*****************************************************************
-
-
 
 
     <string name="toyota_4runner_ar">4 رانر</string>
@@ -2599,8 +2560,6 @@
     <string name="toyota_scepter_ar">سكيبتر</string>
 
 
-
-
     <string name="toyota_4runner">4Runner</string>
     <string name="toyota_mr2">MR2</string>
     <string name="toyota_gt_86">GT86</string>
@@ -2717,8 +2676,6 @@
     <string name="toyota_soluna">Soluna</string>
     <string name="toyota_sera">Sera</string>
     <string name="toyota_scepter">Scepter</string>
-
-
 
 
     <string name="toyota_4runner_s">4Runner</string>
@@ -2839,12 +2796,7 @@
     <string name="toyota_scepter_s">Scepter</string>
 
 
-
-
-
     //********************************************
-
-
 
 
     <string name="kia_asia_ar">اسيا</string>
@@ -2891,8 +2843,6 @@
     <string name="kia_sedona_ar">سيدونا</string>
     <string name="kia_lotze_ar">لوتزي</string>
     <string name="kia_pegas_ar">بيجاس</string>
-
-
 
 
     <string name="kia_asia">Asia</string>
@@ -2987,9 +2937,7 @@
     <string name="kia_pegas_s">Pegas</string>
 
 
-
     //********************************************
-
 
 
     <string name="bmw_1_series_ar">الفئة ١</string>
@@ -3064,8 +3012,6 @@
     <string name="bmw_z8_ar">Z8</string>
     <string name="bmw_1502_ar">1502</string>
     <string name="bmw_alpina_ar">البينا</string>
-
-
 
 
     <string name="bmw_1_series">1 Series</string>
@@ -3152,9 +3098,6 @@
     <string name="bmw_alpina">alpina</string>
 
 
-
-
-
     <string name="bmw_1_series_s">1 Series</string>
     <string name="bmw_116_s">116</string>
     <string name="bmw_118_s">118</string>
@@ -3239,11 +3182,7 @@
     <string name="bmw_alpina_s">alpina</string>
 
 
-
     //**************************************************************
-
-
-
 
 
     <string name="gle_ar">GLE Class</string>
@@ -3477,8 +3416,6 @@
     <string name="mercedes_benz_sls_amg_ar">SLSAMG</string>
     <string name="mercedes_benz_viano_ar">Viano</string>
     <string name="mercedes_benz_other_ar">اخرى</string>
-
-
 
 
     <string name="gle">GLE Class</string>
@@ -3738,7 +3675,6 @@
     <string name="mercedes_benz_other">Other</string>
 
 
-
     <string name="gle_s">GLE Class</string>
     <string name="Mercedes_benz_gle_400_amg_s">GLE 400 AMG</string>
     <string name="mercedes_benz_gle_450_amg_s">GLE 450 AMG</string>
@@ -3996,12 +3932,7 @@
     <string name="mercedes_benz_other_s">Other</string>
 
 
-
-
-
     //**************************************************************
-
-
 
 
     <string name="aston_martin_bd7_ar">BD7</string>
@@ -4041,7 +3972,6 @@
     <string name="aston_martin_other">other</string>
 
 
-
     <string name="aston_martin_bd7_s">BD7</string>
     <string name="aston_martin_bd9_s">BD9</string>
     <string name="aston_martin_bdc_s">BDC</string>
@@ -4061,10 +3991,7 @@
     <string name="aston_martin_other_s">other</string>
 
 
-
-
     //**************************************************************
-
 
 
     <string name="alfa_romeo_33_ar">33</string>
@@ -4120,7 +4047,6 @@
     <string name="alfa_romeo_other">other</string>
 
 
-
     <string name="alfa_romeo_33_s">33</string>
     <string name="alfa_romeo_75_s">75</string>
     <string name="alfa_romeo_145_s">145</string>
@@ -4148,13 +4074,7 @@
     <string name="alfa_romeo_other_s">other</string>
 
 
-
-
     //**************************************************************
-
-
-
-
 
 
     <string name="audi_a_ar">A</string>
@@ -4202,7 +4122,6 @@
     <string name="audi_tt_rs_ar">TT RS</string>
     <string name="audi_tts_ar">TTS</string>
     <string name="audi_other_ar">اخرى</string>
-
 
 
     <string name="audi_a">A</string>
@@ -4307,12 +4226,7 @@
     <string name="audi_other_s">Other</string>
 
 
-
-
-
-
     //**************************************************************
-
 
 
     <string name="isuzu_fsr_ar">Fsr</string>
@@ -4396,11 +4310,7 @@
     <string name="isuzu_other_s">Other</string>
 
 
-
-
-
     //**************************************************************
-
 
 
     <string name="infiniti_e_s_ar">E</string>
@@ -4551,9 +4461,7 @@
     <string name="infiniti_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="opel_agila_ar">اجيلا</string>
@@ -4654,10 +4562,7 @@
     <string name="opel_other_s">Other </string>
 
 
-
-
     //**************************************************************
-
 
 
     <string name="bentley_turbo_r_ar">تيربو R</string>
@@ -4673,7 +4578,6 @@
     <string name="bentley_continental_supersports_ar">كونتيننتال سوبر سبور</string>
     <string name="bentley_turbo_s_ar">تيربو اس</string>
     <string name="bentley_other_ar">اخرى</string>
-
 
 
     <string name="bentley_turbo_r">Turbo_R</string>
@@ -4708,10 +4612,7 @@
     <string name="bentley_other_s">Other</string>
 
 
-
     //**************************************************************
-
-
 
 
     <string name="porsche_9xx_ar">9XX</string>
@@ -4756,7 +4657,6 @@
     <string name="porsche_panamera_turbo_s_ar">باناميرا تيربو اس</string>
     <string name="porsche_356_ar">356</string>
     <string name="porsche_other_ar">اخرى</string>
-
 
 
     <string name="porsche_9xx">9XX</string>
@@ -4839,8 +4739,6 @@
     <string name="porsche_other_s">Other</string>
 
 
-
-
     //**************************************************************
 
 
@@ -4867,7 +4765,6 @@
     <string name="pontiac_montana_ar">مونتتانا</string>
     <string name="pontiac_roadster_ar">رودستر</string>
     <string name="pontiac_other_ar">اخرى</string>
-
 
 
     <string name="pontiac_6000">6000</string>
@@ -4897,8 +4794,6 @@
     <string name="pontiac_other">other</string>
 
 
-
-
     <string name="pontiac_6000_s">6000</string>
     <string name="pontiac_g5_s">G5</string>
     <string name="pontiac_g6_s">G6</string>
@@ -4924,7 +4819,6 @@
     <string name="pontiac_montana_s">Montana</string>
     <string name="pontiac_roadster_s">Roadster</string>
     <string name="pontiac_other_s">other</string>
-
 
 
     //**************************************************************
@@ -5024,8 +4918,6 @@
     <string name="peugeot_other">Other</string>
 
 
-
-
     <string name="peugeot_1xx_s">1XX</string>
     <string name="peugeot_104_s">104</string>
     <string name="peugeot_106_s">106</string>
@@ -5072,7 +4964,6 @@
     <string name="peugeot_partner_s">Partner</string>
     <string name="peugeot_boxer_s">Boxer</string>
     <string name="peugeot_other_s">Other</string>
-
 
 
     //**************************************************************
@@ -5124,8 +5015,6 @@
     <string name="jaguar_other">Other</string>
 
 
-
-
     <string name="jaguar_e_pace_s">E\-pace</string>
     <string name="jaguar_e_type_s">E\-type</string>
     <string name="jaguar_f_pace_s">F\-pace</string>
@@ -5149,11 +5038,7 @@
     <string name="jaguar_other_s">Other</string>
 
 
-
-
-
     //**************************************************************
-
 
 
     <string name="great_wall_c30_ar">C30</string>
@@ -5173,7 +5058,6 @@
     <string name="great_wall_wingle_ar">وينغل</string>
     <string name="great_wall_haval_ar">هافال</string>
     <string name="great_wall_other_ar">اخرى</string>
-
 
 
     <string name="great_wall_c30">C30</string>
@@ -5196,7 +5080,6 @@
     <string name="great_wall_other">Other</string>
 
 
-
     <string name="great_wall_c30_s">C30</string>
     <string name="great_wall_m2_s">M2</string>
     <string name="great_wall_m4_s">M4</string>
@@ -5215,8 +5098,6 @@
     <string name="great_wall_wingle_s">Wingle</string>
     <string name="great_wall_haval_s">Haval</string>
     <string name="great_wall_other_s">Other</string>
-
-
 
 
     //**************************************************************
@@ -5282,7 +5163,6 @@
     <string name="gmc_caballero_s">Caballero</string>
 
 
-
     //**************************************************************
 
 
@@ -5326,7 +5206,6 @@
     <string name="jeep_wagoneer_s">Wagoneer</string>
     <string name="jeep_gldiator_s">Gldiator</string>
     <string name="jeep_other_s">Other</string>
-
 
 
     //**************************************************************
@@ -5404,7 +5283,6 @@
     <string name="daihatsu_other">Other</string>
 
 
-
     <string name="daihatsu_yrv_s">YRV</string>
     <string name="daihatsu_applause_s">Applause</string>
     <string name="daihatsu_atrai_s">Atrai</string>
@@ -5440,7 +5318,6 @@
     <string name="daihatsu_mira_s">Mira</string>
     <string name="daihatsu_fourtrak_s">Fourtrak</string>
     <string name="daihatsu_other_s">Other</string>
-
 
 
     //**************************************************************
@@ -5520,7 +5397,6 @@
     <string name="daewoo_other">Other</string>
 
 
-
     <string name="daewoo_g2x_s">G2X</string>
     <string name="daewoo_arcadia_s">Arcadia</string>
     <string name="daewoo_espero_s">Espero</string>
@@ -5560,10 +5436,7 @@
     <string name="daewoo_other_s">Other</string>
 
 
-
     //**************************************************************
-
-
 
 
     <string name="dodge_avenger_ar">افنجر</string>
@@ -5616,7 +5489,6 @@
     <string name="dodge_other">Other</string>
 
 
-
     <string name="dodge_avenger_s">Avenger</string>
     <string name="dodge_intrepid_s">Intrepid</string>
     <string name="dodge_charger_s">Charger</string>
@@ -5642,10 +5514,7 @@
     <string name="dodge_other_s">Other</string>
 
 
-
     //**************************************************************
-
-
 
 
     <string name="rove_25_ar">25</string>
@@ -5699,10 +5568,7 @@
     <string name="rove_other_s">Other</string>
 
 
-
-
     //**************************************************************
-
 
 
     <string name="rolls_royce_park_ward_ar">بارك وارد</string>
@@ -5742,11 +5608,7 @@
     <string name="rolls_royce_other_s">Other</string>
 
 
-
     //**************************************************************
-
-
-
 
 
     <string name="renault_4_ar">4</string>
@@ -5908,10 +5770,7 @@
     <string name="renault_other_s">Other</string>
 
 
-
     //**************************************************************
-
-
 
 
     <string name="saad_x9_2_ar">اكس9\-2</string>
@@ -5953,10 +5812,7 @@
     <string name="saad_other_s">Other</string>
 
 
-
     //**************************************************************
-
-
 
 
     <string name="saturn_ls_ar">Ls</string>
@@ -6001,9 +5857,7 @@
     <string name="saturn_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="ssang_yong_actyon_ar">اكتون</string>
@@ -6042,9 +5896,7 @@
     <string name="ssang_yong_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="citroen_c_ar">C</string>
@@ -6200,9 +6052,7 @@
     <string name="citroen_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="skoda_120_gls_ar">120 GLS</string>
@@ -6250,9 +6100,7 @@
     <string name="skoda_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="subaru_r1_ar">R1</string>
@@ -6345,9 +6193,7 @@
     <string name="subaru_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="suzuki_apv_ar">Apv</string>
@@ -6464,9 +6310,7 @@
     <string name="suzuki_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="seat_132_ar">132</string>
@@ -6519,9 +6363,7 @@
     <string name="seat_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="chery_a11_ar">A11</string>
@@ -6572,9 +6414,7 @@
     <string name="chery_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="chevrolet_c10_ar">C10</string>
@@ -6802,9 +6642,7 @@
     <string name="chevrolet_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="ford_c_max_ar">C\-MAX</string>
@@ -7008,9 +6846,7 @@
     <string name="ford_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="volvo_c_ar">C</string>
@@ -7136,9 +6972,7 @@
     <string name="volvo_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="volkswagen_cc_ar">CC</string>
@@ -7283,7 +7117,6 @@
 
 
     //**************************************************************
-
 
 
     <string name="fiat_124_ar">124</string>
@@ -7432,9 +7265,7 @@
     <string name="fiat_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="ferrari_208_ar">208</string>
@@ -7572,9 +7403,7 @@
     <string name="ferrari_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="cadillac_ats_ar">ATS</string>
@@ -7640,9 +7469,7 @@
     <string name="cadillac_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="chrysler_200_ar">200</string>
@@ -7735,9 +7562,7 @@
     <string name="chrysler_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="lada_2010_ar">2010</string>
@@ -7791,9 +7616,7 @@
     <string name="lada_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="lamborghini_lm002_ar">LM002</string>
@@ -7838,9 +7661,7 @@
     <string name="lamborghini_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="land_rover_lr4_ar">LR4</string>
@@ -7885,9 +7706,7 @@
     <string name="land_rover_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="lexus_e_s_ar">E S</string>
@@ -8046,9 +7865,7 @@
     <string name="lexus_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="lotus_esprit_ar">اسبيرت</string>
@@ -8087,10 +7904,7 @@
     <string name="lotus_other_s">Other</string>
 
 
-
-
     //**************************************************************
-
 
 
     <string name="lincoln_mkx_ar">MKX</string>
@@ -8138,9 +7952,7 @@
     <string name="lincoln_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="mazda_2_ar">2</string>
@@ -8290,9 +8102,7 @@
     <string name="mazda_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="maserati_228_ar">228</string>
@@ -8370,9 +8180,7 @@
     <string name="maserati_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="morgan_plus4_ar">Plus4</string>
@@ -8402,9 +8210,7 @@
     <string name="morgan_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="mitsubishi_asx_ar">ASX</string>
@@ -8572,9 +8378,7 @@
     <string name="mitsubishi_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="mercury_tracer_ar">ترايسر</string>
@@ -8628,9 +8432,7 @@
     <string name="mercury_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="mini_one_ar">One</string>
@@ -8687,9 +8489,7 @@
     <string name="mini_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="nissan_100nx_ar">100NX</string>
@@ -8971,9 +8771,7 @@
     <string name="nissan_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="hummer_h1_ar">H1</string>
@@ -8994,9 +8792,7 @@
     <string name="hummer_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="honda_cr_v_ar">CR-V</string>
@@ -9161,7 +8957,6 @@
     <string name="honda_other_s">Other</string>
 
 
-
     //**************************************************************
 
 
@@ -9216,9 +9011,7 @@
     <string name="geely_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="zxauto_admiral_ar">ادميرال</string>
@@ -9236,9 +9029,7 @@
     <string name="zxauto_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="mg_mg3_ar">MG3</string>
@@ -9274,9 +9065,7 @@
     <string name="mg_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="proton_gen_2_ar">Gen\-2</string>
@@ -9297,9 +9086,7 @@
     <string name="proton_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="brilliance_h220_ar">H220</string>
@@ -9332,9 +9119,7 @@
     <string name="brilliance_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="bdy_f0_ar">F0</string>
@@ -9370,9 +9155,7 @@
     <string name="bdy_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="samsung_qm5_ar">QM5</string>
@@ -9402,9 +9185,7 @@
     <string name="samsung_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="tesla_3_ar">3</string>
@@ -9428,7 +9209,6 @@
     //**************************************************************
 
 
-
     <string name="iran_khodro_samand_ar">سمند</string>
     <string name="iran_khodro_tiba_ar">طيبه</string>
     <string name="iran_khodro_other_ar">اخرى</string>
@@ -9444,9 +9224,7 @@
     <string name="iran_khodro_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="tata_aria_ar">اريا</string>
@@ -9494,9 +9272,7 @@
     <string name="tata_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="bugatti_eb_110_ar">EB 110</string>
@@ -9523,9 +9299,7 @@
     <string name="bugatti_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="buick_envision_ar">انفيجن</string>
@@ -9573,9 +9347,7 @@
     <string name="buick_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="acura_cl_ar">CL</string>
@@ -9629,9 +9401,7 @@
     <string name="acura_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="scion_fr_s_ar">FR\-S</string>
@@ -9667,9 +9437,7 @@
     <string name="scion_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="mclaren_540_ar">540</string>
@@ -9699,9 +9467,7 @@
     <string name="mclaren_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="pagani_zonda_ar">زوندا</string>
@@ -9719,9 +9485,7 @@
     <string name="pagani_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="lancia_thesis_ar">ثيزيس</string>
@@ -9766,9 +9530,7 @@
     <string name="lancia_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="jac_iev_5_ar">IEV 5</string>
@@ -9858,9 +9620,7 @@
     <string name="jac_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="lifan_1022_ar">1022</string>
@@ -9926,9 +9686,7 @@
     <string name="lifan_x80_s">X80</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="faw_b30_ar">B30</string>
@@ -9991,9 +9749,7 @@
     <string name="faw_hongqi_h7_s">HONGQi H7</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="foton_toana_ar">توانو</string>
@@ -10047,9 +9803,7 @@
     <string name="foton_aumark_tx_s">Aumark TX</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="maruti_Suzuki_eeco_ar">ايكو</string>
@@ -10115,9 +9869,7 @@
     <string name="maruti_Suzuki_wagon_r_s">Wagon R</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="saipa_111_ar">111</string>
@@ -10231,9 +9983,7 @@
     <string name="saipa_other_s">Other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="private_smart_ar">سمارت</string>
@@ -10249,7 +9999,6 @@
 
 
     //**************************************************************
-
 
 
     <string name="baic_grand_tiger_ar">جراند تايغر</string>
@@ -10276,9 +10025,7 @@
     <string name="baic_x35_s">X35</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="changan_cx20_ar">CX20</string>
@@ -10323,9 +10070,7 @@
     <string name="changan_benni_mini_s">Benni Mini</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="hunaghai_n1_ar">N1</string>
@@ -10355,9 +10100,7 @@
     <string name="hunaghai_dd6600ev_s">DD6600EV</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="dfm_370_ar">370</string>
@@ -10456,9 +10199,7 @@
     <string name="dfm_v3_s">V3</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="borgward_bx7_ts_ar">BX7 TS</string>
@@ -10485,9 +10226,7 @@
     <string name="borgward_other_s">other</string>
 
 
-
     //**************************************************************
-
 
 
     <string name="iveco_new_daily_ar">نيو دايلي</string>
@@ -10511,7 +10250,6 @@
     <string name="iveco_other_s">Other</string>
 
     //***********************************************
-
 
 
     <string name="haval_h1_ar">H1</string>

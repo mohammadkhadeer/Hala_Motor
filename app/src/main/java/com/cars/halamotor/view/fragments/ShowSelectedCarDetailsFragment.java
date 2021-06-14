@@ -383,14 +383,6 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
             {
                 String where_edit_happened = data.getStringExtra("where_edit");
 
-//                String whatUserWantToChangeValue2Str = whatUserWantToChangeStr+"S";
-//                String value = data.getStringExtra(whatUserWantToChangeStr);
-//                String value2 = data.getStringExtra(whatUserWantToChangeValue2Str);
-//                String makeStr = data.getStringExtra("make");
-//                EditValueInCDM dataEdit = new EditValueInCDM(whatUserWantToChangeStr,value);
-//                EditValueInCDM dataEdit2 = new EditValueInCDM(whatUserWantToChangeStr,value);
-//                dataPasser.onDataPass(dataEdit,dataEdit2);
-
                 checkWhereAChangeHappenedAndChangeIt(where_edit_happened,data);
             }
         }
@@ -532,7 +524,6 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
         public void onInsuranceChange(CarInsurance carInsurance);
         public void onColorChange(CarColor carColor);
         public void onPaymentMethodChange(PaymentMethod paymentMethod);
-        public void onDataPass(EditValueInCDM data,EditValueInCDM data2);
         public void onDataPassCarPlates(CarPlatesDetails carPlatesDetails);
         public void onWheelsDataChange(WheelsInfo wheelsInfo);
     }

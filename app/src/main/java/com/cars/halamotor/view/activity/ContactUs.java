@@ -43,6 +43,7 @@ import static com.cars.halamotor.functions.Functions.getDAY;
 import static com.cars.halamotor.functions.Functions.getMONTH;
 import static com.cars.halamotor.functions.Functions.getObjectContactUs;
 import static com.cars.halamotor.functions.Functions.getYEAR;
+import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getPhoneNumberInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserIdInServerFromSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getUserName;
@@ -70,6 +71,7 @@ public class ContactUs extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLocale(this);
         setContentView(R.layout.activity_contact_us);
 
         statusBarColor();
