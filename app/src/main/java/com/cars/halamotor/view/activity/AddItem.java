@@ -528,7 +528,7 @@ public class AddItem extends AppCompatActivity implements
         if (!categoryComp.getCode().equals("car_plates")
                 && !categoryComp.getCode().equals("accessories")
                 && !categoryComp.getCode().equals("wheels_rim")
-                && !categoryComp.getCode().equals("exchange_car")
+                && !categoryComp.getCode().equals("exchange")
                 && !categoryComp.getCode().equals("junk_car"))
         {
             makeCompleteCarDetailsVisable();

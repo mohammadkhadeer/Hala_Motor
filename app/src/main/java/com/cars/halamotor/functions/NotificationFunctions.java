@@ -49,11 +49,11 @@ public class NotificationFunctions {
 
     public static String processName(String process, Context context){
         String processName = null;
-        if (process.equals("Car_For_Sale"))
+        if (process.equals("car_for_sale"))
         {
             processName = context.getResources().getString(R.string.car_for_sale);
         }
-        if (process.equals("Car_For_Rent"))
+        if (process.equals("car_for_rent"))
         {
             processName = context.getResources().getString(R.string.car_for_rent);
         }

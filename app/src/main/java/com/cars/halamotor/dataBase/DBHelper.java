@@ -481,10 +481,10 @@ public static final String TABLE_CITYS="cites";
         contentValues.put(TABLE_MODEL_SETTING_CONTENT_NAME_AR,setting_content_name_ar);
 
 
-        long result= db.insert(TABLE_MODEL_SETTING,null,contentValues);
-        if(result == -1)
-            return false;
-        else
+        db.insert(TABLE_MODEL_SETTING,null,contentValues);
+//        if(result == -1)
+//            return false;
+//        else
             return true;
     }
 
@@ -498,10 +498,10 @@ public static final String TABLE_CITYS="cites";
         contentValues.put(COL_BRAND_NAME_EN,name_en);
         contentValues.put(COL_BRAND_NAME_AR,name_ar);
 
-        long result= db.insert(TABLE_CARS_BRAND,null,contentValues);
-        if(result == -1)
-            return false;
-        else
+        db.insert(TABLE_CARS_BRAND,null,contentValues);
+//        if(result == -1)
+//            return false;
+//        else
             return true;
     }
 
@@ -519,10 +519,10 @@ public static final String TABLE_CITYS="cites";
         contentValues.put(COL_MODEL_NAME_EN,model_name_en);
         contentValues.put(COL_MODEL_NAME_AR,model_name_ar);
 
-        long result= db.insert(TABLE_CARS_MODEL,null,contentValues);
-        if(result == -1)
-            return false;
-        else
+        db.insert(TABLE_CARS_MODEL,null,contentValues);
+//        if(result == -1)
+//            return false;
+//        else
             return true;
     }
 
@@ -537,10 +537,10 @@ public static final String TABLE_CITYS="cites";
         contentValues.put(COL_CITY_NAME_EN,name_en);
         contentValues.put(COL_CITY_NAME_AR,name_ar);
 
-        long result= db.insert(TABLE_CITYS,null,contentValues);
-        if(result == -1)
-            return false;
-        else
+        db.insert(TABLE_CITYS,null,contentValues);
+//        if(result == -1)
+//            return false;
+//        else
             return true;
     }
 
@@ -559,10 +559,10 @@ public static final String TABLE_CITYS="cites";
         contentValues.put(COL_AREA_CITY_NAME_EN,city_name_en);
         contentValues.put(COL_AREA_CITY_NAME_AR,city_name_ar);
 
-        long result= db.insert(TABLE_AREAS,null,contentValues);
-        if(result == -1)
-            return false;
-        else
+        db.insert(TABLE_AREAS,null,contentValues);
+//        if(result == -1)
+//            return false;
+//        else
             return true;
     }
 
@@ -610,10 +610,10 @@ public static final String TABLE_CITYS="cites";
         contentValues.put(COL_ITEM_USER_ID,userID);
         contentValues.put(COL_ITEM_ITEM_ACTIVE_OR_NOT,itemActiveOrNot);
 
-        long result= db.insert(TABLE_ITEM,null,contentValues);
-        if(result == -1)
-            return false;
-        else
+//        long result= db.insert(TABLE_ITEM,null,contentValues);
+//        if(result == -1)
+//            return false;
+//        else
             return true;
     }
 
@@ -984,10 +984,10 @@ public static final String TABLE_CITYS="cites";
         contentValues.put(COL_ITEM_CAR_DETAILS_PROCESS_CONTENT_S,processContentS);
         contentValues.put(COL_ITEM_CAR_DETAILS_PROCESS_STATUS,processStatus);
 
-        long result= db.insert(TABLE_CAR_DETAILS,null,contentValues);
-        if(result == -1)
-            return false;
-        else
+         db.insert(TABLE_CAR_DETAILS,null,contentValues);
+//        if(result == -1)
+//            return false;
+//        else
             return true;
     }
 

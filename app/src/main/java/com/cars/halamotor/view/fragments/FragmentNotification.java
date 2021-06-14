@@ -40,7 +40,7 @@ public class FragmentNotification extends Fragment implements OnNewNotification 
     }
 
     private void createRV() {
-        notificationCompsArrayL = getNotificationFromDatabase(getActivity(),35000);
+        notificationCompsArrayL = getNotificationFromDatabase(getActivity(),350);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         recyclerView.setLayoutManager(mLayoutManager);

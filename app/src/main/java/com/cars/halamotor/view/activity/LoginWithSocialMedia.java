@@ -118,7 +118,7 @@ public class LoginWithSocialMedia extends AppCompatActivity implements Login{
 
                         whenLoginCompleteSuccess(acct.getGivenName() +" "+acct.getFamilyName(),acct.getEmail(),"123456"
                         ,"google",acct.getId(),getUserTokenInFromSP(getApplicationContext()),String.valueOf(acct.getPhotoUrl())
-                        ,"00000000",login);
+                        ,"00",login);
 
                     }
                 });
@@ -232,7 +232,7 @@ public class LoginWithSocialMedia extends AppCompatActivity implements Login{
                             String photo = "https://graph.facebook.com/" + object.getString("id") + "/picture?type=normal";
                             whenLoginCompleteSuccess(object.getString("first_name") + " " + object.getString("last_name"),
                                     object.getString("email"), "123456", "facebook", object.getString("id"),
-                                    getUserTokenInFromSP(getApplicationContext()), photo, "00000000", login);
+                                    getUserTokenInFromSP(getApplicationContext()), photo, "00", login);
                         } catch (JSONException e) {
                             Log.w("TAG","error");
                             Log.w("TAG",e.getMessage());

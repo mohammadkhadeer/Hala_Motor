@@ -80,7 +80,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         setLocale(this);
         setContentView(R.layout.activity_splash_screen);
         statusBarColor();
-
+        Log.w("TAG"," "+getUserTokenFromServer(getApplicationContext()));
         myDB = getDataBaseInstance(getApplicationContext());
         addWelcomeNotifications();
         deleteOldData();

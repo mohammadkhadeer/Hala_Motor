@@ -54,6 +54,7 @@ import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.getUnreadNotificationsInSP;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.updateAllUnreadNotificationsToChecked;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.updateNumberUnreadNotifications;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserPhone;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOrNotFromSP;
 
 public class MainActivity extends AppCompatActivity implements Filter,FragmentSearch.FragmentSearchListener{
@@ -274,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
             case R.id.tab_adv:
                 checkWhatIsLastFragmentAndKeepItOn();
                 moveToAddItem();
-//                if (checkIfUserRegisterOrNotFromSP(this) == false)
+//                if (getUserPhone(this).equals("000000"))
 //                {
 //                    Toast.makeText(getBaseContext(),getResources().getString(R.string.must_login), Toast.LENGTH_SHORT).show();
 //                    handelProfileFragment();

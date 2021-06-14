@@ -22,6 +22,8 @@ import com.cars.halamotor.view.activity.ShowItemDetails;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+import static com.cars.halamotor.functions.Functions.splitString;
 import static com.cars.halamotor.functions.NotificationFunctions.processName;
 
 public class AdapterNotification extends RecyclerView.Adapter<AdapterNotification.ViewHolder>{
@@ -53,7 +55,9 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
     }
 
     private void fillProcessName(int position, Context context, ViewHolder holder) {
-        holder.processTV.setText(processName(notificationCompsArrayL.get(position).getProcess(),context));
+        String[] stringProcess = splitString(notificationCompsArrayL.get(position).getProcess(), "#");
+
+        holder.processTV.setText(getTextEngOrLocal(context,stringProcess[0],stringProcess[1]));
     }
 
     private void fillProcessImageAndUserUserImage(Context context, ViewHolder holder, int position) {
@@ -65,11 +69,21 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                     .centerCrop()
                     .into(holder.processIV);
         }else {
-            Picasso.get()
-                    .load(notificationCompsArrayL.get(position).getProcessImage())
-                    .fit()
-                    .centerCrop()
-                    .into(holder.processIV);
+            if (notificationCompsArrayL.get(position).getImagePath().equals("no_image"))
+            {
+                Picasso.get()
+                        .load(R.drawable.no_image)
+                        .fit()
+                        .centerCrop()
+                        .into(holder.processIV);
+            }else{
+                Picasso.get()
+                        .load(notificationCompsArrayL.get(position).getProcessImage())
+                        .fit()
+                        .centerCrop()
+                        .into(holder.processIV);
+            }
+
         }
 
     }

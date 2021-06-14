@@ -561,7 +561,7 @@
     <string name="condition">Condition</string>
 
     <string name="login_with_social_media">Login</string>
-    <string name="must_login">Must to login before add item</string>
+    <string name="must_login">Enter phone number before add item</string>
 
     <string name="kushuk">Kushuk</string>
     <string name="metal">Metal</string>
