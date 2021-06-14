@@ -363,8 +363,8 @@
     <string name="online">اونلاين</string>
     <string name="tab_browsing">التصفح</string>
     <string name="see_less">رؤية اقل</string>
-    <string name="burned_price_1">سعرك هو حرق السعر \?</string>
-    <string name="special_car_p_1">هل لوحتك مميزة \?</string>
+    <string name="burned_price_1">هل السعر يعد سعر محروق؟</string>
+    <string name="special_car_p_1">هل لوحتك مميزة ؟</string>
     <string name="message_burned_price">عندما تفعل هذه الميزة تساعدك على بيع منتجك بشكل أسرع  إذا كنت تستخدمه جيدًا  فلن يكون المنتج متاحًا لبضع دقائق للتأكد من أن هذا السعر قد تم حرقه بالفعل إذا لم يكن جيدًا  فلا يمكنك استخدام هذه الميزة مرة أخرى</string>
     <string name="message_burned_car_plates">عندما تفعل هذه الميزة تساعدك على بيع منتجك بشكل أسرع  إذا كنت تستخدمه جيدًا  فلن يكون المنتج متاحًا لبضع دقائق للتأكد من أن هذا السعر قد تم حرقه بالفعل إذا لم يكن جيدًا  فلا يمكنك استخدام هذه الميزة مرة أخرى</string>
     <string name="message_no_internet">تاكد من اتصالك بالانترنت</string>

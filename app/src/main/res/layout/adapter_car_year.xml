@@ -57,7 +57,7 @@
                     android:layout_centerHorizontal="true"
                     android:id="@+id/adapter_car_year_IV"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/arrow">
+                    >
 
                 </ImageView>
 

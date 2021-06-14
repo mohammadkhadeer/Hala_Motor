@@ -15,6 +15,7 @@ import com.cars.halamotor.model.CarTransmission;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.fillImageView;
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 
 public class AdapterCarTransmission extends RecyclerView.Adapter<AdapterCarTransmission.ViewHolder>{
@@ -39,7 +40,7 @@ public class AdapterCarTransmission extends RecyclerView.Adapter<AdapterCarTrans
 
     @Override
     public void onBindViewHolder(final AdapterCarTransmission.ViewHolder holder, final int position) {
-
+        fillImageView(context,holder.arrowIV);
         holder.modelTV.setText(getTextEngOrLocal(context,carTransmissionArrayL.get(position).getSetting_content_name_en(),carTransmissionArrayL.get(position).getSetting_content_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -29,12 +29,32 @@ public class FillText {
                     .into(imageView);
         }
         else
-            {
-                Picasso.get()
-                        .load(R.drawable.arrow_ar)
-                        .fit()
-                        .centerCrop()
-                        .into(imageView);
-            }
+        {
+            Picasso.get()
+                    .load(R.drawable.arrow_ar)
+                    .fit()
+                    .centerCrop()
+                    .into(imageView);
+        }
+    }
+
+    public static void fillBackImageView(Context context, ImageView imageView) {
+//        if (Locale.getDefault().getLanguage().equals("en"))
+        if (getUserLanguage(context).equals("en"))
+        {
+            Picasso.get()
+                    .load(R.drawable.back)
+                    .fit()
+                    .centerCrop()
+                    .into(imageView);
+        }
+        else
+        {
+            Picasso.get()
+                    .load(R.drawable.back_ar)
+                    .fit()
+                    .centerCrop()
+                    .into(imageView);
+        }
     }
 }

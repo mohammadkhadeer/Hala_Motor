@@ -14,6 +14,8 @@ import com.cars.halamotor.functions.Functions;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.fillImageView;
+
 public class AdapterCarKilometers extends RecyclerView.Adapter<AdapterCarKilometers.ViewHolder>{
 
     private final Context context;
@@ -36,7 +38,7 @@ public class AdapterCarKilometers extends RecyclerView.Adapter<AdapterCarKilomet
 
     @Override
     public void onBindViewHolder(final AdapterCarKilometers.ViewHolder holder, final int position) {
-
+        fillImageView(context,holder.arrowIV);
         holder.modelTV.setText(carKilometersArrayL.get(position));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override

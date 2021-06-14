@@ -160,7 +160,6 @@
                                                     android:layout_centerHorizontal="true"
                                                     android:layout_centerVertical="true"
                                                     android:id="@+id/car_details_wheels_arrow1_IV"
-                                                    android:src="@drawable/arrow"
                                                     />
 
                                         </RelativeLayout>
@@ -262,7 +261,6 @@
                                                     android:layout_centerHorizontal="true"
                                                     android:layout_centerVertical="true"
                                                     android:id="@+id/car_details_wheels_arrow_IV"
-                                                    android:src="@drawable/arrow"
                                                     />
 
                                         </RelativeLayout>
@@ -347,7 +345,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow2_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
 
                                                 </RelativeLayout>
@@ -428,7 +425,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow3_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
 
                                                 </RelativeLayout>
@@ -507,7 +503,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow4_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
                                                 </RelativeLayout>
 
@@ -588,7 +583,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow5_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
 
                                                 </RelativeLayout>
@@ -669,7 +663,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow6_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
                                                 </RelativeLayout>
 
@@ -748,7 +741,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow7_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
 
                                                 </RelativeLayout>
@@ -828,7 +820,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow8_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
 
                                                 </RelativeLayout>
@@ -908,7 +899,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow9_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
                                                 </RelativeLayout>
 
@@ -989,7 +979,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow10_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
 
                                                 </RelativeLayout>
@@ -1068,7 +1057,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow11_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
 
                                                 </RelativeLayout>
@@ -1148,7 +1136,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow12_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
 
                                                 </RelativeLayout>
@@ -1228,7 +1215,6 @@
                                                             android:layout_centerHorizontal="true"
                                                             android:layout_centerVertical="true"
                                                             android:id="@+id/car_details_fragment_arrow13_IV"
-                                                            android:src="@drawable/arrow"
                                                             />
                                                 </RelativeLayout>
 

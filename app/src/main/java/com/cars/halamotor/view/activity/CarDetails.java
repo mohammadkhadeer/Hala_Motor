@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -54,6 +55,8 @@ import com.cars.halamotor.view.fragments.carDetailsFragment.FragmentYear;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.fillBackImageView;
+import static com.cars.halamotor.functions.FillText.fillImageView;
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.functions.NewFunction.convertYearToEng;
@@ -66,6 +69,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
 
    RelativeLayout backRl,cancelRl;
    TextView titleTV;
+   ImageView back_image_view;
 
     ArrayList<String> carDetailsProNowArrayL = new ArrayList<String>();
 
@@ -94,6 +98,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
 
         statusBarColor();
         init();
+        fillBackImageView(getApplicationContext(),back_image_view);
         getStringFromIntent();
         checkComeFromWhereAndIntiStartFragment();
         actionListener();
@@ -382,6 +387,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         backRl = (RelativeLayout) findViewById(R.id.car_details_activity_back_RL);
         cancelRl = (RelativeLayout) findViewById(R.id.car_details_activity_cancel_RL);
         titleTV = (TextView) findViewById(R.id.car_details_activity_title_TV);
+        back_image_view = (ImageView) findViewById(R.id.back);
     }
 
     private void statusBarColor() {

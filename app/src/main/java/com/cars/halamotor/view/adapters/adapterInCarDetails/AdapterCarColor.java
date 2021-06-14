@@ -15,6 +15,7 @@ import com.cars.halamotor.model.CarColor;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.fillImageView;
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 
 public class AdapterCarColor extends RecyclerView.Adapter<AdapterCarColor.ViewHolder>{
@@ -39,6 +40,7 @@ public class AdapterCarColor extends RecyclerView.Adapter<AdapterCarColor.ViewHo
 
     @Override
     public void onBindViewHolder(final AdapterCarColor.ViewHolder holder, final int position) {
+        fillImageView(context,holder.arrowIV);
         changeColorBG(context,holder,position);
         holder.modelTV.setText(getTextEngOrLocal(context,carColorArrayL.get(position).getSetting_content_name_en(),carColorArrayL.get(position).getSetting_content_name_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {

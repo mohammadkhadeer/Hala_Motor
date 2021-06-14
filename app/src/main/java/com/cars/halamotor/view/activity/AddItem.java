@@ -786,6 +786,8 @@ public class AddItem extends AppCompatActivity implements
             getIntent().putExtra("carDetailsObject", carDetailsModel);
             Bundle bundle = new Bundle();
             bundle.putString("category", categoryCompNow.getCode());
+            bundle.putString("category_en", categoryCompNow.getName_en());
+            bundle.putString("category_ar", categoryCompNow.getName_ar());
             fragmentShowSelectedDetails.setArguments(bundle);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

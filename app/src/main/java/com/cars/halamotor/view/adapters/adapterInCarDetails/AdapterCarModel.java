@@ -14,6 +14,7 @@ import com.cars.halamotor.model.CarModel;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.fillImageView;
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 
 public class AdapterCarModel extends RecyclerView.Adapter<AdapterCarModel.ViewHolder>{
@@ -47,7 +48,7 @@ public class AdapterCarModel extends RecyclerView.Adapter<AdapterCarModel.ViewHo
             }
         });
         holder.modelTV.setTypeface(Functions.changeFontGeneral(context));
-
+        fillImageView(context,holder.arrowIV);
     }
 
     @Override
@@ -62,7 +63,7 @@ public class AdapterCarModel extends RecyclerView.Adapter<AdapterCarModel.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             modelTV = (TextView) itemView.findViewById(R.id.adapter_car_model_TV);
-            arrowIV = (ImageView) itemView.findViewById(R.id.adapter_car_make_image_IV) ;
+            arrowIV = (ImageView) itemView.findViewById(R.id.adapter_model_arrow_IV) ;
             relativeLayout = (RelativeLayout) itemView.findViewById(R.id.adapter_car_make_container_RL) ;
         }
     }

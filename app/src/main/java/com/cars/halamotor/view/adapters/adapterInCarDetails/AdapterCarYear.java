@@ -14,6 +14,8 @@ import com.cars.halamotor.functions.Functions;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.fillImageView;
+
 public class AdapterCarYear extends RecyclerView.Adapter<AdapterCarYear.ViewHolder>{
 
     private final Context context;
@@ -36,7 +38,7 @@ public class AdapterCarYear extends RecyclerView.Adapter<AdapterCarYear.ViewHold
 
     @Override
     public void onBindViewHolder(final AdapterCarYear.ViewHolder holder, final int position) {
-
+        fillImageView(context,holder.arrowIV);
         holder.modelTV.setText(carYearArrayL.get(position));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override

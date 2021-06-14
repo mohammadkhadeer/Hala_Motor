@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,8 +36,10 @@ import com.cars.halamotor.view.activity.WheelsRim;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.fillImageView;
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.functions.Functions.splitString;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class ShowSelectedCarDetailsFragment extends Fragment {
 
@@ -48,6 +51,9 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
             ,transmissionRL,fuelRL,carOptionsRL,carLicenseRL,insuranceRL
             ,colorRL,paymentMethodRL,categoryRL,wheelsRimRL,carPlatesRL;
 
+    ImageView imageView1,imageView2,imageView3,imageView4,imageView5,imageView6,imageView7
+            ,imageView8,imageView9,imageView10,imageView11,imageView12,imageView13,imageView14;
+
     LinearLayout containerCarDetailsLL;
 
     View view;
@@ -57,7 +63,7 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
     private static final int REQUEST_CAR_PLATES = 7;
 
     CarDetailsModel carDetailsModel= new CarDetailsModel();
-    String categoryStr,carMakeStr,whatUserWantToChangeStr,inchSizeStr
+    String categoryStr,category_en,category_ar,carMakeStr,whatUserWantToChangeStr,inchSizeStr
             ,carPlatesNumStr,carPlatesCityStr,specialOrNotStr;
     String wheelsTypeStr,wheelsTypeSStr;
     OnDataPass dataPasser;
@@ -65,7 +71,9 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
-            categoryStr = getArguments().getString("category");
+            category_en = getArguments().getString("category_en");
+            category_ar = getArguments().getString("category_ar");
+            categoryStr = getTextEngOrLocal(context,category_en,category_ar);
         }
         super.onAttach(context);
         dataPasser = (OnDataPass) context;
@@ -94,6 +102,7 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_car_details, container, false);
 
         inti();
+        fillArrows();
         checkCategoryBeforeFill();
 
         return view;
@@ -298,7 +307,10 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), CarDetails.class);
                 intent.putExtras(bundle);
                 startActivityForResult(intent , EDIT_CAR_DETAILS);
-                getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+                if (getUserLanguage(getActivity()).equals("en"))
+                    getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+                else
+                    getActivity().overridePendingTransition(R.anim.no_animation, R.anim.left_to_right);
             }
             if (fragmentType.equals(getActivity().getResources().getString(R.string.car_options)))
             {
@@ -309,7 +321,10 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), CarDetails.class);
                 intent.putExtras(bundle);
                 startActivityForResult(intent , EDIT_CAR_DETAILS);
-                getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+                if (getUserLanguage(getActivity()).equals("en"))
+                    getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+                else
+                    getActivity().overridePendingTransition(R.anim.no_animation, R.anim.left_to_right);
             }
         }else{
             Bundle bundle= new Bundle();
@@ -318,7 +333,10 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
             Intent intent = new Intent(getActivity(), CarDetails.class);
             intent.putExtras(bundle);
             this.startActivityForResult(intent , EDIT_CAR_DETAILS);
-            getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+            if (getUserLanguage(getActivity()).equals("en"))
+                getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+            else
+                getActivity().overridePendingTransition(R.anim.no_animation, R.anim.left_to_right);
         }
     }
 
@@ -373,6 +391,20 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
         carPlatesRL = (RelativeLayout) view.findViewById(R.id.car_details_fragment_car_plates_RL);
 
         containerCarDetailsLL = (LinearLayout) view.findViewById(R.id.car_details_fragment_container_cd_LL);
+        imageView1 = (ImageView) view.findViewById(R.id.car_details_wheels_arrow1_IV);
+        imageView2 = (ImageView) view.findViewById(R.id.car_details_wheels_arrow_IV);
+        imageView3 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow2_IV);
+        imageView4 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow3_IV);
+        imageView5 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow4_IV);
+        imageView6 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow5_IV);
+        imageView7 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow6_IV);
+        imageView8 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow7_IV);
+        imageView9 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow8_IV);
+        imageView10 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow9_IV);
+        imageView11 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow10_IV);
+        imageView12 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow11_IV);
+        imageView13 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow12_IV);
+        imageView14 = (ImageView) view.findViewById(R.id.car_details_fragment_arrow13_IV);
     }
     ////error
     @Override
@@ -528,4 +560,20 @@ public class ShowSelectedCarDetailsFragment extends Fragment {
         public void onWheelsDataChange(WheelsInfo wheelsInfo);
     }
 
+    private void fillArrows() {
+        fillImageView(getActivity(),imageView1);
+        fillImageView(getActivity(),imageView2);
+        fillImageView(getActivity(),imageView3);
+        fillImageView(getActivity(),imageView4);
+        fillImageView(getActivity(),imageView5);
+        fillImageView(getActivity(),imageView6);
+        fillImageView(getActivity(),imageView7);
+        fillImageView(getActivity(),imageView8);
+        fillImageView(getActivity(),imageView9);
+        fillImageView(getActivity(),imageView10);
+        fillImageView(getActivity(),imageView11);
+        fillImageView(getActivity(),imageView12);
+        fillImageView(getActivity(),imageView13);
+        fillImageView(getActivity(),imageView14);
+    }
 }

@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.fillImageView;
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 
 public class AdapterCarMake extends RecyclerView.Adapter<AdapterCarMake.ViewHolder>{
@@ -43,6 +44,7 @@ public class AdapterCarMake extends RecyclerView.Adapter<AdapterCarMake.ViewHold
     public void onBindViewHolder(final AdapterCarMake.ViewHolder holder, final int position) {
 
         fillImage(context,position,holder);
+        fillImageView(context,holder.arrowIV);
 
         holder.makeTV.setText(getTextEngOrLocal(context,carMakeArrayList.get(position).getName_en(),carMakeArrayList.get(position).getName_ar()));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +76,7 @@ public class AdapterCarMake extends RecyclerView.Adapter<AdapterCarMake.ViewHold
             super(itemView);
             makeTV = (TextView) itemView.findViewById(R.id.adapter_car_make_make_TV);
             carMakeIV = (ImageView) itemView.findViewById(R.id.adapter_car_make_image_IV) ;
-            arrowIV = (ImageView) itemView.findViewById(R.id.adapter_car_make_image_IV) ;
+            arrowIV = (ImageView) itemView.findViewById(R.id.arrow) ;
             relativeLayout = (RelativeLayout) itemView.findViewById(R.id.adapter_car_make_container_RL) ;
         }
     }

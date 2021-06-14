@@ -24,6 +24,7 @@ import com.cars.halamotor.view.activity.AddItem;
 import com.cars.halamotor.view.activity.CarDetails;
 import com.cars.halamotor.view.activity.selectAddress.SelectCityAndNeighborhood;
 
+import static com.cars.halamotor.functions.FillText.fillImageView;
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.cleanAddress;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.cleanPhoneNumber;
@@ -47,6 +48,7 @@ public class FragmentCityPhoneNumber extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_city_phone_number, container, false);
         inti();
+        fillImageView(getActivity(),cityArrowIV);
         actionListener();
         changeFontType();
         return view;
