@@ -56,5 +56,6 @@
     <color name="notificationNotOpenYet">#C2CAE6</color>
 
     <color name="colorTranspernt">#22FFFFFF</color>
+    <color name="colorBlack23">#88000000</color>
 
 </resources>

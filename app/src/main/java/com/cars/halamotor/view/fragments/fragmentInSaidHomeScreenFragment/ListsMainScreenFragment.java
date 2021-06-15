@@ -137,11 +137,11 @@ public class ListsMainScreenFragment extends Fragment {
         changeFont();
         createSuggestedItemRV();
         createInsuranceFragment();
-        createCarForSaleRV();
-        createCarForRentRV();
-        createCarExchangeRV();
-        createMotorcycleRV();
-        createJunkCarRV();
+//        createCarForSaleRV();
+//        createCarForRentRV();
+//        createCarExchangeRV();
+//        createMotorcycleRV();
+//        createJunkCarRV();
         createWheelsRimRV();
         createCarPlatesRV();
         createAccessoriesRV();
@@ -232,60 +232,60 @@ public class ListsMainScreenFragment extends Fragment {
         wheelsRimRecyclerView.setAdapter(adapterWheelsRim);
     }
 
-    private void createJunkCarRV() {
-        junkCarRecyclerView.setHasFixedSize(true);
-        layoutManagerTrucks = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL, false);
-
-        junkCarRecyclerView.setLayoutManager(layoutManagerTrucks);
-        adapterTrucks =new AdapterCCEMTAllCases(getActivity()
-                , trucksArrayL,"suggested_fragment");
-        junkCarRecyclerView.setAdapter(adapterTrucks);
-    }
-
-    private void createMotorcycleRV() {
-        motorcycleRecyclerView.setHasFixedSize(true);
-        layoutManagerCarMotorcycle = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL, false);
-
-        motorcycleRecyclerView.setLayoutManager(layoutManagerCarMotorcycle);
-        adapterCarMotorcycle =new AdapterCCEMTAllCases(getActivity()
-                ,motorcycleArrayL,"suggested_fragment");
-        motorcycleRecyclerView.setAdapter(adapterCarMotorcycle);
-    }
-
-    private void createCarExchangeRV() {
-        carExchangeRecyclerView.setHasFixedSize(true);
-        layoutManagerCarExchange = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL, false);
-
-        carExchangeRecyclerView.setLayoutManager(layoutManagerCarExchange);
-        adapterCarExchange =new AdapterCCEMTAllCases(getActivity()
-                ,carExchangeArrayL,"suggested_fragment");
-        carExchangeRecyclerView.setAdapter(adapterCarExchange);
-    }
-
-    private void createCarForRentRV() {
-        carForRentRecyclerView.setHasFixedSize(true);
-        layoutManagerCarRentSale = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL, false);
-
-        carForRentRecyclerView.setLayoutManager(layoutManagerCarRentSale);
-        getAdapterCarRentSale =new AdapterCCEMTAllCases(getActivity()
-                ,carForRentArrayL,"suggested_fragment");
-        carForRentRecyclerView.setAdapter(getAdapterCarRentSale);
-    }
-
-    private void createCarForSaleRV() {
-        carForSaleRecyclerView.setHasFixedSize(true);
-        layoutManagerCarForSale = new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.HORIZONTAL, false);
-
-        carForSaleRecyclerView.setLayoutManager(layoutManagerCarForSale);
-        adapterCarForSale =new AdapterCCEMTAllCases(getActivity()
-                ,carForSaleArrayL,"suggested_fragment");
-        carForSaleRecyclerView.setAdapter(adapterCarForSale);
-    }
+//    private void createJunkCarRV() {
+//        junkCarRecyclerView.setHasFixedSize(true);
+//        layoutManagerTrucks = new LinearLayoutManager(getActivity(),
+//                LinearLayoutManager.HORIZONTAL, false);
+//
+//        junkCarRecyclerView.setLayoutManager(layoutManagerTrucks);
+//        adapterTrucks =new AdapterCCEMTAllCases(getActivity()
+//                , trucksArrayL,"suggested_fragment");
+//        junkCarRecyclerView.setAdapter(adapterTrucks);
+//    }
+//
+//    private void createMotorcycleRV() {
+//        motorcycleRecyclerView.setHasFixedSize(true);
+//        layoutManagerCarMotorcycle = new LinearLayoutManager(getActivity(),
+//                LinearLayoutManager.HORIZONTAL, false);
+//
+//        motorcycleRecyclerView.setLayoutManager(layoutManagerCarMotorcycle);
+//        adapterCarMotorcycle =new AdapterCCEMTAllCases(getActivity()
+//                ,motorcycleArrayL,"suggested_fragment");
+//        motorcycleRecyclerView.setAdapter(adapterCarMotorcycle);
+//    }
+//
+//    private void createCarExchangeRV() {
+//        carExchangeRecyclerView.setHasFixedSize(true);
+//        layoutManagerCarExchange = new LinearLayoutManager(getActivity(),
+//                LinearLayoutManager.HORIZONTAL, false);
+//
+//        carExchangeRecyclerView.setLayoutManager(layoutManagerCarExchange);
+//        adapterCarExchange =new AdapterCCEMTAllCases(getActivity()
+//                ,carExchangeArrayL,"suggested_fragment");
+//        carExchangeRecyclerView.setAdapter(adapterCarExchange);
+//    }
+//
+//    private void createCarForRentRV() {
+//        carForRentRecyclerView.setHasFixedSize(true);
+//        layoutManagerCarRentSale = new LinearLayoutManager(getActivity(),
+//                LinearLayoutManager.HORIZONTAL, false);
+//
+//        carForRentRecyclerView.setLayoutManager(layoutManagerCarRentSale);
+//        getAdapterCarRentSale =new AdapterCCEMTAllCases(getActivity()
+//                ,carForRentArrayL,"suggested_fragment");
+//        carForRentRecyclerView.setAdapter(getAdapterCarRentSale);
+//    }
+//
+//    private void createCarForSaleRV() {
+//        carForSaleRecyclerView.setHasFixedSize(true);
+//        layoutManagerCarForSale = new LinearLayoutManager(getActivity(),
+//                LinearLayoutManager.HORIZONTAL, false);
+//
+//        carForSaleRecyclerView.setLayoutManager(layoutManagerCarForSale);
+//        adapterCarForSale =new AdapterCCEMTAllCases(getActivity()
+//                ,carForSaleArrayL,"suggested_fragment");
+//        carForSaleRecyclerView.setAdapter(adapterCarForSale);
+//    }
 
     private void createSuggestedItemRV() {
         suggestedItemRecyclerView.setHasFixedSize(true);

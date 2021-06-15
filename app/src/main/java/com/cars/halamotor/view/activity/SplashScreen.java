@@ -23,7 +23,9 @@ import android.widget.TextView;
 import com.cars.halamotor.R;
 import com.cars.halamotor.dataBase.DBHelper;
 import com.cars.halamotor.functions.Functions;
+import com.cars.halamotor.model.CategoryComp;
 import com.cars.halamotor.model.NotificationComp;
+import com.cars.halamotor.presnter.CategoriesPresenter;
 import com.cars.halamotor.presnter.CountryCitesAndAreas;
 import com.cars.halamotor.presnter.ModelsInstald;
 import com.cars.halamotor.presnter.UpdateProfile;
@@ -34,13 +36,17 @@ import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor.dataBase.InsertFunctions.insertNotificationTable;
 import static com.cars.halamotor.functions.Functions.getNotification;
 import static com.cars.halamotor.functions.Functions.setLocale;
+import static com.cars.halamotor.presnter.CCEMTFromServer.getCCEMT;
 import static com.cars.halamotor.presnter.CarsBrandsAndModels.getCarsBrandsAndModel;
+import static com.cars.halamotor.presnter.CategoriesFromServer.categoriesArrayL;
+import static com.cars.halamotor.presnter.CategoriesFromServer.getCategories;
 import static com.cars.halamotor.presnter.CountryCitesAndArea.getCountryCitesAndAreas;
 import static com.cars.halamotor.presnter.LoginAndUpdateProfile.updateProfileSuccess;
 import static com.cars.halamotor.presnter.Setting.getSetting;
@@ -58,7 +64,7 @@ import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserName;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOnServerSP;
 
-public class SplashScreen extends AppCompatActivity implements CountryCitesAndAreas, UpdateProfile {
+public class SplashScreen extends AppCompatActivity implements CountryCitesAndAreas, UpdateProfile, CategoriesPresenter {
 
     private static final int SELECT_LOCATION = 555;
     private static final int LOGIN = 556;
@@ -68,9 +74,11 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     SharedPreferences sharedPreferences;
     CountryCitesAndAreas countryCitesAndAreas;
     UpdateProfile updateProfile;
+    CategoriesPresenter categoriesPresenter;
     ModelsInstald modelsInstald;
     TextView setup_messageTextView,setup_message_per;
     RelativeLayout setup_profile_message_rl;
+    ArrayList<CategoryComp> categoriesArrayL2 = new ArrayList<>();
 
     int splashScreenTime=0;
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -80,10 +88,10 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         setLocale(this);
         setContentView(R.layout.activity_splash_screen);
         statusBarColor();
-        Log.w("TAG"," "+getUserTokenFromServer(getApplicationContext()));
+
         myDB = getDataBaseInstance(getApplicationContext());
         addWelcomeNotifications();
-        deleteOldData();
+
         init();
         changeFont();
         intiPersenters();
@@ -96,13 +104,13 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         setup_message_per.setText(getResources().getString(R.string.setup_message_2));
 
 //        to update brands every user open app 10 the table updates every 10's
-        if (getNumberOfUse(this) == "empty" || getNumberOfUse(this).equals("70")) {
+        if (getNumberOfUse(this) == "empty" || getNumberOfUse(this).equals("170")) {
             new Handler().postDelayed(new Runnable() {
 
                 @Override
                 public void run() {
 //                    getCarsBrandsAndModel(myDB);
-                    splashScreenTime =6000;
+                    splashScreenTime =7500;
 
 
                     reqToServerToGetCarsBrandsAndModels();
@@ -110,11 +118,11 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
                 }
             }, 2500);
         }else{
-            splashScreenTime =1000;
+            splashScreenTime =700;
             setup_profile_message_rl.setVisibility(View.GONE);
             updateNumberOfOpenApp();
             Log.w("TAG","number of use insaid else"+ getNumberOfUse(this));
-            loginCheck("After check in cars already installed insaid else");
+            loginCheck();
         }
 
     }
@@ -164,16 +172,16 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         //CarBrandsAndModelService
 
         updateNumberOfOpenApp();
-        loginCheck("First login after get cars start");
+        loginCheck();
     }
 
     private void intiPersenters() {
         this.countryCitesAndAreas = (CountryCitesAndAreas) this;
         this.updateProfile = (UpdateProfile) this;
+        this.categoriesPresenter= (CategoriesPresenter) this;
     }
 
-    private void loginCheck(String from) {
-        Log.w("TAG","login Check from "+from);
+    private void loginCheck() {
         if (getPlatform_id(this) == "empty")
         {
             transportToLoginScreen();
@@ -230,17 +238,9 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
                     getUserTokenFromServer(getApplicationContext())
                     ,updateProfile,area_id,area_name_en);
             //updateCityNeighborhood(this,cityS,neighborhoodS);
-            splashScreenTime =1000;
+            splashScreenTime =700;
             transportToMainActivity();
         }
-    }
-
-    private void deleteOldData() {
-        getDataBaseInstance(getApplicationContext()).deleteAllItem();
-        getDataBaseInstance(getApplicationContext()).deleteCCEMTItem();
-        getDataBaseInstance(getApplicationContext()).deleteWheels_RimItem();
-        getDataBaseInstance(getApplicationContext()).deleteCarPlatesItem();
-        getDataBaseInstance(getApplicationContext()).deleteAccAndJunkItem();
     }
 
     private void statusBarColor() {
@@ -294,17 +294,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     }
 
     private void transportToMainActivity() {
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
-                finish();
-            }
-        }, splashScreenTime);
+        getCategories(categoriesPresenter);
     }
 
 
@@ -319,4 +309,20 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         Log.w("TAG","Update personal info complete");
     }
 
+    @Override
+    public void whenGetCategoriesSuccess(final ArrayList<CategoryComp> categoriesArrayL) {
+        categoriesArrayL2 = categoriesArrayL;
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                intent.putExtra("categories",categoriesArrayL);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+                finish();
+            }
+        }, splashScreenTime);
+    }
 }

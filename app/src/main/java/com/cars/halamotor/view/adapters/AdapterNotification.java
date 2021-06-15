@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
+import static com.cars.halamotor.functions.Functions.splitNotification;
 import static com.cars.halamotor.functions.Functions.splitString;
 import static com.cars.halamotor.functions.NotificationFunctions.processName;
 
@@ -55,9 +56,13 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
     }
 
     private void fillProcessName(int position, Context context, ViewHolder holder) {
-        String[] stringProcess = splitString(notificationCompsArrayL.get(position).getProcess(), "#");
-
-        holder.processTV.setText(getTextEngOrLocal(context,stringProcess[0],stringProcess[1]));
+        if (!notificationCompsArrayL.get(position).getInOrOut().equals("welcome"))
+        {
+            String[] stringProcess = splitNotification(notificationCompsArrayL.get(position).getProcess());
+            holder.processTV.setText(getTextEngOrLocal(context,stringProcess[0],stringProcess[1]));
+        }else{
+            holder.processTV.setText(notificationCompsArrayL.get(position).getProcess());
+        }
     }
 
     private void fillProcessImageAndUserUserImage(Context context, ViewHolder holder, int position) {

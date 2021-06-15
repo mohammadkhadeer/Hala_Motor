@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cars.halamotor.R;
+import com.cars.halamotor.model.CategoryComp;
 import com.cars.halamotor.model.CityModel;
 import com.cars.halamotor.model.ItemFilterModel;
 import com.cars.halamotor.model.ItemSelectedFilterModel;
@@ -30,6 +32,7 @@ import com.cars.halamotor.view.adapters.adapterFilterFragment.AdapterFiltersItem
 import com.cars.halamotor.view.adapters.adapterFilterFragment.AdapterFiltersNeighborhood;
 import com.cars.halamotor.view.adapters.adapterFilterFragment.AdapterSelectedFilters;
 import com.cars.halamotor.view.fragments.fragmentInSaidHomeScreenFragment.FiltersFragment;
+import com.cars.halamotor.view.fragments.fragmentInSaidHomeScreenFragment.FragmentAdsList;
 import com.cars.halamotor.view.fragments.fragmentInSaidHomeScreenFragment.FragmentResults;
 import com.cars.halamotor.view.fragments.fragmentInSaidHomeScreenFragment.ListsMainScreenFragment;
 
@@ -53,9 +56,27 @@ public class FragmentHomeScreen extends Fragment {
 
     View view;
     ListsMainScreenFragment listsMainScreenFragment = new ListsMainScreenFragment();
+    FragmentAdsList fragmentAdsList = new FragmentAdsList();
+
     FragmentResults fragmentResults = new FragmentResults();
 
     Boolean citySelected;
+    public static ArrayList<CategoryComp> categoriesArrayL  = new ArrayList<CategoryComp>();
+
+    @Override
+    public void onAttach(Context context) {
+        if (getArguments() != null) {
+            categoriesArrayL = this.getArguments().getParcelableArrayList("categories");
+            butCategoriesListOnFragmentAds();
+        }
+        super.onAttach(context);
+    }
+
+    private void butCategoriesListOnFragmentAds() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("categories", categoriesArrayL);
+        fragmentAdsList.setArguments(bundle);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -164,7 +185,7 @@ public class FragmentHomeScreen extends Fragment {
 
     private void createMain() {
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_home_fragment_suggested_item_container, listsMainScreenFragment);
+        transaction.replace(R.id.fragment_home_fragment_suggested_item_container, fragmentAdsList);
         transaction.commit();
     }
 

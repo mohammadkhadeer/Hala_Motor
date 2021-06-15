@@ -29,12 +29,16 @@ import android.widget.Toast;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
+import com.cars.halamotor.model.CCEMTModel;
+import com.cars.halamotor.model.CategoryComp;
 import com.cars.halamotor.model.CityModel;
 import com.cars.halamotor.model.ItemFilterModel;
 import com.cars.halamotor.model.ItemSelectedFilterModel;
 import com.cars.halamotor.model.Neighborhood;
 import com.cars.halamotor.presnter.Filter;
 import com.cars.halamotor.presnter.OnNewNotification;
+import com.cars.halamotor.presnter.PassCCEMT;
+import com.cars.halamotor.view.adapters.AdapterAdsList;
 import com.cars.halamotor.view.fragments.FragmentHomeScreen;
 import com.cars.halamotor.view.fragments.browsingFragment.FragmentBrowsing;
 import com.cars.halamotor.view.fragments.FragmentNotification;
@@ -57,7 +61,8 @@ import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserPhone;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOrNotFromSP;
 
-public class MainActivity extends AppCompatActivity implements Filter,FragmentSearch.FragmentSearchListener{
+public class MainActivity extends AppCompatActivity implements Filter,FragmentSearch.FragmentSearchListener
+                                                                 {
     private TextView appNameTV;
     DatabaseReference mDatabase;
     BottomBar bottomBar;
@@ -83,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
     private static final int REQUEST_SHOW_ITEM_SELECTED_DETAILS = 100;
     int numberOfFilterSelected=0,selectedAntherFragmentButStillSelectedFilter=0,searchOnTheTop=0;
     InputMethodManager imm;
+    public static ArrayList<CategoryComp> categoriesArrayL  = new ArrayList<CategoryComp>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,14 +98,28 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
 
         statusBarColor();
         inti();
+        getCategoriesFromIntent();
+        butCategoriesListOnFragmentHome();
 
         changeAppNameFontType();
         changeGeneralFontType();
+
         BottomBarMenu();
         moveBetweenFragment();
         updateNumberUnCheckedNotifications();
         actionListenerToSearch();
         onPressOnSearch();
+    }
+
+    private void butCategoriesListOnFragmentHome() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("categories", categoriesArrayL);
+        fragmentHome.setArguments(bundle);
+    }
+
+    private void getCategoriesFromIntent() {
+        categoriesArrayL = (ArrayList<CategoryComp>) getIntent().getSerializableExtra("categories");
+
     }
 
     private void onPressOnSearch() {
@@ -396,12 +416,8 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
     }
 
     private void statusBarColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            Window window = this.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorRed));
-        }
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
     }
 
     @Override

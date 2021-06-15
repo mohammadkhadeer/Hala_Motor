@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
 import com.cars.halamotor.model.CCEMTFirestCase;
+import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.permission.CheckPermission;
 import com.cars.halamotor.view.activity.ShowItemDetails;
 import com.squareup.picasso.Picasso;
@@ -36,16 +37,13 @@ import static com.cars.halamotor.functions.NewFunction.callAds;
 public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCases.ViewHolder>{
 
     private final Context context;
-    public ArrayList<CCEMTFirestCase> carForSaleArrayL ;
-    String fromWhereCome;
-    private static final int REQUEST_SHOW_ITEM_SELECTED_DETAILS = 100;
+    public ArrayList<CCEMTModel> ccemtArrayL ;
 
     public AdapterCCEMTAllCases
-            (Context context, ArrayList<CCEMTFirestCase> carForSaleArrayL
+            (Context context, ArrayList<CCEMTModel> ccemtArrayL
             ,String fromWhereCome)
     {   this.context = context;
-        this.carForSaleArrayL = carForSaleArrayL;
-        this.fromWhereCome = fromWhereCome;
+        this.ccemtArrayL = ccemtArrayL;
     }
 
     public AdapterCCEMTAllCases.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
@@ -57,137 +55,139 @@ public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCa
 
     @Override
     public void onBindViewHolder(final AdapterCCEMTAllCases.ViewHolder holder, final int position) {
-        if (carForSaleArrayL.get(position).getItemActiveOrNot().equals("1")) {
-            makeAllTextViewVISIBLE(holder);
-            fillImage(holder, position, context);
-            fillTitleAndUserName(holder, position, context);
-            fillPrice(holder, position, context);
-            changeFont(context, holder);
-            fillNumberOfImageAndNumberOfComment(holder, position);
-            checkTypeAndFillTypeDetails(context, holder, position);
-            checkIfFavouriteOrNot(context,holder,position);
-            actionListenerToFavorite(context,holder,position);
-            actionListenerToMessage(context,position,holder);
-            actionListenerToCardButton(context,holder,position);
-            actionListenerToCallBtn(context,holder,position);
-        }
+        makeAllTextViewVISIBLE(holder);
+        fillImage(holder, position, context);
+        fillTitleAndUserName(holder, position, context);
+        fillPrice(holder, position, context);
+        changeFont(context, holder);
+        fillNumberOfImageAndNumberOfComment(holder, position);
+        checkTypeAndFillTypeDetails(context, holder, position);
+        //checkIfFavouriteOrNot(context,holder,position);
+        //actionListenerToFavorite(context,holder,position);
+        //actionListenerToMessage(context,position,holder);
+        //actionListenerToCardButton(context,holder,position);
+        //actionListenerToCallBtn(context,holder,position);
     }
 
-    private void actionListenerToMessage(final Context context, final int position, ViewHolder holder) {
-        holder.messageRL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                insertItemsToFCS(carForSaleArrayL.get(position).getItemIdInServer(),convertCategoryToCategoryS(carForSaleArrayL.get(position).getType(),context),getDataBaseInstance(context),"message",context);
-                setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer(),carForSaleArrayL.get(position).getType(),"message");
-                openWhatsApp(carForSaleArrayL.get(position).getItemUserPhoneNumber(),context);
-            }
-        });
-    }
+//    private void actionListenerToMessage(final Context context, final int position, ViewHolder holder) {
+//        holder.messageRL.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                insertItemsToFCS(carForSaleArrayL.get(position).getItemIdInServer(),convertCategoryToCategoryS(carForSaleArrayL.get(position).getType(),context),getDataBaseInstance(context),"message",context);
+//                setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer(),carForSaleArrayL.get(position).getType(),"message");
+//                openWhatsApp(carForSaleArrayL.get(position).getItemUserPhoneNumber(),context);
+//            }
+//        });
+//    }
 
-    private void actionListenerToCallBtn(final Context context, ViewHolder holder, final int position) {
-        holder.call_buttonRL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (CheckPermission.checkPermissionMethodToPhone((Activity) context) == true) {
-                    insertItemsToFCS(carForSaleArrayL.get(position).getItemIdInServer(),convertCategoryToCategoryS(carForSaleArrayL.get(position).getType(),context)
-                            ,getDataBaseInstance(context),"call",context);
+//    private void actionListenerToCallBtn(final Context context, ViewHolder holder, final int position) {
+//        holder.call_buttonRL.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (CheckPermission.checkPermissionMethodToPhone((Activity) context) == true) {
+//                    insertItemsToFCS(carForSaleArrayL.get(position).getItemIdInServer(),convertCategoryToCategoryS(carForSaleArrayL.get(position).getType(),context)
+//                            ,getDataBaseInstance(context),"call",context);
+//
+//                    setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer(),carForSaleArrayL.get(position).getType(),"call");
+//                    callAds(context,carForSaleArrayL.get(position).getItemUserPhoneNumber());
+//                }
+//            }
+//        });
+//    }
 
-                    setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer(),carForSaleArrayL.get(position).getType(),"call");
-                    callAds(context,carForSaleArrayL.get(position).getItemUserPhoneNumber());
-                }
-            }
-        });
-    }
+//    private void actionListenerToCardButton(final Context context, ViewHolder holder, final int position) {
+//        holder.cardButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                insertItemsToFCS(carForSaleArrayL.get(position).getItemIdInServer(),convertCategoryToCategoryS(carForSaleArrayL.get(position).getType(),context)
+//                        ,getDataBaseInstance(context),"seen",context);
+//
+//                setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer()
+//                        ,carForSaleArrayL.get(position).getType(),"seen");
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putString("category",carForSaleArrayL.get(position).getType());
+//                bundle.putString("from","ml");
+//                bundle.putString("itemID",carForSaleArrayL.get(position).getItemIdInServer());
+//
+//                Intent intent = new Intent(context, ShowItemDetails.class);
+//                intent.putExtras(bundle);
+//                ((Activity)context).startActivityForResult(intent , REQUEST_SHOW_ITEM_SELECTED_DETAILS);
+//                ((Activity)context).overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+//            }
+//        });
+//    }
 
-    private void actionListenerToCardButton(final Context context, ViewHolder holder, final int position) {
-        holder.cardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                insertItemsToFCS(carForSaleArrayL.get(position).getItemIdInServer(),convertCategoryToCategoryS(carForSaleArrayL.get(position).getType(),context)
-                        ,getDataBaseInstance(context),"seen",context);
+//
+//    private void actionListenerToFavorite(final Context context, final ViewHolder holder, final int position) {
+//        holder.favoriteRL.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (checkFavouriteOrNot1(context,carForSaleArrayL.get(position).getItemIdInServer()).equals("not_favorite"))
+//                {
+//                    holder.favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
+//                    insertItemsToFCS(carForSaleArrayL.get(position).getAd_id(),carForSaleArrayL.get(position).get,context)
+//                            ,getDataBaseInstance(context),"favorite",context);
+//
+//                    setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer()
+//                            ,carForSaleArrayL.get(position).getType(),"favorite");
+//                }else
+//                {
+//                    holder.favoriteIV.setBackgroundResource(R.drawable.item_favu);
+//                    getDataBaseInstance(context).deleteFCS(carForSaleArrayL.get(position).getItemIdInServer());
+//                }
+//            }
+//        });
+//    }
 
-                setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer()
-                        ,carForSaleArrayL.get(position).getType(),"seen");
-
-                Bundle bundle = new Bundle();
-                bundle.putString("category",carForSaleArrayL.get(position).getType());
-                bundle.putString("from","ml");
-                bundle.putString("itemID",carForSaleArrayL.get(position).getItemIdInServer());
-
-                Intent intent = new Intent(context, ShowItemDetails.class);
-                intent.putExtras(bundle);
-                ((Activity)context).startActivityForResult(intent , REQUEST_SHOW_ITEM_SELECTED_DETAILS);
-                ((Activity)context).overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
-            }
-        });
-    }
-
-
-    private void actionListenerToFavorite(final Context context, final ViewHolder holder, final int position) {
-        holder.favoriteRL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkFavouriteOrNot1(context,carForSaleArrayL.get(position).getItemIdInServer()).equals("not_favorite"))
-                {
-                    holder.favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
-                    insertItemsToFCS(carForSaleArrayL.get(position).getItemIdInServer(),convertCategoryToCategoryS(carForSaleArrayL.get(position).getType(),context)
-                            ,getDataBaseInstance(context),"favorite",context);
-
-                    setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer()
-                            ,carForSaleArrayL.get(position).getType(),"favorite");
-                }else
-                {
-                    holder.favoriteIV.setBackgroundResource(R.drawable.item_favu);
-                    getDataBaseInstance(context).deleteFCS(carForSaleArrayL.get(position).getItemIdInServer());
-                }
-            }
-        });
-    }
-
-    private void checkIfFavouriteOrNot(Context context, ViewHolder holder, int position) {
-        if (checkFavouriteOrNot1(context,carForSaleArrayL.get(position).getItemIdInServer()).equals("not_favorite"))
-        {
-            holder.favoriteIV.setBackgroundResource(R.drawable.item_favu);
-        }else
-        {
-            holder.favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
-        }
-    }
+//    private void checkIfFavouriteOrNot(Context context, ViewHolder holder, int position) {
+//        if (checkFavouriteOrNot1(context,carForSaleArrayL.get(position).getItemIdInServer()).equals("not_favorite"))
+//        {
+//            holder.favoriteIV.setBackgroundResource(R.drawable.item_favu);
+//        }else
+//        {
+//            holder.favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
+//        }
+//    }
 
     private void fillPrice(ViewHolder holder, int position, Context context) {
-        if (carForSaleArrayL.get(position).getItemPostEdit().equals("0"))
-        {
-            holder.itemPriceTV.setVisibility(View.VISIBLE);
-            holder.oldPrice.setVisibility(View.GONE);
-            holder.fireIV.setVisibility(View.GONE);
-            holder.itemPriceTV.setText(carForSaleArrayL.get(position).getItemPrice()
-                    +" "+context.getResources().getString(R.string.price_contry));
-            holder.itemPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-            //set new price empty to stay design
-            holder.itemNewPriceTV.setText("");
-            holder.itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-        }else{
-            holder.itemPriceTV.setVisibility(View.GONE);
-            holder.oldPrice.setVisibility(View.VISIBLE);
 
-            holder.oldPrice.setText(carForSaleArrayL.get(position).getItemPrice());
-            //change text color
-            holder.oldPrice.setTextColor(context.getResources().getColor(R.color.colorSilver));
-            //set line above old price
-            holder.oldPrice.setPaintFlags(holder.itemPriceTV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.itemPriceTV.setVisibility(View.VISIBLE);
+        holder.oldPrice.setVisibility(View.GONE);
+        holder.fireIV.setVisibility(View.GONE);
+        holder.itemPriceTV.setText(ccemtArrayL.get(position).getAd_price()
+                +" "+context.getResources().getString(R.string.price_contry));
+        holder.itemPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+        //set new price empty to stay design
+        holder.itemNewPriceTV.setText("");
+        holder.itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
 
-            //change size new price
-            holder.itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+//        if (carForSaleArrayL.get(position).getItemPostEdit().equals("0"))
+//        {
+//
+//        }else{
+////            holder.itemPriceTV.setVisibility(View.GONE);
+////            holder.oldPrice.setVisibility(View.VISIBLE);
+////
+////            holder.oldPrice.setText(carForSaleArrayL.get(position).getItemPrice());
+////            //change text color
+////            holder.oldPrice.setTextColor(context.getResources().getColor(R.color.colorSilver));
+////            //set line above old price
+////            holder.oldPrice.setPaintFlags(holder.itemPriceTV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+////
+////            //change size new price
+////            holder.itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+////
+////            holder.itemNewPriceTV.setText(carForSaleArrayL.get(position).getItemNewPrice()
+////                    +" "+context.getResources().getString(R.string.price_contry));
+////            //fill old price
+////            holder.itemPriceTV.setText(carForSaleArrayL.get(position).getItemPrice()
+////                    +" "+context.getResources().getString(R.string.price_contry));
+////            //VISIBLE fire image view
+////            holder.fireIV.setVisibility(View.VISIBLE);
+//
+//        }
 
-            holder.itemNewPriceTV.setText(carForSaleArrayL.get(position).getItemNewPrice()
-                    +" "+context.getResources().getString(R.string.price_contry));
-            //fill old price
-            holder.itemPriceTV.setText(carForSaleArrayL.get(position).getItemPrice()
-                    +" "+context.getResources().getString(R.string.price_contry));
-            //VISIBLE fire image view
-            holder.fireIV.setVisibility(View.VISIBLE);
-
-        }
     }
 
     private void makeAllTextViewVISIBLE(ViewHolder holder) {
@@ -204,16 +204,16 @@ public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCa
     }
 
     private void fillTitleAndUserName(ViewHolder holder, int position, Context context) {
-        holder.itemTitleTV.setText(carForSaleArrayL.get(position).getItemName());
-        holder.userNameTV.setText(carForSaleArrayL.get(position).getItemUserName());
+        holder.itemTitleTV.setText(ccemtArrayL.get(position).getAd_title());
+        //holder.userNameTV.setText(carForSaleArrayL.get(position).getItemUserName());
     }
 
     private void fillCarDetails(int position, ViewHolder holder) {
-        holder.text1.setText(carForSaleArrayL.get(position).getItemCarMake());
-        holder.text2.setText(carForSaleArrayL.get(position).getItemCarYeay());
-        holder.text3.setText(carForSaleArrayL.get(position).getItemCarCondition());
-        holder.text4.setText(carForSaleArrayL.get(position).getItemCarKilometers());
-        holder.itemCityTV.setText(carForSaleArrayL.get(position).getItemCity());
+        holder.text1.setText(ccemtArrayL.get(position).getAttributesArrayList().get(0).getTitle());
+        holder.text2.setText(ccemtArrayL.get(position).getAttributesArrayList().get(1).getTitle());
+        holder.text3.setText(ccemtArrayL.get(position).getAttributesArrayList().get(2).getTitle());
+        holder.text4.setText(ccemtArrayL.get(position).getAttributesArrayList().get(3).getTitle());
+        holder.itemCityTV.setText(ccemtArrayL.get(position).getAttributesArrayList().get(4).getTitle());
 
     }
 
@@ -232,30 +232,40 @@ public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCa
     }
 
     private void fillNumberOfImageAndNumberOfComment(ViewHolder holder, int position) {
-        holder.numberOfCommentTV.setText(carForSaleArrayL.get(position).getItemNumberOfComments());
-        holder.numberOfImageTV.setText(carForSaleArrayL.get(position).getItemNumberOfImage());
+        //holder.numberOfCommentTV.setText(carForSaleArrayL.get(position).getItemNumberOfComments());
+        holder.numberOfImageTV.setText(String.valueOf(ccemtArrayL.get(position).getPhotosArrayList().size()));
     }
 
     private void fillImage(final ViewHolder holder, int position, Context context) {
 
-        Picasso.get()
-                .load(carForSaleArrayL.get(position).getItemImage())
-                .fit()
-                .centerCrop()
-                .into(holder.itemImage);
+        if (ccemtArrayL.get(position).getPhotosArrayList().size() == 0)
+        {
+            Picasso.get()
+                    .load(R.drawable.no_image)
+                    .fit()
+                    .centerCrop()
+                    .into(holder.itemImage);
+        }else{
+            Picasso.get()
+                    .load(ccemtArrayL.get(position).getPhotosArrayList().get(0))
+                    .fit()
+                    .centerCrop()
+                    .into(holder.itemImage);
+        }
 
-        Picasso.get()
-                .load(carForSaleArrayL.get(position).getItemUserImage())
-                .fit()
-                .centerCrop()
-                .into(holder.userImage);
+
+//        Picasso.get()
+//                .load(carForSaleArrayL.get(position).getItemUserImage())
+//                .fit()
+//                .centerCrop()
+//                .into(holder.userImage);
 
     }
 
 
     @Override
     public int getItemCount() {
-        return carForSaleArrayL.size();
+        return ccemtArrayL.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

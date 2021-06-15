@@ -376,6 +376,11 @@ public class Functions {
         return stringAfterSplit;
     }
 
+    public static String[] splitNotification(String textStr) {
+        final String[] stringAfterSplit = textStr.split("#");
+        return stringAfterSplit;
+    }
+
     public static String[] splitString2(String textStr) {
         String[] items = textStr.split("|");
         String text=" ";

@@ -136,7 +136,9 @@ public class UploadCCMET {
                     jsonArray= data.getJSONArray("photos");
 
                     //insert process eng and ar
-                    if (jsonArray.length() > 0) {
+                    if (jsonArray != null && jsonArray.length() > 0) {
+                        Log.w("TAG", "jsonArray.length(): " + String.valueOf(jsonArray.length()));
+
                         image_path =jsonArray.getString(0);
                     }else{
                         image_path ="no_image";
