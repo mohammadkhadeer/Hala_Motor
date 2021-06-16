@@ -42,6 +42,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':bottom-bar')
     implementation project(path: ':spinner')
+    implementation 'cn.yc:YCGalleryLib:1.1.5'
 
     //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibraryVersion}"

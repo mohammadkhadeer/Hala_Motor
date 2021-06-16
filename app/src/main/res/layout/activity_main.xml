@@ -38,33 +38,100 @@
                 android:layout_width="match_parent"
                 android:layout_height="41dp"
                 android:layout_marginTop="35dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="0dp"
                 android:layout_marginLeft="16dp"
-                android:background="@drawable/search_background">
+                >
 
-
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="8dp"
-                    android:alpha="0.6"
-                    android:background="@drawable/search"
-                    />
-
-                <EditText
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="2dp"
-                    android:textCursorDrawable="@drawable/c"
-                    android:hint="@string/search"
-                    android:id="@+id/searchEdt"
-                    android:background="@null"
-                    />
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:weightSum="100">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/search_background"
+                        android:layout_weight="80">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="8dp"
+                            android:alpha="0.6"
+                            android:background="@drawable/search"
+                            />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="40dp"
+                            android:layout_marginStart="34dp"
+                            android:textSize="14dp"
+                            android:layout_marginTop="2dp"
+                            android:textCursorDrawable="@drawable/c"
+                            android:hint="@string/search"
+                            android:id="@+id/searchEdt"
+                            android:background="@null"
+                            />
+
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/hot_price_rl"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:layout_weight="20">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="22dp"
+                                    android:layout_height="25dp"
+                                    android:background="@drawable/hot_price"
+                                    android:layout_centerHorizontal="true"
+                                    />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:textColor="@color/colorRed"
+                                    android:textSize="11dp"
+                                    android:id="@+id/hot_price_tv"
+                                    android:text="@string/hot_price"/>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/shine"
+                            android:layout_width="10dp"
+                            android:layout_marginLeft="-10dp"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/shine" />
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
 
 
             </RelativeLayout>

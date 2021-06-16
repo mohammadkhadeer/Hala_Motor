@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
 import android.telephony.PhoneNumberUtils;
@@ -23,8 +24,10 @@ import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +84,26 @@ public class Functions {
 
         context.getBaseContext().getResources().updateConfiguration(config,
                 context.getBaseContext().getResources().getDisplayMetrics());
+    }
+
+    public static void AddShineEffect(final RelativeLayout father, final ImageView child) {
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                    animationEffect(father,child);
+                    AddShineEffect(father,child);
+            }
+        }, 3000);
+    }
+
+    public static void animationEffect(RelativeLayout father, ImageView child) {
+        Animation animation = new TranslateAnimation(0,
+                father.getWidth()+child.getWidth(),0, 0);
+        animation.setDuration(950);
+        animation.setFillAfter(false);
+        animation.setInterpolator(new AccelerateDecelerateInterpolator());
+        child.startAnimation(animation);
     }
 
     public static boolean checkIfAndroidVBiggerThan9() {

@@ -90,7 +90,6 @@ public class FillCCEMTType  {
         ArrayList <String> photosArrayList ;
         ArrayList <Attributes> attributesArrayList ;
         ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
-        int flag=0;
         try {
             for (int i =0;i<jsonArrayAllAds.length();i++)
             {
@@ -115,23 +114,12 @@ public class FillCCEMTType  {
                     attributesArrayList.add(attributesObj);
                 }
 
-                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp.getId(),categoryComp.getName_en(),categoryComp.getName_ar(),photosArrayList,attributesArrayList);
+                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp,photosArrayList,attributesArrayList);
 
                 adsArrayList.add(ccemtModel);
-
-                if (i == (adsDetails.length()-1))
-                { flag =1; }
             }
 
-            Log.w("TAG","CCEMT done");
-            Log.i("TAG","category code: "+categoryComp.getCode());
-            Log.w("TAG","url: "+BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+categoryComp.getId());
             createRV(adsArrayList,context,recyclerView);
-
-            if (flag==1)
-            {
-
-            }
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cars.halamotor.R;
@@ -27,8 +28,11 @@ import com.cars.halamotor.model.AccAndJunk;
 import com.cars.halamotor.model.AccAndJunkFirstCase;
 import com.cars.halamotor.model.CCEMT;
 import com.cars.halamotor.model.CCEMTFirestCase;
+import com.cars.halamotor.model.CCEMTModel;
+import com.cars.halamotor.model.CCEMTModelDetails;
 import com.cars.halamotor.model.CarPlatesFirstCase;
 import com.cars.halamotor.model.CarPlatesModel;
+import com.cars.halamotor.model.CategoryComp;
 import com.cars.halamotor.model.ItemAccAndJunk;
 import com.cars.halamotor.model.ItemCCEMT;
 import com.cars.halamotor.model.ItemPlates;
@@ -37,16 +41,20 @@ import com.cars.halamotor.model.SimilarNeeded;
 import com.cars.halamotor.model.WheelsRimFirstCase;
 import com.cars.halamotor.model.WheelsRimModel;
 import com.cars.halamotor.presnter.FavouriteChange;
+import com.cars.halamotor.presnter.ImageClicked;
 import com.cars.halamotor.presnter.ItemModel;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentComments;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentContact;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentFollowUser;
+import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentFullImageSlider;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentIDescriptionAndGeneralTips;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentImageSlider;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentItemSelectedDetails;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentShare;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentSimilarItems;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentUserInfo;
+
+import java.util.ArrayList;
 
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.getAccAndJunkObject;
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.getCCEMTObject;
@@ -58,9 +66,10 @@ import static com.cars.halamotor.functions.HandelItemObjectBeforePass.getAccAndJ
 import static com.cars.halamotor.functions.HandelItemObjectBeforePass.getCCEMTFirstCaseFromDB;
 import static com.cars.halamotor.functions.HandelItemObjectBeforePass.getCarPlatesFirstCaseFromDB;
 import static com.cars.halamotor.functions.HandelItemObjectBeforePass.getWheelsRimFirstCaseFromDB;
+import static com.cars.halamotor.presnter.CCEMTObjectDetailsFromServer.getCCEMTObjectDetails;
 
 public class ShowItemDetails extends AppCompatActivity
-         implements FavouriteChange , ItemModel {
+         implements FavouriteChange , ItemModel, ImageClicked {
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -74,17 +83,22 @@ public class ShowItemDetails extends AppCompatActivity
     FragmentFollowUser fragmentFollowUser = new FragmentFollowUser();
     FragmentImageSlider fragmentImageSlider = new FragmentImageSlider();
     FragmentContact fragmentContact = new FragmentContact();
+    FragmentFullImageSlider fragmentFullImageSlider = new FragmentFullImageSlider();
 
     String category;
 
-    ItemCCEMT ccemtObject;
+    CCEMTModelDetails ccemtModelDetails1;
     ItemPlates carPlatesModel;
     ItemWheelsRim wheelsRimModel;
     ItemAccAndJunk accAndJunkObject;
 
-    String itemIDStr,userNameStr,userImageStr,itemNameStr,timePostStr,postTypeStr
-            ,dateStr,timStampStr,itemDescription,userID,itemImage,numberOfImage,whereCome
+    String itemIDStr,userNameStr,userImageStr,itemNameStr,postTypeStr
+            ,timStampStr,itemDescription,userID,numberOfImage,whereCome
             ,categoryStr,cat,phoneNumber,price,priceEdit,newPrice,personOrGallery;
+
+    ArrayList<String> photosArrayList = new ArrayList<>();
+
+    CategoryComp categoryComp;
 
     int numberOfChangeFromInterface;
 
@@ -92,6 +106,8 @@ public class ShowItemDetails extends AppCompatActivity
 
     TextView itemPriceTV,oldPriceTV,itemNewPriceTV,title;
     LinearLayout show_item_details_header;
+    RelativeLayout fullImageCont;
+    int fullImageOnTheTop =0;
 
     private static final int REPORT = 2000;
 
@@ -107,30 +123,20 @@ public class ShowItemDetails extends AppCompatActivity
         //this object come from privuse activity to take filter comp to can create good suggested list
         similarNeeded = intiEmptyObject();
         inti();
+
         getItemIDFromIntent();
         intiObject();
+        handelFragmentFullImage();
         //intiCommentsFragment();
     }
 
     private void intiImageSlider() {
         Bundle bundle = new Bundle();
-        bundle.putString("itemIV", itemImage);
         bundle.putString("cat", cat);
         bundle.putString("price", price);
         bundle.putString("priceE", priceEdit);
         bundle.putString("newP", newPrice);
-
-        if (cat.equals("ccemt"))
-            bundle.putParcelable("object",ccemtObject);
-
-        if (cat.equals("cp"))
-            bundle.putParcelable("object",carPlatesModel);
-
-        if (cat.equals("wr"))
-            bundle.putParcelable("object",wheelsRimModel);
-
-        if (cat.equals("aaj"))
-            bundle.putParcelable("object",accAndJunkObject);
+        bundle.putStringArrayList("photos_list", photosArrayList);
 
         fragmentImageSlider.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -147,6 +153,7 @@ public class ShowItemDetails extends AppCompatActivity
         itemNewPriceTV = (TextView) findViewById(R.id.show_item_details_new_price);
         show_item_details_header = (LinearLayout) findViewById(R.id.show_item_details_header);
         title = (TextView) findViewById(R.id.show_item_details_title);
+        fullImageCont = (RelativeLayout) findViewById(R.id.fullImageCont);
     }
 
     private void statusBarColor() {
@@ -233,14 +240,14 @@ public class ShowItemDetails extends AppCompatActivity
     private void intiObject() {
         category =categoryStr;
 
-        if (category.equals("Car for sale")
-                ||category.equals("Car for rent")
-                ||category.equals("Exchange car")
-                ||category.equals("Motorcycle")
-                ||category.equals("Trucks")
+        if (category.equals("car_for_sale")
+                ||category.equals("car_for_rent")
+                ||category.equals("exchange_car")
+                ||category.equals("motorcycle")
+                ||category.equals("trucks")
         ) {
             cat = "ccemt";
-            getCCEMTObject(categoryStr,itemIDStr,itemModel);
+            getCCEMTObjectDetails(getApplicationContext(),itemIDStr,categoryComp,itemModel);
         }
         if (category.equals("Car plates") || category.equals("Plates"))
         {
@@ -338,7 +345,7 @@ public class ShowItemDetails extends AppCompatActivity
         bundle.putString("cat", cat);
 
         if (cat.equals("ccemt"))
-            bundle.putParcelable("object",ccemtObject);
+            //bundle.putParcelable("object",ccemtObject);
 
         if (cat.equals("cp"))
             bundle.putParcelable("object",carPlatesModel);
@@ -374,14 +381,14 @@ public class ShowItemDetails extends AppCompatActivity
         bundle.putString("userName", userNameStr);
         bundle.putString("userImage", userImageStr);
         bundle.putString("itemName", itemNameStr);
-        bundle.putString("timePost", timePostStr);
+        //bundle.putString("timePost", timePostStr);
         bundle.putString("postType", postTypeStr);
-        bundle.putString("date", dateStr);
+       // bundle.putString("date", dateStr);
         bundle.putString("timStamp", timStampStr);
         bundle.putString("cat", cat);
 
         if (cat.equals("ccemt"))
-        bundle.putParcelable("object",ccemtObject);
+        //bundle.putParcelable("object",ccemtObject);
 
         if (cat.equals("cp"))
             bundle.putParcelable("object",carPlatesModel);
@@ -423,70 +430,55 @@ public class ShowItemDetails extends AppCompatActivity
         numberOfChangeFromInterface = numberOfChange;
     }
 
-    @Override
-    public void onBackPressed() {
-        String number = String.valueOf(numberOfChangeFromInterface);
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra("numberOfChange",number);
-        setResult(RESULT_OK, resultIntent);
-        finish();
-    }
+
     SimilarNeeded similarNeeded;
     private void getItemIDFromIntent() {
         Bundle bundle = getIntent().getExtras();
         itemIDStr =bundle.getString("itemID");
         categoryStr =bundle.getString("category");
         whereCome =bundle.getString("from");
+        if (whereCome.equals("ml"))
+        {
+            categoryComp = bundle.getParcelable("category_comp");
+        }
         if (whereCome.equals("search"))
         {
             similarNeeded = (SimilarNeeded) bundle.getParcelable("similarNeeded");
         }
     }
 
-    private void intiValues(String userName, String userImage, String itemName, String timeStamp
-            , String boostType,String date, String itemDes, String userIDPathInServer
-            , String itemIV, int numberOfIg,String phoneN,Double itemPrice,String priceE,String newP,String personOrGalleryS) {
+    private void intiValues(String userName, String userImage, String itemName,String itemDes,ArrayList<String> photosArrayL,String timeStamp
+            , String boostType, String userIDPathInServer
+            , String numberOfIg,String phoneN,String itemPrice,String priceE,String newP,String personOrGalleryS) {
 
         userNameStr =userName;
         userImageStr =userImage;
         itemNameStr =itemName;
-        timePostStr =timeStamp;
-        postTypeStr =boostType;
-        dateStr =date;
-        timStampStr =timeStamp;
         itemDescription =itemDes;
+        photosArrayList =photosArrayL;
+
+        timStampStr =timeStamp;
+        postTypeStr =boostType;
         userID =userIDPathInServer;
-        itemImage =itemIV;
-        numberOfImage =String.valueOf(numberOfIg);
+        numberOfImage =numberOfIg;
+
         phoneNumber = phoneN;
-        price = String.valueOf(itemPrice);
+        price = itemPrice;
         priceEdit = priceE;
         newPrice = newP;
         personOrGallery = personOrGalleryS;
     }
 
     @Override
-    public void onReceiveCCEMTObject(ItemCCEMT ccemt) {
-       //to pass object to fragment
-        ccemtObject = ccemt;
-        String date = String.valueOf(ccemt.getDayDate())+"/"+String.valueOf(ccemt.getMonthDate())+"/"+String.valueOf(ccemt.getYear());
-        intiValues(ccemt.getUserName(),ccemt.getUserImage(),ccemt.getItemName()
-        ,ccemt.getTimeStamp(),"empty",date
-        ,ccemt.getItemDescription(),ccemt.getUserIDPathInServer(),ccemt.getImagePathArrayL().get(0)
-        ,ccemt.getImagePathArrayL().size(),ccemt.getPhoneNumber(),ccemt.getPrice()
-        ,ccemt.getPostEdit(),ccemt.getNewPrice(),ccemt.getPersonOrGallery());
-        intiAllFragment();
-    }
-
-    @Override
     public void onReceiveAccAndJunkObject(ItemAccAndJunk accAndJunk) {
         accAndJunkObject = accAndJunk;
         String date = String.valueOf(accAndJunk.getDayDate())+"/"+String.valueOf(accAndJunk.getMonthDate())+"/"+String.valueOf(accAndJunk.getYearDate());
-        intiValues(accAndJunk.getUserName(),accAndJunk.getUserImage(),accAndJunk.getItemName()
-                ,accAndJunk.getTimeStamp(),"empty",date
-                ,accAndJunk.getItemDescription(),accAndJunk.getUserIDPathInServer(),accAndJunk.getImagePathArrayL().get(0)
-                ,accAndJunk.getImagePathArrayL().size(),accAndJunk.getPhoneNumber(),accAndJunk.getPrice()
-                ,accAndJunk.getPostEdit(),accAndJunk.getNewPrice(),accAndJunk.getPersonOrGallery());
+//        intiValues(accAndJunk.getUserName(),accAndJunk.getUserImage(),accAndJunk.getItemName()
+//                ,accAndJunk.getTimeStamp(),"empty",date
+//                ,accAndJunk.getItemDescription(),accAndJunk.getUserIDPathInServer(),accAndJunk.getImagePathArrayL().get(0)
+//                ,accAndJunk.getImagePathArrayL().size(),accAndJunk.getPhoneNumber(),accAndJunk.getPrice()
+//                ,accAndJunk.getPostEdit(),accAndJunk.getNewPrice(),accAndJunk.getPersonOrGallery());
+
         intiAllFragment();
     }
 
@@ -499,11 +491,12 @@ public class ShowItemDetails extends AppCompatActivity
         Log.i("TAG","Item Show FCS: itemID: "+ itemIDStr);
 
         String date = String.valueOf(wheelsRim.getDayDate())+"/"+String.valueOf(wheelsRim.getMonthDate())+"/"+String.valueOf(wheelsRim.getYearDate());
-        intiValues(wheelsRim.getUserName(),wheelsRim.getUserImage(),wheelsRim.getItemName()
-                ,wheelsRim.getTimeStamp(),"empty",date
-                ,wheelsRim.getItemDescription(),wheelsRim.getUserIDPathInServer(),wheelsRim.getImagePathArrayL().get(0)
-                ,wheelsRim.getImagePathArrayL().size(),wheelsRim.getPhoneNumber(),wheelsRim.getPrice()
-                ,wheelsRim.getPostEdit(),wheelsRim.getNewPrice(),wheelsRim.getPersonOrGallery());
+//        intiValues(wheelsRim.getUserName(),wheelsRim.getUserImage(),wheelsRim.getItemName()
+//                ,wheelsRim.getTimeStamp(),"empty",date
+//                ,wheelsRim.getItemDescription(),wheelsRim.getUserIDPathInServer(),wheelsRim.getImagePathArrayL().get(0)
+//                ,wheelsRim.getImagePathArrayL().size(),wheelsRim.getPhoneNumber(),wheelsRim.getPrice()
+//                ,wheelsRim.getPostEdit(),wheelsRim.getNewPrice(),wheelsRim.getPersonOrGallery());
+
         intiAllFragment();
     }
 
@@ -511,24 +504,63 @@ public class ShowItemDetails extends AppCompatActivity
     public void onReceiveCarPlatesObject(ItemPlates carPlates) {
         carPlatesModel = carPlates;
         String date = String.valueOf(carPlates.getDayDate())+"/"+String.valueOf(carPlates.getMonthDate())+"/"+String.valueOf(carPlates.getYearDate());
-        intiValues(carPlates.getUserName(),carPlates.getUserImage(),carPlates.getItemName()
-                ,carPlates.getTimeStamp(),"empty",date
-                ,carPlates.getItemDescription(),carPlates.getUserIDPathInServer(),carPlates.getImagePathArrayL().get(0)
-                ,carPlates.getImagePathArrayL().size(),carPlates.getPhoneNumber(),carPlates.getPrice()
-                ,carPlates.getPostEdit(),carPlates.getNewPrice(),carPlates.getPersonOrGallery());
+//        intiValues(carPlates.getUserName(),carPlates.getUserImage(),carPlates.getItemName()
+//                ,carPlates.getTimeStamp(),"empty",date
+//                ,carPlates.getItemDescription(),carPlates.getUserIDPathInServer(),carPlates.getImagePathArrayL().get(0)
+//                ,carPlates.getImagePathArrayL().size(),carPlates.getPhoneNumber(),carPlates.getPrice()
+//                ,carPlates.getPostEdit(),carPlates.getNewPrice(),carPlates.getPersonOrGallery());
+
+        intiAllFragment();
+    }
+
+    @Override
+    public void onReceiveCCEMTObjectDetails(CCEMTModelDetails ccemtModelDetails, ArrayList<CCEMTModel> ccemtModelArrayList) {
+        ccemtModelDetails1 = ccemtModelDetails;
+        intiValues("user_name","",ccemtModelDetails.getCcemtSmallObject().getAd_title(),ccemtModelDetails.getCcemtSmallObject().getAd_description(),ccemtModelDetails.getPhotosArrayList(),ccemtModelDetails.getCcemtSmallObject().getAd_time_post(),ccemtModelDetails.getCategoryComp().getCode(),"user_id",String.valueOf(ccemtModelDetails.getPhotosArrayList().size()),ccemtModelDetails.getCcemtSmallObject().getAd_phone(),ccemtModelDetails.getCcemtSmallObject().getAd_price(),"0",ccemtModelDetails.getCcemtSmallObject().getAd_price(),"no");
+        Log.w("TAG","onReceiveCCEMTObjectDetails");
+        Log.w("TAG","ccemtModelArrayList name: "+ccemtModelDetails.getCcemtSmallObject().getAd_title());
         intiAllFragment();
     }
 
     private void intiAllFragment() {
         titleActionBar();
-        intiUserInfoFragment();
-        intiItemDetails();
+        //intiUserInfoFragment();
+        //intiItemDetails();
         intiImageSlider();
         intiItemDescriptionAndGeneralTips();
         intiShareFragment();
-        intiFollowUser();
+        //intiFollowUser();
         intiContact();
-        intiSuggestedFragment();
+        //intiSuggestedFragment();
     }
 
+    @Override
+    public void imageClicked(String test) {
+        fullImageCont.setVisibility(View.VISIBLE);
+        fullImageOnTheTop =1;
+    }
+
+    public void handelFragmentFullImage() {
+
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("allImage", photosArrayList);
+
+
+        fragmentFullImageSlider.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container_full_image_slider, fragmentFullImageSlider)
+                .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fullImageOnTheTop==1)
+        {
+            fullImageOnTheTop =0;
+            fullImageCont.setVisibility(View.GONE);
+        }else{
+            fragmentFullImageSlider.diestroyAsynk();
+            finish();
+        }
+    }
 }

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.cars.halamotor.model.ItemCCEMT;
 import com.cars.halamotor.model.ItemPlates;
 import com.cars.halamotor.model.ItemWheelsRim;
 import com.cars.halamotor.model.SlidImage;
+import com.cars.halamotor.presnter.ImageClicked;
 import com.cars.halamotor.view.adapters.adapterShowItemDetails.SlidingImage_Adapter;
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -45,38 +47,35 @@ public class FragmentImageSlider extends Fragment implements SlidingImage_Adapte
     private ArrayList<String> images;
     CirclePageIndicator indicator;
     ImageView imageView,shinImageView;
-    String itemIV,cat,price,priceE,newPrice;
+    String cat,price,priceE,newPrice;
     RelativeLayout relativeLayout;
 
-    ItemCCEMT ccemt;
-    ItemPlates carPlatesModel;
-    ItemWheelsRim wheelsRimModel;
-    ItemAccAndJunk accAndJunkObject;
-
     TextView itemPriceTV,oldPriceTV,itemNewPriceTV;
+    ImageClicked imageClickedP;
 
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
-            itemIV = getArguments().getString("itemIV");
             cat = getArguments().getString("cat");
             price = getArguments().getString("price");
             priceE = getArguments().getString("priceE");
             newPrice = getArguments().getString("newP");
-
-            if (cat.equals("ccemt"))
-                ccemt = getArguments().getParcelable("object");
-
-            if (cat.equals("cp"))
-                carPlatesModel = getArguments().getParcelable("object");
-
-            if (cat.equals("wr"))
-                wheelsRimModel = getArguments().getParcelable("object");
-
-            if (cat.equals("aaj"))
-                accAndJunkObject = getArguments().getParcelable("object");
+            images = getArguments().getStringArrayList("photos_list");
         }
         super.onAttach(context);
+
+        if (context instanceof ImageClicked) {
+            imageClickedP = (ImageClicked) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        imageClickedP = null;
     }
 
     @Override
@@ -87,7 +86,7 @@ public class FragmentImageSlider extends Fragment implements SlidingImage_Adapte
         fillPrice();
         AddShineEffect(relativeLayout,shinImageView);
 
-        fillImageList();
+        fillSlider();
         return view;
     }
 
@@ -124,22 +123,6 @@ public class FragmentImageSlider extends Fragment implements SlidingImage_Adapte
         }
     }
 
-    private void fillImageList() {
-        images = new ArrayList<>();
-        if (cat.equals("ccemt"))
-            images = ccemt.getImagePathArrayL();
-
-        if (cat.equals("cp"))
-            images = carPlatesModel.getImagePathArrayL();
-
-        if (cat.equals("wr"))
-            images = wheelsRimModel.getImagePathArrayL();
-
-        if (cat.equals("aaj"))
-            images = accAndJunkObject.getImagePathArrayL();
-        fillSlider();
-    }
-
     private void fillSlider() {
         imageModelArrayList = new ArrayList<>();
         for (int i =0;i<images.size();i++)
@@ -154,7 +137,7 @@ public class FragmentImageSlider extends Fragment implements SlidingImage_Adapte
                 loadedOrDownloading = "loaded";
                 relativeLayout.setVisibility(View.GONE);
             }
-        }, 1500);
+        }, 700);
     }
 
     @Override
@@ -200,6 +183,8 @@ public class FragmentImageSlider extends Fragment implements SlidingImage_Adapte
 
     @Override
     public void onImageClicked(Boolean clicked) {
-        createPopUp(getActivity(),view,images,imageModelArrayList);
+
+        //createPopUp(getActivity(),view,images,imageModelArrayList);
+        imageClickedP.imageClicked("test onImageClicked");
     }
 }

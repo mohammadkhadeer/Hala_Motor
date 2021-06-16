@@ -33,6 +33,7 @@ import static com.cars.halamotor.fireBaseDB.UpdateFireBase.setFavouriteCallSearc
 import static com.cars.halamotor.functions.Functions.convertCategoryToCategoryS;
 import static com.cars.halamotor.functions.Functions.openWhatsApp;
 import static com.cars.halamotor.functions.NewFunction.callAds;
+import static com.cars.halamotor.presnter.UploadLogAdActions.postAdAction;
 
 public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCases.ViewHolder>{
 
@@ -62,93 +63,96 @@ public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCa
         changeFont(context, holder);
         fillNumberOfImageAndNumberOfComment(holder, position);
         checkTypeAndFillTypeDetails(context, holder, position);
-        //checkIfFavouriteOrNot(context,holder,position);
-        //actionListenerToFavorite(context,holder,position);
-        //actionListenerToMessage(context,position,holder);
-        //actionListenerToCardButton(context,holder,position);
-        //actionListenerToCallBtn(context,holder,position);
+        checkIfFavouriteOrNot(context,holder,position);
+        actionListenerToFavorite(context,holder,position);
+        actionListenerToMessage(context,position,holder);
+        actionListenerToCardButton(context,holder,position);
+        actionListenerToCallBtn(context,holder,position);
+
+        //set as a view
+        postAdAction(ccemtArrayL.get(position).getAd_id(),"view",context);
+
     }
 
-//    private void actionListenerToMessage(final Context context, final int position, ViewHolder holder) {
-//        holder.messageRL.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                insertItemsToFCS(carForSaleArrayL.get(position).getItemIdInServer(),convertCategoryToCategoryS(carForSaleArrayL.get(position).getType(),context),getDataBaseInstance(context),"message",context);
-//                setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer(),carForSaleArrayL.get(position).getType(),"message");
-//                openWhatsApp(carForSaleArrayL.get(position).getItemUserPhoneNumber(),context);
-//            }
-//        });
-//    }
+    private void actionListenerToMessage(final Context context, final int position, ViewHolder holder) {
+        holder.messageRL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertItemsToFCS(ccemtArrayL.get(position).getAd_id(),ccemtArrayL.get(position).getCategoryComp().getCode(),getDataBaseInstance(context),"message",context);
+                postAdAction(ccemtArrayL.get(position).getAd_id(),"message",context);
+                openWhatsApp(ccemtArrayL.get(position).getAd_phone(),context);
+            }
+        });
+    }
 
-//    private void actionListenerToCallBtn(final Context context, ViewHolder holder, final int position) {
-//        holder.call_buttonRL.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (CheckPermission.checkPermissionMethodToPhone((Activity) context) == true) {
-//                    insertItemsToFCS(carForSaleArrayL.get(position).getItemIdInServer(),convertCategoryToCategoryS(carForSaleArrayL.get(position).getType(),context)
-//                            ,getDataBaseInstance(context),"call",context);
-//
-//                    setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer(),carForSaleArrayL.get(position).getType(),"call");
-//                    callAds(context,carForSaleArrayL.get(position).getItemUserPhoneNumber());
-//                }
-//            }
-//        });
-//    }
+    private void actionListenerToCallBtn(final Context context, ViewHolder holder, final int position) {
+        holder.call_buttonRL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CheckPermission.checkPermissionMethodToPhone((Activity) context) == true) {
+                    insertItemsToFCS(ccemtArrayL.get(position).getAd_id(),ccemtArrayL.get(position).getCategoryComp().getCode()
+                            ,getDataBaseInstance(context),"call",context);
 
-//    private void actionListenerToCardButton(final Context context, ViewHolder holder, final int position) {
-//        holder.cardButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                insertItemsToFCS(carForSaleArrayL.get(position).getItemIdInServer(),convertCategoryToCategoryS(carForSaleArrayL.get(position).getType(),context)
-//                        ,getDataBaseInstance(context),"seen",context);
-//
-//                setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer()
-//                        ,carForSaleArrayL.get(position).getType(),"seen");
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putString("category",carForSaleArrayL.get(position).getType());
-//                bundle.putString("from","ml");
-//                bundle.putString("itemID",carForSaleArrayL.get(position).getItemIdInServer());
-//
-//                Intent intent = new Intent(context, ShowItemDetails.class);
-//                intent.putExtras(bundle);
-//                ((Activity)context).startActivityForResult(intent , REQUEST_SHOW_ITEM_SELECTED_DETAILS);
-//                ((Activity)context).overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
-//            }
-//        });
-//    }
+                    postAdAction(ccemtArrayL.get(position).getAd_id(),"call",context);
+                    callAds(context,ccemtArrayL.get(position).getAd_id());
+                }
+            }
+        });
+    }
 
-//
-//    private void actionListenerToFavorite(final Context context, final ViewHolder holder, final int position) {
-//        holder.favoriteRL.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (checkFavouriteOrNot1(context,carForSaleArrayL.get(position).getItemIdInServer()).equals("not_favorite"))
-//                {
-//                    holder.favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
-//                    insertItemsToFCS(carForSaleArrayL.get(position).getAd_id(),carForSaleArrayL.get(position).get,context)
-//                            ,getDataBaseInstance(context),"favorite",context);
-//
-//                    setFavouriteCallSearchOnServer(context,carForSaleArrayL.get(position).getItemIdInServer()
-//                            ,carForSaleArrayL.get(position).getType(),"favorite");
-//                }else
-//                {
-//                    holder.favoriteIV.setBackgroundResource(R.drawable.item_favu);
-//                    getDataBaseInstance(context).deleteFCS(carForSaleArrayL.get(position).getItemIdInServer());
-//                }
-//            }
-//        });
-//    }
+    private void actionListenerToCardButton(final Context context, ViewHolder holder, final int position) {
+        holder.cardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertItemsToFCS(ccemtArrayL.get(position).getAd_id(),ccemtArrayL.get(position).getCategoryComp().getCode()
+                        ,getDataBaseInstance(context),"seen",context);
 
-//    private void checkIfFavouriteOrNot(Context context, ViewHolder holder, int position) {
-//        if (checkFavouriteOrNot1(context,carForSaleArrayL.get(position).getItemIdInServer()).equals("not_favorite"))
-//        {
-//            holder.favoriteIV.setBackgroundResource(R.drawable.item_favu);
-//        }else
-//        {
-//            holder.favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
-//        }
-//    }
+                postAdAction(ccemtArrayL.get(position).getAd_id(),"view",context);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("category",ccemtArrayL.get(position).getCategoryComp().getCode());
+                bundle.putParcelable("category_comp",ccemtArrayL.get(position).getCategoryComp());
+                bundle.putString("from","ml");
+                bundle.putString("itemID",ccemtArrayL.get(position).getAd_id());
+
+                Intent intent = new Intent(context, ShowItemDetails.class);
+                intent.putExtras(bundle);
+                ((Activity)context).startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+            }
+        });
+    }
+
+
+    private void actionListenerToFavorite(final Context context, final ViewHolder holder, final int position) {
+        holder.favoriteRL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkFavouriteOrNot1(context,ccemtArrayL.get(position).getAd_id()).equals("not_favorite"))
+                {
+                    holder.favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
+                    insertItemsToFCS(ccemtArrayL.get(position).getAd_id(),ccemtArrayL.get(position).getCategoryComp().getCode()
+                            ,getDataBaseInstance(context),"favorite",context);
+
+                    postAdAction(ccemtArrayL.get(position).getAd_id(),"favorite",context);
+                }else
+                {
+                    holder.favoriteIV.setBackgroundResource(R.drawable.item_favu);
+                    getDataBaseInstance(context).deleteFCS(ccemtArrayL.get(position).getAd_id());
+                }
+            }
+        });
+    }
+
+    private void checkIfFavouriteOrNot(Context context, ViewHolder holder, int position) {
+        if (checkFavouriteOrNot1(context,ccemtArrayL.get(position).getAd_id()).equals("not_favorite"))
+        {
+            holder.favoriteIV.setBackgroundResource(R.drawable.item_favu);
+        }else
+        {
+            holder.favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
+        }
+    }
 
     private void fillPrice(ViewHolder holder, int position, Context context) {
 

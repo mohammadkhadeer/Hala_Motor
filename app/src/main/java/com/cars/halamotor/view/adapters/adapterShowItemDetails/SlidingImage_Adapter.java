@@ -61,11 +61,6 @@ public class SlidingImage_Adapter extends PagerAdapter {
                 .centerCrop()
                 .into(imageView);
 
-//        Picasso.with(context).load(imageModelArrayList.get(position).getImagePath())
-//                .config(Bitmap.Config.RGB_565)
-//                .fit().centerCrop()
-//                .into(imageView);
-
 
         numberOfImage.setText(imageModelArrayList.get(position).getImageNumber()
                 +"/"+imageModelArrayList.get(position).getTotalImage());

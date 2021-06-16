@@ -87,7 +87,7 @@ public class CCEMTFromServer {
                     attributesArrayList.add(attributesObj);
                 }
 
-                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp.getId(),categoryComp.getName_en(),categoryComp.getName_ar(),photosArrayList,attributesArrayList);
+                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp,photosArrayList,attributesArrayList);
 
                 adsArrayList.add(ccemtModel);
 

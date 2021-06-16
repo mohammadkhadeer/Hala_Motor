@@ -23,6 +23,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ import com.roughike.bottombar.OnTabSelectListener;
 import java.util.ArrayList;
 
 import static com.cars.halamotor.dataBase.ReadCarsAndCarModels.getModels;
+import static com.cars.halamotor.functions.Functions.AddShineEffect;
 import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.getUnreadNotificationsInSP;
 import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences.updateAllUnreadNotificationsToChecked;
@@ -90,6 +92,10 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
     InputMethodManager imm;
     public static ArrayList<CategoryComp> categoriesArrayL  = new ArrayList<CategoryComp>();
 
+    RelativeLayout hot_price_rl;
+    ImageView shineImageView;
+    TextView hot_price_tv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
 
         statusBarColor();
         inti();
+        AddShineEffect(hot_price_rl,shineImageView);
         getCategoriesFromIntent();
         butCategoriesListOnFragmentHome();
 
@@ -209,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         notificationsBBT.setTitleTypeface(Functions.changeFontGeneral(getApplicationContext()));
         addItemBBT.setTitleTypeface(Functions.changeFontGeneral(getApplicationContext()));
         profileBBT.setTitleTypeface(Functions.changeFontGeneral(getApplicationContext()));
+        hot_price_tv.setTypeface(Functions.changeFontGeneral(getApplicationContext()));
     }
 
     private void changeAppNameFontType() {
@@ -222,6 +230,9 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         headRL = (RelativeLayout) findViewById(R.id.main_activity_head);
         searchRL = (RelativeLayout) findViewById(R.id.main_activity_search_rl);
         bottomRL = (RelativeLayout) findViewById(R.id.main_activity_bottom_bat);
+        hot_price_rl = (RelativeLayout) findViewById(R.id.hot_price_rl);
+        shineImageView = (ImageView) findViewById(R.id.shine);
+        hot_price_tv = (TextView) findViewById(R.id.hot_price_tv);
         intiBBT();
     }
 

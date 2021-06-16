@@ -117,7 +117,6 @@ public class GetFromFireBaseDB {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         ItemCCEMT ccemt = document.toObject(ItemCCEMT.class);
-                        itemModel.onReceiveCCEMTObject(ccemt);
                     }
                 }
             }
