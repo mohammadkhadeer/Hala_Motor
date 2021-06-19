@@ -75,7 +75,7 @@ public class CCEMTObjectDetailsFromServer {
 
             String car_color;
             if (adObj.getString("car_color") ==null)
-            { car_color = "----"; }else{ car_color =adObj.getString("car_color"); }
+            { car_color = "car_color"; }else{ car_color =adObj.getString("car_color"); }
 
             JSONArray jsonArrayPhotos2 = adObj.getJSONArray("photos");
 
@@ -130,57 +130,57 @@ public class CCEMTObjectDetailsFromServer {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
 
-
+        itemModel.onReceiveCCEMTObjectDetails(ccemtModelDetails,adsArrayList);
 
 
 
         //similar ads
-        ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
-        int flag=0;
-
-        try {
-            adsArrayList = new ArrayList<>();
-            JSONArray jsonArrayAllAds = adObj.getJSONArray("relevant_ads");
-            for (int i =0;i<jsonArrayAllAds.length();i++)
-            {
-                adsDetails = jsonArrayAllAds.getJSONObject(i);
-                JSONArray jsonArrayPhotos = adsDetails.getJSONArray("photos");
-                JSONArray jsonArrayAttributes = adsDetails.getJSONArray("attributes");
-
-                photosArrayList =new ArrayList<>();
-                if (jsonArrayPhotos !=null && jsonArrayPhotos.length()>0)
-                {
-                    for (int x=0;x<jsonArrayPhotos.length();x++)
-                    {
-                        photosArrayList.add(jsonArrayPhotos.getString(x));
-                    }
-                }
-
-                attributesArrayList =new ArrayList<>();
-                for (int j=0;j<jsonArrayAttributes.length();j++)
-                {
-                    attributes =  jsonArrayAttributes.getJSONObject(j);
-                    Attributes attributesObj = new Attributes(attributes.getString("type"),attributes.getString("value"),attributes.getString("title"));
-                    attributesArrayList.add(attributesObj);
-                }
-
-                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp,photosArrayList,attributesArrayList);
-
-                adsArrayList.add(ccemtModel);
-
-                if (i == (adsDetails.length()-1))
-                { flag =1; }
-            }
-
-            if (flag==1)
-            {
-                itemModel.onReceiveCCEMTObjectDetails(ccemtModelDetails,adsArrayList);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
+//        int flag=0;
+//
+//        try {
+//            adsArrayList = new ArrayList<>();
+//            JSONArray jsonArrayAllAds = adObj.getJSONArray("relevant_ads");
+//            for (int i =0;i<jsonArrayAllAds.length();i++)
+//            {
+//                adsDetails = jsonArrayAllAds.getJSONObject(i);
+//                JSONArray jsonArrayPhotos = adsDetails.getJSONArray("photos");
+//                JSONArray jsonArrayAttributes = adsDetails.getJSONArray("attributes");
+//
+//                photosArrayList =new ArrayList<>();
+//                if (jsonArrayPhotos !=null && jsonArrayPhotos.length()>0)
+//                {
+//                    for (int x=0;x<jsonArrayPhotos.length();x++)
+//                    {
+//                        photosArrayList.add(jsonArrayPhotos.getString(x));
+//                    }
+//                }
+//
+//                attributesArrayList =new ArrayList<>();
+//                for (int j=0;j<jsonArrayAttributes.length();j++)
+//                {
+//                    attributes =  jsonArrayAttributes.getJSONObject(j);
+//                    Attributes attributesObj = new Attributes(attributes.getString("type"),attributes.getString("value"),attributes.getString("title"));
+//                    attributesArrayList.add(attributesObj);
+//                }
+//
+//                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp,photosArrayList,attributesArrayList);
+//
+//                adsArrayList.add(ccemtModel);
+//
+//                if (i == (adsDetails.length()-1))
+//                { flag =1; }
+//            }
+//
+//            if (flag==1)
+//            {
+//            }
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

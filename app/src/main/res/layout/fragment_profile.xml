@@ -13,12 +13,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorRed">
+        android:background="@color/colorWhite">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/colorRed"
             android:textSize="20dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="1dp"
@@ -43,7 +43,7 @@
                 layout="@layout/content_profile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="0dp"
                 />
 
             <android.support.v7.widget.CardView
@@ -78,8 +78,8 @@
                                 >
 
                                 <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
                                     android:layout_centerHorizontal="true"
                                     android:background="@drawable/upload_photo_image"
                                     android:layout_centerVertical="true"
@@ -107,7 +107,7 @@
                                     android:layout_marginStart="8dp"
                                     android:textColor="@color/colorWhite"
                                     android:layout_centerVertical="true"
-                                    android:textSize="16dp"
+                                    android:textSize="14dp"
                                     android:id="@+id/fragment_profile_post_free_TV"
                                     android:text="@string/post_free_ads"/>
 
@@ -121,8 +121,8 @@
                             android:layout_weight="15">
 
                             <ImageView
-                                android:layout_width="12dp"
-                                android:layout_height="12dp"
+                                android:layout_width="9dp"
+                                android:layout_height="9dp"
                                 android:layout_centerHorizontal="true"
                                 android:layout_centerVertical="true"
                                 android:id="@+id/fragment_profile_post_free_arrow_IV"
@@ -174,8 +174,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
                                         android:layout_centerHorizontal="true"
                                         android:alpha="0.6"
                                         android:layout_centerVertical="true"
@@ -204,7 +204,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_recent_v_TV"
                                         android:text="@string/recent_viewed_ads"/>
 
@@ -218,8 +218,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_recent_arrow_IV"
@@ -264,10 +264,10 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
                                         android:layout_centerHorizontal="true"
-                                        android:background="@mipmap/search"
+                                        android:background="@drawable/search"
                                         android:layout_centerVertical="true"
                                         />
 
@@ -293,7 +293,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_recent_search_TV"
                                         android:text="@string/recent_searches"/>
 
@@ -307,8 +307,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_recent_search_arrow_IV"
@@ -353,8 +353,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
                                         android:alpha="0.6"
                                         android:layout_centerHorizontal="true"
                                         android:background="@mipmap/ic_favorites"
@@ -383,7 +383,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_favourite_TV"
                                         android:text="@string/favourite_ads"/>
 
@@ -397,8 +397,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_favourite_arrow_IV_1"
@@ -443,8 +443,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
                                         android:alpha="0.6"
                                         android:layout_centerHorizontal="true"
                                         android:background="@drawable/phone_number"
@@ -472,7 +472,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_call_TV"
                                         android:text="@string/calls_ads"/>
 
@@ -486,8 +486,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_calls_arrow_IV"
@@ -532,8 +532,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
                                         android:alpha="0.6"
                                         android:layout_centerHorizontal="true"
                                         android:background="@mipmap/ic_message"
@@ -562,7 +562,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_message_TV"
                                         android:text="@string/tab_message"/>
 
@@ -576,8 +576,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_favourite_arrow_IV"
@@ -632,8 +632,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
                                         android:layout_centerHorizontal="true"
                                         android:alpha="0.6"
                                         android:background="@drawable/speker"
@@ -662,7 +662,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_my_ads_TV"
                                         android:text="@string/my_ad"/>
 
@@ -676,8 +676,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_my_ads_arrow_IV"
@@ -721,8 +721,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="35dp"
-                                        android:layout_height="35dp"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
                                         android:layout_centerHorizontal="true"
                                         android:background="@drawable/wallet"
                                         android:layout_centerVertical="true"
@@ -750,7 +750,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_wallet_TV"
                                         android:text="@string/my_wallet"/>
 
@@ -764,8 +764,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_wallet_arrow_IV"
@@ -809,7 +809,7 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="30dp"
+                                        android:layout_width="20dp"
                                         android:layout_height="20dp"
                                         android:alpha="0.6"
                                         android:layout_centerHorizontal="true"
@@ -839,7 +839,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_invite_friends_TV"
                                         android:text="@string/invite_your_friends"/>
 
@@ -853,8 +853,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_invite_friends_arrow_IV"
@@ -908,8 +908,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
                                         android:layout_centerHorizontal="true"
                                         android:alpha="0.6"
                                         android:background="@drawable/help"
@@ -938,7 +938,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_help_TV"
                                         android:text="@string/help"
                                         />
@@ -953,8 +953,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_help_arrow_IV"
@@ -999,8 +999,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
                                         android:layout_centerHorizontal="true"
                                         android:layout_centerVertical="true"
                                         android:background="@drawable/contact_us"
@@ -1028,7 +1028,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_contact_us_TV"
                                         android:text="@string/contact_us"/>
 
@@ -1042,8 +1042,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_contact_us_arrow_IV"
@@ -1118,7 +1118,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_about_app_TV"
                                         android:text="@string/abou_the_app"/>
 
@@ -1132,8 +1132,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_invite_about_app_arrow_IV"
@@ -1188,8 +1188,8 @@
                                     >
 
                                     <ImageView
-                                        android:layout_width="25dp"
-                                        android:layout_height="25dp"
+                                        android:layout_width="20dp"
+                                        android:layout_height="20dp"
                                         android:layout_centerHorizontal="true"
                                         android:alpha="0.6"
                                         android:layout_centerVertical="true"
@@ -1218,7 +1218,7 @@
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="16dp"
+                                        android:textSize="14dp"
                                         android:id="@+id/fragment_profile_setting_TV"
                                         android:text="@string/settings"
                                         />
@@ -1233,8 +1233,8 @@
                                 android:layout_weight="15">
 
                                 <ImageView
-                                    android:layout_width="12dp"
-                                    android:layout_height="12dp"
+                                    android:layout_width="9dp"
+                                    android:layout_height="9dp"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
                                     android:id="@+id/fragment_profile_setting_arrow_IV"

@@ -46,13 +46,14 @@ import static com.cars.halamotor.dataBase.InsertFunctions.insertItemsToFCS;
 import static com.cars.halamotor.fireBaseDB.UpdateFireBase.setFavouriteCallSearchOnServer;
 import static com.cars.halamotor.functions.Functions.convertCategoryToCategoryS;
 import static com.cars.halamotor.functions.Functions.getPostTime;
+import static com.cars.halamotor.presnter.UploadLogAdActions.postAdAction;
 
 public class FragmentUserInfo extends Fragment {
 
     public FragmentUserInfo(){}
 
-    String itemIDStr,userNameStr,userImageStr,itemNameStr,timePostStr,postTypeStr
-            ,dateStr,timStampStr,categoryStr,messageShare,cat,userID;
+    String item_id,userNameStr,userImageStr,itemNameStr,timePostStr
+            ,timStampStr,messageShare,userID,category_code;
     View view;
     TextView userNameTV,userStatusTV,itemNameTV,dateTV;
     RelativeLayout userStatusRL,favouriteRL,profileInfoRL,reportRL,shareRL;
@@ -61,10 +62,6 @@ public class FragmentUserInfo extends Fragment {
     FavouriteChange favouriteChange;
     int numberOfChange =0;
 
-    ItemCCEMT ccemt;
-    ItemPlates carPlatesModel;
-    ItemWheelsRim wheelsRimModel;
-    ItemAccAndJunk accAndJunkObject;
     private static final int REPORT = 2000;
     Dialog myDialog;
 
@@ -72,80 +69,23 @@ public class FragmentUserInfo extends Fragment {
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
-            categoryStr = getArguments().getString("category");
-            itemIDStr = getArguments().getString("itemID");
+            item_id = getArguments().getString("itemID");
             userNameStr = getArguments().getString("userName");
             userImageStr = getArguments().getString("userImage");
             itemNameStr = getArguments().getString("itemName");
             timePostStr = getArguments().getString("timePost");
-            postTypeStr = getArguments().getString("postType");
-            dateStr = getArguments().getString("date");
-            timStampStr = getArguments().getString("timStamp");
-            cat = getArguments().getString("cat");
+            category_code = getArguments().getString("category_code");
 
-            if (cat.equals("ccemt"))
-                ccemt = getArguments().getParcelable("object");
-
-            if (cat.equals("cp"))
-                carPlatesModel = getArguments().getParcelable("object");
-
-            if (cat.equals("wr"))
-                wheelsRimModel = getArguments().getParcelable("object");
-
-            if (cat.equals("aaj"))
-                accAndJunkObject = getArguments().getParcelable("object");
         }
         super.onAttach(context);
         if (getActivity() instanceof FavouriteChange) {
             favouriteChange = (FavouriteChange) getActivity();
         }
         //favoriteChange = (FavoriteChange) activity;
-        fillInfo();
+
         messageShare = "Text well share here";
     }
 
-    private void fillInfo() {
-        if (cat.equals("ccemt"))
-        {
-            userNameStr = ccemt.getUserName();
-            userImageStr = ccemt.getUserImage();
-            itemNameStr = ccemt.getItemName();
-            timStampStr = ccemt.getTimeStamp();
-            userID = ccemt.getUserIDPathInServer();
-            postTypeStr = "empty";
-            dateStr = String.valueOf(ccemt.getDayDate())+String.valueOf(ccemt.getMonthDate())+String.valueOf(ccemt.getYear()) ;
-        }
-        if (cat.equals("cp"))
-        {
-            userNameStr = carPlatesModel.getUserName();
-            userImageStr = carPlatesModel.getUserImage();
-            itemNameStr = carPlatesModel.getItemName();
-            timStampStr = carPlatesModel.getTimeStamp();
-            userID = carPlatesModel.getUserIDPathInServer();
-            postTypeStr = "empty";
-            dateStr = String.valueOf(carPlatesModel.getDayDate())+"/"+String.valueOf(carPlatesModel.getMonthDate())+"/"+String.valueOf(carPlatesModel.getYearDate()) ;
-        }
-        if (cat.equals("wr"))
-        {
-            userNameStr = wheelsRimModel.getUserName();
-            userImageStr = wheelsRimModel.getUserImage();
-            itemNameStr = wheelsRimModel.getItemName();
-            timStampStr = wheelsRimModel.getTimeStamp();
-            userID = wheelsRimModel.getUserIDPathInServer();
-            postTypeStr = "empty";
-            dateStr = String.valueOf(wheelsRimModel.getDayDate())+"/"+String.valueOf(wheelsRimModel.getMonthDate())+"/"+String.valueOf(wheelsRimModel.getYearDate()) ;
-        }
-        if (cat.equals("aaj"))
-        {
-            userNameStr = accAndJunkObject.getUserName();
-            userImageStr = accAndJunkObject.getUserImage();
-            itemNameStr = accAndJunkObject.getItemName();
-            timStampStr = accAndJunkObject.getTimeStamp();
-            userID = accAndJunkObject.getUserIDPathInServer();
-            postTypeStr = "empty";
-            dateStr = String.valueOf(accAndJunkObject.getDayDate())+"/"+String.valueOf(accAndJunkObject.getMonthDate())+"/"+String.valueOf(accAndJunkObject.getYearDate()) ;
-        }
-    }
 
     @Override
     public void onDetach() {
@@ -225,8 +165,7 @@ public class FragmentUserInfo extends Fragment {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
                 bundle.putString("userID", userID);
-                bundle.putString("category", categoryStr);
-                bundle.putString("itemID", itemIDStr);
+                bundle.putString("itemID", item_id);
 
                 Intent intent = new Intent(getActivity(), ReportActivity.class);
                 intent.putExtras(bundle);
@@ -270,28 +209,26 @@ public class FragmentUserInfo extends Fragment {
             public void onClick(View v) {
                 numberOfChange = numberOfChange+1;
                 favouriteChange.onFavouriteChange(numberOfChange);
-                if (checkFavouriteOrNot1(getActivity(),itemIDStr).equals("not_favorite"))
+                if (checkFavouriteOrNot1(getActivity(),item_id).equals("not_favorite"))
                 {
                     favouriteIV.setBackgroundResource(R.drawable.selcted_favorite);
-                    insertItemInFCSTable();
 
-                    setFavouriteCallSearchOnServer(getActivity(),itemIDStr
-                            ,categoryStr,"favorite");
+                    insertItemsToFCS(item_id,category_code
+                            ,getDataBaseInstance(getActivity()),"favorite",getActivity());
+
+                    postAdAction(item_id,"favorite",getActivity());
+
                 }else
                 {
                     favouriteIV.setBackgroundResource(R.drawable.item_favu);
-                    getDataBaseInstance(getActivity()).deleteFCS(itemIDStr);
+                    getDataBaseInstance(getActivity()).deleteFCS(item_id);
                 }
             }
         });
     }
 
-    private void insertItemInFCSTable() {
-        insertItemsToFCS(itemIDStr,convertCategoryToCategoryS(categoryStr,getActivity()),getDataBaseInstance(getActivity()),"favorite",getActivity());
-    }
-
     private void checkIfFavouriteOrNot() {
-        if (checkFavouriteOrNot1(getActivity(),itemIDStr).equals("not_favorite"))
+        if (checkFavouriteOrNot1(getActivity(),item_id).equals("not_favorite"))
         {
             favouriteIV.setBackgroundResource(R.drawable.item_favu);
         }else
@@ -304,11 +241,12 @@ public class FragmentUserInfo extends Fragment {
         userNameTV.setText(userNameStr);
         itemNameTV.setText(itemNameStr);
         userStatusTV.setText(getActivity().getResources().getString(R.string.online));
-        dateTV.setText(getPostTime(dateStr,timStampStr,getActivity()));
+        dateTV.setText(timStampStr);
         // dateTV.setText(dateStr);
     }
 
     private void fillUserImage() {
+
         Picasso.get()
                 .load(userImageStr)
                 .fit()

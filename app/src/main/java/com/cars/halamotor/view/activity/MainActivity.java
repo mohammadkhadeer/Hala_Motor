@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
 
             @Override
             public void afterTextChanged(Editable editable) {
-                fragmentSearch.filter(editable.toString());
+                //fragmentSearch.filter(editable.toString());
             }
 
         });

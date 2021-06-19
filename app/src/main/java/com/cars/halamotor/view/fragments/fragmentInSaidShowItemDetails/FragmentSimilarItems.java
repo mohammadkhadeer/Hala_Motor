@@ -29,6 +29,7 @@ public class FragmentSimilarItems extends Fragment {
     SimilarNeeded similarNeeded;
     FragmentUserAds fragmentUserAds = new FragmentUserAds();
     FragmentSuggestedAds fragmentSuggestedAds = new FragmentSuggestedAds();
+
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
@@ -50,7 +51,7 @@ public class FragmentSimilarItems extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_item_selected_suggested, container, false);
-        intiUserAds();
+        //intiUserAds();
         intiSuggestedAds();
         return view;
     }

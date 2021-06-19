@@ -118,10 +118,13 @@ public class FragmentFollowUser extends Fragment {
 //            Log.i("TAG","userID"+ followingArrayList.get(i).getUserID());
 //            Log.i("TAG","USERID "+ userID);
 //        }
-        fillUserImageAndUserName();
-        fillFollowOrNot();
-        actionListenerToFollow();
-        actionListenerToIV();
+
+
+
+//        fillUserImageAndUserName();
+//        fillFollowOrNot();
+//        actionListenerToFollow();
+//        actionListenerToIV();
     }
 
     private void actionListenerToIV() {

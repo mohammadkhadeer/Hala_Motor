@@ -55,11 +55,21 @@ public class SlidingImage_Adapter extends PagerAdapter {
         final TextView numberOfImage = (TextView) imageLayout
                 .findViewById(R.id.numberOfImage);
 
-        Picasso.get()
-                .load(imageModelArrayList.get(position).getImagePath())
-                .fit()
-                .centerCrop()
-                .into(imageView);
+        if (imageModelArrayList.get(0).getImagePath().equals("R.drawable.no_image"))
+        {
+            Picasso.get()
+                    .load(R.drawable.no_image)
+                    .fit()
+                    .centerCrop()
+                    .into(imageView);
+        }else{
+            Picasso.get()
+                    .load(imageModelArrayList.get(position).getImagePath())
+                    .fit()
+                    .centerCrop()
+                    .into(imageView);
+        }
+
 
 
         numberOfImage.setText(imageModelArrayList.get(position).getImageNumber()

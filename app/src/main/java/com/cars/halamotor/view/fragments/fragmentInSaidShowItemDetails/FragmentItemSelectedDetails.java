@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
+import com.cars.halamotor.model.CCEMTModelDetails;
 import com.cars.halamotor.model.ItemAccAndJunk;
 import com.cars.halamotor.model.ItemCCEMT;
 import com.cars.halamotor.model.ItemPlates;
@@ -23,6 +24,7 @@ import com.cars.halamotor.view.adapters.AdapterCarOption;
 
 import java.util.ArrayList;
 
+import static com.cars.halamotor.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor.functions.Functions.getCarOptionsArrayL;
 import static com.cars.halamotor.functions.Functions.getCarPlatesNumber;
 
@@ -46,7 +48,7 @@ public class FragmentItemSelectedDetails extends Fragment {
     AdapterCarOption adapterCarOption;
 
 
-    ItemCCEMT ccemt;
+    CCEMTModelDetails ccemtModelDetails;
     ItemPlates carPlatesModel;
     ItemWheelsRim wheelsRimModel;
     ItemAccAndJunk accAndJunkObject;
@@ -61,7 +63,7 @@ public class FragmentItemSelectedDetails extends Fragment {
             cat = getArguments().getString("cat");
 
             if (cat.equals("ccemt"))
-                ccemt = getArguments().getParcelable("object");
+                ccemtModelDetails = getArguments().getParcelable("object");
 
             if (cat.equals("cp"))
                 carPlatesModel = getArguments().getParcelable("object");
@@ -130,12 +132,12 @@ public class FragmentItemSelectedDetails extends Fragment {
 
     private void fillArrayList() {
         carOptionsArrayList = new ArrayList<>();
-        carOptionsArrayList =getCarOptionsArrayL(ccemt.getCarOptions());
+        carOptionsArrayList =ccemtModelDetails.getCcemtSmallObject().getOptions();
     }
 
     private void detectObject() {
         if (cat.equals("ccemt"))
-            intiGeneralInfo(ccemt.getCity(),ccemt.getNeighborhood(),ccemt.getCategoryName());
+            intiGeneralInfo(ccemtModelDetails.getAttributesArrayList().get(4).getTitle(),"area_name",getTextEngOrLocal(getActivity(),ccemtModelDetails.getCategoryComp().getName_en(),ccemtModelDetails.getCategoryComp().getName_ar()));
 
         if (cat.equals("cp"))
             intiGeneralInfo(carPlatesModel.getCity(),carPlatesModel.getNeighborhood(),getActivity().getResources().getString(R.string.car_plates));
@@ -163,18 +165,18 @@ public class FragmentItemSelectedDetails extends Fragment {
     }
 
     private void fillCarDetails() {
-        text_title_content1.setText(ccemt.getCarMake());
-        text_title_content2.setText(ccemt.getCarModel());
-        text_title_content3.setText(ccemt.getYear());
-        text_title_content4.setText(ccemt.getCondition());
-        text_title_content5.setText(ccemt.getKilometers());
-        text_title_content6.setText(ccemt.getTransmission());
-        text_title_content7.setText(ccemt.getFuel());
+        text_title_content1.setText(ccemtModelDetails.getAttributesArrayList().get(0).getTitle());
+        text_title_content2.setText("car_model");
+        text_title_content3.setText(ccemtModelDetails.getAttributesArrayList().get(1).getTitle());
+        text_title_content4.setText(ccemtModelDetails.getAttributesArrayList().get(2).getTitle());
+        text_title_content5.setText(ccemtModelDetails.getAttributesArrayList().get(3).getTitle());
+        text_title_content6.setText(ccemtModelDetails.getCcemtSmallObject().getCar_transmission_type());
+        text_title_content7.setText(ccemtModelDetails.getCcemtSmallObject().getCar_fuel_type());
         fillCarOptions();
-        text_title_content9.setText(ccemt.getCarLicense());
-        text_title_content10.setText(ccemt.getInsurance());
-        text_title_content11.setText(ccemt.getColor());
-        text_title_content12.setText(ccemt.getPaymentMethod());
+        text_title_content9.setText(ccemtModelDetails.getCcemtSmallObject().getCar_license_type());
+        text_title_content10.setText(ccemtModelDetails.getCcemtSmallObject().getCar_insurance_type());
+        text_title_content11.setText(ccemtModelDetails.getCcemtSmallObject().getCar_color());
+        text_title_content12.setText(ccemtModelDetails.getCcemtSmallObject().getPayment_method());
     }
 
     private void fillCarOptions() {

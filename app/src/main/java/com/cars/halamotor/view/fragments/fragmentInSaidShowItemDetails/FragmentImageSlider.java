@@ -125,11 +125,18 @@ public class FragmentImageSlider extends Fragment implements SlidingImage_Adapte
 
     private void fillSlider() {
         imageModelArrayList = new ArrayList<>();
-        for (int i =0;i<images.size();i++)
+        if (images.size() ==0)
         {
-            SlidImage slidImage = new SlidImage(images.get(i),i+1,images.size());
+            SlidImage slidImage = new SlidImage("R.drawable.no_image",0,0);
             imageModelArrayList.add(slidImage);
+        }else{
+            for (int i =0;i<images.size();i++)
+            {
+                SlidImage slidImage = new SlidImage(images.get(i),i+1,images.size());
+                imageModelArrayList.add(slidImage);
+            }
         }
+
         new Handler().postDelayed(new Runnable() {
 
             @Override
@@ -137,12 +144,13 @@ public class FragmentImageSlider extends Fragment implements SlidingImage_Adapte
                 loadedOrDownloading = "loaded";
                 relativeLayout.setVisibility(View.GONE);
             }
-        }, 700);
+        }, 500);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         mPager.setAdapter(new SlidingImage_Adapter(getActivity(),imageModelArrayList,this));
         //indicator.setViewPager(mPager);
         final float density = getResources().getDisplayMetrics().density;
@@ -183,7 +191,6 @@ public class FragmentImageSlider extends Fragment implements SlidingImage_Adapte
 
     @Override
     public void onImageClicked(Boolean clicked) {
-
         //createPopUp(getActivity(),view,images,imageModelArrayList);
         imageClickedP.imageClicked("test onImageClicked");
     }

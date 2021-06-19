@@ -61,6 +61,7 @@ public class FragmentSuggestedAds extends Fragment {
     String city,neighborhood;
     String category,itemId;
     ResultFilter resultFilter = null;
+
     List<SuggestedItem> resultItemsArrayListCont = new ArrayList<>();
     List<SuggestedItem> resultItemsArrayList = new ArrayList<>();
     List<SuggestedItem> fcsItemsArrayList = new ArrayList<>();

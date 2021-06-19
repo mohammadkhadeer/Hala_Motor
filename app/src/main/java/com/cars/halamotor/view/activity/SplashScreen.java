@@ -110,7 +110,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
                 @Override
                 public void run() {
 //                    getCarsBrandsAndModel(myDB);
-                    splashScreenTime =7500;
+                    splashScreenTime =9500;
 
 
                     reqToServerToGetCarsBrandsAndModels();
