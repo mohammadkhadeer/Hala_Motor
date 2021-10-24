@@ -1,5 +1,7 @@
 package com.cars.halamotor.functions;
 
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -28,6 +30,42 @@ public class NewFunction {
         wheelsTypesArrayList.add(new WheelsType(context.getResources().getString(R.string.metal),context.getResources().getString(R.string.metal_s)));
 
         return wheelsTypesArrayList;
+    }
+
+    public static String getTitle(String orginTitle,String newTitle,Context context){
+        String title_str="";
+        if (isEnglish(orginTitle) == true && getUserLanguage(context).equals("en"))
+        {
+            title_str = orginTitle;
+        }else{
+            if (isEnglish(orginTitle) == false && getUserLanguage(context).equals("ar"))
+            {
+                title_str = orginTitle;
+            }else{
+                title_str = newTitle;
+            }
+        }
+        return title_str;
+    }
+
+    public static boolean isEnglish(String text){
+        boolean onlyEnglish = false;
+
+        for (char character : text.toCharArray()) {
+
+            if (Character.UnicodeBlock.of(character) == Character.UnicodeBlock.BASIC_LATIN
+                    || Character.UnicodeBlock.of(character) == Character.UnicodeBlock.LATIN_1_SUPPLEMENT
+                    || Character.UnicodeBlock.of(character) == Character.UnicodeBlock.LATIN_EXTENDED_A
+                    || Character.UnicodeBlock.of(character) == Character.UnicodeBlock.GENERAL_PUNCTUATION) {
+
+                onlyEnglish = true;
+            } else {
+
+                onlyEnglish = false;
+            }
+        }
+
+        return onlyEnglish;
     }
 
     public static ArrayList<PlatesChar> fillPlatesChar(Context context)

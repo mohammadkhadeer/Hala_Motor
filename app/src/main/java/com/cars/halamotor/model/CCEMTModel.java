@@ -11,8 +11,9 @@ public class CCEMTModel implements Parcelable{
     CategoryComp categoryComp;
     ArrayList <String> photosArrayList;
     ArrayList <Attributes> attributesArrayList;
+    CreatorInfo creatorInfo;
 
-    public CCEMTModel(String ad_id, String ad_title, String ad_description, String ad_price, String ad_phone, String ad_time_post, CategoryComp categoryComp, ArrayList<String> photosArrayList, ArrayList<Attributes> attributesArrayList) {
+    public CCEMTModel(String ad_id, String ad_title, String ad_description, String ad_price, String ad_phone, String ad_time_post, CategoryComp categoryComp, ArrayList<String> photosArrayList, ArrayList<Attributes> attributesArrayList, CreatorInfo creatorInfo) {
         this.ad_id = ad_id;
         this.ad_title = ad_title;
         this.ad_description = ad_description;
@@ -22,6 +23,7 @@ public class CCEMTModel implements Parcelable{
         this.categoryComp = categoryComp;
         this.photosArrayList = photosArrayList;
         this.attributesArrayList = attributesArrayList;
+        this.creatorInfo = creatorInfo;
     }
 
     protected CCEMTModel(Parcel in) {
@@ -34,6 +36,7 @@ public class CCEMTModel implements Parcelable{
         categoryComp = in.readParcelable(CategoryComp.class.getClassLoader());
         photosArrayList = in.createStringArrayList();
         attributesArrayList = in.createTypedArrayList(Attributes.CREATOR);
+        creatorInfo = in.readParcelable(CreatorInfo.class.getClassLoader());
     }
 
     @Override
@@ -47,6 +50,7 @@ public class CCEMTModel implements Parcelable{
         dest.writeParcelable(categoryComp, flags);
         dest.writeStringList(photosArrayList);
         dest.writeTypedList(attributesArrayList);
+        dest.writeParcelable(creatorInfo, flags);
     }
 
     @Override
@@ -136,5 +140,13 @@ public class CCEMTModel implements Parcelable{
 
     public void setAttributesArrayList(ArrayList<Attributes> attributesArrayList) {
         this.attributesArrayList = attributesArrayList;
+    }
+
+    public CreatorInfo getCreatorInfo() {
+        return creatorInfo;
+    }
+
+    public void setCreatorInfo(CreatorInfo creatorInfo) {
+        this.creatorInfo = creatorInfo;
     }
 }

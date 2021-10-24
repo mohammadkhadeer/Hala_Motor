@@ -29,6 +29,7 @@ import com.cars.halamotor.model.CCEMT;
 import com.cars.halamotor.model.CCEMTFirestCase;
 import com.cars.halamotor.model.CarPlatesFirstCase;
 import com.cars.halamotor.model.CarPlatesModel;
+import com.cars.halamotor.model.CreatorInfo;
 import com.cars.halamotor.model.ItemAccAndJunk;
 import com.cars.halamotor.model.ItemCCEMT;
 import com.cars.halamotor.model.ItemPlates;
@@ -52,7 +53,7 @@ public class FragmentUserInfo extends Fragment {
 
     public FragmentUserInfo(){}
 
-    String item_id,userNameStr,userImageStr,itemNameStr,timePostStr
+    String item_id,timePostStr,itemName
             ,timStampStr,messageShare,userID,category_code;
     View view;
     TextView userNameTV,userStatusTV,itemNameTV,dateTV;
@@ -65,17 +66,15 @@ public class FragmentUserInfo extends Fragment {
     private static final int REPORT = 2000;
     Dialog myDialog;
 
-
+    CreatorInfo creatorInfo;
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
             item_id = getArguments().getString("itemID");
-            userNameStr = getArguments().getString("userName");
-            userImageStr = getArguments().getString("userImage");
-            itemNameStr = getArguments().getString("itemName");
             timePostStr = getArguments().getString("timePost");
             category_code = getArguments().getString("category_code");
-
+            itemName = getArguments().getString("item_name");
+            creatorInfo = getArguments().getParcelable("CreatorInfo");
         }
         super.onAttach(context);
         if (getActivity() instanceof FavouriteChange) {
@@ -238,17 +237,18 @@ public class FragmentUserInfo extends Fragment {
     }
 
     private void fillText() {
-        userNameTV.setText(userNameStr);
-        itemNameTV.setText(itemNameStr);
+        //Log.e("TAG time ",timStampStr);
+        userNameTV.setText(creatorInfo.getName());
+        itemNameTV.setText(itemName);
         userStatusTV.setText(getActivity().getResources().getString(R.string.online));
-        dateTV.setText(timStampStr);
+        dateTV.setText(timePostStr);
         // dateTV.setText(dateStr);
     }
 
     private void fillUserImage() {
 
         Picasso.get()
-                .load(userImageStr)
+                .load(creatorInfo.getPhoto())
                 .fit()
                 .centerCrop()
                 .into(userImageIV);

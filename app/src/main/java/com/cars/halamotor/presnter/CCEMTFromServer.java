@@ -6,6 +6,7 @@ import android.util.Log;
 import com.cars.halamotor.model.Attributes;
 import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.CategoryComp;
+import com.cars.halamotor.model.CreatorInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,11 +63,20 @@ public class CCEMTFromServer {
         ArrayList <String> photosArrayList ;
         ArrayList <Attributes> attributesArrayList ;
         ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
+        CreatorInfo creatorInfo;
         int flag=0;
         try {
             for (int i =0;i<jsonArrayAllAds.length();i++)
             {
                 adsDetails = jsonArrayAllAds.getJSONObject(i);
+                creatorInfo = new CreatorInfo(
+                        adsDetails.getString("name")
+                        ,adsDetails.getString("ads_count")
+                        ,adsDetails.getString("followers_count")
+                        ,adsDetails.getString("following_count")
+                        ,adsDetails.getString("type")
+                        ,adsDetails.getString("photo")
+                );
                 JSONArray jsonArrayPhotos = adsDetails.getJSONArray("photos");
                 JSONArray jsonArrayAttributes = adsDetails.getJSONArray("attributes");
 
@@ -87,7 +97,7 @@ public class CCEMTFromServer {
                     attributesArrayList.add(attributesObj);
                 }
 
-                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp,photosArrayList,attributesArrayList);
+                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp,photosArrayList,attributesArrayList,creatorInfo);
 
                 adsArrayList.add(ccemtModel);
 

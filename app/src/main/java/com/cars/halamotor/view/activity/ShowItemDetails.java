@@ -23,6 +23,7 @@ import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.CCEMTModelDetails;
 import com.cars.halamotor.model.CCEMTSmallObject;
 import com.cars.halamotor.model.CategoryComp;
+import com.cars.halamotor.model.CreatorInfo;
 import com.cars.halamotor.model.ItemAccAndJunk;
 import com.cars.halamotor.model.ItemPlates;
 import com.cars.halamotor.model.ItemWheelsRim;
@@ -90,6 +91,8 @@ public class ShowItemDetails extends AppCompatActivity
     LinearLayout show_item_details_header;
     RelativeLayout fullImageCont;
     int fullImageOnTheTop =0;
+
+    CreatorInfo creatorInfo;
 
     private static final int REPORT = 2000;
 
@@ -255,10 +258,7 @@ public class ShowItemDetails extends AppCompatActivity
 
     private void intiFollowUser() {
         Bundle bundle = new Bundle();
-        bundle.putString("category", getCategoryFromIntent());
-        bundle.putString("userName", userNameStr);
-        bundle.putString("userImage", userImageStr);
-        bundle.putString("userID", userID);
+        bundle.putParcelable("CreatorInfo",creatorInfo);
 
         fragmentFollowUser.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -352,13 +352,14 @@ public class ShowItemDetails extends AppCompatActivity
     }
 
     private void intiUserInfoFragment() {
+        Log.e("TAG",itemNameStr);
+
         Bundle bundle = new Bundle();
         bundle.putString("itemID", itemIDStr);
-        bundle.putString("userName", userNameStr);
-        bundle.putString("userImage", userImageStr);
-        bundle.putString("itemName", itemNameStr);
+        bundle.putString("item_name", itemNameStr);
         bundle.putString("timePost", timStampStr);
         bundle.putString("category_code", category_code);
+        bundle.putParcelable("CreatorInfo",creatorInfo);
 
         fragmentUserInfoAndMainButton.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -406,7 +407,7 @@ public class ShowItemDetails extends AppCompatActivity
 
     private void intiValues(String userName, String userImage, String itemName,String itemDes,ArrayList<String> photosArrayL,String timeStamp
             , String boostType, String userIDPathInServer
-            , String numberOfIg,String phoneN,String itemPrice,String priceE,String newP,String personOrGalleryS) {
+            , String numberOfIg,String phoneN,String itemPrice,String priceE,String newP,String personOrGalleryS,CreatorInfo creatorInfoFromServer) {
 
         userNameStr =userName;
         userImageStr =userImage;
@@ -424,6 +425,7 @@ public class ShowItemDetails extends AppCompatActivity
         priceEdit = priceE;
         newPrice = newP;
         personOrGallery = personOrGalleryS;
+        creatorInfo = creatorInfoFromServer;
     }
 
     @Override
@@ -473,7 +475,7 @@ public class ShowItemDetails extends AppCompatActivity
     @Override
     public void onReceiveCCEMTObjectDetails(CCEMTModelDetails ccemtModelDetails, ArrayList<CCEMTModel> ccemtModelArrayList) {
         ccemtModelDetails1 = ccemtModelDetails;
-        intiValues("user_name","R.color.colorSilver",ccemtModelDetails.getCcemtSmallObject().getAd_title(),ccemtModelDetails.getCcemtSmallObject().getAd_description(),ccemtModelDetails.getPhotosArrayList(),ccemtModelDetails.getCcemtSmallObject().getAd_time_post(),ccemtModelDetails.getCategoryComp().getCode(),"user_id",String.valueOf(ccemtModelDetails.getPhotosArrayList().size()),ccemtModelDetails.getCcemtSmallObject().getAd_phone(),ccemtModelDetails.getCcemtSmallObject().getAd_price(),"0",ccemtModelDetails.getCcemtSmallObject().getAd_price(),"no");
+        intiValues("user_name","R.color.colorSilver",ccemtModelDetails.getCcemtSmallObject().getAd_title(),ccemtModelDetails.getCcemtSmallObject().getAd_description(),ccemtModelDetails.getPhotosArrayList(),ccemtModelDetails.getCcemtSmallObject().getAd_time_post(),ccemtModelDetails.getCategoryComp().getCode(),"user_id",String.valueOf(ccemtModelDetails.getPhotosArrayList().size()),ccemtModelDetails.getCcemtSmallObject().getAd_phone(),ccemtModelDetails.getCcemtSmallObject().getAd_price(),"0",ccemtModelDetails.getCcemtSmallObject().getAd_price(),ccemtModelDetails.getCcemtSmallObject().getCreatorInfo().getType(),ccemtModelDetails.getCcemtSmallObject().getCreatorInfo());
 
         intiAllFragment();
     }

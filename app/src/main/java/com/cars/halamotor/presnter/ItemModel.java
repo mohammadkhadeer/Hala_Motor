@@ -21,6 +21,6 @@ public interface ItemModel {
 
     void onReceiveCarPlatesObject(ItemPlates carPlatesModel);
 
-    void onReceiveCCEMTObjectDetails(CCEMTModelDetails ccemtModelDetails, ArrayList<CCEMTModel> ccemtModelArrayList);
+    void onReceiveCCEMTObjectDetails(CCEMTModelDetails ccemtModelDetails);
 
 }

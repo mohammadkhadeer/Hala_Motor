@@ -7,6 +7,8 @@ import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.CCEMTModelDetails;
 import com.cars.halamotor.model.CCEMTSmallObject;
 import com.cars.halamotor.model.CategoryComp;
+import com.cars.halamotor.model.CreatorInfo;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,13 +57,27 @@ public class CCEMTObjectDetailsFromServer {
 
     private static void getAdsDetails(JSONObject adObj, CategoryComp categoryComp, ItemModel itemModel) {
         //create suggested to you as object
-        JSONObject adsDetails,attributes;
+        JSONObject creatorInfo,attributes;
         ArrayList <String> photosArrayList,photosArrayList2 ;
         ArrayList <String> optionsArrayList ;
         ArrayList <Attributes> attributesArrayList ;
         CCEMTModelDetails ccemtModelDetails=null;
+        CreatorInfo creatorInfo1;
+        Log.w("TAG",adObj.toString());
 
         try {
+            Log.w("TAG", String.valueOf(adObj.getJSONObject("creator")));
+            creatorInfo = adObj.getJSONObject("creator");
+
+            creatorInfo1 = new CreatorInfo(
+                    creatorInfo.getString("name")
+                    ,creatorInfo.getString("ads_count")
+                    ,creatorInfo.getString("followers_count")
+                    ,creatorInfo.getString("following_count")
+                    ,creatorInfo.getString("type")
+                    ,creatorInfo.getString("photo")
+                    );
+
             JSONArray jsonArrayOptionsAds = adObj.getJSONArray("car_option");
 
             optionsArrayList =new ArrayList<>();
@@ -72,10 +88,6 @@ public class CCEMTObjectDetailsFromServer {
                     optionsArrayList.add(jsonArrayOptionsAds.getString(r));
                 }
             }
-
-            String car_color;
-            if (adObj.getString("car_color") ==null)
-            { car_color = "car_color"; }else{ car_color =adObj.getString("car_color"); }
 
             JSONArray jsonArrayPhotos2 = adObj.getJSONArray("photos");
 
@@ -90,11 +102,15 @@ public class CCEMTObjectDetailsFromServer {
 
             CCEMTSmallObject ccemtSmallObject = new CCEMTSmallObject(
                     adObj.getString("id")
+
                     ,adObj.getString("title")
                     ,adObj.getString("description")
                     ,adObj.getString("price")
                     ,adObj.getString("phone")
+
                     ,adObj.getString("created_at")
+                    ,adObj.getString("color")
+
                     ,adObj.getString("year")
                     ,adObj.getString("kilometers_from")
                     ,adObj.getString("kilometers_to")
@@ -104,8 +120,9 @@ public class CCEMTObjectDetailsFromServer {
                     ,adObj.getString("car_transmission_type")
                     ,adObj.getString("car_condition_type")
                     ,adObj.getString("payment_method")
-                    ,car_color
+
                     ,optionsArrayList
+                    ,creatorInfo1
             );
 
             JSONArray jsonArrayAttributes = adObj.getJSONArray("attributes");
@@ -130,57 +147,9 @@ public class CCEMTObjectDetailsFromServer {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
 
-        itemModel.onReceiveCCEMTObjectDetails(ccemtModelDetails,adsArrayList);
+        itemModel.onReceiveCCEMTObjectDetails(ccemtModelDetails);
 
-
-
-        //similar ads
-//        ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
-//        int flag=0;
-//
-//        try {
-//            adsArrayList = new ArrayList<>();
-//            JSONArray jsonArrayAllAds = adObj.getJSONArray("relevant_ads");
-//            for (int i =0;i<jsonArrayAllAds.length();i++)
-//            {
-//                adsDetails = jsonArrayAllAds.getJSONObject(i);
-//                JSONArray jsonArrayPhotos = adsDetails.getJSONArray("photos");
-//                JSONArray jsonArrayAttributes = adsDetails.getJSONArray("attributes");
-//
-//                photosArrayList =new ArrayList<>();
-//                if (jsonArrayPhotos !=null && jsonArrayPhotos.length()>0)
-//                {
-//                    for (int x=0;x<jsonArrayPhotos.length();x++)
-//                    {
-//                        photosArrayList.add(jsonArrayPhotos.getString(x));
-//                    }
-//                }
-//
-//                attributesArrayList =new ArrayList<>();
-//                for (int j=0;j<jsonArrayAttributes.length();j++)
-//                {
-//                    attributes =  jsonArrayAttributes.getJSONObject(j);
-//                    Attributes attributesObj = new Attributes(attributes.getString("type"),attributes.getString("value"),attributes.getString("title"));
-//                    attributesArrayList.add(attributesObj);
-//                }
-//
-//                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp,photosArrayList,attributesArrayList);
-//
-//                adsArrayList.add(ccemtModel);
-//
-//                if (i == (adsDetails.length()-1))
-//                { flag =1; }
-//            }
-//
-//            if (flag==1)
-//            {
-//            }
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
 
     }
 }

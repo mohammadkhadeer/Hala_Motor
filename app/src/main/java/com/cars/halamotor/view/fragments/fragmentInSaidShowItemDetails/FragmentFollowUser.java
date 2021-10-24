@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.cars.halamotor.R;
 import com.cars.halamotor.dataBase.DBHelper;
 import com.cars.halamotor.functions.Functions;
+import com.cars.halamotor.model.CreatorInfo;
 import com.cars.halamotor.model.Follower;
 import com.cars.halamotor.model.Following;
 import com.cars.halamotor.view.activity.UserProfile;
@@ -52,10 +53,8 @@ public class FragmentFollowUser extends Fragment {
     public FragmentFollowUser() {
     }
 
-    String categoryStr, userNameStr, userImage, userID;
     Boolean followOrNot;
     String followerToken;
-    long numberOfFollowing;
     View view;
     TextView userNameTV, numberOfPostsTV, postsTV, numberOfFollowersTV
             , followersTV, numberOfFollowingTV, followingTV, followTV;
@@ -65,22 +64,17 @@ public class FragmentFollowUser extends Fragment {
     DBHelper myDB;
     ArrayList<Following> followingArrayList = new ArrayList<Following>();
     int test2Seconed = 1;
-
+    CreatorInfo creatorInfo;
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
-            categoryStr = getArguments().getString("category");
-            userNameStr = getArguments().getString("userName");
-            userImage = getArguments().getString("userImage");
-            userID = getArguments().getString("userID");
+            creatorInfo = getArguments().getParcelable("CreatorInfo");
         }
         super.onAttach(context);
-        getNumberOfAdsFromServer(userID);
-        numberOfFollowing = checkIfTableFollowing(getActivity());
-        followOrNot = checkIfFollow(getActivity(), userID);
+        //followOrNot = checkIfFollow(getActivity(), userID);
         //set userName in followID just as init value well need it to insert in
         //fireBase as object after added well updated
-        userFollowingInfo = new Following(userNameStr, userImage, userID, userNameStr,userNameStr);
+        //userFollowingInfo = new Following(userNameStr, creatorInfo.getPhoto(), userID, userNameStr,userNameStr);
     }
 
     private void inti() {
@@ -121,55 +115,40 @@ public class FragmentFollowUser extends Fragment {
 
 
 
-//        fillUserImageAndUserName();
+        fillUserImageAndUserName();
+        fillFollowerNumberAndFollowingNumberAndPostNumber();
 //        fillFollowOrNot();
 //        actionListenerToFollow();
 //        actionListenerToIV();
     }
 
-    private void actionListenerToIV() {
-        userImageIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (userID.equals(getUserIdInServerFromSP(getActivity()))) {
-
-                } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("userID", userID);
-                    bundle.putString("type", "person");
-
-                    Intent intent = new Intent(getActivity(), UserProfile.class);
-                    intent.putExtras(bundle);
-                    startActivityForResult(intent , 10);
-                    getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
-
-                }
-            }
-        });
+    private void fillFollowerNumberAndFollowingNumberAndPostNumber() {
+        numberOfPostsTV.setText(creatorInfo.getAds_count());
+        numberOfFollowersTV.setText(creatorInfo.getFollowers_count());
+        numberOfFollowingTV.setText(creatorInfo.getFollowing_count());
     }
 
-    private void actionListenerToFollow() {
-        followRL.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onClick(View v) {
-                if (499 < numberOfFollowing) {
-                    fullMessage();
-                } else {
-                    if (test2Seconed == 1) {
-                        test2Seconed = 0;
-                        makeButtonFreezeTowSec();
-                        if (followTV.getText().toString().equals(getActivity().getResources().getString(R.string.unfollow))) {
-                            deleteFollowing();
-                        } else {
-                            addFollowing();
-                        }
-                    }
-                }
-            }
-        });
-    }
-
+//    private void actionListenerToFollow() {
+//        followRL.setOnClickListener(new View.OnClickListener() {
+//            @SuppressLint("ResourceAsColor")
+//            @Override
+//            public void onClick(View v) {
+//                if (499 < numberOfFollowing) {
+//                    fullMessage();
+//                } else {
+//                    if (test2Seconed == 1) {
+//                        test2Seconed = 0;
+//                        makeButtonFreezeTowSec();
+//                        if (followTV.getText().toString().equals(getActivity().getResources().getString(R.string.unfollow))) {
+//                            deleteFollowing();
+//                        } else {
+//                            addFollowing();
+//                        }
+//                    }
+//                }
+//            }
+//        });
+//    }
 
     private void makeButtonFreezeTowSec() {
         new Handler().postDelayed(new Runnable() {
@@ -186,7 +165,6 @@ public class FragmentFollowUser extends Fragment {
         followRL.setBackgroundResource(R.drawable.edit_profile);
         followTV.setText(getActivity().getResources().getString(R.string.unfollow));
         followTV.setTextColor(Color.parseColor("#FFFFFF"));
-        addNewFollower(getActivity());
         //addNewFollowing(userFollowingInfo, getActivity());
     }
 
@@ -195,10 +173,9 @@ public class FragmentFollowUser extends Fragment {
         followRL.setBackgroundResource(R.drawable.follow_bg);
         followTV.setText(getActivity().getResources().getString(R.string.follow));
         followTV.setTextColor(R.color.colorBlue5);
-        userFollowingInfoFromDB = getFollowingObjectFromDB(userID, getActivity());
-        deleteFollowerFromOtherSaid(userFollowingInfoFromDB.getFollowerIDOtherSaid());
+        //userFollowingInfoFromDB = getFollowingObjectFromDB(userID, getActivity());
         deleteFollowingFromUserSaid(userFollowingInfoFromDB.getFollowID(), getActivity());
-        myDB.deleteFollowing(userID);
+        //myDB.deleteFollowing(userID);
     }
 
     private void fullMessage() {
@@ -206,26 +183,26 @@ public class FragmentFollowUser extends Fragment {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }
 
-    private void fillFollowOrNot() {
-        if (userID.equals(getUserIdInServerFromSP(getActivity()))) {
-            followRL.setVisibility(View.GONE);
-        } else {
-            if (followOrNot == true) {
-                followRL.setBackgroundResource(R.drawable.edit_profile);
-                followTV.setText(getActivity().getResources().getString(R.string.unfollow));
-                followTV.setTextColor(Color.parseColor("#FFFFFF"));
-            }
-        }
-    }
+//    private void fillFollowOrNot() {
+//        if (userID.equals(getUserIdInServerFromSP(getActivity()))) {
+//            followRL.setVisibility(View.GONE);
+//        } else {
+//            if (followOrNot == true) {
+//                followRL.setBackgroundResource(R.drawable.edit_profile);
+//                followTV.setText(getActivity().getResources().getString(R.string.unfollow));
+//                followTV.setTextColor(Color.parseColor("#FFFFFF"));
+//            }
+//        }
+//    }
 
     private void fillUserImageAndUserName() {
         Picasso.get()
-                .load(userImage)
+                .load(creatorInfo.getPhoto())
                 .fit()
                 .centerCrop()
                 .into(userImageIV);
 
-        userNameTV.setText(userNameStr);
+        userNameTV.setText(creatorInfo.getName());
     }
 
     private void changeFont() {
@@ -259,42 +236,7 @@ public class FragmentFollowUser extends Fragment {
 
     }
 
-    public void addNewFollower(final Context context) {
-        Follower followerInfo = getUserInfoFromSP(context);
-        insertFollower(context,userID)
-                .push().setValue(followerInfo
-                , new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError,
-                                           DatabaseReference databaseReference) {
-                        String uniqueKey = databaseReference.getKey();
-                        //insertFollowing(context).child(uniqueKey).child("followID").setValue(uniqueKey);
-                        addNewFollowing(getActivity(),uniqueKey);
-                    }
-                });
-    }
-
-    public void addNewFollowing(final Context context, final String otherID) {
-        insertFollowing(context)
-                .push().setValue(userFollowingInfo
-                , new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError,
-                                           DatabaseReference databaseReference) {
-                        String uniqueKey = databaseReference.getKey();
-                        insertFollowing(context).child(uniqueKey).child("followID").setValue(uniqueKey);
-                        userFollowingInfo.setFollowerIDOtherSaid(otherID);
-                        Following insertFollowing = new Following(userNameStr, userImage, userID, uniqueKey,otherID);
-                        insertFollowingTable(insertFollowing, myDB);
-                    }
-                });
-    }
-
     private void deleteFollowingFromUserSaid(String followIDInServer, Context context) {
         insertFollowing(context).child(followIDInServer).removeValue();
-    }
-
-    private void deleteFollowerFromOtherSaid(String followIDInOtherSaid) {
-        insertNewUser().child(userID).child("follower").child(followIDInOtherSaid).removeValue();
     }
 }

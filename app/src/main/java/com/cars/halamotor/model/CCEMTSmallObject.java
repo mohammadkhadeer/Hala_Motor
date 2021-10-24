@@ -12,7 +12,9 @@ public class CCEMTSmallObject implements Parcelable {
 
     ArrayList <String> options;
 
-    public CCEMTSmallObject(String ad_id, String ad_title, String ad_description, String ad_price, String ad_phone, String ad_time_post, String year, String kilometers_from, String kilometers_to, String car_insurance_type, String car_license_type, String car_fuel_type, String car_transmission_type, String car_condition_type, String payment_method, String car_color, ArrayList<String> options) {
+    CreatorInfo creatorInfo;
+
+    public CCEMTSmallObject(String ad_id, String ad_title, String ad_description, String ad_price, String ad_phone, String ad_time_post, String year, String kilometers_from, String kilometers_to, String car_insurance_type, String car_license_type, String car_fuel_type, String car_transmission_type, String car_condition_type, String payment_method, String car_color, ArrayList<String> options, CreatorInfo creatorInfo) {
         this.ad_id = ad_id;
         this.ad_title = ad_title;
         this.ad_description = ad_description;
@@ -30,6 +32,7 @@ public class CCEMTSmallObject implements Parcelable {
         this.payment_method = payment_method;
         this.car_color = car_color;
         this.options = options;
+        this.creatorInfo = creatorInfo;
     }
 
     protected CCEMTSmallObject(Parcel in) {
@@ -50,6 +53,7 @@ public class CCEMTSmallObject implements Parcelable {
         payment_method = in.readString();
         car_color = in.readString();
         options = in.createStringArrayList();
+        creatorInfo = in.readParcelable(CreatorInfo.class.getClassLoader());
     }
 
     @Override
@@ -71,6 +75,7 @@ public class CCEMTSmallObject implements Parcelable {
         dest.writeString(payment_method);
         dest.writeString(car_color);
         dest.writeStringList(options);
+        dest.writeParcelable(creatorInfo, flags);
     }
 
     @Override
@@ -224,5 +229,13 @@ public class CCEMTSmallObject implements Parcelable {
 
     public void setOptions(ArrayList<String> options) {
         this.options = options;
+    }
+
+    public CreatorInfo getCreatorInfo() {
+        return creatorInfo;
+    }
+
+    public void setCreatorInfo(CreatorInfo creatorInfo) {
+        this.creatorInfo = creatorInfo;
     }
 }

@@ -33,6 +33,7 @@ import static com.cars.halamotor.fireBaseDB.UpdateFireBase.setFavouriteCallSearc
 import static com.cars.halamotor.functions.Functions.convertCategoryToCategoryS;
 import static com.cars.halamotor.functions.Functions.openWhatsApp;
 import static com.cars.halamotor.functions.NewFunction.callAds;
+import static com.cars.halamotor.functions.NewFunction.getTitle;
 import static com.cars.halamotor.presnter.UploadLogAdActions.postAdAction;
 
 public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCases.ViewHolder>{
@@ -63,6 +64,7 @@ public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCa
         changeFont(context, holder);
         fillNumberOfImageAndNumberOfComment(holder, position);
         checkTypeAndFillTypeDetails(context, holder, position);
+        fillCreatorInfo(context,holder,position);
         checkIfFavouriteOrNot(context,holder,position);
         actionListenerToFavorite(context,holder,position);
         actionListenerToMessage(context,position,holder);
@@ -72,6 +74,16 @@ public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCa
         //set as a view
         postAdAction(ccemtArrayL.get(position).getAd_id(),"view",context);
 
+    }
+
+    private void fillCreatorInfo(Context context, ViewHolder holder, int position) {
+        Picasso.get()
+                .load(ccemtArrayL.get(position).getCreatorInfo().getPhoto())
+                .fit()
+                .centerCrop()
+                .into(holder.userImage);
+
+        holder.userNameTV.setText(ccemtArrayL.get(position).getCreatorInfo().getName());
     }
 
     private void actionListenerToMessage(final Context context, final int position, ViewHolder holder) {
@@ -208,7 +220,10 @@ public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCa
     }
 
     private void fillTitleAndUserName(ViewHolder holder, int position, Context context) {
-        holder.itemTitleTV.setText(ccemtArrayL.get(position).getAd_title());
+//        holder.itemTitleTV.setText(ccemtArrayL.get(position).getAd_title());
+        holder.itemTitleTV.setText(getTitle(ccemtArrayL.get(position).getAd_title(),
+                ccemtArrayL.get(position).getAttributesArrayList().get(0).getTitle()
+                        +" "+ccemtArrayL.get(position).getAttributesArrayList().get(1).getTitle(),context));
         //holder.userNameTV.setText(carForSaleArrayL.get(position).getItemUserName());
     }
 

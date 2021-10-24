@@ -49,6 +49,7 @@ public class ProfileDetailsInfo extends Fragment {
     TextView userNameTV,editProfileTV,buildTrustTV,numberOfPostTV,postTV
             ,numberOfFollowingTV,followingTV,followerTV,numberOfFollowerTV;
     ArrayList<Following> followingArrayList = new ArrayList<Following>();
+
     public ProfileDetailsInfo(){}
 
     @Override
