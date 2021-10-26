@@ -137,7 +137,7 @@ public class FragmentItemSelectedDetails extends Fragment {
 
     private void detectObject() {
         if (cat.equals("ccemt"))
-            intiGeneralInfo(ccemtModelDetails.getAttributesArrayList().get(4).getTitle(),"area_name",getTextEngOrLocal(getActivity(),ccemtModelDetails.getCategoryComp().getName_en(),ccemtModelDetails.getCategoryComp().getName_ar()));
+            intiGeneralInfo(ccemtModelDetails.getAttributesArrayList().get(4).getTitle(),ccemtModelDetails.getCcemtSmallObject().getArea(),getTextEngOrLocal(getActivity(),ccemtModelDetails.getCategoryComp().getName_en(),ccemtModelDetails.getCategoryComp().getName_ar()));
 
         if (cat.equals("cp"))
             intiGeneralInfo(carPlatesModel.getCity(),carPlatesModel.getNeighborhood(),getActivity().getResources().getString(R.string.car_plates));
@@ -166,7 +166,7 @@ public class FragmentItemSelectedDetails extends Fragment {
 
     private void fillCarDetails() {
         text_title_content1.setText(ccemtModelDetails.getAttributesArrayList().get(0).getTitle());
-        text_title_content2.setText("car_model");
+        text_title_content2.setText(ccemtModelDetails.getCcemtSmallObject().getCar_model());
         text_title_content3.setText(ccemtModelDetails.getAttributesArrayList().get(1).getTitle());
         text_title_content4.setText(ccemtModelDetails.getAttributesArrayList().get(2).getTitle());
         text_title_content5.setText(ccemtModelDetails.getAttributesArrayList().get(3).getTitle());

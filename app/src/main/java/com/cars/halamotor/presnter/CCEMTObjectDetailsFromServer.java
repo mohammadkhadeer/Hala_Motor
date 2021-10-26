@@ -19,6 +19,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import static com.cars.halamotor.API.APIS.BASE_API;
 import static com.cars.halamotor.functions.Functions.checkIfAndroidVBiggerThan9;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
 
 public class CCEMTObjectDetailsFromServer {
@@ -33,7 +34,7 @@ public class CCEMTObjectDetailsFromServer {
                     .method("GET", null)
                     .addHeader("Accept", "application/json")
                     .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
-                    .addHeader("Accept-Language", "ar")
+                    .addHeader("Accept-Language", getUserLanguage(context))
                     .build();
 
             try {
@@ -58,15 +59,15 @@ public class CCEMTObjectDetailsFromServer {
     private static void getAdsDetails(JSONObject adObj, CategoryComp categoryComp, ItemModel itemModel) {
         //create suggested to you as object
         JSONObject creatorInfo,attributes;
-        ArrayList <String> photosArrayList,photosArrayList2 ;
-        ArrayList <String> optionsArrayList ;
+        ArrayList <String> photosArrayList= null ;
+        ArrayList <String> optionsArrayList = null;
         ArrayList <Attributes> attributesArrayList ;
         CCEMTModelDetails ccemtModelDetails=null;
         CreatorInfo creatorInfo1;
         Log.w("TAG",adObj.toString());
 
         try {
-            Log.w("TAG", String.valueOf(adObj.getJSONObject("creator")));
+            //Log.w("TAG", String.valueOf(adObj.getJSONObject("creator")));
             creatorInfo = adObj.getJSONObject("creator");
 
             creatorInfo1 = new CreatorInfo(
@@ -78,25 +79,29 @@ public class CCEMTObjectDetailsFromServer {
                     ,creatorInfo.getString("photo")
                     );
 
-            JSONArray jsonArrayOptionsAds = adObj.getJSONArray("car_option");
-
-            optionsArrayList =new ArrayList<>();
-            if (jsonArrayOptionsAds !=null && jsonArrayOptionsAds.length()>0)
-            {
-                for (int r=0;r<jsonArrayOptionsAds.length();r++)
+            if (adObj.has("car_option")){
+                JSONArray jsonArrayOptionsAds = adObj.getJSONArray("car_option");
+                optionsArrayList =new ArrayList<>();
+                if (jsonArrayOptionsAds !=null && jsonArrayOptionsAds.length()>0)
                 {
-                    optionsArrayList.add(jsonArrayOptionsAds.getString(r));
+                    for (int r=0;r<jsonArrayOptionsAds.length();r++)
+                    {
+                        optionsArrayList.add(jsonArrayOptionsAds.getString(r));
+                    }
                 }
             }
 
-            JSONArray jsonArrayPhotos2 = adObj.getJSONArray("photos");
 
-            photosArrayList2 =new ArrayList<>();
-            if (jsonArrayPhotos2 !=null && jsonArrayPhotos2.length()>0)
-            {
-                for (int x=0;x<jsonArrayPhotos2.length();x++)
+            if (adObj.has("photos")){
+                JSONArray jsonArrayPhotos2 = adObj.getJSONArray("photos");
+
+                photosArrayList =new ArrayList<>();
+                if (jsonArrayPhotos2 !=null && jsonArrayPhotos2.length()>0)
                 {
-                    photosArrayList2.add(jsonArrayPhotos2.getString(x));
+                    for (int x=0;x<jsonArrayPhotos2.length();x++)
+                    {
+                        photosArrayList.add(jsonArrayPhotos2.getString(x));
+                    }
                 }
             }
 
@@ -109,7 +114,6 @@ public class CCEMTObjectDetailsFromServer {
                     ,adObj.getString("phone")
 
                     ,adObj.getString("created_at")
-                    ,adObj.getString("color")
 
                     ,adObj.getString("year")
                     ,adObj.getString("kilometers_from")
@@ -120,6 +124,9 @@ public class CCEMTObjectDetailsFromServer {
                     ,adObj.getString("car_transmission_type")
                     ,adObj.getString("car_condition_type")
                     ,adObj.getString("payment_method")
+                    ,adObj.getString("color")
+                    ,adObj.getString("area")
+                    ,adObj.getString("model")
 
                     ,optionsArrayList
                     ,creatorInfo1
@@ -135,11 +142,10 @@ public class CCEMTObjectDetailsFromServer {
             }
 
 
-
             ccemtModelDetails= new CCEMTModelDetails(
                     ccemtSmallObject
                     ,categoryComp
-                    ,photosArrayList2
+                    ,photosArrayList
                     ,attributesArrayList
             );
 

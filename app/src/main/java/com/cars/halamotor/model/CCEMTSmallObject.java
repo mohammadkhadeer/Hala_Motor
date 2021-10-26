@@ -8,13 +8,13 @@ import java.util.ArrayList;
 public class CCEMTSmallObject implements Parcelable {
     String ad_id,ad_title,ad_description,ad_price,ad_phone,ad_time_post,year,kilometers_from,kilometers_to
             ,car_insurance_type,car_license_type,car_fuel_type,car_transmission_type,car_condition_type
-            ,payment_method,car_color;
+            ,payment_method,car_color,area,car_model;
 
     ArrayList <String> options;
 
     CreatorInfo creatorInfo;
 
-    public CCEMTSmallObject(String ad_id, String ad_title, String ad_description, String ad_price, String ad_phone, String ad_time_post, String year, String kilometers_from, String kilometers_to, String car_insurance_type, String car_license_type, String car_fuel_type, String car_transmission_type, String car_condition_type, String payment_method, String car_color, ArrayList<String> options, CreatorInfo creatorInfo) {
+    public CCEMTSmallObject(String ad_id, String ad_title, String ad_description, String ad_price, String ad_phone, String ad_time_post, String year, String kilometers_from, String kilometers_to, String car_insurance_type, String car_license_type, String car_fuel_type, String car_transmission_type, String car_condition_type, String payment_method, String car_color, String area, String car_model, ArrayList<String> options, CreatorInfo creatorInfo) {
         this.ad_id = ad_id;
         this.ad_title = ad_title;
         this.ad_description = ad_description;
@@ -31,6 +31,8 @@ public class CCEMTSmallObject implements Parcelable {
         this.car_condition_type = car_condition_type;
         this.payment_method = payment_method;
         this.car_color = car_color;
+        this.area = area;
+        this.car_model = car_model;
         this.options = options;
         this.creatorInfo = creatorInfo;
     }
@@ -52,6 +54,8 @@ public class CCEMTSmallObject implements Parcelable {
         car_condition_type = in.readString();
         payment_method = in.readString();
         car_color = in.readString();
+        area = in.readString();
+        car_model = in.readString();
         options = in.createStringArrayList();
         creatorInfo = in.readParcelable(CreatorInfo.class.getClassLoader());
     }
@@ -74,6 +78,8 @@ public class CCEMTSmallObject implements Parcelable {
         dest.writeString(car_condition_type);
         dest.writeString(payment_method);
         dest.writeString(car_color);
+        dest.writeString(area);
+        dest.writeString(car_model);
         dest.writeStringList(options);
         dest.writeParcelable(creatorInfo, flags);
     }
@@ -221,6 +227,22 @@ public class CCEMTSmallObject implements Parcelable {
 
     public void setCar_color(String car_color) {
         this.car_color = car_color;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getCar_model() {
+        return car_model;
+    }
+
+    public void setCar_model(String car_model) {
+        this.car_model = car_model;
     }
 
     public ArrayList<String> getOptions() {

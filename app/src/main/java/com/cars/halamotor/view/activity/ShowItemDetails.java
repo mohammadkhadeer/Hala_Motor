@@ -352,8 +352,6 @@ public class ShowItemDetails extends AppCompatActivity
     }
 
     private void intiUserInfoFragment() {
-        Log.e("TAG",itemNameStr);
-
         Bundle bundle = new Bundle();
         bundle.putString("itemID", itemIDStr);
         bundle.putString("item_name", itemNameStr);
@@ -473,9 +471,21 @@ public class ShowItemDetails extends AppCompatActivity
     }
 
     @Override
-    public void onReceiveCCEMTObjectDetails(CCEMTModelDetails ccemtModelDetails, ArrayList<CCEMTModel> ccemtModelArrayList) {
+    public void onReceiveCCEMTObjectDetails(CCEMTModelDetails ccemtModelDetails) {
         ccemtModelDetails1 = ccemtModelDetails;
-        intiValues("user_name","R.color.colorSilver",ccemtModelDetails.getCcemtSmallObject().getAd_title(),ccemtModelDetails.getCcemtSmallObject().getAd_description(),ccemtModelDetails.getPhotosArrayList(),ccemtModelDetails.getCcemtSmallObject().getAd_time_post(),ccemtModelDetails.getCategoryComp().getCode(),"user_id",String.valueOf(ccemtModelDetails.getPhotosArrayList().size()),ccemtModelDetails.getCcemtSmallObject().getAd_phone(),ccemtModelDetails.getCcemtSmallObject().getAd_price(),"0",ccemtModelDetails.getCcemtSmallObject().getAd_price(),ccemtModelDetails.getCcemtSmallObject().getCreatorInfo().getType(),ccemtModelDetails.getCcemtSmallObject().getCreatorInfo());
+        intiValues("user_name","R.color.colorSilver"
+                ,ccemtModelDetails.getCcemtSmallObject().getAd_title()
+                ,ccemtModelDetails.getCcemtSmallObject().getAd_description()
+                ,ccemtModelDetails.getPhotosArrayList()
+                ,ccemtModelDetails.getCcemtSmallObject().getAd_time_post()
+                ,ccemtModelDetails.getCategoryComp().getCode()
+                ,"user_id"
+                ,String.valueOf(ccemtModelDetails.getPhotosArrayList().size())
+                ,ccemtModelDetails.getCcemtSmallObject().getAd_phone()
+                ,ccemtModelDetails.getCcemtSmallObject().getAd_price()
+                ,"0",ccemtModelDetails.getCcemtSmallObject().getAd_price()
+                ,ccemtModelDetails.getCcemtSmallObject().getCreatorInfo().getType()
+                ,ccemtModelDetails.getCcemtSmallObject().getCreatorInfo());
 
         intiAllFragment();
     }
