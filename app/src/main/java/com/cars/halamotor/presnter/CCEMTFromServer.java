@@ -70,7 +70,8 @@ public class CCEMTFromServer {
             {
                 adsDetails = jsonArrayAllAds.getJSONObject(i);
                 creatorInfo = new CreatorInfo(
-                        adsDetails.getString("name")
+                        adsDetails.getString("id")
+                        ,adsDetails.getString("name")
                         ,adsDetails.getString("ads_count")
                         ,adsDetails.getString("followers_count")
                         ,adsDetails.getString("following_count")

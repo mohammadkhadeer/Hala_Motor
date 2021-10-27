@@ -89,7 +89,6 @@ public class FragmentSuggestedAds extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_suggested_ads, container, false);
-//        Log.i("TAG",test);
         inti();
         changeFont();
         createLoadingRV();
@@ -178,26 +177,7 @@ public class FragmentSuggestedAds extends Fragment {
                         isLastPage = true;
                     }
                     isLoading = false;
-//                    if (resultItemsArrayList.size() <8)
-//                    {
-//                        //this mean the result is less 8 if remove filter we take anther suggested item
-//                        similarNeeded = new SimilarNeeded(similarNeeded.getPriceFrom(),similarNeeded.getPriceTo(),"empty","empty",similarNeeded.getCity(),"empty",similarNeeded.getWheelsType(),similarNeeded.getCarPlatesCity(),similarNeeded.getWheelsSize());
-//                        similarAdsComp = rebuildItemFilter(similarNeeded,category,getActivity());
-//                        itemFilterArrayList = similarAdsComp.getItemFilterArrayList();
-//                        city =similarAdsComp.getCityS();
-//                        neighborhood = similarAdsComp.getNeighborhoodS();
-//                        int numberOfAds = 9-resultItemsArrayListCont.size();
-//                        resultFilter=filterResult(itemFilterArrayList,0,getActivity(),city,neighborhood,numberOfAds);
-//                        resultItemsArrayListCont = resultFilter.getResultItemsArrayList();
-//                        new Handler().postDelayed(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                doApiCall(0);
-//                            }
-//                        }, 3000);
-//                    }else{
-//
-//                    }
+
                 }
 
             }

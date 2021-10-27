@@ -103,7 +103,8 @@ public class FillCCEMTType  {
                 JSONArray jsonArrayAttributes = adsDetails.getJSONArray("attributes");
                 creator_json_info = adsDetails.getJSONObject("creator");
                 creatorInfo = new CreatorInfo(
-                        creator_json_info.getString("name")
+                        creator_json_info.getString("id")
+                        ,creator_json_info.getString("name")
                         ,creator_json_info.getString("ads_count")
                         ,creator_json_info.getString("followers_count")
                         ,creator_json_info.getString("following_count")

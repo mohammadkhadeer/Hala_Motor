@@ -71,7 +71,8 @@ public class CCEMTObjectDetailsFromServer {
             creatorInfo = adObj.getJSONObject("creator");
 
             creatorInfo1 = new CreatorInfo(
-                    creatorInfo.getString("name")
+                    creatorInfo.getString("id")
+                    ,creatorInfo.getString("name")
                     ,creatorInfo.getString("ads_count")
                     ,creatorInfo.getString("followers_count")
                     ,creatorInfo.getString("following_count")

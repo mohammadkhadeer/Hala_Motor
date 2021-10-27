@@ -22,26 +22,26 @@ public class FragmentSimilarItems extends Fragment {
 
     public FragmentSimilarItems(){}
 
-    String categoryStr,itemIDStr,personOrGalleryStr,userID,userName,category;
+    String category,item_id,user_type,user_id,user_name;
     DBHelper myDB;
     View view;
 
-    SimilarNeeded similarNeeded;
+    //SimilarNeeded similarNeeded;
     FragmentUserAds fragmentUserAds = new FragmentUserAds();
     FragmentSuggestedAds fragmentSuggestedAds = new FragmentSuggestedAds();
 
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
-            categoryStr = getArguments().getString("category");
-            categoryStr = replace(categoryStr);
-            itemIDStr = getArguments().getString("itemID");
-            userID = getArguments().getString("userID");
-            personOrGalleryStr = getArguments().getString("peronOrGallery");
-            userName = getArguments().getString("userName");
+            category = getArguments().getString("category");
+            category = replace(category);
+            item_id = getArguments().getString("item_id");
+            user_id = getArguments().getString("user_id");
+            user_type = getArguments().getString("user_type");
+            user_name = getArguments().getString("user_name");
             category = getArguments().getString("category");
 
-            similarNeeded = (SimilarNeeded) getArguments().getParcelable("similarNeeded");
+            //similarNeeded = (SimilarNeeded) getArguments().getParcelable("similarNeeded");
 //            categoryStr = "Car_For_Exchange";
         }
         super.onAttach(context);
@@ -51,15 +51,16 @@ public class FragmentSimilarItems extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_item_selected_suggested, container, false);
-        //intiUserAds();
-        intiSuggestedAds();
+        intiUserAds();
+        //intiSuggestedAds();
         return view;
     }
 
     private void intiUserAds() {
         Bundle bundle = new Bundle();
-        bundle.putString("userID", userID);
-        bundle.putString("userName", userName);
+        bundle.putString("user_id", user_id);
+        bundle.putString("user_name", user_name);
+        bundle.putString("user_type", user_type);
         fragmentUserAds.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -69,10 +70,10 @@ public class FragmentSimilarItems extends Fragment {
 
     private void intiSuggestedAds() {
         Bundle bundle = new Bundle();
-        bundle.putString("userID", userID);
+        bundle.putString("userID", user_id);
         bundle.putString("category", category);
-        bundle.putString("itemID", itemIDStr);
-        bundle.putParcelable("similarNeeded", similarNeeded);
+        bundle.putString("itemID", item_id);
+        //bundle.putParcelable("similarNeeded", similarNeeded);
         fragmentSuggestedAds.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()

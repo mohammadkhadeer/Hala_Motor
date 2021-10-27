@@ -75,9 +75,10 @@ public class ShowItemDetails extends AppCompatActivity
     ItemWheelsRim wheelsRimModel;
     ItemAccAndJunk accAndJunkObject;
 
-    String itemIDStr,userNameStr,userImageStr,itemNameStr
-            ,timStampStr,itemDescription,userID,numberOfImage,whereCome
-            ,categoryStr,cat,phoneNumber,price,priceEdit,newPrice,personOrGallery,category_code;
+    String itemIDStr,item_id,userNameStr,userImageStr,itemNameStr
+            ,timStampStr,itemDescription,user_id,numberOfImage,whereCome
+            ,categoryStr,cat,phoneNumber,price,priceEdit,newPrice
+            ,personOrGallery,category_code;
 
     ArrayList<String> photosArrayList = new ArrayList<>();
 
@@ -282,10 +283,10 @@ public class ShowItemDetails extends AppCompatActivity
     private void intiSuggestedFragment() {
         Bundle bundle = new Bundle();
         bundle.putString("category", getCategoryFromIntent());
-        bundle.putString("itemID", itemIDStr);
-        bundle.putString("userID", userID);
-        bundle.putString("peronOrGallery", personOrGallery);
-        bundle.putString("userName", userNameStr);
+        bundle.putString("item_id", item_id);
+        bundle.putString("user_id", user_id);
+        bundle.putString("user_type", personOrGallery);
+        bundle.putString("user_name", userNameStr);
         bundle.putString("category", category);
 
         fragmentSuggestedAntherItems.setArguments(bundle);
@@ -403,11 +404,14 @@ public class ShowItemDetails extends AppCompatActivity
 
     }
 
-    private void intiValues(String userName, String userImage, String itemName,String itemDes,ArrayList<String> photosArrayL,String timeStamp
+    private void intiValues(String userName,String itemID, String userImage, String itemName,String itemDes
+            ,ArrayList<String> photosArrayL,String timeStamp
             , String boostType, String userIDPathInServer
-            , String numberOfIg,String phoneN,String itemPrice,String priceE,String newP,String personOrGalleryS,CreatorInfo creatorInfoFromServer) {
+            , String numberOfIg,String phoneN,String itemPrice,String priceE
+            ,String newP,String personOrGalleryS,CreatorInfo creatorInfoFromServer) {
 
         userNameStr =userName;
+        item_id =itemID;
         userImageStr =userImage;
         itemNameStr =itemName;
         itemDescription =itemDes;
@@ -415,7 +419,7 @@ public class ShowItemDetails extends AppCompatActivity
 
         timStampStr =timeStamp;
         category_code =boostType;
-        userID =userIDPathInServer;
+        user_id =userIDPathInServer;
         numberOfImage =numberOfIg;
 
         phoneNumber = phoneN;
@@ -473,13 +477,15 @@ public class ShowItemDetails extends AppCompatActivity
     @Override
     public void onReceiveCCEMTObjectDetails(CCEMTModelDetails ccemtModelDetails) {
         ccemtModelDetails1 = ccemtModelDetails;
-        intiValues("user_name","R.color.colorSilver"
+        intiValues(ccemtModelDetails.getCcemtSmallObject().getCreatorInfo().getName()
+                ,ccemtModelDetails.getCcemtSmallObject().getAd_id()
+                ,"R.color.colorSilver"
                 ,ccemtModelDetails.getCcemtSmallObject().getAd_title()
                 ,ccemtModelDetails.getCcemtSmallObject().getAd_description()
                 ,ccemtModelDetails.getPhotosArrayList()
                 ,ccemtModelDetails.getCcemtSmallObject().getAd_time_post()
                 ,ccemtModelDetails.getCategoryComp().getCode()
-                ,"user_id"
+                ,ccemtModelDetails.getCcemtSmallObject().getCreatorInfo().getUser_id()
                 ,String.valueOf(ccemtModelDetails.getPhotosArrayList().size())
                 ,ccemtModelDetails.getCcemtSmallObject().getAd_phone()
                 ,ccemtModelDetails.getCcemtSmallObject().getAd_price()
@@ -499,7 +505,7 @@ public class ShowItemDetails extends AppCompatActivity
         intiShareFragment();
         intiFollowUser();
         intiContact();
-        //intiSuggestedFragment();
+        intiSuggestedFragment();
     }
 
     @Override

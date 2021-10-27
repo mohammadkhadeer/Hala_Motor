@@ -4,11 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class CreatorInfo implements Parcelable {
-    String name,ads_count,followers_count,following_count,type,photo;
+    String user_id,name,ads_count,followers_count,following_count,type,photo;
 
     public CreatorInfo(){}
 
-    public CreatorInfo(String name, String ads_count, String followers_count, String following_count, String type, String photo) {
+    public CreatorInfo(String user_id, String name, String ads_count, String followers_count, String following_count, String type, String photo) {
+        this.user_id = user_id;
         this.name = name;
         this.ads_count = ads_count;
         this.followers_count = followers_count;
@@ -18,6 +19,7 @@ public class CreatorInfo implements Parcelable {
     }
 
     protected CreatorInfo(Parcel in) {
+        user_id = in.readString();
         name = in.readString();
         ads_count = in.readString();
         followers_count = in.readString();
@@ -28,6 +30,7 @@ public class CreatorInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(user_id);
         dest.writeString(name);
         dest.writeString(ads_count);
         dest.writeString(followers_count);
@@ -52,6 +55,14 @@ public class CreatorInfo implements Parcelable {
             return new CreatorInfo[size];
         }
     };
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
 
     public String getName() {
         return name;
