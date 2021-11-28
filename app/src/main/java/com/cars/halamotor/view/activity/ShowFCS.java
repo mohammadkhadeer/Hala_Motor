@@ -45,9 +45,7 @@ import java.util.Locale;
 
 import static com.cars.halamotor.dataBase.ReadFunction.getFavouriteCallSearch;
 import static com.cars.halamotor.fireBaseDB.FireStorePaths.getDataStoreInstance;
-import static com.cars.halamotor.fireBaseDB.ReadFromFireBase.getFCSItems;
 import static com.cars.halamotor.functions.FCSFunctions.convertCat;
-import static com.cars.halamotor.functions.FillSimilarNeeded.intiEmptyObject;
 import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.functions.NewFunction.actionBarTitleInFCS;
 import static com.cars.halamotor.functions.NewFunction.getNumberOfObject;
@@ -72,13 +70,11 @@ public class ShowFCS extends AppCompatActivity {
     private boolean isLoading = false;
     LinearLayoutManager layoutManager;
     AdapterShowFCSItems adapterShowFCSItems;
-    SimilarNeeded similarNeeded;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLocale(this);
         setContentView(R.layout.activity_show_fcs);
-        similarNeeded = intiEmptyObject();
 
         statusBarColor();
         init();
@@ -176,7 +172,7 @@ public class ShowFCS extends AppCompatActivity {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         fcsItemsRecyclerView.setLayoutManager(layoutManager);
-        adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<SuggestedItem>(),this,fcsTypeStr,similarNeeded);
+        //adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<SuggestedItem>(),this,fcsTypeStr);
         fcsItemsRecyclerView.setAdapter(adapterShowFCSItems);
     }
 
@@ -189,7 +185,7 @@ public class ShowFCS extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
                 suggestedItemsArrayListDO.addAll(suggestedItemsArrayListTest);
                 if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
-                adapterShowFCSItems.addItems(suggestedItemsArrayListDO,similarNeeded);
+                //adapterShowFCSItems.addItems(suggestedItemsArrayListDO);
                 if (getNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size())==false) {
                     adapterShowFCSItems.addLoading();
                 } else {

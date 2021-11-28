@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
+import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.SimilarNeeded;
 import com.cars.halamotor.model.SuggestedItem;
 import com.cars.halamotor.permission.CheckPermission;
@@ -43,22 +44,21 @@ import static com.cars.halamotor.fireBaseDB.UpdateFireBase.setFavouriteCallSearc
 import static com.cars.halamotor.functions.Functions.convertCategoryToCategoryS;
 import static com.cars.halamotor.functions.Functions.openWhatsApp;
 import static com.cars.halamotor.functions.NewFunction.callAds;
+import static com.cars.halamotor.presnter.UploadLogAdActions.postAdAction;
 
 public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
   private static final int VIEW_TYPE_LOADING = 0;
   private static final int VIEW_TYPE_NORMAL = 1;
   private boolean isLoaderVisible = false;
 
-  private List<SuggestedItem> suggestedItemsList;
+  private List<CCEMTModel> suggestedItemsList;
   Context context;
   String comeFrom;
-  SimilarNeeded similarNeededR;
 
-  public AdapterShowFCSItems(List<SuggestedItem> postItems, Context context, String comeFrom, SimilarNeeded similarNeeded) {
+  public AdapterShowFCSItems(List<CCEMTModel> postItems, Context context, String comeFrom) {
     this.suggestedItemsList = postItems;
     this.context = context;
     this.comeFrom = comeFrom;
-    this.similarNeededR = similarNeeded;
   }
 
   @NonNull
@@ -104,15 +104,14 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
     return suggestedItemsList == null ? 0 : suggestedItemsList.size();
   }
 
-  public void addItems(List<SuggestedItem> postItems,SimilarNeeded similarNeeded) {
+  public void addItems(List<CCEMTModel> postItems) {
     suggestedItemsList.addAll(postItems);
-    similarNeededR = similarNeeded;
     notifyDataSetChanged();
   }
 
   public void addLoading() {
     isLoaderVisible = true;
-    suggestedItemsList.add(new SuggestedItem());
+    suggestedItemsList.add(new CCEMTModel());
     notifyItemInserted(suggestedItemsList.size() - 1);
   }
 
@@ -121,7 +120,7 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
     ////////////here
     int position = suggestedItemsList.size() - 1;
     Log.i("TAG","position: "+String.valueOf(suggestedItemsList.size() - 1));
-    SuggestedItem item = getItem(position);
+    CCEMTModel item = getItem(position);
     if (item != null) {
       suggestedItemsList.remove(position);
       notifyItemRemoved(position);
@@ -133,7 +132,7 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
     notifyDataSetChanged();
   }
 
-  SuggestedItem getItem(int position) {
+  CCEMTModel getItem(int position) {
     return suggestedItemsList.get(position);
   }
 
@@ -189,30 +188,21 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
     public void onBind(int position) {
       super.onBind(position);
 
-      if (getObject(position).getItemActiveOrNot().equals("1")
-          && getObject(position).getItemBurnedPrice().equals("0")) {
-        messageInfo.setVisibility(View.GONE);
-        itemInfoRL.setVisibility(View.VISIBLE);
-        personInfoRL.setVisibility(View.VISIBLE);
-        makeAllTextViewVISIBLE(text1, text2, text3, text4, itemCityTV, text2RL, text3RL, text4RL, itemCityRL);
-        fillImage(itemImage, userImage, position, context);
-        fillTitleAndUserName(itemTitleTV, userNameTV, position);
-        fillPrice(itemPriceTV, oldPriceTV, fireIV, itemNewPriceTV, position, context);
-        changeFont(context, text1, text2, text3, text4, itemCityTV, userNameTV, itemPriceTV, itemTitleTV);
-        checkTypeAndFillTypeDetails(context, text1, text2, text3, text4, text2RL, text3RL, text4RL
-                , itemCityTV, itemCityRL, position);
-        checkIfFavouriteOrNot(context,favoriteIV,favoriteRL,position);
-        actionListenerToFavorite(context, favoriteRL, position,favoriteIV);
-        actionListenerToGoShowItemDetails(context, cardShowFCS, position);
-        actionListenerToCallButton(context, callButtonRL, position);
-        actionListenerToMessage(context,position,messageRL);
-      }else{
-        personInfoRL.setVisibility(View.GONE);
-        itemInfoRL.setVisibility(View.GONE);
-        messageInfo.setVisibility(View.VISIBLE);
-
-        fillImageView(itemImage);
-      }
+      messageInfo.setVisibility(View.GONE);
+      itemInfoRL.setVisibility(View.VISIBLE);
+      personInfoRL.setVisibility(View.VISIBLE);
+      makeAllTextViewVISIBLE(text1, text2, text3, text4, itemCityTV, text2RL, text3RL, text4RL, itemCityRL);
+      fillImage(itemImage, userImage, position, context);
+      fillTitleAndUserName(itemTitleTV, userNameTV, position);
+      fillPrice(itemPriceTV, oldPriceTV, fireIV, itemNewPriceTV, position, context);
+      changeFont(context, text1, text2, text3, text4, itemCityTV, userNameTV, itemPriceTV, itemTitleTV);
+      checkTypeAndFillTypeDetails(context, text1, text2, text3, text4, text2RL, text3RL, text4RL
+              , itemCityTV, itemCityRL, position);
+      checkIfFavouriteOrNot(context,favoriteIV,favoriteRL,position);
+      actionListenerToFavorite(context, favoriteRL, position,favoriteIV);
+      actionListenerToGoShowItemDetails(context, cardShowFCS, position);
+      actionListenerToCallButton(context, callButtonRL, position);
+      actionListenerToMessage(context,position,messageRL);
 
     }
   }
@@ -221,10 +211,10 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
     messageRL.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        insertItemsToFCS(getObject(position).getItemIdInServer(),convertCategoryToCategoryS(getObject(position).getItemType(),context)
+        insertItemsToFCS(getObject(position).getAd_id(),getObject(position).getCategoryComp().getId()
                 ,getDataBaseInstance(context),"message",context);
-        setFavouriteCallSearchOnServer(context,getObject(position).getItemIdInServer(),getObject(position).getItemType(),"message");
-        openWhatsApp(getObject(position).getItemUserPhoneNumber(),context);
+        setFavouriteCallSearchOnServer(context,getObject(position).getAd_id(),getObject(position).getCategoryComp().getId(),"message");
+        openWhatsApp(getObject(position).getAd_phone(),context);
       }
     });
   }
@@ -235,7 +225,7 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
     {
           favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
     }else{
-      if (checkFavouriteOrNot1(context,getItem(position).getItemIdInServer()).equals("not_favorite"))
+      if (checkFavouriteOrNot1(context,getItem(position).getAd_id()).equals("not_favorite"))
       {
         favoriteIV.setBackgroundResource(R.drawable.item_favu);
       }else
@@ -254,8 +244,8 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
             .into(itemImage);
   }
 
-  private SuggestedItem getObject(int position){
-    SuggestedItem item = suggestedItemsList.get(position);
+  private CCEMTModel getObject(int position){
+    CCEMTModel item = suggestedItemsList.get(position);
     return item;
   }
 
@@ -266,21 +256,21 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
       public void onClick(View v) {
         if (comeFrom.equals("favorite"))
         {
-          getDataBaseInstance(context).deleteFCS(getObject(position).getItemIdInServer());
+          getDataBaseInstance(context).deleteFCS(getObject(position).getAd_id());
           removeAt(position);
         }else{
-          if (checkFavouriteOrNot1(context,getItem(position).getItemIdInServer()).equals("not_favorite"))
+          if (checkFavouriteOrNot1(context,getItem(position).getAd_id()).equals("not_favorite"))
           {
             favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
-            insertItemsToFCS(getItem(position).getItemIdInServer(),convertCategoryToCategoryS(getItem(position).getItemType(),context)
+            insertItemsToFCS(getItem(position).getAd_id(),getObject(position).getCategoryComp().getId()
                     ,getDataBaseInstance(context),"favorite",context);
 
-            setFavouriteCallSearchOnServer(context,getItem(position).getItemIdInServer()
-                    ,getItem(position).getItemType(),"favorite");
+            setFavouriteCallSearchOnServer(context,getItem(position).getAd_id()
+                    ,getObject(position).getCategoryComp().getId(),"favorite");
           }else
           {
             favoriteIV.setBackgroundResource(R.drawable.item_favu);
-            getDataBaseInstance(context).deleteFCS(getItem(position).getItemIdInServer());
+            getDataBaseInstance(context).deleteFCS(getItem(position).getAd_id());
           }
         }
       }
@@ -297,12 +287,12 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
     callButtonRL.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        insertItemsToFCS(getObject(position).getItemIdInServer(),convertCategoryToCategoryS(getObject(position).getItemType(),context)
+        insertItemsToFCS(getObject(position).getAd_id(),getObject(position).getCategoryComp().getId()
                 ,getDataBaseInstance(context),"call",context);
 
         if (CheckPermission.checkPermissionMethodToPhone((Activity) context) == true) {
-          setFavouriteCallSearchOnServer(context,getObject(position).getItemIdInServer(),getObject(position).getItemType(),"call");
-          callAds(context,getObject(position).getItemUserPhoneNumber());
+          setFavouriteCallSearchOnServer(context,getObject(position).getAd_id(),getObject(position).getCategoryComp().getId(),"call");
+          callAds(context,getObject(position).getAd_phone());
         }
       }
     });
@@ -312,34 +302,23 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
     cardButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (getObject(position).getItemActiveOrNot().equals("1")
-                && getObject(position).getItemBurnedPrice().equals("0")) {
-          Bundle bundle = new Bundle();
-          if (comeFrom.equals("search"))
-          {
-            insertItemsToFCS(getObject(position).getItemIdInServer(),convertCategoryToCategoryS(getObject(position).getItemType(),context)
-                    ,getDataBaseInstance(context),"search",context);
 
-            setFavouriteCallSearchOnServer(context,getObject(position).getItemIdInServer()
-                    ,getObject(position).getItemType(),"search");
-            bundle.putParcelable("similarNeeded", similarNeededR);
-          }
-          bundle.putString("category", getObject(position).getItemType());
-          if (comeFrom.equals("search"))
-          {
-            bundle.putString("from", "search");
-          }else{
-            bundle.putString("from", "stu");
-          }
-          bundle.putString("itemID", getObject(position).getItemIdInServer());
+        insertItemsToFCS(getItem(position).getAd_id(),getItem(position).getCategoryComp().getCode()
+                ,getDataBaseInstance(context),"seen",context);
 
-          Intent intent = new Intent(context, ShowItemDetails.class);
-          intent.putExtras(bundle);
-          ((Activity) context).startActivity(intent);
-          ((Activity) context).overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
-        }else{
-          Toast.makeText(context,context.getResources().getString(R.string.can_not_see_content),Toast.LENGTH_SHORT).show();
-        }
+        postAdAction(getItem(position).getAd_id(),"view",context);
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString("category",getItem(position).getCategoryComp().getCode());
+        bundle.putParcelable("category_comp",getItem(position).getCategoryComp());
+        bundle.putString("from","ml");
+        bundle.putString("itemID",getItem(position).getAd_id());
+
+        Intent intent = new Intent(context, ShowItemDetails.class);
+        intent.putExtras(bundle);
+        ((Activity)context).startActivity(intent);
+        ((Activity)context).overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
 
       }
     });
@@ -348,27 +327,27 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
   private void checkTypeAndFillTypeDetails(Context context, TextView text1, TextView text2
           , TextView text3, TextView text4, RelativeLayout text2RL, RelativeLayout text3RL
           , RelativeLayout text4RL, TextView itemCityTV, RelativeLayout itemCityRL, int position) {
-    if (getObject(position).getItemType().equals("Car for sale")
-            ||getObject(position).getItemType().equals("Car for rent")
-            ||getObject(position).getItemType().equals("Exchange car")
-            ||getObject(position).getItemType().equals("Motorcycle")
-            ||getObject(position).getItemType().equals("Trucks")
+    if (getObject(position).getCategoryComp().getCode().equals("1")
+            ||getObject(position).getCategoryComp().getCode().equals("2")
+            ||getObject(position).getCategoryComp().getCode().equals("3")
+            ||getObject(position).getCategoryComp().getCode().equals("4")
+            ||getObject(position).getCategoryComp().getCode().equals("5")
     ) {
       fillCarDetails(position,text1,text2,text3,text4);
     }
-    if (getObject(position).getItemType().equals("Plates"))
+    if (getObject(position).getCategoryComp().getCode().equals("Plates"))
     {
       fillCarPlates(context,position,text1,text2,text3,text3RL,text4RL,text4,itemCityTV,itemCityRL);
     }
-    if (getObject(position).getItemType().equals("Wheels_Rim"))
+    if (getObject(position).getCategoryComp().getCode().equals("Wheels_Rim"))
     {
       fillWheelsRim(context,position,text1,text2,text3,text4,itemCityTV,text3RL,text4RL,itemCityRL);
     }
-    if (getObject(position).getItemType().equals("Accessories"))
+    if (getObject(position).getCategoryComp().getCode().equals("Accessories"))
     {
       fillAccAndJunk(text1,text2,text3,text4,itemCityTV,text2RL,text3RL,text4RL,itemCityRL,position);
     }
-    if (getObject(position).getItemType().equals("Junk car"))
+    if (getObject(position).getCategoryComp().getCode().equals("Junk car"))
     {
       fillAccAndJunk(text1,text2,text3,text4,itemCityTV,text2RL,text3RL,text4RL,itemCityRL,position);
     }
@@ -377,7 +356,7 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
   private void fillAccAndJunk(TextView text1, TextView text2, TextView text3, TextView text4
           , TextView itemCityTV, RelativeLayout text2RL, RelativeLayout text3RL
           , RelativeLayout text4RL, RelativeLayout itemCityRL, int position) {
-    text1.setText(getObject(position).getItemCity());
+    //text1.setText(getObject(position).getItemCity());
     text2.setAlpha(0);
     text3.setAlpha(0);
     text4.setAlpha(0);
@@ -393,8 +372,8 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
   private void fillWheelsRim(Context context, int position, TextView text1, TextView text2
           , TextView text3, TextView text4, TextView itemCityTV, RelativeLayout text3RL
           , RelativeLayout text4RL, RelativeLayout itemCityRL) {
-    text1.setText(getObject(position).getItemCity());
-    text2.setText(getObject(position).getItemWheelsSize());
+    text1.setText(getObject(position).getAttributesArrayList().get(4).getTitle());
+    //text2.setText(getObject(position).getItemWheelsSize());
     text3.setAlpha(0);
     text4.setAlpha(0);
     itemCityTV.setAlpha(0);
@@ -407,28 +386,28 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
   private void fillCarPlates(Context context, int position, TextView text1, TextView text2
           , TextView text3, RelativeLayout text3RL, RelativeLayout text4RL, TextView text4
           , TextView itemCityTV, RelativeLayout itemCityRL) {
-    text1.setText(getObject(position).getItemCarPlatesCity());
-    text2.setText(getObject(position).getItemCarPlatesNumber().replace(".0",""));
-    if(getObject(position).getItemCarPlatesSpecial().equals(context.getResources().getString(R.string.special)))
-    {
-      text3.setText(context.getResources().getString(R.string.special));
-    }else{
-      text3.setAlpha(0);
-      text3RL.setAlpha(0);
-    }
+    //text1.setText(getObject(position).getItemCarPlatesCity());
+    //text2.setText(getObject(position).getItemCarPlatesNumber().replace(".0",""));
+//    if(getObject(position).getItemCarPlatesSpecial().equals(context.getResources().getString(R.string.special)))
+//    {
+//      text3.setText(context.getResources().getString(R.string.special));
+//    }else{
+//      text3.setAlpha(0);
+//      text3RL.setAlpha(0);
+//    }
     text4RL.setAlpha(0);
     text4.setAlpha(0);
     itemCityTV.setAlpha(0);
     itemCityRL.setAlpha(0);
-    itemCityTV.setText(getObject(position).getItemCity());
+    //itemCityTV.setText(getObject(position).getItemCity());
   }
 
   private void fillCarDetails(int position, TextView text1, TextView text2,
                               TextView text3, TextView text4) {
-    text1.setText(getObject(position).getItemCarMake());
-    text2.setText(getObject(position).getItemCarYear());
-    text3.setText(getObject(position).getItemType());
-    text4.setText(getObject(position).getItemCarKilometers());
+    text1.setText(getObject(position).getAttributesArrayList().get(0).getTitle());
+    text2.setText(getObject(position).getAttributesArrayList().get(1).getTitle());
+    text3.setText(getObject(position).getAttributesArrayList().get(2).getTitle());
+    text4.setText(getObject(position).getAttributesArrayList().get(3).getTitle());
   }
 
   private void changeFont(Context context, TextView text1, TextView text2, TextView text3
@@ -447,36 +426,47 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
 
   private void fillPrice(TextView itemPriceTV, TextView oldPriceTV, ImageView fireIV
           , TextView itemNewPriceTV, int position, Context context) {
-    if (getObject(position).getItemPostEdit().equals("0"))
-    {
-      itemPriceTV.setVisibility(View.VISIBLE);
-      oldPriceTV.setVisibility(View.GONE);
-      fireIV.setVisibility(View.GONE);
-      itemPriceTV.setText(getObject(position).getItemPrice()
-              +" "+context.getResources().getString(R.string.price_contry));
-      itemPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 
-      itemNewPriceTV.setText("");
-      itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-    }else{
-      itemPriceTV.setVisibility(View.GONE);
-      oldPriceTV.setVisibility(View.VISIBLE);
+    itemPriceTV.setVisibility(View.VISIBLE);
+    oldPriceTV.setVisibility(View.GONE);
+    fireIV.setVisibility(View.GONE);
+    itemPriceTV.setText(getObject(position).getAd_price()
+            +" "+context.getResources().getString(R.string.price_contry));
+    itemPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 
-      oldPriceTV.setText(getObject(position).getItemPrice());
-      oldPriceTV.setTextColor(context.getResources().getColor(R.color.colorSilver));
-      oldPriceTV.setPaintFlags(itemPriceTV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-      itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-      itemNewPriceTV.setText(getObject(position).getItemNewPrice()
-              +" "+context.getResources().getString(R.string.price_contry));
-      itemPriceTV.setText(getObject(position).getItemPrice()
-              +" "+context.getResources().getString(R.string.price_contry));
-      fireIV.setVisibility(View.VISIBLE);
+    itemNewPriceTV.setText("");
+    itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
 
-    }
+//    if (getObject(position).getItemPostEdit().equals("0"))
+//    {
+//      itemPriceTV.setVisibility(View.VISIBLE);
+//      oldPriceTV.setVisibility(View.GONE);
+//      fireIV.setVisibility(View.GONE);
+//      itemPriceTV.setText(getObject(position).getItemPrice()
+//              +" "+context.getResources().getString(R.string.price_contry));
+//      itemPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+//
+//      itemNewPriceTV.setText("");
+//      itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+//    }else{
+//      itemPriceTV.setVisibility(View.GONE);
+//      oldPriceTV.setVisibility(View.VISIBLE);
+//
+//      oldPriceTV.setText(getObject(position).getItemPrice());
+//      oldPriceTV.setTextColor(context.getResources().getColor(R.color.colorSilver));
+//      oldPriceTV.setPaintFlags(itemPriceTV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+//      itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+//      itemNewPriceTV.setText(getObject(position).getItemNewPrice()
+//              +" "+context.getResources().getString(R.string.price_contry));
+//      itemPriceTV.setText(getObject(position).getItemPrice()
+//              +" "+context.getResources().getString(R.string.price_contry));
+//      fireIV.setVisibility(View.VISIBLE);
+//
+//    }
   }
 
   private void fillTitleAndUserName(TextView itemTitleTV,TextView userNameTV, int position) {
-    String title = getObject(position).getItemName().replace("\n","");
+    String title = getObject(position).getAd_title().replace("\n","");
     if (title.length()>30)
     {
       String newTitle="";
@@ -489,20 +479,29 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
       title =newTitle;
     }
     itemTitleTV.setText(title);
-    userNameTV.setText(getObject(position).getUserName());
+    userNameTV.setText(getObject(position).getCreatorInfo().getName());
   }
 
   private void fillImage(ImageView itemImage, ImageView userImage,
                          int position, Context context) {
 
-    Picasso.get()
-            .load(getObject(position).getItemImage())
-            .fit()
-            .centerCrop()
-            .into(itemImage);
+    if (getObject(position).getPhotosArrayList().size() == 0)
+    {
+      Picasso.get()
+              .load(R.drawable.no_image)
+              .fit()
+              .centerCrop()
+              .into(itemImage);
+    }else{
+      Picasso.get()
+              .load(getObject(position).getPhotosArrayList().get(0))
+              .fit()
+              .centerCrop()
+              .into(itemImage);
+    }
 
     Picasso.get()
-            .load(getObject(position).getUserImage())
+            .load(getObject(position).getCreatorInfo().getPhoto())
             .fit()
             .centerCrop()
             .into(userImage);

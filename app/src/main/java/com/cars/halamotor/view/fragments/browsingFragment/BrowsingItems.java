@@ -28,22 +28,16 @@ import com.cars.halamotor.view.adapters.adapterShowFCS.AdapterShowFCSItems;
 import com.cars.halamotor.view.adapters.adapterShowFCS.PaginationListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cars.halamotor.dataBase.ReadFunction.getFCSCallSearch;
 import static com.cars.halamotor.dataBase.ReadFunction.getFavouriteCallSearch;
 import static com.cars.halamotor.fireBaseDB.FireStorePaths.getDataStoreInstance;
 import static com.cars.halamotor.functions.FCSFunctions.convertCat;
-import static com.cars.halamotor.functions.FillSimilarNeeded.intiEmptyObject;
 import static com.cars.halamotor.functions.NewFunction.getNumberOfObject;
 import static com.cars.halamotor.functions.NewFunction.handelNumberOfObject;
 import static com.cars.halamotor.functions.NewFunction.nowNumberOfObject;
@@ -71,13 +65,11 @@ public class BrowsingItems extends Fragment {
     AdapterShowFCSItems adapterShowFCSItems;
     View view;
     EditText editText;
-    SimilarNeeded similarNeeded;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_message, container, false);
-        similarNeeded = intiEmptyObject();
         inti();
         changeFont();
         getInfoFromIntent();
@@ -129,7 +121,7 @@ public class BrowsingItems extends Fragment {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         fcsItemsRecyclerView.setLayoutManager(layoutManager);
-        adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<SuggestedItem>(),getActivity(),fcsTypeStr,similarNeeded);
+        //adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<SuggestedItem>(),getActivity(),fcsTypeStr);
         fcsItemsRecyclerView.setAdapter(adapterShowFCSItems);
     }
 
@@ -143,7 +135,7 @@ public class BrowsingItems extends Fragment {
 //                fcsItemsRecyclerView.setVisibility(View.VISIBLE);
                 suggestedItemsArrayListDO.addAll(suggestedItemsArrayListTest);
                 if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
-                adapterShowFCSItems.addItems(suggestedItemsArrayListDO,similarNeeded);
+                //adapterShowFCSItems.addItems(suggestedItemsArrayListDO);
                 if (getNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size())==false) {
                     adapterShowFCSItems.addLoading();
                 } else {

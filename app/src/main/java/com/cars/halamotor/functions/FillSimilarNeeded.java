@@ -11,11 +11,7 @@ import java.util.ArrayList;
 public class FillSimilarNeeded {
 
     static double priceFromInti=2.0,priceToInti=200000000.0;
-    public static SimilarNeeded intiEmptyObject(){
-        SimilarNeeded similarNeeded =
-                 new SimilarNeeded(priceFromInti,priceToInti,"empty","empty","empty","empty","empty","empty",0);
-        return similarNeeded;
-    }
+
     public static SimilarNeeded getSimilarNeeded(ArrayList<ItemSelectedFilterModel> itemFilterArrayList
                                                 , String city, String neighborhood, Context context){
         SimilarNeeded similarNeeded=null;

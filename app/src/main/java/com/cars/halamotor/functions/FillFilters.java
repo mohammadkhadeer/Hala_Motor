@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cars.halamotor.R;
+import com.cars.halamotor.model.CategoryComp;
 import com.cars.halamotor.model.CityModel;
 import com.cars.halamotor.model.ItemFilterModel;
 import com.cars.halamotor.model.ItemSelectedFilterModel;
@@ -16,11 +17,14 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
+import static com.cars.halamotor.functions.CheckLanguage.checkLanguage;
 import static com.cars.halamotor.functions.FillCarMakeArrayListsInCarDerails.fillCarMakeArrayL;
 import static com.cars.halamotor.functions.FillCarModel.fillCarmodelFilterArrayL;
 import static com.cars.halamotor.functions.Functions.getYEAR;
 import static com.cars.halamotor.functions.Functions.splitString;
 import static com.cars.halamotor.functions.NewFunction.convertYearToEng;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
+import static com.cars.halamotor.staticFiles.StaticFiles.getCategoriesArrayL;
 
 public class FillFilters {
 
@@ -32,25 +36,18 @@ public class FillFilters {
         if (numberOfFilterSelectedNow ==0)
         {
             filterArrayL = fillCategory(context);
-//            textView.setText(context.getResources().getString(R.string.detect_category));
         }
 
         if (numberOfFilterSelectedNow ==1)
         {
+            Log.i("TAG","Filter type"+filterType.get(0).getFilterType());
+
             if (!filterType.get(0).getFilterType().equals(context.getResources().getString(R.string.exchange_car)))
             {
                 filterArrayL = fillFromPrice(context,filterType.get(0).getFilterType());
-//                textView.setText(context.getResources().getString(R.string.price_from));
-
             }else{
-//                textView.setText(context.getResources().getString(R.string.detect_car_make));
                 filterArrayL =fillCarMakeArrayL(context);
-                Collections.sort(filterArrayL, new Comparator<ItemFilterModel>() {
-                    @Override
-                    public int compare(ItemFilterModel lhs, ItemFilterModel rhs) {
-                        return lhs.getFilter().compareTo(rhs.getFilter());
-                    }
-                });
+
             }
         }
 
@@ -316,16 +313,23 @@ public class FillFilters {
     public static ArrayList<ItemFilterModel> fillCategory(Context context)
     {
         ArrayList<ItemFilterModel> categoryArrayL = new ArrayList<>();
-        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.car_for_sale),context.getResources().getString(R.string.car_for_sale_s)));
-        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.car_for_rent),context.getResources().getString(R.string.car_for_rent_s)));
-        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.exchange_car),context.getResources().getString(R.string.exchange_car_s)));
-        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.motorcycle),context.getResources().getString(R.string.motorcycle_s)));
-        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.trucks),context.getResources().getString(R.string.trucks_s)));
-        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.car_plates),context.getResources().getString(R.string.car_plates_s)));
-        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.wheels_rim),context.getResources().getString(R.string.wheels_rim_s)));
-        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.accessories),context.getResources().getString(R.string.accessories_s)));
-        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.junk_car),context.getResources().getString(R.string.junk_car_s)));
+        ArrayList<CategoryComp> categoriesArrayList = new ArrayList();
+        categoriesArrayList = getCategoriesArrayL();
 
+        for (int i = 1;i<categoriesArrayList.size();i++)
+        {
+            categoryArrayL.add(new ItemFilterModel(checkLanguage(categoriesArrayList.get(i).getName_en(),categoriesArrayList.get(i).getName_ar(),context),categoriesArrayList.get(i).getId()));
+        }
+
+//        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.car_for_sale),context.getResources().getString(R.string.car_for_sale_s)));
+//        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.car_for_rent),context.getResources().getString(R.string.car_for_rent_s)));
+//        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.exchange_car),context.getResources().getString(R.string.exchange_car_s)));
+//        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.motorcycle),context.getResources().getString(R.string.motorcycle_s)));
+//        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.trucks),context.getResources().getString(R.string.trucks_s)));
+//        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.car_plates),context.getResources().getString(R.string.car_plates_s)));
+//        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.wheels_rim),context.getResources().getString(R.string.wheels_rim_s)));
+//        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.accessories),context.getResources().getString(R.string.accessories_s)));
+//        categoryArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.junk_car),context.getResources().getString(R.string.junk_car_s)));
         return categoryArrayL;
     }
 

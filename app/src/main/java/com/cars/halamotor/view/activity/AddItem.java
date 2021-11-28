@@ -92,6 +92,7 @@ import static com.cars.halamotor.functions.Functions.getYEAR;
 import static com.cars.halamotor.functions.Functions.isNetworkAvailable;
 import static com.cars.halamotor.functions.Functions.splitString;
 import static com.cars.halamotor.presnter.UploadCCMET.postCCMET;
+import static com.cars.halamotor.presnter.UploadCCMET.postCCMET1;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getAddressInSP;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.getAreaIDInSP;
@@ -234,6 +235,7 @@ public class AddItem extends AppCompatActivity implements
 
     private void checkBeforUpload() {
         if (isNetworkAvailable(getApplicationContext())) {
+
             if (categoryCompNow != null) {
                 if (checkTitleAndDescription(getApplicationContext()) == null) {
                     if (checkTitleAndDescriptionRealOrNot(getApplicationContext()) == null) {
@@ -333,7 +335,7 @@ public class AddItem extends AppCompatActivity implements
         ,uploadCCMETObjectToServer
         ,String.valueOf(checkBurnedPrice(getApplicationContext()))
         ,carDetailsModel.getCarColor().getSetting_content_code(),carDetailsModel,categoryCompNow
-        ,getApplicationContext());
+        ,getApplicationContext(),getPhoneNumberInSP(getApplicationContext()));
 
     }
 

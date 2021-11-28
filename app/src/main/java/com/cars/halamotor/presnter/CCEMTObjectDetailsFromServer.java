@@ -64,7 +64,7 @@ public class CCEMTObjectDetailsFromServer {
         ArrayList <Attributes> attributesArrayList ;
         CCEMTModelDetails ccemtModelDetails=null;
         CreatorInfo creatorInfo1;
-        Log.w("TAG",adObj.toString());
+        //Log.w("TAG",adObj.toString());
 
         try {
             //Log.w("TAG", String.valueOf(adObj.getJSONObject("creator")));

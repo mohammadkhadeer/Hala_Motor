@@ -38,6 +38,7 @@ import static com.cars.halamotor.functions.FillNeighborhood.fillCityArrayL;
 import static com.cars.halamotor.functions.FillNeighborhood.fillNeighborhoodArrayL;
 import static com.cars.halamotor.functions.FillNeighborhood.resortNeighborhoodArrayL;
 import static com.cars.halamotor.functions.Functions.splitString;
+import static com.cars.halamotor.new_presenter.FilterItems.FilterItemsFun;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class FiltersFragment extends Fragment implements AdapterFiltersCity.PassCity
@@ -236,7 +237,8 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
     /////////////////////////////+
     @Override
     public void onFilterClicked(ItemFilterModel itemFilterModel) {
-        reVISIBLEFilter();
+        //reVISIBLEFilter();
+        //to remove word "All" from selected filter
         if (numberOfSelectedFilter==0)
         {
             selectedFilterArrayL.remove(selectedFilterArrayL.size()-1);
@@ -245,12 +247,15 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
 
         numberOfSelectedFilter =numberOfSelectedFilter+1;
 
-        itemTypeFromFilterAdapter.add(new ItemSelectedFilterModel(itemFilterModel.getFilter(),itemFilterModel.getFilterS(),itemFilterModel.getFilterS()));
+        itemTypeFromFilterAdapter.add(new ItemSelectedFilterModel(itemFilterModel.getFilter(),itemFilterModel.getFilterS(),itemFilterModel.getFilter()));
 
         selectedFilterArrayL.add(new ItemSelectedFilterModel(itemFilterModel.getFilter(),itemFilterModel.getFilterS(),itemTypeFromFilterAdapter.get(itemTypeFromFilterAdapter.size()-1).getFilterType()));
         adapterSelectedFilters.notifyDataSetChanged();
 
+        //FilterItemsFun(selectedFilterArrayL,getApplicationContext(),"empty","empty");
+
         filter.onFilterClick(itemFilterModel,itemTypeFromFilterAdapter.get(itemTypeFromFilterAdapter.size()-1).getFilterType());
+
         createFilterTowRV();
 
     }
@@ -265,6 +270,7 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
                 selectedFilterArrayL.remove(selectedFilterArrayL.size()-1);
             }
         }
+
         numberOfSelectedFilter = 5;
         selectedFilterArrayL.addAll(newSelectedFilterArrayL);
         adapterSelectedFilters.notifyDataSetChanged();
@@ -295,7 +301,7 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
             public void run() {
                 containerFilterLL.setVisibility(View.VISIBLE);
             }
-        }, 1800);
+        }, 200);
     }
 
     @Override

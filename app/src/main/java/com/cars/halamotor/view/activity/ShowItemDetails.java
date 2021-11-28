@@ -28,9 +28,11 @@ import com.cars.halamotor.model.ItemAccAndJunk;
 import com.cars.halamotor.model.ItemPlates;
 import com.cars.halamotor.model.ItemWheelsRim;
 import com.cars.halamotor.model.SimilarNeeded;
+import com.cars.halamotor.model.SuggestedItem;
 import com.cars.halamotor.presnter.FavouriteChange;
 import com.cars.halamotor.presnter.ImageClicked;
 import com.cars.halamotor.presnter.ItemModel;
+import com.cars.halamotor.presnter.RelatedAds;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentComments;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentContact;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentFollowUser;
@@ -43,16 +45,16 @@ import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentS
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.FragmentUserInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.getAccAndJunkObject;
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.getCarPlatesObject;
 import static com.cars.halamotor.fireBaseDB.GetFromFireBaseDB.getWheelsSizeObject;
-import static com.cars.halamotor.functions.FillSimilarNeeded.intiEmptyObject;
 import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.presnter.CCEMTObjectDetailsFromServer.getCCEMTObjectDetails;
 
 public class ShowItemDetails extends AppCompatActivity
-         implements FavouriteChange , ItemModel, ImageClicked {
+         implements FavouriteChange , ItemModel, ImageClicked , RelatedAds {
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -536,5 +538,10 @@ public class ShowItemDetails extends AppCompatActivity
         }else{
             finish();
         }
+    }
+
+    @Override
+    public void relatedAdsToSameUser(List<SuggestedItem> relatedAdsToSameUserList) {
+
     }
 }

@@ -6,9 +6,14 @@ import android.util.Log;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.FCSFunctions;
+import com.cars.halamotor.model.Attributes;
+import com.cars.halamotor.model.CCEMTModel;
+import com.cars.halamotor.model.CategoryComp;
+import com.cars.halamotor.model.CreatorInfo;
 import com.cars.halamotor.model.ItemSelectedFilterModel;
 import com.cars.halamotor.model.ResultFilter;
 import com.cars.halamotor.model.SuggestedItem;
+import com.cars.halamotor.new_presenter.SearchResult;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -16,11 +21,24 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.cars.halamotor.API.APIS.BASE_API;
 import static com.cars.halamotor.fireBaseDB.FireStorePaths.getDataStoreInstance;
 import static com.cars.halamotor.functions.FCSFunctions.convertCat;
+import static com.cars.halamotor.functions.Functions.checkIfAndroidVBiggerThan9;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserLanguage;
+import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class FilterFireStore {
     public static ResultFilter filterResult(ArrayList<ItemSelectedFilterModel> itemFilterArrayList
@@ -316,6 +334,412 @@ public class FilterFireStore {
 
         return resultFilter;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    public static ResultFilter filterResult2(ArrayList<ItemSelectedFilterModel> itemFilterArrayList
+            , int burnedPrice, Context context, String city, String neighborhood, int numberResult, SearchResult searchResult){
+        /*
+        I return data from server as a object coz i well needed if user have to get more
+        data same data must to base 1.CollectionReference "bath data coz we have categories"
+        2.DocumentSnapshot "array list" coz can't base DocumentSnapshot as single value
+        in fireStore so we us it as arrayList well needed if user try to get more data
+        must start return new data from end first response best way to do this send
+        last DocumentSnapshot as filter
+        3.list of object of response
+        we use a number of filter depend list to can fill a next filter
+         */
+
+//        ArrayList<ItemSelectedFilterModel> itemFilterArrayList = new ArrayList<>();
+
+        ResultFilter resultFilter = null;
+
+        int category_id= Integer.parseInt(itemFilterArrayList.get(0).getFilterS());
+
+        final String category = convertCat(itemFilterArrayList.get(0).getFilterType());
+        final String categoryBefore = itemFilterArrayList.get(0).getFilterType();
+        if (itemFilterArrayList.size() ==1)
+        {
+            if (city.equals("empty")){
+                getItems(category_id,0.0,100000000.0,context,itemFilterArrayList.get(0),searchResult);
+            }else{
+                resultFilter = getResultWithCityOrNeighborhood(category,categoryBefore,0.0,100000000.0,burnedPrice,city,neighborhood,numberResult);
+            }
+        }
+
+        if (itemFilterArrayList.size() ==2)
+        {
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.exchange_car)))
+            {
+                String carMake = itemFilterArrayList.get(1).getFilterS();
+                if (city.equals("empty")) {
+                    resultFilter = getResultMake(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake,numberResult);
+                }else{
+                    resultFilter = getResultMakeWithCityOrNeighborhood(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake,city,neighborhood,numberResult);
+                }
+            }else{
+                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
+                if (city.equals("empty")) {
+                    resultFilter = getResult(category, categoryBefore, priceFrom, 100000000.0, burnedPrice,numberResult);
+                }else{
+                    resultFilter = getResultWithCityOrNeighborhood(category, categoryBefore, priceFrom, 100000000.0, burnedPrice,city,neighborhood,numberResult);
+                }
+            }
+        }
+
+        if (itemFilterArrayList.size() ==3)
+        {
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.exchange_car)))
+            {
+                String carMake = itemFilterArrayList.get(1).getFilterS();
+                String carModel = itemFilterArrayList.get(2).getFilterS();
+                if (city.equals("empty")) {
+                    resultFilter = getResultCarModel(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake, carModel,numberResult);
+                }else{
+                    resultFilter = getResultCarModelWithCityOrNeighborhood(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake, carModel,city,neighborhood,numberResult);
+                }
+            }else {
+                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
+                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
+                if (city.equals("empty")) {
+                    resultFilter = getResult(category, categoryBefore, priceFrom, priceTo, burnedPrice,numberResult);
+                }else{
+                    resultFilter = getResultWithCityOrNeighborhood(category, categoryBefore, priceFrom, priceTo, burnedPrice,city,neighborhood,numberResult);
+                }
+            }
+        }
+
+        if(itemFilterArrayList.size()==4)
+        {
+            double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
+            double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
+
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
+            )
+            {
+                String carMake = itemFilterArrayList.get(3).getFilterS();
+                if (city.equals("empty"))
+                {
+                    resultFilter = getResultMake(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,numberResult);
+                }else{
+                    resultFilter = getResultMakeWithCityOrNeighborhood(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake,city,neighborhood,numberResult);
+                }
+            }
+
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.wheels_rim))
+            ){
+                int wheelsSize = Integer.parseInt(itemFilterArrayList.get(3).getFilterS());
+                if (city.equals("empty"))
+                {
+                    resultFilter = getWheelsSize(category,categoryBefore,priceFrom,priceTo,burnedPrice,wheelsSize,numberResult);
+                }else{
+                    resultFilter = getWheelsSizeWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,wheelsSize,city,neighborhood,numberResult);
+                }
+            }
+
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_plates))
+            ){
+                String platesCity = itemFilterArrayList.get(3).getFilterS();
+                if (city.equals("empty"))
+                {
+                    resultFilter = getPlatesCity(category,categoryBefore,priceFrom,priceTo,burnedPrice,platesCity,numberResult);
+                }else{
+                    resultFilter = getPlatesCityWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,platesCity,city,neighborhood,numberResult);
+                }
+            }
+
+        }
+
+        if(itemFilterArrayList.size()==5)
+        {
+            double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
+            double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
+
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
+            )
+            {
+                String carMake = itemFilterArrayList.get(3).getFilterS();
+                String carModel = itemFilterArrayList.get(4).getFilterS();
+                if (city.equals("empty"))
+                {
+                    resultFilter = getResultCarModel(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,numberResult);
+                }else{
+                    resultFilter = getResultCarModelWithCityOrNeighborhood(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake, carModel,city,neighborhood,numberResult);
+                }
+
+            }
+
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.wheels_rim)))
+            {
+                int wheelsSize = Integer.parseInt(itemFilterArrayList.get(3).getFilterS());
+                String wheelsType = itemFilterArrayList.get(4).getFilterS();
+                if (city.equals("empty"))
+                {
+                    resultFilter = getWheelsType(category,categoryBefore,priceFrom,priceTo,burnedPrice,wheelsSize,wheelsType,numberResult);
+                }else{
+                    resultFilter = getWheelsTypeWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,wheelsSize,wheelsType,city,neighborhood,numberResult);
+                }
+            }
+
+        }
+
+        if (itemFilterArrayList.size() ==6)
+        {
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
+            )
+            {
+                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
+                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
+                String carMake = itemFilterArrayList.get(3).getFilterS();
+                String carModel = itemFilterArrayList.get(4).getFilterS();
+                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
+
+                if (city.equals("empty"))
+                {
+                    resultFilter = getResultYear(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,numberResult);
+                }else{
+                    resultFilter = getResultYearWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,city,neighborhood,numberResult);
+                }
+            }
+
+        }
+
+        if (itemFilterArrayList.size() ==7)
+        {
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
+            )
+            {
+                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
+                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
+                String carMake = itemFilterArrayList.get(3).getFilterS();
+                String carModel = itemFilterArrayList.get(4).getFilterS();
+                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
+                String carPayment = itemFilterArrayList.get(6).getFilterS();
+
+                if (city.equals("empty")){
+                    resultFilter = getResultPayment(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,numberResult);
+                }else{
+                    resultFilter = getResultPaymentWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,city,neighborhood,numberResult);
+                }
+            }
+        }
+
+        if (itemFilterArrayList.size() ==8)
+        {
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
+            )
+            {
+                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
+                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
+                String carMake = itemFilterArrayList.get(3).getFilterS();
+                String carModel = itemFilterArrayList.get(4).getFilterS();
+                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
+                String carPayment = itemFilterArrayList.get(6).getFilterS();
+                String carCondition = itemFilterArrayList.get(7).getFilterS();
+
+                if (city.equals("empty")){
+                    resultFilter = getResultCondition(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,numberResult);
+                }else{
+                    resultFilter = getResultConditionWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,city,neighborhood,numberResult);
+                }
+            }
+        }
+
+        if (itemFilterArrayList.size() ==9)
+        {
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
+            )
+            {
+                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
+                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
+                String carMake = itemFilterArrayList.get(3).getFilterS();
+                String carModel = itemFilterArrayList.get(4).getFilterS();
+                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
+                String carPayment = itemFilterArrayList.get(6).getFilterS();
+                String carCondition = itemFilterArrayList.get(7).getFilterS();
+                String carInsuranceS = itemFilterArrayList.get(8).getFilterS();
+
+                if (city.equals("empty")){
+                    resultFilter = getResultInsurance(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,numberResult);
+                }else{
+                    resultFilter = getResultInsuranceWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,city,neighborhood,numberResult);
+                }
+            }
+        }
+
+        if (itemFilterArrayList.size() ==10)
+        {
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
+            )
+            {
+                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
+                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
+                String carMake = itemFilterArrayList.get(3).getFilterS();
+                String carModel = itemFilterArrayList.get(4).getFilterS();
+                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
+                String carPayment = itemFilterArrayList.get(6).getFilterS();
+                String carCondition = itemFilterArrayList.get(7).getFilterS();
+                String carInsuranceS = itemFilterArrayList.get(8).getFilterS();
+                String carLicensed = itemFilterArrayList.get(9).getFilterS();
+
+                if (city.equals("empty")){
+                    resultFilter = getResultLicensed(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,carLicensed,numberResult);
+                }else{
+                    resultFilter = getResultLicensedWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,carLicensed,city,neighborhood,numberResult);
+                }
+            }
+        }
+
+        if (itemFilterArrayList.size() ==11)
+        {
+            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
+                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
+            )
+            {
+                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
+                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
+                String carMake = itemFilterArrayList.get(3).getFilterS();
+                String carModel = itemFilterArrayList.get(4).getFilterS();
+                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
+                String carPayment = itemFilterArrayList.get(6).getFilterS();
+                String carCondition = itemFilterArrayList.get(7).getFilterS();
+                String carInsuranceS = itemFilterArrayList.get(8).getFilterS();
+                String carLicensed = itemFilterArrayList.get(9).getFilterS();
+                String carFuel = itemFilterArrayList.get(10).getFilterS();
+
+                if (city.equals("empty")){
+                    resultFilter = getResultFuel(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,carLicensed,carFuel,numberResult);
+                }else{
+                    resultFilter = getResultFuelWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,carLicensed,carFuel,city,neighborhood,numberResult);
+                }
+            }
+        }
+
+        return resultFilter;
+    }
+
+
+    private static void getItems(int category_id, double price_from, double price_to
+            ,Context context,ItemSelectedFilterModel itemSelectedFilterModel,SearchResult searchResult) {
+
+        if (checkIfAndroidVBiggerThan9()) {
+
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id)
+                    .method("GET", null)
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                    .addHeader("Accept-Language", getUserLanguage(context))
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                JSONObject obj,adObj;
+                JSONArray jsonArray;
+
+                try {
+                    obj = new JSONObject(response.body().string());
+                    JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                    getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    private static void getAdsList(JSONArray jsonArrayAllAds, Context context
+            ,ItemSelectedFilterModel itemSelectedFilterModel,SearchResult searchResult) {
+        //create suggested to you as object
+        JSONObject adsDetails=null,attributes=null,creator_json_info=null;
+        ArrayList <String> photosArrayList ;
+        ArrayList <Attributes> attributesArrayList ;
+        ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
+        CreatorInfo creatorInfo =null;
+        try {
+            for (int i =0;i<jsonArrayAllAds.length();i++)
+            {
+                adsDetails = jsonArrayAllAds.getJSONObject(i);
+                JSONArray jsonArrayPhotos = adsDetails.getJSONArray("photos");
+                JSONArray jsonArrayAttributes = adsDetails.getJSONArray("attributes");
+                creator_json_info = adsDetails.getJSONObject("creator");
+                creatorInfo = new CreatorInfo(
+                        creator_json_info.getString("id")
+                        ,creator_json_info.getString("name")
+                        ,creator_json_info.getString("ads_count")
+                        ,creator_json_info.getString("followers_count")
+                        ,creator_json_info.getString("following_count")
+                        ,creator_json_info.getString("type")
+                        ,creator_json_info.getString("photo")
+                );
+                photosArrayList =new ArrayList<>();
+                if (jsonArrayPhotos !=null && jsonArrayPhotos.length()>0)
+                {
+                    for (int x=0;x<jsonArrayPhotos.length();x++)
+                    {
+                        photosArrayList.add(jsonArrayPhotos.getString(x));
+                    }
+                }
+
+                attributesArrayList =new ArrayList<>();
+                for (int j=0;j<jsonArrayAttributes.length();j++)
+                {
+                    attributes =  jsonArrayAttributes.getJSONObject(j);
+                    Attributes attributesObj = new Attributes(attributes.getString("type"),attributes.getString("value"),attributes.getString("title"));
+                    attributesArrayList.add(attributesObj);
+                }
+
+                CategoryComp categoryComp = new CategoryComp(1,itemSelectedFilterModel.getFilterS(),itemSelectedFilterModel.getFilterS(),itemSelectedFilterModel.getFilterType(),itemSelectedFilterModel.getFilter(),itemSelectedFilterModel.getFilter());
+                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp,photosArrayList,attributesArrayList,creatorInfo);
+
+
+                adsArrayList.add(ccemtModel);
+
+            }
+
+            searchResult.whenGetCCEMTListSearchSuccess(adsArrayList);
+            Log.w("TAG searchResult",String.valueOf(adsArrayList.size()));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private static ResultFilter getPlatesCity(String category, final String categoryBefore, Double priceFrom, Double priceTo,int burnedPrice,String platesCity,int numberResult) {
         final List<SuggestedItem> resultItemsArrayList = new ArrayList<>();

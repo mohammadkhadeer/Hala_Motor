@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cars.halamotor.R;
+import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.CategoryComp;
 import com.cars.halamotor.model.CityModel;
 import com.cars.halamotor.model.ItemFilterModel;
@@ -129,6 +130,13 @@ public class FragmentHomeScreen extends Fragment {
         fragmentResults.onNeighborhoodCanceled(isCanceled);
     }
 
+    public void onResultCome(ArrayList<CCEMTModel> ccemtModelArrayList) {
+
+        Log.i("TAG Home fragment"," whenGetCCEMTListSearchSuccess ");
+        Log.i("TAG Home fragment"," ccemtModelArrayList size "+String.valueOf(ccemtModelArrayList.size()));
+        fragmentResults.showResult(ccemtModelArrayList);
+    }
+
     ////////////////////////+searchResult
     public void onFilterClicked(ArrayList<ItemSelectedFilterModel> newItemFilterArrayList) {
         itemFilterArrayList.addAll(newItemFilterArrayList);
@@ -145,6 +153,10 @@ public class FragmentHomeScreen extends Fragment {
 
     ////////////////////////+++++++++++++++++++
     public void onFilterClicked(ItemFilterModel itemFilterModel, String filterType) {
+
+        Log.i("TAG Home screen"," getFilterS "+itemFilterModel.getFilterS());
+        Log.i("TAG Home screen"," getFilter "+itemFilterModel.getFilter());
+
         itemFilterArrayList.add(new ItemSelectedFilterModel(itemFilterModel.getFilter(), itemFilterModel.getFilterS(), filterType));
 
         fragmentResults.onFilterClicked(itemFilterModel, filterType);

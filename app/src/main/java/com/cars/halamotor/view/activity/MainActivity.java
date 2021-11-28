@@ -36,6 +36,7 @@ import com.cars.halamotor.model.CityModel;
 import com.cars.halamotor.model.ItemFilterModel;
 import com.cars.halamotor.model.ItemSelectedFilterModel;
 import com.cars.halamotor.model.Neighborhood;
+import com.cars.halamotor.new_presenter.SearchResult;
 import com.cars.halamotor.presnter.Filter;
 import com.cars.halamotor.presnter.OnNewNotification;
 import com.cars.halamotor.presnter.PassCCEMT;
@@ -63,13 +64,12 @@ import static com.cars.halamotor.sharedPreferences.NotificationSharedPreferences
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserPhone;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOrNotFromSP;
 
-public class MainActivity extends AppCompatActivity implements Filter,FragmentSearch.FragmentSearchListener
-                                                                 {
+public class MainActivity extends AppCompatActivity implements Filter, FragmentSearch.FragmentSearchListener, SearchResult {
     private TextView appNameTV;
     DatabaseReference mDatabase;
     BottomBar bottomBar;
     EditText searchEdt;
-    RelativeLayout headRL,searchRL,bottomRL;
+    RelativeLayout headRL, searchRL, bottomRL;
 
     final FragmentHomeScreen fragmentHome = new FragmentHomeScreen();
     final Fragment fragmentMessage = new FragmentBrowsing();
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
     FragmentSearch fragmentSearch = new FragmentSearch();
     Fragment active = fragmentHome;
 
-    BottomBarTab homeBBT,messagesBBT, notificationsBBT, addItemBBT,profileBBT;
+    BottomBarTab homeBBT, messagesBBT, notificationsBBT, addItemBBT, profileBBT;
     private BottomBarTab[] bbtArr = {homeBBT, messagesBBT, notificationsBBT, addItemBBT, profileBBT};
     private String[] bbtArrStr = {"homeBBT", "messagesBBT", "notificationsBBT", "addItemBBT", "profileBBT"};
     String lastFragmentStr;
@@ -88,9 +88,9 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
     SharedPreferences sharedPreferences;
     OnNewNotification onNewNotification;
     private static final int REQUEST_SHOW_ITEM_SELECTED_DETAILS = 100;
-    int numberOfFilterSelected=0,selectedAntherFragmentButStillSelectedFilter=0,searchOnTheTop=0;
+    int numberOfFilterSelected = 0, selectedAntherFragmentButStillSelectedFilter = 0, searchOnTheTop = 0;
     InputMethodManager imm;
-    public static ArrayList<CategoryComp> categoriesArrayL  = new ArrayList<CategoryComp>();
+    public static ArrayList<CategoryComp> categoriesArrayL = new ArrayList<CategoryComp>();
 
     RelativeLayout hot_price_rl;
     ImageView shineImageView;
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
 
         statusBarColor();
         inti();
-        AddShineEffect(hot_price_rl,shineImageView);
+        AddShineEffect(hot_price_rl, shineImageView);
         getCategoriesFromIntent();
         butCategoriesListOnFragmentHome();
 
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
 
     private void intiSearchFragment() {
         bottomRL.setVisibility(View.GONE);
-        searchOnTheTop=1;
+        searchOnTheTop = 1;
         searchRL.setVisibility(View.VISIBLE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container_search, fragmentSearch)
@@ -168,9 +168,9 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 if (cs.length() != 0)
-                    Log.i("TAG","test");//makeCancelTitleIVVISIBLE();
+                    Log.i("TAG", "test");//makeCancelTitleIVVISIBLE();
                 else
-                    Log.i("TAG","test");//makeCancelTitleIVGONE();
+                    Log.i("TAG", "test");//makeCancelTitleIVGONE();
             }
 
             @Override
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         fm.beginTransaction().add(R.id.main_container, fragmentProfile, "4").hide(fragmentProfile).commit();
         fm.beginTransaction().add(R.id.main_container, fragmentNotification, "3").hide(fragmentNotification).commit();
         fm.beginTransaction().add(R.id.main_container, fragmentMessage, "2").hide(fragmentMessage).commit();
-        fm.beginTransaction().add(R.id.main_container,fragmentHome, "1").commit();
+        fm.beginTransaction().add(R.id.main_container, fragmentHome, "1").commit();
     }
 
     private void changeGeneralFontType() {
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
 
     private void inti() {
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
-        appNameTV =(TextView) findViewById(R.id.app_name_tv);
+        appNameTV = (TextView) findViewById(R.id.app_name_tv);
         searchEdt = (EditText) findViewById(R.id.searchEdt);
         headRL = (RelativeLayout) findViewById(R.id.main_activity_head);
         searchRL = (RelativeLayout) findViewById(R.id.main_activity_search_rl);
@@ -255,8 +255,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
             @Override
             public void onTabReSelected(@IdRes int tabId) {
-                if (tabId == R.id.tab_adv)
-                {
+                if (tabId == R.id.tab_adv) {
                     moveToAddItem();
                 }
             }
@@ -268,14 +267,12 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
             @Override
             public void onTabReSelected(@IdRes int tabId) {
-                if (tabId == R.id.tab_home)
-                {
+                if (tabId == R.id.tab_home) {
 //                    Toast.makeText(getBaseContext(),"numberOfFilterSelected: "+String.valueOf(numberOfFilterSelected), Toast.LENGTH_SHORT).show();
-                    if (numberOfFilterSelected !=0)
-                    {
+                    if (numberOfFilterSelected != 0) {
 //                        Toast.makeText(getBaseContext(),getResources().getString(R.string.must_login), Toast.LENGTH_SHORT).show();
                         fragmentHome.removeAllFilter();
-                    }else{
+                    } else {
                         handelHomeFragment();
                     }
                 }
@@ -295,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
     private boolean switchFragment(int tabId) {
         switch (tabId) {
             case R.id.tab_home:
-                selectedAntherFragmentButStillSelectedFilter =0;
+                selectedAntherFragmentButStillSelectedFilter = 0;
                 handelHomeFragment();
                 return true;
 
@@ -318,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
                 return true;
 
             case R.id.tab_notifications:
-                updateAllUnreadNotificationsToChecked(MainActivity.this,sharedPreferences,editor,"0");
+                updateAllUnreadNotificationsToChecked(MainActivity.this, sharedPreferences, editor, "0");
                 updateNumberUnCheckedNotifications();
                 onNewNotifications();
                 handelNotificationsFragment();
@@ -331,7 +328,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         return false;
     }
 
-    private void visibleHeadRL(){
+    private void visibleHeadRL() {
         headRL.setVisibility(View.VISIBLE);
     }
 
@@ -340,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         headRL.setVisibility(View.GONE);
         fm.beginTransaction().hide(active).show(fragmentProfile).commit();
         active = fragmentProfile;
-        lastFragmentStr= "fragmentProfile";
+        lastFragmentStr = "fragmentProfile";
     }
 
     private void handelNotificationsFragment() {
@@ -348,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         visibleHeadRL();
         fm.beginTransaction().hide(active).show(fragmentNotification).commit();
         active = fragmentNotification;
-        lastFragmentStr= "fragmentNotification";
+        lastFragmentStr = "fragmentNotification";
     }
 
     private void handelMessageFragment() {
@@ -356,13 +353,12 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         visibleHeadRL();
         fm.beginTransaction().hide(active).show(fragmentMessage).commit();
         active = fragmentMessage;
-        lastFragmentStr= "fragmentMessage";
+        lastFragmentStr = "fragmentMessage";
     }
 
     private void checkIfSelectedFilter() {
-        if (numberOfFilterSelected !=0)
-        {
-            selectedAntherFragmentButStillSelectedFilter =1;
+        if (numberOfFilterSelected != 0) {
+            selectedAntherFragmentButStillSelectedFilter = 1;
         }
     }
 
@@ -370,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         visibleHeadRL();
         fm.beginTransaction().hide(active).show(fragmentHome).commit();
         active = fragmentHome;
-        lastFragmentStr= "fragmentHome";
+        lastFragmentStr = "fragmentHome";
     }
 
     private void checkWhatIsLastFragmentAndKeepItOn() {
@@ -401,12 +397,10 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
         }
     }
 
-    private void resetOtherBBTToDefault(String bbtStr,BottomBarTab bbt) {
-        for (int i=0;i<bbtArrStr.length;i++)
-        {
-            if (!bbtArrStr[i].equals(bbtStr))
-            {
-                Log.i("TAGEQ",bbtArrStr[i]);
+    private void resetOtherBBTToDefault(String bbtStr, BottomBarTab bbt) {
+        for (int i = 0; i < bbtArrStr.length; i++) {
+            if (!bbtArrStr[i].equals(bbtStr)) {
+                Log.i("TAGEQ", bbtArrStr[i]);
                 //bbt.performClick(false);
                 //bbtArr[i].isSelected();
                 bbtArr[i].callOnClick();
@@ -416,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
 
     private void keepItPressed(BottomBarTab bbt) {
         //bbt.performClick();
-         bbt.callOnClick();
+        bbt.callOnClick();
 
     }
 
@@ -439,8 +433,8 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
             //listsMainScreenFragment.onActivityResult(requestCode, resultCode, data);
             //to update fragment must to use new object
             //we calculate mode to know if have to change UI "Update"
-            String numberOfChangeStr =data.getExtras().getString("numberOfChange");
-            int numberOfChange =Integer.parseInt(numberOfChangeStr);
+            String numberOfChangeStr = data.getExtras().getString("numberOfChange");
+            int numberOfChange = Integer.parseInt(numberOfChangeStr);
             int result = numberOfChange % 2;
 
             if (result != 0) {
@@ -451,25 +445,24 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
             }
         }
         if (requestCode == ADD_NEW_ITEM && resultCode == Activity.RESULT_OK) {
-            if (getUnreadNotificationsInSP(MainActivity.this) != null)
-            {
+            if (getUnreadNotificationsInSP(MainActivity.this) != null) {
                 int unreadNotification = Integer.parseInt(getUnreadNotificationsInSP(MainActivity.this));
                 unreadNotification = unreadNotification + 1;
-                updateNumberUnreadNotifications(MainActivity.this,sharedPreferences,editor,String.valueOf(unreadNotification));
+                updateNumberUnreadNotifications(MainActivity.this, sharedPreferences, editor, String.valueOf(unreadNotification));
                 updateNumberUnCheckedNotifications();
-            }else{
-                updateNumberUnreadNotifications(MainActivity.this,sharedPreferences,editor,String.valueOf(1));
+            } else {
+                updateNumberUnreadNotifications(MainActivity.this, sharedPreferences, editor, String.valueOf(1));
                 updateNumberUnCheckedNotifications();
             }
         }
     }
 
     ListsMainScreenFragment listsMainScreenFragment = new ListsMainScreenFragment();
+
     private void updateNumberUnCheckedNotifications() {
-        if (getUnreadNotificationsInSP(this) != null)
-        {
+        if (getUnreadNotificationsInSP(this) != null) {
             int num = Integer.parseInt(getUnreadNotificationsInSP(MainActivity.this));
-            if(num >0)
+            if (num > 0)
                 notificationsBBT.setBadgeCount(num);
             else
                 notificationsBBT.setBadgeCount(0);
@@ -479,13 +472,13 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
     ////////////////////////////////////////////////////////////////////////////
     @Override
     public void onFilterClick(ItemFilterModel filterModel, String filterType) {
-        numberOfFilterSelected =numberOfFilterSelected+1;
-        fragmentHome.onFilterClicked(filterModel,filterType);
+        numberOfFilterSelected = numberOfFilterSelected + 1;
+        fragmentHome.onFilterClicked(filterModel, filterType);
     }
 
     @Override
     public void onFilterCancel() {
-        numberOfFilterSelected =numberOfFilterSelected-1;
+        numberOfFilterSelected = numberOfFilterSelected - 1;
         fragmentHome.onFilterCanceled();
     }
 
@@ -511,44 +504,41 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
 
     @Override
     public void onBackPressed() {
-        if (lastFragmentStr.equals("fragmentHome") && searchOnTheTop ==0)
-        {
+        if (lastFragmentStr.equals("fragmentHome") && searchOnTheTop == 0) {
             //when user be press back and still in home fragment back button well remove a filter
             //from home fragment and create public method in result to update response and public
             //method in filter fragment to cancel last filter
-            if (searchOnTheTop ==1){
-                searchOnTheTop =0;
+            if (searchOnTheTop == 1) {
+                searchOnTheTop = 0;
                 searchEdt.setText("");
                 searchEdt.clearFocus();
                 searchRL.setVisibility(View.GONE);
                 bottomRL.setVisibility(View.VISIBLE);
-            }else{
-                if (numberOfFilterSelected != 0)
-                {
+            } else {
+                if (numberOfFilterSelected != 0) {
                     fragmentHome.removeLastFilter();
-                }else{
-                    if (searchOnTheTop ==1)
-                    {
-                        searchOnTheTop =0;
+                } else {
+                    if (searchOnTheTop == 1) {
+                        searchOnTheTop = 0;
                         searchEdt.setText("");
                         searchEdt.clearFocus();
                         searchRL.setVisibility(View.GONE);
                         bottomRL.setVisibility(View.VISIBLE);
 
-                    }else{
+                    } else {
                         finish();
                     }
                 }
             }
-        }else{
+        } else {
 //            Toast.makeText(getBaseContext(), "numberOfFilterSelected: " + String.valueOf(numberOfFilterSelected), Toast.LENGTH_SHORT).show();
-            if (searchOnTheTop ==1){
-                searchOnTheTop =0;
+            if (searchOnTheTop == 1) {
+                searchOnTheTop = 0;
                 searchEdt.setText("");
                 searchEdt.clearFocus();
                 searchRL.setVisibility(View.GONE);
                 bottomRL.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 handelHomeFragment();
                 bottomBar.selectTabWithId(R.id.tab_home);
             }
@@ -557,7 +547,7 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
 
     @Override
     public void onInputSearchSent(ArrayList<ItemSelectedFilterModel> itemTypeFromFilterAdapter) {
-        numberOfFilterSelected =5;
+        numberOfFilterSelected = 5;
         searchRL.setVisibility(View.GONE);
         bottomRL.setVisibility(View.VISIBLE);
         searchEdt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -573,7 +563,15 @@ public class MainActivity extends AppCompatActivity implements Filter,FragmentSe
     }
 
     public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
+    @Override
+    public void whenGetCCEMTListSearchSuccess(ArrayList<CCEMTModel> ccemtModelArrayList) {
+        fragmentHome.onResultCome(ccemtModelArrayList);
+        Log.i("TAG Main activity"," whenGetCCEMTListSearchSuccess ");
+        Log.i("TAG Main activity"," ccemtModelArrayList size "+String.valueOf(ccemtModelArrayList.size()));
+    }
+
 }

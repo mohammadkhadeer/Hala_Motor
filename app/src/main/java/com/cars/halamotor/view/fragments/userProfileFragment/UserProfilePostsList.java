@@ -47,22 +47,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cars.halamotor.algorithms.FollowingTest.checkIfFollow;
-import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
-import static com.cars.halamotor.dataBase.InsertFunctions.insertFollowingTable;
-import static com.cars.halamotor.dataBase.ReadFunction.checkIfTableFollowing;
-import static com.cars.halamotor.dataBase.ReadFunction.getFollowing;
 import static com.cars.halamotor.fireBaseDB.FireBaseDBPaths.getUserPathInServer;
-import static com.cars.halamotor.fireBaseDB.FireBaseDBPaths.insertFollower;
-import static com.cars.halamotor.fireBaseDB.FireBaseDBPaths.insertFollowing;
-import static com.cars.halamotor.fireBaseDB.FireBaseDBPaths.insertNewUser;
 import static com.cars.halamotor.fireBaseDB.FireStorePaths.getDataStoreInstance;
 import static com.cars.halamotor.functions.FCSFunctions.convertCat;
-import static com.cars.halamotor.functions.FillSimilarNeeded.intiEmptyObject;
-import static com.cars.halamotor.functions.HandelItemObjectBeforePass.getFollowingObjectFromDB;
 import static com.cars.halamotor.functions.NewFunction.handelNumberOfObject;
 import static com.cars.halamotor.functions.NewFunction.nowNumberOfObject;
-import static com.cars.halamotor.sharedPreferences.UserInfoSP.getUserInfoFromSP;
 import static com.cars.halamotor.view.adapters.adapterShowFCS.PaginationListener.PAGE_START;
 
 public class UserProfilePostsList extends Fragment {
@@ -82,7 +71,6 @@ public class UserProfilePostsList extends Fragment {
     private int totalPage = 10;
     private boolean isLastPage = false;
     private boolean isLoading = false;
-    SimilarNeeded similarNeeded;
     String userID;
     int numberOfObjectNow = 0;
 
@@ -100,7 +88,6 @@ public class UserProfilePostsList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_posts_list, container, false);
-        similarNeeded = intiEmptyObject();
         inti();
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorRed), PorterDuff.Mode.SRC_IN );
@@ -163,7 +150,7 @@ public class UserProfilePostsList extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 suggestedItemsArrayListDO.addAll(suggestedItemsArrayListTest);
                 if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
-                adapterShowFCSItems.addItems(suggestedItemsArrayListDO,similarNeeded);
+                //adapterShowFCSItems.addItems(suggestedItemsArrayListDO);
                 if (currentPage < totalPage) {
                     adapterShowFCSItems.addLoading();
                 } else {
@@ -225,7 +212,7 @@ public class UserProfilePostsList extends Fragment {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<SuggestedItem>(),getActivity(),"call",similarNeeded);
+        //adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<SuggestedItem>(),getActivity(),"call");
         recyclerView.setAdapter(adapterShowFCSItems);
         getData();
     }

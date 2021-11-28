@@ -1,5 +1,6 @@
 package com.cars.halamotor.view.fragments.fragmentInSaidHomeScreenFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.FCSFunctions;
+import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.CityModel;
 import com.cars.halamotor.model.ItemFilterModel;
 import com.cars.halamotor.model.ItemSelectedFilterModel;
@@ -24,6 +26,8 @@ import com.cars.halamotor.model.Neighborhood;
 import com.cars.halamotor.model.ResultFilter;
 import com.cars.halamotor.model.SimilarNeeded;
 import com.cars.halamotor.model.SuggestedItem;
+import com.cars.halamotor.new_presenter.SearchResult;
+import com.cars.halamotor.presnter.WheelsComp;
 import com.cars.halamotor.view.adapters.adapterShowFCS.AdapterShowFCSItems;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,11 +40,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.cars.halamotor.fireBaseDB.FilterFireStore.filterResult;
+import static com.cars.halamotor.fireBaseDB.FilterFireStore.filterResult2;
 import static com.cars.halamotor.fireBaseDB.FireStorePaths.getDataStoreInstance;
 import static com.cars.halamotor.functions.FCSFunctions.convertCat;
-import static com.cars.halamotor.functions.FillSimilarNeeded.getSimilarNeeded;
-import static com.cars.halamotor.functions.FillSimilarNeeded.intiEmptyObject;
+import static com.cars.halamotor.functions.NewFunction.getNumberOfObject;
 import static com.cars.halamotor.view.adapters.adapterShowFCS.PaginationListener.PAGE_START;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class FragmentResults extends Fragment {
 
@@ -69,13 +74,30 @@ public class FragmentResults extends Fragment {
     RelativeLayout relativeLayout;
     TextView textViewMessage;
     CardView cardViewContainerMessage;
-    SimilarNeeded similarNeeded;
+
+    SearchResult searchResult;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof SearchResult) {
+            searchResult = (SearchResult) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        searchResult = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_results, container, false);
-        similarNeeded = intiEmptyObject();
         inti();
         createRV();
 
@@ -132,8 +154,13 @@ public class FragmentResults extends Fragment {
 
     ////////////////////////+++++++++++++++++++
     public void onFilterClicked(ItemFilterModel itemFilterModel, String filterType) {
+
+        Log.i("TAG Fragment result"," getFilterS "+itemFilterModel.getFilterS());
+        Log.i("TAG Fragment result"," getFilter "+itemFilterModel.getFilter());
+
         itemFilterArrayList.add(new ItemSelectedFilterModel(itemFilterModel.getFilter()
                 ,itemFilterModel.getFilterS(),filterType));
+
         handelResult();
     }
 
@@ -152,11 +179,37 @@ public class FragmentResults extends Fragment {
     }
 
     private void handelResult() {
-        resultFilter=filterResult(itemFilterArrayList,0,getActivity(),city,neighborhoodStr,8);
-        similarNeeded = getSimilarNeeded(itemFilterArrayList,city,neighborhoodStr,getActivity());
-        reRV();
-        intiRe();
-        doApiCall(0);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                resultFilter=filterResult2(itemFilterArrayList,0,getApplicationContext(),city,neighborhoodStr,8,searchResult);
+            }
+        }, 400);
+    }
+
+    public void showResult(ArrayList<CCEMTModel> ccemtModelArrayList){
+
+        Log.i("TAG result fragment"," whenGetCCEMTListSearchSuccess ");
+        Log.i("TAG result fragment"," ccemtModelArrayList size "+String.valueOf(ccemtModelArrayList.size()));
+        createRV();
+        //reRV();
+        //intiRe();
+        doApiCall(ccemtModelArrayList);
+    }
+
+    ArrayList<CCEMTModel> suggestedItemsArrayListDO = new ArrayList<>();
+    ArrayList<CCEMTModel> suggestedItemsArrayListTest = new ArrayList<>();
+    private void doApiCall(ArrayList<CCEMTModel> ccemtModelArrayList) {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+
+        suggestedItemsArrayListDO = new ArrayList<>();
+        ccemtModelArrayList.addAll(suggestedItemsArrayListDO);
+
+        if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
+            adapterShowFCSItems.addItems(ccemtModelArrayList);
+
+        isLoading = false;
     }
 
     private void reRV() {
@@ -201,7 +254,7 @@ public class FragmentResults extends Fragment {
             isLoading = true;
             currentPage++;
             getData();
-            doApiCall(1);
+            //doApiCall(1);
         }
         controler =1;
         handelControler();
@@ -218,55 +271,6 @@ public class FragmentResults extends Fragment {
         }, 2200);
     }
 
-    private void doApiCall(final int t) {
-        resultItemsArrayList = new ArrayList<>();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                recyclerView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-                //set t number to check if this first filter if yes set data else clean old data and load new
-                if (t ==1)
-                {
-                    //case load more
-                    resultItemsArrayList.addAll(resultItemsArrayListCont);
-                    if (resultItemsArrayListCont.size() ==0)
-                    {
-                        messageNoResult(getActivity().getResources().getString(R.string.no_more_result));
-                    }else{
-                        if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
-                        adapterShowFCSItems.addItems(resultItemsArrayList,similarNeeded);
-                        if (currentPage < totalPage) {
-                            adapterShowFCSItems.addLoading();
-                        } else {
-                            isLastPage = true;
-                        }
-                        isLoading = false;
-                    }
-                }else{
-                    //case get response
-                    if (resultItemsArrayListCont.size() ==0)
-                    {
-                        createRV();
-                        messageNoResult(getActivity().getResources().getString(R.string.no_result));
-                    }else{
-                        createRV();
-                        currentPage = PAGE_START;
-                        resultItemsArrayList.addAll(resultItemsArrayListCont);
-                        if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
-                        adapterShowFCSItems.addItems(resultItemsArrayList,similarNeeded);
-                        if (currentPage < totalPage) {
-                            adapterShowFCSItems.addLoading();
-                        } else {
-                            isLastPage = true;
-                        }
-                        isLoading = false;
-                    }
-                }
-
-            }
-        }, 2100);
-    }
 
     private void messageNoResult(String message) {
         cardViewContainerMessage.setVisibility(View.VISIBLE);
@@ -335,7 +339,7 @@ public class FragmentResults extends Fragment {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<SuggestedItem>(),getActivity(),"search",similarNeeded);
+        adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<CCEMTModel>(),getActivity(),"search");
         recyclerView.setAdapter(adapterShowFCSItems);
     }
 

@@ -22,6 +22,14 @@ public class LoginAndUpdateProfile {
                                                 String userToken, String photo, String phone,Login login)
     {
         JSONObject obj = null;
+        Log.i("TAG","name: "+name);
+        Log.i("TAG","email: "+email);
+        Log.i("TAG","password: "+password);
+        Log.i("TAG","platform: "+platform);
+        Log.i("TAG","platform_id: "+platform_id);
+        Log.i("TAG","platform_token: "+userToken);
+        Log.i("TAG","photo: "+photo);
+        Log.i("TAG","phone: "+phone);
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)

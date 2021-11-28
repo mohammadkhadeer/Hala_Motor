@@ -13,6 +13,8 @@ public class CCEMTModel implements Parcelable{
     ArrayList <Attributes> attributesArrayList;
     CreatorInfo creatorInfo;
 
+    public CCEMTModel(){}
+
     public CCEMTModel(String ad_id, String ad_title, String ad_description, String ad_price, String ad_phone, String ad_time_post, CategoryComp categoryComp, ArrayList<String> photosArrayList, ArrayList<Attributes> attributesArrayList, CreatorInfo creatorInfo) {
         this.ad_id = ad_id;
         this.ad_title = ad_title;

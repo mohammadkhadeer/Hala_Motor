@@ -19,6 +19,8 @@ import com.cars.halamotor.functions.Functions;
 import com.cars.halamotor.model.SimilarNeeded;
 import com.cars.halamotor.model.SuggestedItem;
 import com.cars.halamotor.model.UserItem;
+import com.cars.halamotor.presnter.ItemModel;
+import com.cars.halamotor.presnter.RelatedAds;
 import com.cars.halamotor.view.adapters.adapterShowItemDetails.AdapterUserItemLoading;
 import com.cars.halamotor.view.adapters.userAds.AdapterShowUserItems;
 import com.cars.halamotor.utils.PaginationListenerUser;
@@ -33,14 +35,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.cars.halamotor.fireBaseDB.FireBaseDBPaths.getUserPathInServer;
-import static com.cars.halamotor.fireBaseDB.FireStorePaths.getDataStoreInstance;
-import static com.cars.halamotor.functions.FCSFunctions.convertCat;
-import static com.cars.halamotor.functions.FillSimilarNeeded.intiEmptyObject;
-import static com.cars.halamotor.functions.NewFunction.handelNumberOfObject;
-import static com.cars.halamotor.functions.NewFunction.nowNumberOfObject;
+import static com.cars.halamotor.presnter.RelatedAdToSameCreator.getRelatedAds;
 
-public class FragmentUserAds extends Fragment {
+public class FragmentUserAds extends Fragment implements RelatedAds {
 
     RecyclerView recyclerView,recyclerViewLoading;
     TextView textView;
@@ -49,31 +46,35 @@ public class FragmentUserAds extends Fragment {
     public List<SuggestedItem> suggestedItemsArrayListDO;
     public FragmentUserAds(){}
 
-    String userID,userName;
+    String user_id,user_type,user_name;
     View view;
 
-    public static final int PAGE_START = 1;
-    private int currentPage = PAGE_START;
-    private boolean isLastPage = false;
-    private int totalPage = 10;
-    private boolean isLoading = false;
-    int itemCount = 0,itemNotActive=0;
-    SimilarNeeded similarNeeded;
-    int numberOfObjectNow = 0;
     LinearLayoutManager mLayoutManager;
 
     AdapterShowUserItems adapterShowUserItems;
     AdapterUserItemLoading adapterUserItemLoading;
     RecyclerView.LayoutManager layoutManagerLoading;
+    RelatedAds relatedAds;
 
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
-            userID = getArguments().getString("userID");
-            userName = getArguments().getString("userName");
+            user_id = getArguments().getString("user_id");
+            user_type = getArguments().getString("user_type");
+            user_name = getArguments().getString("user_name");
         }
+        Log.i("TAG user_id: ",user_id);
+        Log.i("TAG user_type: ",user_type);
+        Log.i("TAG user_name: ",user_name);
         super.onAttach(context);
-        similarNeeded = intiEmptyObject();
+
+        if (context instanceof RelatedAds) {
+            relatedAds = (RelatedAds) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+
     }
 
     @Override
@@ -82,8 +83,15 @@ public class FragmentUserAds extends Fragment {
         view = inflater.inflate(R.layout.fragment_user_ads, container, false);
         inti();
         changeFont();
-        getUserItemInfoList();
-        timer();
+        //timer();
+
+        fillTextView();
+
+        getRelatedAds(getActivity(),user_id,user_type,relatedAds);
+
+        createLoadingRV();
+        //createRV();
+
         return view;
     }
 
@@ -121,112 +129,111 @@ public class FragmentUserAds extends Fragment {
             {
                 //if user just have one active item and not hot price well show nothing
             }else{
-                fillTextView();
-                createLoadingRV();
-                createRV();
-                actionListenerToRV();
+
+                //actionListenerToRV();
             }
         }
     }
 
     private void fillTextView() {
-        String text = userName+" "+getActivity().getResources().getString(R.string.user_ads);
+        String text = user_name+" "+getActivity().getResources().getString(R.string.user_ads);
         textView.setText(text);
     }
 
 
-    private void actionListenerToRV() {
-        recyclerView.addOnScrollListener(new PaginationListenerUser(mLayoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
-                isLoading = true;
-                currentPage++;
-                getData();
-            }
+//    private void actionListenerToRV() {
+//        recyclerView.addOnScrollListener(new PaginationListenerUser(mLayoutManager) {
+//            @Override
+//            protected void loadMoreItems() {
+//                numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
+//                isLoading = true;
+//                currentPage++;
+//                getData();
+//            }
+//
+//            @Override
+//            public boolean isLastPage() {
+//                return isLastPage;
+//            }
+//
+//            @Override
+//            public boolean isLoading() {
+//                return isLoading;
+//            }
+//        });
+//    }
 
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        });
-    }
     private void createRV() {
-        adapterShowUserItems = new AdapterShowUserItems(new ArrayList<SuggestedItem>(),getActivity(),"call",similarNeeded);
+        adapterShowUserItems = new AdapterShowUserItems(new ArrayList<SuggestedItem>(),getActivity(),"call");
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapterShowUserItems);
-        getData();
+        //getData();
     }
-    int loopStart=0;
-    private void getData() {
-        final List<SuggestedItem> fcsItemsArrayList = new ArrayList<>();
-        suggestedItemsArrayListTest = new ArrayList<>();
+//    int loopStart=0;
+//    private void getData() {
+//        final List<SuggestedItem> fcsItemsArrayList = new ArrayList<>();
+//        suggestedItemsArrayListTest = new ArrayList<>();
+//
+//        int numberOfObject = nowNumberOfObject(numberOfObjectNow,itemIDsArrayL.size());
+//        if (numberOfObject!=1000) {
+//            for (int i = 0; i < numberOfObject; i++) {
+//                loopStart++;
+//                int xx=itemIDsArrayL.size()-2;
+//                if (loopStart < xx)
+//                {
+//                    final String category = convertCat(itemIDsArrayL.get(loopStart).getCategoryS());
+//                    final String categoryBefore = itemIDsArrayL.get(loopStart).getCategoryS();
+//                    DocumentReference mRef = null;
+//                    mRef = getDataStoreInstance().collection(category)
+//                            .document(itemIDsArrayL.get(loopStart).getItemID());
+//                    mRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                DocumentSnapshot document = task.getResult();
+//                                if (document.exists()) {
+//                                    Long itemBurnedPrice = (Long) document.getLong("burnedPrice");
+//                                    String itemActiveOrNotT = (String) document.getString("activeOrNotS");
+//                                    fcsItemsArrayList.add(FCSFunctions.handelNumberOfObject(document, categoryBefore));
+//                                }
+//                            }
+//                        }
+//                    });
+//                }
+//            }
+//        }
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                suggestedItemsArrayListTest.addAll(fcsItemsArrayList);
+//                doApiCall();
+//            }
+//        }, 3000);
+//    }
 
-        int numberOfObject = nowNumberOfObject(numberOfObjectNow,itemIDsArrayL.size());
-        if (numberOfObject!=1000) {
-            for (int i = 0; i < numberOfObject; i++) {
-                loopStart++;
-                int xx=itemIDsArrayL.size()-2;
-                if (loopStart < xx)
-                {
-                    final String category = convertCat(itemIDsArrayL.get(loopStart).getCategoryS());
-                    final String categoryBefore = itemIDsArrayL.get(loopStart).getCategoryS();
-                    DocumentReference mRef = null;
-                    mRef = getDataStoreInstance().collection(category)
-                            .document(itemIDsArrayL.get(loopStart).getItemID());
-                    mRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    Long itemBurnedPrice = (Long) document.getLong("burnedPrice");
-                                    String itemActiveOrNotT = (String) document.getString("activeOrNotS");
-                                    fcsItemsArrayList.add(FCSFunctions.handelNumberOfObject(document, categoryBefore));
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                suggestedItemsArrayListTest.addAll(fcsItemsArrayList);
-                doApiCall();
-            }
-        }, 3000);
-    }
-
-    private void doApiCall() {
-        suggestedItemsArrayListDO = new ArrayList<>();
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                recyclerViewLoading.setVisibility(View.GONE);
-                suggestedItemsArrayListDO.addAll(suggestedItemsArrayListTest);
-                if (currentPage != PAGE_START) adapterShowUserItems.removeLoading();
-                adapterShowUserItems.addItems(suggestedItemsArrayListDO,similarNeeded);
-                if (currentPage < totalPage) {
-                    adapterShowUserItems.addLoading();
-                } else {
-                    isLastPage = true;
-                }
-                isLoading = false;
-            }
-        }, 100);
-    }
+//    private void doApiCall() {
+//        suggestedItemsArrayListDO = new ArrayList<>();
+//        new Handler().postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                recyclerViewLoading.setVisibility(View.GONE);
+//                suggestedItemsArrayListDO.addAll(suggestedItemsArrayListTest);
+//                if (currentPage != PAGE_START) adapterShowUserItems.removeLoading();
+//                adapterShowUserItems.addItems(suggestedItemsArrayListDO,similarNeeded);
+//                if (currentPage < totalPage) {
+//                    adapterShowUserItems.addLoading();
+//                } else {
+//                    isLastPage = true;
+//                }
+//                isLoading = false;
+//            }
+//        }, 100);
+//    }
 
     private void inti() {
         recyclerView = (RecyclerView) view.findViewById(R.id.mRecyclerView);
@@ -234,23 +241,29 @@ public class FragmentUserAds extends Fragment {
         textView = (TextView) view.findViewById(R.id.fragment_user_ads_more_ads);
     }
 
-    private void getUserItemInfoList() {
-        itemIDsArrayL = new ArrayList<>();
-        getUserPathInServer(userID)
-                .child("usersAds")
-                .limitToFirst(500)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                            UserItem userItem = dataSnapshot1.getValue(UserItem.class);
-                            itemIDsArrayL.add(userItem);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                         Log.i("TAG ERROR", databaseError.toString());
-                    }
-                });
+    @Override
+    public void relatedAdsToSameUser(List<SuggestedItem> relatedAdsToSameUserList) {
+        Log.i("TAG InFragment: ","T");
     }
+
+//    private void getUserItemInfoList() {
+//        itemIDsArrayL = new ArrayList<>();
+//        getUserPathInServer(userID)
+//                .child("usersAds")
+//                .limitToFirst(500)
+//                .addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
+//                            UserItem userItem = dataSnapshot1.getValue(UserItem.class);
+//                            itemIDsArrayL.add(userItem);
+//                        }
+//                    }
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//                         Log.i("TAG ERROR", databaseError.toString());
+//                    }
+//                });
+//    }
+
 }

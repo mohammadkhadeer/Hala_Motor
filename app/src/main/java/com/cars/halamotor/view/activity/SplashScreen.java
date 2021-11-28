@@ -63,6 +63,7 @@ import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserEmail;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserName;
 import static com.cars.halamotor.sharedPreferences.PersonalSP.getUserTokenFromServer;
 import static com.cars.halamotor.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOnServerSP;
+import static com.cars.halamotor.staticFiles.StaticFiles.setCategoriesArrayL;
 
 public class SplashScreen extends AppCompatActivity implements CountryCitesAndAreas, UpdateProfile, CategoriesPresenter {
 
@@ -92,9 +93,12 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         myDB = getDataBaseInstance(getApplicationContext());
         addWelcomeNotifications();
 
+        //getFBKey();
+
         init();
         changeFont();
         intiPersenters();
+
 
         //get all cites and area just run one time when open app first time
         getCitesAndAreasAndCarsSetting();
@@ -125,6 +129,25 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
             loginCheck();
         }
 
+    }
+
+    private void getFBKey() {
+        Log.d("TAG", "getFBKey");
+
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.cars.halamotor",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("TAG KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        }
+        catch (PackageManager.NameNotFoundException e) {
+        }
+        catch (NoSuchAlgorithmException e) {
+        }
     }
 
     private void getCitesAndAreasAndCarsSetting() {
@@ -316,6 +339,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
 
             @Override
             public void run() {
+                setCategoriesArrayL(categoriesArrayL);
                 Intent intent = new Intent(SplashScreen.this, MainActivity.class);
                 intent.putExtra("categories",categoriesArrayL);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
