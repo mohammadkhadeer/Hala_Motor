@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.FCSFunctions;
 import com.cars.halamotor.functions.Functions;
+import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.SimilarNeeded;
 import com.cars.halamotor.model.SuggestedItem;
 import com.cars.halamotor.model.UserItem;
@@ -164,7 +165,7 @@ public class FragmentUserAds extends Fragment implements RelatedAds {
 //    }
 
     private void createRV() {
-        adapterShowUserItems = new AdapterShowUserItems(new ArrayList<SuggestedItem>(),getActivity(),"call");
+        adapterShowUserItems = new AdapterShowUserItems(new ArrayList<CCEMTModel>(),getActivity(),"call");
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);

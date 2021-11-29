@@ -11,12 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.cars.halamotor.R;
 import com.cars.halamotor.dataBase.DBHelper;
+import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.SimilarNeeded;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.userAds.FragmentSuggestedAds;
 import com.cars.halamotor.view.fragments.fragmentInSaidShowItemDetails.userAds.FragmentUserAds;
 
 import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor.functions.Functions.replace;
+
+import java.util.ArrayList;
 
 public class FragmentSimilarItems extends Fragment {
 
@@ -51,8 +54,8 @@ public class FragmentSimilarItems extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_item_selected_suggested, container, false);
-        intiUserAds();
-        //intiSuggestedAds();
+        //intiUserAds();
+        intiSuggestedAds();
         return view;
     }
 
@@ -92,6 +95,10 @@ public class FragmentSimilarItems extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         getDataBaseInstance(getActivity()).deleteSimilarAds();
+    }
+
+    public void recivedARelativeRe(ArrayList<CCEMTModel> ccemtModelArrayList){
+        fragmentSuggestedAds.handleResult(ccemtModelArrayList);
     }
 
 }

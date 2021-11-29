@@ -29,6 +29,8 @@ import com.cars.halamotor.model.ItemPlates;
 import com.cars.halamotor.model.ItemWheelsRim;
 import com.cars.halamotor.model.SimilarNeeded;
 import com.cars.halamotor.model.SuggestedItem;
+import com.cars.halamotor.new_presenter.RelatedAdToSameAd;
+import com.cars.halamotor.new_presenter.RelativeResult;
 import com.cars.halamotor.presnter.FavouriteChange;
 import com.cars.halamotor.presnter.ImageClicked;
 import com.cars.halamotor.presnter.ItemModel;
@@ -54,7 +56,7 @@ import static com.cars.halamotor.functions.Functions.setLocale;
 import static com.cars.halamotor.presnter.CCEMTObjectDetailsFromServer.getCCEMTObjectDetails;
 
 public class ShowItemDetails extends AppCompatActivity
-         implements FavouriteChange , ItemModel, ImageClicked , RelatedAds {
+         implements FavouriteChange , ItemModel, ImageClicked , RelatedAds, RelativeResult {
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -448,10 +450,7 @@ public class ShowItemDetails extends AppCompatActivity
     @Override
     public void onReceiveWheelsRimObject(ItemWheelsRim wheelsRim) {
         wheelsRimModel = wheelsRim;
-        Log.i("TAG","Item Show FCS: category: "+ categoryStr);
 
-        Log.i("TAG","Item Show FCS: stu"+ "stu");
-        Log.i("TAG","Item Show FCS: itemID: "+ itemIDStr);
 
         String date = String.valueOf(wheelsRim.getDayDate())+"/"+String.valueOf(wheelsRim.getMonthDate())+"/"+String.valueOf(wheelsRim.getYearDate());
 //        intiValues(wheelsRim.getUserName(),wheelsRim.getUserImage(),wheelsRim.getItemName()
@@ -543,5 +542,10 @@ public class ShowItemDetails extends AppCompatActivity
     @Override
     public void relatedAdsToSameUser(List<SuggestedItem> relatedAdsToSameUserList) {
 
+    }
+
+    @Override
+    public void whenGetCCEMTListSearchSuccess(ArrayList<CCEMTModel> ccemtModelArrayList) {
+        fragmentSuggestedAntherItems.recivedARelativeRe(ccemtModelArrayList);
     }
 }

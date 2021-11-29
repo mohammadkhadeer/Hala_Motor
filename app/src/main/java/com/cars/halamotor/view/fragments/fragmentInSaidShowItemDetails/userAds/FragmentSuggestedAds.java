@@ -16,11 +16,14 @@ import android.widget.TextView;
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.FCSFunctions;
 import com.cars.halamotor.functions.Functions;
+import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.ItemSelectedFilterModel;
 import com.cars.halamotor.model.ResultFilter;
 import com.cars.halamotor.model.SimilarAdsComp;
 import com.cars.halamotor.model.SimilarNeeded;
 import com.cars.halamotor.model.SuggestedItem;
+import com.cars.halamotor.new_presenter.RelativeResult;
+import com.cars.halamotor.new_presenter.SearchResult;
 import com.cars.halamotor.utils.PaginationListenerUser;
 import com.cars.halamotor.view.adapters.adapterShowItemDetails.AdapterUserItemLoading;
 import com.cars.halamotor.view.adapters.userAds.AdapterShowUserItems;
@@ -40,11 +43,14 @@ import java.util.List;
 
 import static com.cars.halamotor.algorithms.RebuildItemFilter.rebuildItemFilter;
 import static com.cars.halamotor.fireBaseDB.FilterFireStore.filterResult;
+import static com.cars.halamotor.fireBaseDB.FilterFireStore.filterResult2;
 import static com.cars.halamotor.fireBaseDB.FireStorePaths.getDataStoreInstance;
 import static com.cars.halamotor.functions.FCSFunctions.convertCat;
 import static com.cars.halamotor.functions.NewFunction.handelNumberOfObject;
 import static com.cars.halamotor.functions.NewFunction.nowNumberOfObject;
+import static com.cars.halamotor.new_presenter.RelatedAdToSameAd.getRelatedAds;
 import static com.cars.halamotor.view.adapters.adapterShowFCS.PaginationListener.PAGE_START;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class FragmentSuggestedAds extends Fragment {
 
@@ -53,11 +59,9 @@ public class FragmentSuggestedAds extends Fragment {
     public FragmentSuggestedAds(){}
 
     View view;
-    SimilarNeeded similarNeeded;
     AdapterUserItemLoading adapterUserItemLoading;
     RecyclerView.LayoutManager layoutManagerLoading;
     ArrayList<ItemSelectedFilterModel> itemFilterArrayList ;
-    SimilarAdsComp similarAdsComp;
     String city,neighborhood;
     String category,itemId;
     ResultFilter resultFilter = null;
@@ -67,6 +71,7 @@ public class FragmentSuggestedAds extends Fragment {
     List<SuggestedItem> fcsItemsArrayList = new ArrayList<>();
 
     DocumentSnapshot lastVisible;
+    AdapterShowUserItems adapterShowUserItems;
 
     private int currentPage = PAGE_START;
     private int totalPage = 10;
@@ -74,15 +79,29 @@ public class FragmentSuggestedAds extends Fragment {
     private boolean isLoading = false;
     AdapterSuggestedItems adapterSuggestedItems;
     LinearLayoutManager mLayoutManager;
+    RelativeResult relativeResult;
 
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
             category = getArguments().getString("category");
             itemId = getArguments().getString("itemID");
-            similarNeeded = (SimilarNeeded) getArguments().getParcelable("similarNeeded");
         }
         super.onAttach(context);
+
+        if (context instanceof RelativeResult) {
+            relativeResult = (RelativeResult) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        relativeResult = null;
     }
 
     @Override
@@ -92,160 +111,56 @@ public class FragmentSuggestedAds extends Fragment {
         inti();
         changeFont();
         createLoadingRV();
-        createRV();
-        actionListenerToRV();
+        getRelatedAds(getApplicationContext(),itemId,relativeResult);
         return view;
     }
+    ArrayList<CCEMTModel> suggestedItemsArrayListDO = new ArrayList<>();
 
-    private void actionListenerToRV() {
-        recyclerView.addOnScrollListener(new PaginationListenerUser(mLayoutManager) {
+    public void handleResult(final ArrayList<CCEMTModel> ccemtModelArrayList){
+        new Handler().postDelayed(new Runnable() {
             @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                getData();
-            }
+            public void run() {
+                Log.i("TAG",String.valueOf(ccemtModelArrayList.size()));
+                recyclerViewLoading.setVisibility(View.GONE);
+                createRV();
+                setData(ccemtModelArrayList);
 
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
+                //resultFilter=filterResult2(itemFilterArrayList,0,getApplicationContext(),city,neighborhoodStr,8,searchResult);
             }
+        }, 400);
+    }
 
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        });
+    private void setData(ArrayList<CCEMTModel> ccemtModelArrayList) {
+
+        suggestedItemsArrayListDO = new ArrayList<>();
+        ccemtModelArrayList.addAll(suggestedItemsArrayListDO);
+
+        if (currentPage != PAGE_START) adapterShowUserItems.removeLoading();
+        adapterShowUserItems.addItems(ccemtModelArrayList);
+
+        isLoading = false;
+
+
+        suggestedItemsArrayListDO.addAll(ccemtModelArrayList);
+        if (currentPage != PAGE_START) adapterShowUserItems.removeLoading();
+        adapterShowUserItems.addItems(suggestedItemsArrayListDO);
+        if (currentPage < totalPage) {
+            adapterShowUserItems.addLoading();
+        } else {
+            isLastPage = true;
+        }
+        isLoading = false;
     }
 
     private void createRV() {
-        adapterSuggestedItems = new AdapterSuggestedItems(new ArrayList<SuggestedItem>(),getActivity(),"call",similarNeeded);
+        adapterShowUserItems = new AdapterShowUserItems(new ArrayList<CCEMTModel>(),getActivity(),"call");
         recyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setAdapter(adapterSuggestedItems);
-        handelResult();
+        recyclerView.setAdapter(adapterShowUserItems);
+        //getData();
     }
-
-    private void handelResult() {
-        itemFilterArrayList = new ArrayList<ItemSelectedFilterModel>();
-        similarAdsComp = rebuildItemFilter(similarNeeded,category,getActivity());
-        itemFilterArrayList = similarAdsComp.getItemFilterArrayList();
-        city =similarAdsComp.getCityS();
-        neighborhood = similarAdsComp.getNeighborhoodS();
-        resultFilter=filterResult(itemFilterArrayList,0,getActivity(),city,neighborhood,9);
-        intiRe();
-    }
-
-    private void intiRe() {
-        resultItemsArrayListCont = new ArrayList<>();
-        resultItemsArrayListCont = resultFilter.getResultItemsArrayList();
-        doApiCall(0);
-    }
-
-    private void doApiCall(final int t) {
-        resultItemsArrayList = new ArrayList<>();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerViewLoading.setVisibility(View.GONE);
-                //set t number to check if this first filter if yes set data else clean old data and load new
-                if (t ==1)
-                {
-                    //case load more
-                    resultItemsArrayList.addAll(resultItemsArrayListCont);
-                    if (currentPage != PAGE_START) adapterSuggestedItems.removeLoading();
-                    adapterSuggestedItems.addItems(resultItemsArrayList,similarNeeded);
-                    if (currentPage < totalPage) {
-                        adapterSuggestedItems.addLoading();
-                    } else {
-                        isLastPage = true;
-                    }
-                    isLoading = false;
-                }else{
-                    //case get response
-                    currentPage = PAGE_START;
-                    resultItemsArrayList.addAll(resultItemsArrayListCont);
-                    resultItemsArrayList = getResultWithoutSameAds(resultItemsArrayList);
-                    if (currentPage != PAGE_START) adapterSuggestedItems.removeLoading();
-                    adapterSuggestedItems.addItems(resultItemsArrayList,similarNeeded);
-                    if (currentPage < totalPage) {
-                        adapterSuggestedItems.addLoading();
-                    } else {
-                        isLastPage = true;
-                    }
-                    isLoading = false;
-
-                }
-
-            }
-        }, 2100);
-    }
-
-    private List<SuggestedItem> getResultWithoutSameAds(List<SuggestedItem> resultItemsArray) {
-        for (int i=0;i<resultItemsArray.size();i++)
-        {
-            if (resultItemsArray.get(i).getItemIdInServer().equals(itemId))
-            {
-                resultItemsArray.remove(i);
-            }
-        }
-        return resultItemsArray;
-    }
-
-    private void getData() {
-        fcsItemsArrayList = new ArrayList<>();
-        final String category = itemFilterArrayList.get(0).getFilterType();
-        final String categoryAfter = convertCat(category);
-
-        if(resultItemsArrayListCont.size() !=0)
-        {
-            resultItemsArrayListCont = new ArrayList<>();
-            int x= currentPage-1;
-            if (x == PAGE_START)
-                lastVisible = resultFilter.getDocumentSnapshotsArrayL().get(resultFilter.getDocumentSnapshotsArrayL().size()-1);
-
-//        if (lastVisible == null)
-//        {
-//            Log.i("TAG","lastVisible: "+"Null");
-//        }else{
-//            Log.i("TAG","lastVisible: "+lastVisible);
-//        }
-            CollectionReference mRef = getDataStoreInstance().collection(categoryAfter);
-            mRef.limit(8)
-                    .startAfter(lastVisible)
-                    .whereEqualTo("activeOrNotS", "1")
-                    .whereEqualTo("burnedPrice",0 )
-                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                        for (QueryDocumentSnapshot documentSnapshots : queryDocumentSnapshots) {
-//                                                            Log.i("LoadMore", "New Object " + documentSnapshots);
-                                                            fcsItemsArrayList.add(FCSFunctions.handelNumberOfObject(documentSnapshots,category));
-                                                            lastVisible = documentSnapshots;
-                                                        }
-                                                    }
-                                                }
-            ).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("ERROR fireStore", e.toString());
-                }
-            });
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    resultItemsArrayListCont.addAll(fcsItemsArrayList);
-                    doApiCall(1);
-                }
-            }, 2000);
-        }
-
-    }
-
 
     private void changeFont() {
         textView.setTypeface(Functions.changeFontGeneral(getActivity()));

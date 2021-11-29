@@ -20,6 +20,7 @@
         <FrameLayout
             android:id="@+id/container_fragment_user_ads"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content" />
 
         <FrameLayout

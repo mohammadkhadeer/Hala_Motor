@@ -179,6 +179,16 @@ public class FragmentResults extends Fragment {
     }
 
     private void handelResult() {
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+                hidMessageNoResult();
+            }
+        }, 50);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -198,7 +208,6 @@ public class FragmentResults extends Fragment {
     }
 
     ArrayList<CCEMTModel> suggestedItemsArrayListDO = new ArrayList<>();
-    ArrayList<CCEMTModel> suggestedItemsArrayListTest = new ArrayList<>();
     private void doApiCall(ArrayList<CCEMTModel> ccemtModelArrayList) {
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);

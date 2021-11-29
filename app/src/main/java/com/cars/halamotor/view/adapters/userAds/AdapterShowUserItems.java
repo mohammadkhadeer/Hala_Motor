@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.cars.halamotor.R;
 import com.cars.halamotor.functions.Functions;
+import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.SimilarNeeded;
 import com.cars.halamotor.model.SuggestedItem;
 import com.cars.halamotor.permission.CheckPermission;
@@ -47,11 +48,11 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
   private static final int VIEW_TYPE_NORMAL = 1;
   private boolean isLoaderVisible = false;
 
-  private List<SuggestedItem> suggestedItemsList;
+  private List<CCEMTModel> suggestedItemsList;
   Context context;
   String comeFrom;
 
-  public AdapterShowUserItems(List<SuggestedItem> postItems, Context context, String comeFrom) {
+  public AdapterShowUserItems(List<CCEMTModel> postItems, Context context, String comeFrom) {
     this.suggestedItemsList = postItems;
     this.context = context;
     this.comeFrom = comeFrom;
@@ -100,14 +101,14 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
     return suggestedItemsList == null ? 0 : suggestedItemsList.size();
   }
 
-  public void addItems(List<SuggestedItem> postItems) {
+  public void addItems(List<CCEMTModel> postItems) {
     suggestedItemsList.addAll(postItems);
     notifyDataSetChanged();
   }
 
   public void addLoading() {
     isLoaderVisible = true;
-    suggestedItemsList.add(new SuggestedItem());
+    suggestedItemsList.add(new CCEMTModel());
     notifyItemInserted(suggestedItemsList.size() - 1);
   }
 
@@ -115,7 +116,7 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
     isLoaderVisible = false;
     ////////////here
     int position = suggestedItemsList.size() - 1;
-    SuggestedItem item = getItem(position);
+    CCEMTModel item = getItem(position);
     if (item != null) {
       suggestedItemsList.remove(position);
       notifyItemRemoved(position);
@@ -127,7 +128,7 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
     notifyDataSetChanged();
   }
 
-  SuggestedItem getItem(int position) {
+  CCEMTModel getItem(int position) {
     return suggestedItemsList.get(position);
   }
 
@@ -182,29 +183,20 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
     public void onBind(int position) {
       super.onBind(position);
 
-      if (getObject(position).getItemActiveOrNot().equals("1")
-          && getObject(position).getItemBurnedPrice().equals("0")) {
-        messageInfo.setVisibility(View.GONE);
-        itemInfoRL.setVisibility(View.VISIBLE);
-        personInfoRL.setVisibility(View.VISIBLE);
-        makeAllTextViewVISIBLE(text1, text2, text3, text4, itemCityTV, text2RL, text3RL, text4RL, itemCityRL);
-        fillImage(itemImage, userImage, position, context);
-        fillTitleAndUserName(itemTitleTV, userNameTV, position);
-        fillPrice(itemPriceTV, oldPriceTV, fireIV, itemNewPriceTV, position, context);
-        changeFont(context, text1, text2, text3, text4, itemCityTV, userNameTV, itemPriceTV, itemTitleTV);
-        checkTypeAndFillTypeDetails(context, text1, text2, text3, text4, text2RL, text3RL, text4RL
-                , itemCityTV, itemCityRL, position);
-        checkIfFavouriteOrNot(context,favoriteIV,favoriteRL,position);
-        actionListenerToFavorite(context, favoriteRL, position,favoriteIV);
-        actionListenerToGoShowItemDetails(context, cardShowFCS, position);
-        actionListenerToCallButton(context, callButtonRL, position);
-      }else{
-        personInfoRL.setVisibility(View.GONE);
-        itemInfoRL.setVisibility(View.GONE);
-        messageInfo.setVisibility(View.VISIBLE);
-
-        fillImageView(itemImage);
-      }
+      messageInfo.setVisibility(View.GONE);
+      itemInfoRL.setVisibility(View.VISIBLE);
+      personInfoRL.setVisibility(View.VISIBLE);
+      makeAllTextViewVISIBLE(text1, text2, text3, text4, itemCityTV, text2RL, text3RL, text4RL, itemCityRL);
+      fillImage(itemImage, userImage, position, context);
+      fillTitleAndUserName(itemTitleTV, userNameTV, position);
+      fillPrice(itemPriceTV, oldPriceTV, fireIV, itemNewPriceTV, position, context);
+      changeFont(context, text1, text2, text3, text4, itemCityTV, userNameTV, itemPriceTV, itemTitleTV);
+      checkTypeAndFillTypeDetails(context, text1, text2, text3, text4, text2RL, text3RL, text4RL
+              , itemCityTV, itemCityRL, position);
+      checkIfFavouriteOrNot(context,favoriteIV,favoriteRL,position);
+      actionListenerToFavorite(context, favoriteRL, position,favoriteIV);
+      actionListenerToGoShowItemDetails(context, cardShowFCS, position);
+      actionListenerToCallButton(context, callButtonRL, position);
 
     }
   }
@@ -215,7 +207,7 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
     {
           favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
     }else{
-      if (checkFavouriteOrNot1(context,getItem(position).getItemIdInServer()).equals("not_favorite"))
+      if (checkFavouriteOrNot1(context,getItem(position).getAd_id()).equals("not_favorite"))
       {
         favoriteIV.setBackgroundResource(R.drawable.item_favu);
       }else
@@ -234,8 +226,8 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
             .into(itemImage);
   }
 
-  private SuggestedItem getObject(int position){
-    SuggestedItem item = suggestedItemsList.get(position);
+  private CCEMTModel getObject(int position){
+    CCEMTModel item = suggestedItemsList.get(position);
     return item;
   }
 
@@ -246,21 +238,21 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
       public void onClick(View v) {
         if (comeFrom.equals("favorite"))
         {
-          getDataBaseInstance(context).deleteFCS(getObject(position).getItemIdInServer());
+          getDataBaseInstance(context).deleteFCS(getObject(position).getAd_id());
           removeAt(position);
         }else{
-          if (checkFavouriteOrNot1(context,getItem(position).getItemIdInServer()).equals("not_favorite"))
+          if (checkFavouriteOrNot1(context,getItem(position).getAd_id()).equals("not_favorite"))
           {
             favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
-            insertItemsToFCS(getItem(position).getItemIdInServer(),convertCategoryToCategoryS(getItem(position).getItemType(),context)
+            insertItemsToFCS(getItem(position).getAd_id(),convertCategoryToCategoryS(getItem(position).getCategoryComp().getId(),context)
                     ,getDataBaseInstance(context),"favorite",context);
 
-            setFavouriteCallSearchOnServer(context,getItem(position).getItemIdInServer()
-                    ,getItem(position).getItemType(),"favorite");
+            setFavouriteCallSearchOnServer(context,getItem(position).getAd_id()
+                    ,getItem(position).getCategoryComp().getCode(),"favorite");
           }else
           {
             favoriteIV.setBackgroundResource(R.drawable.item_favu);
-            getDataBaseInstance(context).deleteFCS(getItem(position).getItemIdInServer());
+            getDataBaseInstance(context).deleteFCS(getItem(position).getAd_id());
           }
         }
       }
@@ -277,12 +269,12 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
     callButtonRL.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        insertItemsToFCS(getObject(position).getItemIdInServer(),convertCategoryToCategoryS(getObject(position).getItemType(),context)
+        insertItemsToFCS(getObject(position).getAd_id(),convertCategoryToCategoryS(getObject(position).getCategoryComp().getCode(),context)
                 ,getDataBaseInstance(context),"call",context);
 
         if (CheckPermission.checkPermissionMethodToPhone((Activity) context) == true) {
-          setFavouriteCallSearchOnServer(context,getObject(position).getItemIdInServer(),getObject(position).getItemType(),"call");
-          callAds(context,getObject(position).getItemUserPhoneNumber());
+          setFavouriteCallSearchOnServer(context,getObject(position).getAd_id(),getObject(position).getCategoryComp().getCode(),"call");
+          callAds(context,getObject(position).getAd_phone());
         }
       }
     });
@@ -292,33 +284,29 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
     cardButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        if (getObject(position).getItemActiveOrNot().equals("1")
-                && getObject(position).getItemBurnedPrice().equals("0")) {
-          Bundle bundle = new Bundle();
-          if (comeFrom.equals("search"))
-          {
-            insertItemsToFCS(getObject(position).getItemIdInServer(),convertCategoryToCategoryS(getObject(position).getItemType(),context)
-                    ,getDataBaseInstance(context),"search",context);
 
-            setFavouriteCallSearchOnServer(context,getObject(position).getItemIdInServer()
-                    ,getObject(position).getItemType(),"search");
-          }
-          bundle.putString("category", getObject(position).getItemType());
-          if (comeFrom.equals("search"))
-          {
-            bundle.putString("from", "search");
-          }else{
-            bundle.putString("from", "stu");
-          }
-          bundle.putString("itemID", getObject(position).getItemIdInServer());
+        Bundle bundle = new Bundle();
+        if (comeFrom.equals("search"))
+        {
+          insertItemsToFCS(getObject(position).getAd_id(),convertCategoryToCategoryS(getObject(position).getCategoryComp().getCode(),context)
+                  ,getDataBaseInstance(context),"search",context);
 
-          Intent intent = new Intent(context, ShowItemDetails.class);
-          intent.putExtras(bundle);
-          ((Activity) context).startActivity(intent);
-          ((Activity) context).overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
-        }else{
-          Toast.makeText(context,context.getResources().getString(R.string.can_not_see_content),Toast.LENGTH_SHORT).show();
+          setFavouriteCallSearchOnServer(context,getObject(position).getAd_id()
+                  ,getObject(position).getAd_id(),"search");
         }
+        bundle.putString("category", getObject(position).getAd_id());
+        if (comeFrom.equals("search"))
+        {
+          bundle.putString("from", "search");
+        }else{
+          bundle.putString("from", "stu");
+        }
+        bundle.putString("itemID", getObject(position).getAd_id());
+
+        Intent intent = new Intent(context, ShowItemDetails.class);
+        intent.putExtras(bundle);
+        ((Activity) context).startActivity(intent);
+        ((Activity) context).overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
 
       }
     });
@@ -327,27 +315,27 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
   private void checkTypeAndFillTypeDetails(Context context, TextView text1, TextView text2
           , TextView text3, TextView text4, RelativeLayout text2RL, RelativeLayout text3RL
           , RelativeLayout text4RL, TextView itemCityTV, RelativeLayout itemCityRL, int position) {
-    if (getObject(position).getItemType().equals("Car for sale")
-            ||getObject(position).getItemType().equals("Car for rent")
-            ||getObject(position).getItemType().equals("Exchange car")
-            ||getObject(position).getItemType().equals("Motorcycle")
-            ||getObject(position).getItemType().equals("Trucks")
+    if (getObject(position).getCategoryComp().getCode().equals("Car for sale")
+            ||getObject(position).getCategoryComp().getCode().equals("Car for rent")
+            ||getObject(position).getCategoryComp().getCode().equals("Exchange car")
+            ||getObject(position).getCategoryComp().getCode().equals("Motorcycle")
+            ||getObject(position).getCategoryComp().getCode().equals("Trucks")
     ) {
       fillCarDetails(position,text1,text2,text3,text4);
     }
-    if (getObject(position).getItemType().equals("Plates"))
+    if (getObject(position).getCategoryComp().getCode().equals("Plates"))
     {
       fillCarPlates(context,position,text1,text2,text3,text3RL,text4RL,text4,itemCityTV,itemCityRL);
     }
-    if (getObject(position).getItemType().equals("Wheels_Rim"))
+    if (getObject(position).getCategoryComp().getCode().equals("Wheels_Rim"))
     {
       fillWheelsRim(context,position,text1,text2,text3,text4,itemCityTV,text3RL,text4RL,itemCityRL);
     }
-    if (getObject(position).getItemType().equals("Accessories"))
+    if (getObject(position).getCategoryComp().getCode().equals("Accessories"))
     {
       fillAccAndJunk(text1,text2,text3,text4,itemCityTV,text2RL,text3RL,text4RL,itemCityRL,position);
     }
-    if (getObject(position).getItemType().equals("Junk car"))
+    if (getObject(position).getCategoryComp().getCode().equals("Junk car"))
     {
       fillAccAndJunk(text1,text2,text3,text4,itemCityTV,text2RL,text3RL,text4RL,itemCityRL,position);
     }
@@ -356,7 +344,7 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
   private void fillAccAndJunk(TextView text1, TextView text2, TextView text3, TextView text4
           , TextView itemCityTV, RelativeLayout text2RL, RelativeLayout text3RL
           , RelativeLayout text4RL, RelativeLayout itemCityRL, int position) {
-    text1.setText(getObject(position).getItemCity());
+    text1.setText(getObject(position).getAttributesArrayList().get(4).getTitle());
     text2.setAlpha(0);
     text3.setAlpha(0);
     text4.setAlpha(0);
@@ -372,8 +360,8 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
   private void fillWheelsRim(Context context, int position, TextView text1, TextView text2
           , TextView text3, TextView text4, TextView itemCityTV, RelativeLayout text3RL
           , RelativeLayout text4RL, RelativeLayout itemCityRL) {
-    text1.setText(getObject(position).getItemCity());
-    text2.setText(getObject(position).getItemWheelsSize());
+    text1.setText(getObject(position).getAttributesArrayList().get(4).getTitle());
+    text2.setText(getObject(position).getPhotosArrayList().size());
     text3.setAlpha(0);
     text4.setAlpha(0);
     itemCityTV.setAlpha(0);
@@ -386,28 +374,28 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
   private void fillCarPlates(Context context, int position, TextView text1, TextView text2
           , TextView text3, RelativeLayout text3RL, RelativeLayout text4RL, TextView text4
           , TextView itemCityTV, RelativeLayout itemCityRL) {
-    text1.setText(getObject(position).getItemCarPlatesCity());
-    text2.setText(getObject(position).getItemCarPlatesNumber().replace(".0",""));
-    if(getObject(position).getItemCarPlatesSpecial().equals(context.getResources().getString(R.string.special)))
-    {
-      text3.setText(context.getResources().getString(R.string.special));
-    }else{
-      text3.setAlpha(0);
-      text3RL.setAlpha(0);
-    }
+    //text1.setText(getObject(position).getItemCarPlatesCity());
+    //text2.setText(getObject(position).getItemCarPlatesNumber().replace(".0",""));
+//    if(getObject(position).getItemCarPlatesSpecial().equals(context.getResources().getString(R.string.special)))
+//    {
+//      text3.setText(context.getResources().getString(R.string.special));
+//    }else{
+//      text3.setAlpha(0);
+//      text3RL.setAlpha(0);
+//    }
     text4RL.setAlpha(0);
     text4.setAlpha(0);
     itemCityTV.setAlpha(0);
     itemCityRL.setAlpha(0);
-    itemCityTV.setText(getObject(position).getItemCity());
+    //itemCityTV.setText(getObject(position).getItemCity());
   }
 
   private void fillCarDetails(int position, TextView text1, TextView text2,
                               TextView text3, TextView text4) {
-    text1.setText(getObject(position).getItemCarMake());
-    text2.setText(getObject(position).getItemCarYear());
-    text3.setText(getObject(position).getItemType());
-    text4.setText(getObject(position).getItemCarKilometers());
+    text1.setText(getObject(position).getAttributesArrayList().get(0).getTitle());
+    text2.setText(getObject(position).getAttributesArrayList().get(1).getTitle());
+    text3.setText(getObject(position).getAttributesArrayList().get(2).getTitle());
+    text4.setText(getObject(position).getAttributesArrayList().get(3).getTitle());
   }
 
   private void changeFont(Context context, TextView text1, TextView text2, TextView text3
@@ -426,36 +414,19 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
 
   private void fillPrice(TextView itemPriceTV, TextView oldPriceTV, ImageView fireIV
           , TextView itemNewPriceTV, int position, Context context) {
-    if (getObject(position).getItemPostEdit().equals("0"))
-    {
-      itemPriceTV.setVisibility(View.VISIBLE);
-      oldPriceTV.setVisibility(View.GONE);
-      fireIV.setVisibility(View.GONE);
-      itemPriceTV.setText(getObject(position).getItemPrice()
-              +" "+context.getResources().getString(R.string.price_contry));
-      itemPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+    itemPriceTV.setVisibility(View.VISIBLE);
+    oldPriceTV.setVisibility(View.GONE);
+    fireIV.setVisibility(View.GONE);
+    itemPriceTV.setText(getObject(position).getAd_price()
+            +" "+context.getResources().getString(R.string.price_contry));
+    itemPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
 
-      itemNewPriceTV.setText("");
-      itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-    }else{
-      itemPriceTV.setVisibility(View.GONE);
-      oldPriceTV.setVisibility(View.VISIBLE);
-
-      oldPriceTV.setText(getObject(position).getItemPrice());
-      oldPriceTV.setTextColor(context.getResources().getColor(R.color.colorSilver));
-      oldPriceTV.setPaintFlags(itemPriceTV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-      itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-      itemNewPriceTV.setText(getObject(position).getItemNewPrice()
-              +" "+context.getResources().getString(R.string.price_contry));
-      itemPriceTV.setText(getObject(position).getItemPrice()
-              +" "+context.getResources().getString(R.string.price_contry));
-      fireIV.setVisibility(View.VISIBLE);
-
-    }
+    itemNewPriceTV.setText("");
+    itemNewPriceTV.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
   }
 
   private void fillTitleAndUserName(TextView itemTitleTV,TextView userNameTV, int position) {
-    String title = getObject(position).getItemName().replace("\n","");
+    String title = getObject(position).getAd_title().replace("\n","");
     if (title.length()>20)
     {
       String newTitle="";
@@ -468,20 +439,29 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
       title =newTitle;
     }
     itemTitleTV.setText(title);
-    userNameTV.setText(getObject(position).getUserName());
+    userNameTV.setText(getObject(position).getCreatorInfo().getName());
   }
 
   private void fillImage(ImageView itemImage, ImageView userImage,
                          int position, Context context) {
 
-    Picasso.get()
-            .load(getObject(position).getItemImage())
-            .fit()
-            .centerCrop()
-            .into(itemImage);
+    if (getObject(position).getPhotosArrayList().size() == 0)
+    {
+      Picasso.get()
+              .load(R.drawable.no_image)
+              .fit()
+              .centerCrop()
+              .into(itemImage);
+    }else{
+      Picasso.get()
+              .load(getObject(position).getPhotosArrayList().get(0))
+              .fit()
+              .centerCrop()
+              .into(itemImage);
+    }
 
     Picasso.get()
-            .load(getObject(position).getUserImage())
+            .load(getObject(position).getCreatorInfo().getPhoto())
             .fit()
             .centerCrop()
             .into(userImage);
@@ -541,32 +521,32 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
       super.onBind(position);
       int a=suggestedItemsList.size()-1, x = 0,mod=0;
 
-//      if (9 == suggestedItemsList.size())
-//      {
-//        x= 0;
-//        mod = 0;
-//      }else{
-//        x= a/8;
-//        mod = a % 8;
-//      }
+      if (10 == suggestedItemsList.size())
+      {
+        x= 0;
+        mod = 0;
+      }else{
+        x= a/10;
+        mod = a % 10;
+      }
 
-//      if (suggestedItemsList.size() ==1)
-//      {
-//        cardView.setVisibility(View.GONE);
-//        relativeLayoutNoMoreItem.setVisibility(View.GONE);
-//      }else {
-//        if(mod>0)
-//        {
-//          cardView.setVisibility(View.GONE);
-//          relativeLayoutNoMoreItem.setVisibility(View.VISIBLE);
-//          changeFont(textViewNoMoreMessage);
-//        }else {
-//          AddShineEffect(relativeLayout, shinImageView);
-//          AddShineEffect(relativeLayout2, shinImageView2);
-//          AddShineEffect(relativeLayout3, shinImageView3);
-//          AddShineEffect(relativeLayout4, shinImageView4);
-//        }
-//      }
+      if (suggestedItemsList.size() ==1)
+      {
+        cardView.setVisibility(View.GONE);
+        relativeLayoutNoMoreItem.setVisibility(View.GONE);
+      }else {
+        if(mod>0)
+        {
+          cardView.setVisibility(View.GONE);
+          relativeLayoutNoMoreItem.setVisibility(View.VISIBLE);
+          changeFont(textViewNoMoreMessage);
+        }else {
+          AddShineEffect(relativeLayout, shinImageView);
+          AddShineEffect(relativeLayout2, shinImageView2);
+          AddShineEffect(relativeLayout3, shinImageView3);
+          AddShineEffect(relativeLayout4, shinImageView4);
+        }
+      }
 
 
     }

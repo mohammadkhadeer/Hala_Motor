@@ -303,14 +303,14 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
       @Override
       public void onClick(View v) {
 
+        //search
         insertItemsToFCS(getItem(position).getAd_id(),getItem(position).getCategoryComp().getCode()
                 ,getDataBaseInstance(context),"seen",context);
 
-        postAdAction(getItem(position).getAd_id(),"view",context);
-
+        postAdAction(getItem(position).getAd_id(),"search",context);
 
         Bundle bundle = new Bundle();
-        bundle.putString("category",getItem(position).getCategoryComp().getCode());
+        bundle.putString("category","car_for_sale");
         bundle.putParcelable("category_comp",getItem(position).getCategoryComp());
         bundle.putString("from","ml");
         bundle.putString("itemID",getItem(position).getAd_id());
