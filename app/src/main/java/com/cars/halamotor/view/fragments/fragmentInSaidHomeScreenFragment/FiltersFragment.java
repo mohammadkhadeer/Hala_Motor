@@ -36,6 +36,7 @@ import static com.cars.halamotor.functions.FillFilters.fillCategory;
 import static com.cars.halamotor.functions.FillFilters.fillFilter;
 import static com.cars.halamotor.functions.FillNeighborhood.fillCityArrayL;
 import static com.cars.halamotor.functions.FillNeighborhood.fillNeighborhoodArrayL;
+import static com.cars.halamotor.functions.FillNeighborhood.fillNeighborhoodArrayLFromDataBase;
 import static com.cars.halamotor.functions.FillNeighborhood.resortNeighborhoodArrayL;
 import static com.cars.halamotor.functions.Functions.splitString;
 import static com.cars.halamotor.new_presenter.FilterItems.FilterItemsFun;
@@ -195,7 +196,7 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
 
         filter.onFilterCityClick(cityModel);
 
-        createNeighborhoodRV(cityModel.getCity());
+        createNeighborhoodRV(cityModel.getCityS());
 //        if (selectedFilterArrayL.size() == 0)
 //        {
 //            Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.fill_category_please),Toast.LENGTH_SHORT).show();
@@ -206,7 +207,8 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
 
     private void createNeighborhoodRV(String city) {
         recyclerViewNeighborhood.setVisibility(View.VISIBLE);
-        cityNeighborhoodArrayL = fillNeighborhoodArrayL(cityNeighborhoodArrayL,getActivity(),city);
+        cityNeighborhoodArrayL = new ArrayList<>();
+        cityNeighborhoodArrayL = fillNeighborhoodArrayLFromDataBase(getActivity(),city);
 
         Collections.sort(cityNeighborhoodArrayL, new Comparator<Neighborhood>() {
             @Override

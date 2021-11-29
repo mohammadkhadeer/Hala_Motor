@@ -24,26 +24,14 @@ import com.cars.halamotor.model.ItemFilterModel;
 import com.cars.halamotor.model.ItemSelectedFilterModel;
 import com.cars.halamotor.model.Neighborhood;
 import com.cars.halamotor.model.ResultFilter;
-import com.cars.halamotor.model.SimilarNeeded;
 import com.cars.halamotor.model.SuggestedItem;
 import com.cars.halamotor.new_presenter.SearchResult;
-import com.cars.halamotor.presnter.WheelsComp;
 import com.cars.halamotor.view.adapters.adapterShowFCS.AdapterShowFCSItems;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.cars.halamotor.fireBaseDB.FilterFireStore.filterResult;
 import static com.cars.halamotor.fireBaseDB.FilterFireStore.filterResult2;
-import static com.cars.halamotor.fireBaseDB.FireStorePaths.getDataStoreInstance;
-import static com.cars.halamotor.functions.FCSFunctions.convertCat;
-import static com.cars.halamotor.functions.NewFunction.getNumberOfObject;
 import static com.cars.halamotor.view.adapters.adapterShowFCS.PaginationListener.PAGE_START;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -101,13 +89,6 @@ public class FragmentResults extends Fragment {
         inti();
         createRV();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                actionListenerToRV();
-            }
-        }, 2200);
-
         return view;
     }
 
@@ -116,15 +97,18 @@ public class FragmentResults extends Fragment {
             return false;
         else return true;
     }
+
     public void onCityClicked(CityModel cityModel) {
         citySelected = true;
+        Log.i("TAG ","cityModel getCity "+cityModel.getCity());
+        Log.i("TAG ","cityModel getCityS "+cityModel.getCityS());
+        Log.i("TAG ","cityModel getCityAr "+cityModel.getCityAr());
         city = cityModel.getCityS();
         if (check())
         {
             handelResult();
         }
     }
-
 
     public void onCityCanceled(Boolean isCanceled) {
         citySelected = isCanceled;
@@ -154,12 +138,10 @@ public class FragmentResults extends Fragment {
 
     ////////////////////////+++++++++++++++++++
     public void onFilterClicked(ItemFilterModel itemFilterModel, String filterType) {
-
-        Log.i("TAG Fragment result"," getFilterS "+itemFilterModel.getFilterS());
-        Log.i("TAG Fragment result"," getFilter "+itemFilterModel.getFilter());
-
+        currentPage =1;
         itemFilterArrayList.add(new ItemSelectedFilterModel(itemFilterModel.getFilter()
                 ,itemFilterModel.getFilterS(),filterType));
+
 
         handelResult();
     }
@@ -167,19 +149,24 @@ public class FragmentResults extends Fragment {
     ////////////////////////+search
     public void onSearchClicked(final ArrayList<ItemSelectedFilterModel> newItemFilterArrayList) {
         // i use handler cos i don't know why context not created
+        currentPage =1;
         itemFilterArrayList.addAll(newItemFilterArrayList);
-        new Handler().postDelayed(new Runnable() {
+        if (newItemFilterArrayList.size() == 0)
+        {
+            showMessageNoResult();
 
-            @Override
-            public void run() {
-                handelResult();
-            }
-        }, 500);
-
+        }else{
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    hidMessageNoResult();
+                    handelResult();
+                }
+            }, 100);
+        }
     }
 
     private void handelResult() {
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -192,18 +179,14 @@ public class FragmentResults extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                resultFilter=filterResult2(itemFilterArrayList,0,getApplicationContext(),city,neighborhoodStr,8,searchResult);
+                resultFilter=filterResult2(itemFilterArrayList,0,getApplicationContext(),city,neighborhoodStr,8,searchResult,currentPage);
             }
-        }, 400);
+        }, 100);
     }
 
     public void showResult(ArrayList<CCEMTModel> ccemtModelArrayList){
-
-        Log.i("TAG result fragment"," whenGetCCEMTListSearchSuccess ");
-        Log.i("TAG result fragment"," ccemtModelArrayList size "+String.valueOf(ccemtModelArrayList.size()));
-        createRV();
-        //reRV();
-        //intiRe();
+        if (currentPage ==1)
+            createRV();
         doApiCall(ccemtModelArrayList);
     }
 
@@ -215,35 +198,18 @@ public class FragmentResults extends Fragment {
         suggestedItemsArrayListDO = new ArrayList<>();
         ccemtModelArrayList.addAll(suggestedItemsArrayListDO);
 
-        if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
-            adapterShowFCSItems.addItems(ccemtModelArrayList);
+        if (currentPage != PAGE_START && ccemtModelArrayList.size() !=0) adapterShowFCSItems.removeLoading();
+            if (ccemtModelArrayList.size() !=0)
+                adapterShowFCSItems.addItems(ccemtModelArrayList);
 
         isLoading = false;
-    }
-
-    private void reRV() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hidMessageNoResult();
-                progressBar.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.GONE);
-            }
-        }, 200);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                actionListenerToRV();
-            }
-        }, 2200);
     }
 
     ///////////////////////---------------------
     public void onFilterCanceled() {
         if (itemFilterArrayList.size() != 0)
         {
+            currentPage =1;
             itemFilterArrayList.remove(itemFilterArrayList.size()-1);
             if (itemFilterArrayList.size() != 0) {
                 handelResult();
@@ -254,7 +220,6 @@ public class FragmentResults extends Fragment {
     public void removeAllFilter(){
         itemFilterArrayList.clear();
     }
-
 
     public void loadMore(){
         if (controler ==0 )
@@ -277,7 +242,7 @@ public class FragmentResults extends Fragment {
                 controler =0;
 
             }
-        }, 2200);
+        }, 50);
     }
 
 
@@ -290,56 +255,62 @@ public class FragmentResults extends Fragment {
         cardViewContainerMessage.setVisibility(View.GONE);
     }
 
+    private void showMessageNoResult() {
+        cardViewContainerMessage.setVisibility(View.VISIBLE);
+    }
+
     List<SuggestedItem> fcsItemsArrayList = new ArrayList<>();
 
     private void getData() {
-        fcsItemsArrayList = new ArrayList<>();
-        final String category = itemFilterArrayList.get(0).getFilterS();
-        final String categoryAfter = convertCat(category);
-
-        if(resultItemsArrayListCont.size() !=0)
-        {
-            resultItemsArrayListCont = new ArrayList<>();
-            int x= currentPage-1;
-            if (x == PAGE_START)
-                lastVisible = resultFilter.getDocumentSnapshotsArrayL().get(resultFilter.getDocumentSnapshotsArrayL().size()-1);
-
-//        if (lastVisible == null)
+        Log.i("TAG","currentPage "+String.valueOf(currentPage));
+        resultFilter=filterResult2(itemFilterArrayList,0,getApplicationContext(),city,neighborhoodStr,8,searchResult,currentPage);
+//        fcsItemsArrayList = new ArrayList<>();
+//        final String category = itemFilterArrayList.get(0).getFilterS();
+//        final String categoryAfter = convertCat(category);
+//
+//        if(resultItemsArrayListCont.size() !=0)
 //        {
-//            Log.i("TAG","lastVisible: "+"Null");
-//        }else{
-//            Log.i("TAG","lastVisible: "+lastVisible);
+//
+//            resultItemsArrayListCont = new ArrayList<>();
+//            int x= currentPage-1;
+//            if (x == PAGE_START)
+//                lastVisible = resultFilter.getDocumentSnapshotsArrayL().get(resultFilter.getDocumentSnapshotsArrayL().size()-1);
+//
+////        if (lastVisible == null)
+////        {
+////            Log.i("TAG","lastVisible: "+"Null");
+////        }else{
+////            Log.i("TAG","lastVisible: "+lastVisible);
+////        }
+//            CollectionReference mRef = getDataStoreInstance().collection(categoryAfter);
+//            mRef.limit(8)
+//                    .startAfter(lastVisible)
+//                    .whereEqualTo("activeOrNotS", "1")
+//                    .whereEqualTo("burnedPrice",0 )
+//                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                                                    @Override
+//                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                                                        for (QueryDocumentSnapshot documentSnapshots : queryDocumentSnapshots) {
+////                                                            Log.i("LoadMore", "New Object " + documentSnapshots);
+//                                                            fcsItemsArrayList.add(FCSFunctions.handelNumberOfObject(documentSnapshots,category));
+//                                                            lastVisible = documentSnapshots;
+//                                                        }
+//                                                    }
+//                                                }
+//            ).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Log.d("ERROR fireStore", e.toString());
+//                }
+//            });
+//
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    resultItemsArrayListCont.addAll(fcsItemsArrayList);
+//                }
+//            }, 2000);
 //        }
-            CollectionReference mRef = getDataStoreInstance().collection(categoryAfter);
-            mRef.limit(8)
-                    .startAfter(lastVisible)
-                    .whereEqualTo("activeOrNotS", "1")
-                    .whereEqualTo("burnedPrice",0 )
-                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                                        for (QueryDocumentSnapshot documentSnapshots : queryDocumentSnapshots) {
-//                                                            Log.i("LoadMore", "New Object " + documentSnapshots);
-                                                            fcsItemsArrayList.add(FCSFunctions.handelNumberOfObject(documentSnapshots,category));
-                                                            lastVisible = documentSnapshots;
-                                                        }
-                                                    }
-                                                }
-            ).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("ERROR fireStore", e.toString());
-                }
-            });
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    resultItemsArrayListCont.addAll(fcsItemsArrayList);
-                }
-            }, 2000);
-        }
-
     }
 
     private void createRV() {
@@ -368,16 +339,7 @@ public class FragmentResults extends Fragment {
                 relativeLayout.setVisibility(View.GONE);
 
             }
-        }, 1200);
-    }
-
-    private void intiRe() {
-        resultItemsArrayListCont = new ArrayList<>();
-        resultItemsArrayListCont = resultFilter.getResultItemsArrayList();
-    }
-
-    private void actionListenerToRV() {
-        //Override on nestid scroll in father fragment
+        }, 50);
     }
 
 }

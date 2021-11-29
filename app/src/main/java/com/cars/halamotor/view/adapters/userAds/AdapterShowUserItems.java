@@ -42,6 +42,7 @@ import static com.cars.halamotor.dataBase.InsertFunctions.insertItemsToFCS;
 import static com.cars.halamotor.fireBaseDB.UpdateFireBase.setFavouriteCallSearchOnServer;
 import static com.cars.halamotor.functions.Functions.convertCategoryToCategoryS;
 import static com.cars.halamotor.functions.NewFunction.callAds;
+import static com.cars.halamotor.presnter.UploadLogAdActions.postAdAction;
 
 public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUser> {
   private static final int VIEW_TYPE_LOADING = 0;
@@ -285,28 +286,21 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
       @Override
       public void onClick(View v) {
 
-        Bundle bundle = new Bundle();
-        if (comeFrom.equals("search"))
-        {
-          insertItemsToFCS(getObject(position).getAd_id(),convertCategoryToCategoryS(getObject(position).getCategoryComp().getCode(),context)
-                  ,getDataBaseInstance(context),"search",context);
+        insertItemsToFCS(getItem(position).getAd_id(),getItem(position).getCategoryComp().getCode()
+                ,getDataBaseInstance(context),"seen",context);
 
-          setFavouriteCallSearchOnServer(context,getObject(position).getAd_id()
-                  ,getObject(position).getAd_id(),"search");
-        }
-        bundle.putString("category", getObject(position).getAd_id());
-        if (comeFrom.equals("search"))
-        {
-          bundle.putString("from", "search");
-        }else{
-          bundle.putString("from", "stu");
-        }
-        bundle.putString("itemID", getObject(position).getAd_id());
+        postAdAction(getItem(position).getAd_id(),"view",context);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("category","car_for_sale");
+        bundle.putParcelable("category_comp",getItem(position).getCategoryComp());
+        bundle.putString("from","ml");
+        bundle.putString("itemID",getItem(position).getAd_id());
 
         Intent intent = new Intent(context, ShowItemDetails.class);
         intent.putExtras(bundle);
-        ((Activity) context).startActivity(intent);
-        ((Activity) context).overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+        ((Activity)context).startActivity(intent);
+        ((Activity)context).overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
 
       }
     });
@@ -521,32 +515,35 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
       super.onBind(position);
       int a=suggestedItemsList.size()-1, x = 0,mod=0;
 
-      if (10 == suggestedItemsList.size())
-      {
-        x= 0;
-        mod = 0;
-      }else{
-        x= a/10;
-        mod = a % 10;
-      }
+      cardView.setVisibility(View.GONE);
+      relativeLayoutNoMoreItem.setVisibility(View.GONE);
 
-      if (suggestedItemsList.size() ==1)
-      {
-        cardView.setVisibility(View.GONE);
-        relativeLayoutNoMoreItem.setVisibility(View.GONE);
-      }else {
-        if(mod>0)
-        {
-          cardView.setVisibility(View.GONE);
-          relativeLayoutNoMoreItem.setVisibility(View.VISIBLE);
-          changeFont(textViewNoMoreMessage);
-        }else {
-          AddShineEffect(relativeLayout, shinImageView);
-          AddShineEffect(relativeLayout2, shinImageView2);
-          AddShineEffect(relativeLayout3, shinImageView3);
-          AddShineEffect(relativeLayout4, shinImageView4);
-        }
-      }
+//      if (9 == suggestedItemsList.size())
+//      {
+//        x= 0;
+//        mod = 0;
+//      }else{
+//        x= a/10;
+//        mod = a % 10;
+//      }
+//
+//      if (suggestedItemsList.size() ==1)
+//      {
+//        cardView.setVisibility(View.GONE);
+//        relativeLayoutNoMoreItem.setVisibility(View.GONE);
+//      }else {
+//        if(mod>0)
+//        {
+//          cardView.setVisibility(View.GONE);
+//          relativeLayoutNoMoreItem.setVisibility(View.VISIBLE);
+//          changeFont(textViewNoMoreMessage);
+//        }else {
+//          AddShineEffect(relativeLayout, shinImageView);
+//          AddShineEffect(relativeLayout2, shinImageView2);
+//          AddShineEffect(relativeLayout3, shinImageView3);
+//          AddShineEffect(relativeLayout4, shinImageView4);
+//        }
+//      }
 
 
     }

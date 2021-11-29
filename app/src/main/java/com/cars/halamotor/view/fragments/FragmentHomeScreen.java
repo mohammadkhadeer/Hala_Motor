@@ -99,7 +99,6 @@ public class FragmentHomeScreen extends Fragment {
                                                                                           int diff = (view.getBottom() - (nestedScrollView.getHeight() + nestedScrollView.getScrollY()));
                                                                                           if (diff == 0) {
                                                                                               fragmentResults.loadMore();
-                                                                                              //code to fetch more data for endless scrolling
 
                                                                                           }
                                                                                       }
@@ -131,9 +130,6 @@ public class FragmentHomeScreen extends Fragment {
     }
 
     public void onResultCome(ArrayList<CCEMTModel> ccemtModelArrayList) {
-
-        Log.i("TAG Home fragment"," whenGetCCEMTListSearchSuccess ");
-        Log.i("TAG Home fragment"," ccemtModelArrayList size "+String.valueOf(ccemtModelArrayList.size()));
         fragmentResults.showResult(ccemtModelArrayList);
     }
 
@@ -153,10 +149,6 @@ public class FragmentHomeScreen extends Fragment {
 
     ////////////////////////+++++++++++++++++++
     public void onFilterClicked(ItemFilterModel itemFilterModel, String filterType) {
-
-        Log.i("TAG Home screen"," getFilterS "+itemFilterModel.getFilterS());
-        Log.i("TAG Home screen"," getFilter "+itemFilterModel.getFilter());
-
         itemFilterArrayList.add(new ItemSelectedFilterModel(itemFilterModel.getFilter(), itemFilterModel.getFilterS(), filterType));
 
         fragmentResults.onFilterClicked(itemFilterModel, filterType);

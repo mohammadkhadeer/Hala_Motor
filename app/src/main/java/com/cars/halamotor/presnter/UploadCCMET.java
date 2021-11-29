@@ -43,7 +43,7 @@ public class UploadCCMET {
             , Context context,String phone_number)
     {
 
-        Log.w("TAG","model_id: "+carDetailsModel.getCarModel().getModel_id());
+        Log.w("TAG","area_id: "+area_id);
 
         Log.w("TAG","category_id: "+category_id);
 //        Log.w("TAG","area_id: "+area_id);
@@ -84,7 +84,7 @@ public class UploadCCMET {
             bodyBuilder.addFormDataPart("type","motors");
             bodyBuilder.addFormDataPart("model_id",model_id);
             bodyBuilder.addFormDataPart("category_id",category_id);
-            bodyBuilder.addFormDataPart("area_id","1");
+            bodyBuilder.addFormDataPart("area_id",area_id);
             bodyBuilder.addFormDataPart("title",title);
             bodyBuilder.addFormDataPart("description",description);
 

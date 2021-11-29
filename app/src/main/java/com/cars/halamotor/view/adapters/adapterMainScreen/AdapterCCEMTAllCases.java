@@ -271,8 +271,6 @@ public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCa
                     .centerCrop()
                     .into(holder.itemImage);
         }
-
-
 //        Picasso.get()
 //                .load(carForSaleArrayL.get(position).getItemUserImage())
 //                .fit()

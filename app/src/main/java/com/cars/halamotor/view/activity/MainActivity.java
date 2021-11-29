@@ -570,8 +570,6 @@ public class MainActivity extends AppCompatActivity implements Filter, FragmentS
     @Override
     public void whenGetCCEMTListSearchSuccess(ArrayList<CCEMTModel> ccemtModelArrayList) {
         fragmentHome.onResultCome(ccemtModelArrayList);
-        Log.i("TAG Main activity"," whenGetCCEMTListSearchSuccess ");
-        Log.i("TAG Main activity"," ccemtModelArrayList size "+String.valueOf(ccemtModelArrayList.size()));
     }
 
 }

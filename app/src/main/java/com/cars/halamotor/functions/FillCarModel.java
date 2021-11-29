@@ -1972,7 +1972,7 @@ public class FillCarModel {
 
             ItemFilterModel itemFilterModel = new ItemFilterModel(
                     modelName
-                    ,carModelArrayList.get(i).getModel_name_en()
+                    ,carModelArrayList.get(i).getModel_id()
             );
             carModelFilterArrayList.add(itemFilterModel);
         }

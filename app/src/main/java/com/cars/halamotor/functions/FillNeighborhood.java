@@ -1,29 +1,76 @@
 package com.cars.halamotor.functions;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.cars.halamotor.R;
+import com.cars.halamotor.model.Area;
+import com.cars.halamotor.model.City;
 import com.cars.halamotor.model.CityModel;
 import com.cars.halamotor.model.CityWithNeighborhood;
 import com.cars.halamotor.model.Neighborhood;
 import java.util.ArrayList;
+
+import static com.cars.halamotor.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor.sharedPreferences.AddressSharedPreferences.getUserNeighborhoodFromSP;
 
 public class FillNeighborhood {
 
     public static ArrayList<CityModel> fillCityArrayL(Context context) {
         ArrayList<CityModel> cityArrayL = new ArrayList<>();
-        cityArrayL.add(new CityModel(context.getResources().getString(R.string.abu_dhabi),context.getResources().getString(R.string.abu_dhabi_s),context.getResources().getString(R.string.abu_dhabi_ar)));
-        cityArrayL.add(new CityModel(context.getResources().getString(R.string.dubai),context.getResources().getString(R.string.dubai_s),context.getResources().getString(R.string.dubai_ar)));
-        cityArrayL.add(new CityModel(context.getResources().getString(R.string.sharjah),context.getResources().getString(R.string.sharjah_s),context.getResources().getString(R.string.sharjah_ar)));
-        cityArrayL.add(new CityModel(context.getResources().getString(R.string.al_ain),context.getResources().getString(R.string.al_ain_s),context.getResources().getString(R.string.al_ain_ar)));
-        cityArrayL.add(new CityModel(context.getResources().getString(R.string.ajman),context.getResources().getString(R.string.ajman_s),context.getResources().getString(R.string.ajman_ar)));
-        cityArrayL.add(new CityModel(context.getResources().getString(R.string.um_al_quwain),context.getResources().getString(R.string.um_al_quwain_s),context.getResources().getString(R.string.um_al_quwain_ar)));
-        cityArrayL.add(new CityModel(context.getResources().getString(R.string.ras_al_khaimah),context.getResources().getString(R.string.ras_al_khaimah_s),context.getResources().getString(R.string.ras_al_khaimah_ar)));
-        cityArrayL.add(new CityModel(context.getResources().getString(R.string.fujairah),context.getResources().getString(R.string.fujairah_s),context.getResources().getString(R.string.fujairah_ar)));
+        ArrayList<CityModel> cityArrayL2 = new ArrayList<>();
 
-        return cityArrayL;
+        Cursor res = getDataBaseInstance(context).descendingCities();
+
+        while (res.moveToNext()) {
+
+            City city= new City(
+                    res.getString(1).replace("\n", "")
+                    ,res.getString(2).replace("\n", "")
+                    ,res.getString(3).replace("\n", "")
+                    ,res.getString(4).replace("\n", "")
+                    ,res.getString(5).replace("\n", "")
+            );
+//            Log.i("TAG","City res.getString(1).replace "+res.getString(1).replace("\n", ""));
+//            Log.i("TAG","City res.getString(2).replace "+res.getString(2).replace("\n", ""));
+//            Log.i("TAG","City res.getString(3).replace "+res.getString(3).replace("\n", ""));
+//            Log.i("TAG","City res.getString(4).replace "+res.getString(4).replace("\n", ""));
+//            Log.i("TAG","City res.getString(5).replace "+res.getString(5).replace("\n", ""));
+
+            cityArrayL.add(new CityModel(city.getName_en(),city.getId(),city.getName_ar()));
+        }
+
+        for (int i=0;i<cityArrayL.size();i++)
+        {
+            int t=cityArrayL.size()-1;
+            int po = t-i;
+            cityArrayL2.add(cityArrayL.get(po));
+        }
+
+        return cityArrayL2;
+    }
+
+    public static ArrayList<Neighborhood> fillNeighborhoodArrayLFromDataBase(Context context,String cityCode) {
+
+        ArrayList<Neighborhood> areasArrayList = new ArrayList<Neighborhood>();
+
+        Cursor res = getDataBaseInstance(context).descendingAreas();
+        Neighborhood area;
+        while (res.moveToNext()) {
+
+            if (cityCode.equals(res.getString(5).replace("\n", "")))
+            {
+                 area = new Neighborhood(res.getString(3).replace("\n", "")
+                        ,res.getString(1).replace("\n", "")
+                        ,res.getString(2).replace("\n", ""));
+
+                areasArrayList.add(area);
+            }
+
+        }
+
+        return areasArrayList;
     }
 
     public static ArrayList<Neighborhood> fillNeighborhoodArrayL

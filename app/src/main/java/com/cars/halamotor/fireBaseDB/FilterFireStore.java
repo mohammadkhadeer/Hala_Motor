@@ -41,313 +41,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class FilterFireStore {
-    public static ResultFilter filterResult(ArrayList<ItemSelectedFilterModel> itemFilterArrayList
-            , int burnedPrice, Context context, String city, String neighborhood,int numberResult){
-        /*
-        I return data from server as a object coz i well needed if user have to get more
-        data same data must to base 1.CollectionReference "bath data coz we have categories"
-        2.DocumentSnapshot "array list" coz can't base DocumentSnapshot as single value
-        in fireStore so we us it as arrayList well needed if user try to get more data
-        must start return new data from end first response best way to do this send
-        last DocumentSnapshot as filter
-        3.list of object of response
-        we use a number of filter depend list to can fill a next filter
-         */
-
-        ResultFilter resultFilter = null;
-
-        final String category = convertCat(itemFilterArrayList.get(0).getFilterType());
-        final String categoryBefore = itemFilterArrayList.get(0).getFilterType();
-        if (itemFilterArrayList.size() ==1)
-        {
-            if (city.equals("empty")){
-                resultFilter = getResult(category,categoryBefore,0.0,100000000.0,burnedPrice,numberResult);
-            }else{
-                resultFilter = getResultWithCityOrNeighborhood(category,categoryBefore,0.0,100000000.0,burnedPrice,city,neighborhood,numberResult);
-            }
-        }
-
-        if (itemFilterArrayList.size() ==2)
-        {
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.exchange_car)))
-            {
-                String carMake = itemFilterArrayList.get(1).getFilterS();
-                if (city.equals("empty")) {
-                    resultFilter = getResultMake(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake,numberResult);
-                }else{
-                    resultFilter = getResultMakeWithCityOrNeighborhood(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake,city,neighborhood,numberResult);
-                }
-            }else{
-                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
-                if (city.equals("empty")) {
-                    resultFilter = getResult(category, categoryBefore, priceFrom, 100000000.0, burnedPrice,numberResult);
-                    }else{
-                    resultFilter = getResultWithCityOrNeighborhood(category, categoryBefore, priceFrom, 100000000.0, burnedPrice,city,neighborhood,numberResult);
-                    }
-                }
-        }
-
-        if (itemFilterArrayList.size() ==3)
-        {
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.exchange_car)))
-            {
-                String carMake = itemFilterArrayList.get(1).getFilterS();
-                String carModel = itemFilterArrayList.get(2).getFilterS();
-                if (city.equals("empty")) {
-                    resultFilter = getResultCarModel(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake, carModel,numberResult);
-                }else{
-                    resultFilter = getResultCarModelWithCityOrNeighborhood(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake, carModel,city,neighborhood,numberResult);
-                }
-            }else {
-                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
-                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
-                if (city.equals("empty")) {
-                    resultFilter = getResult(category, categoryBefore, priceFrom, priceTo, burnedPrice,numberResult);
-                }else{
-                    resultFilter = getResultWithCityOrNeighborhood(category, categoryBefore, priceFrom, priceTo, burnedPrice,city,neighborhood,numberResult);
-                }
-            }
-        }
-
-        if(itemFilterArrayList.size()==4)
-        {
-            double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
-            double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
-
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
-            )
-            {
-                String carMake = itemFilterArrayList.get(3).getFilterS();
-                if (city.equals("empty"))
-                {
-                    resultFilter = getResultMake(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,numberResult);
-                }else{
-                    resultFilter = getResultMakeWithCityOrNeighborhood(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake,city,neighborhood,numberResult);
-                }
-            }
-
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.wheels_rim))
-            ){
-                int wheelsSize = Integer.parseInt(itemFilterArrayList.get(3).getFilterS());
-                if (city.equals("empty"))
-                {
-                    resultFilter = getWheelsSize(category,categoryBefore,priceFrom,priceTo,burnedPrice,wheelsSize,numberResult);
-                }else{
-                    resultFilter = getWheelsSizeWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,wheelsSize,city,neighborhood,numberResult);
-                }
-            }
-
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_plates))
-            ){
-                String platesCity = itemFilterArrayList.get(3).getFilterS();
-                if (city.equals("empty"))
-                {
-                    resultFilter = getPlatesCity(category,categoryBefore,priceFrom,priceTo,burnedPrice,platesCity,numberResult);
-                }else{
-                    resultFilter = getPlatesCityWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,platesCity,city,neighborhood,numberResult);
-                }
-            }
-
-        }
-
-        if(itemFilterArrayList.size()==5)
-        {
-            double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
-            double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
-
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
-            )
-            {
-                String carMake = itemFilterArrayList.get(3).getFilterS();
-                String carModel = itemFilterArrayList.get(4).getFilterS();
-                if (city.equals("empty"))
-                {
-                    resultFilter = getResultCarModel(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,numberResult);
-                }else{
-                    resultFilter = getResultCarModelWithCityOrNeighborhood(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake, carModel,city,neighborhood,numberResult);
-                }
-
-            }
-
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.wheels_rim)))
-            {
-                int wheelsSize = Integer.parseInt(itemFilterArrayList.get(3).getFilterS());
-                String wheelsType = itemFilterArrayList.get(4).getFilterS();
-                if (city.equals("empty"))
-                {
-                    resultFilter = getWheelsType(category,categoryBefore,priceFrom,priceTo,burnedPrice,wheelsSize,wheelsType,numberResult);
-                }else{
-                    resultFilter = getWheelsTypeWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,wheelsSize,wheelsType,city,neighborhood,numberResult);
-                }
-            }
-
-        }
-
-        if (itemFilterArrayList.size() ==6)
-        {
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
-            )
-            {
-                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
-                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
-                String carMake = itemFilterArrayList.get(3).getFilterS();
-                String carModel = itemFilterArrayList.get(4).getFilterS();
-                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
-
-                if (city.equals("empty"))
-                {
-                    resultFilter = getResultYear(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,numberResult);
-                }else{
-                    resultFilter = getResultYearWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,city,neighborhood,numberResult);
-                }
-            }
-
-        }
-
-        if (itemFilterArrayList.size() ==7)
-        {
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
-            )
-            {
-                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
-                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
-                String carMake = itemFilterArrayList.get(3).getFilterS();
-                String carModel = itemFilterArrayList.get(4).getFilterS();
-                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
-                String carPayment = itemFilterArrayList.get(6).getFilterS();
-
-                if (city.equals("empty")){
-                    resultFilter = getResultPayment(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,numberResult);
-                }else{
-                    resultFilter = getResultPaymentWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,city,neighborhood,numberResult);
-                }
-            }
-        }
-
-        if (itemFilterArrayList.size() ==8)
-        {
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
-            )
-            {
-                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
-                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
-                String carMake = itemFilterArrayList.get(3).getFilterS();
-                String carModel = itemFilterArrayList.get(4).getFilterS();
-                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
-                String carPayment = itemFilterArrayList.get(6).getFilterS();
-                String carCondition = itemFilterArrayList.get(7).getFilterS();
-
-                if (city.equals("empty")){
-                    resultFilter = getResultCondition(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,numberResult);
-                }else{
-                    resultFilter = getResultConditionWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,city,neighborhood,numberResult);
-                }
-            }
-        }
-
-        if (itemFilterArrayList.size() ==9)
-        {
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
-            )
-            {
-                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
-                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
-                String carMake = itemFilterArrayList.get(3).getFilterS();
-                String carModel = itemFilterArrayList.get(4).getFilterS();
-                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
-                String carPayment = itemFilterArrayList.get(6).getFilterS();
-                String carCondition = itemFilterArrayList.get(7).getFilterS();
-                String carInsuranceS = itemFilterArrayList.get(8).getFilterS();
-
-                if (city.equals("empty")){
-                    resultFilter = getResultInsurance(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,numberResult);
-                }else{
-                    resultFilter = getResultInsuranceWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,city,neighborhood,numberResult);
-                }
-            }
-        }
-
-        if (itemFilterArrayList.size() ==10)
-        {
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
-            )
-            {
-                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
-                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
-                String carMake = itemFilterArrayList.get(3).getFilterS();
-                String carModel = itemFilterArrayList.get(4).getFilterS();
-                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
-                String carPayment = itemFilterArrayList.get(6).getFilterS();
-                String carCondition = itemFilterArrayList.get(7).getFilterS();
-                String carInsuranceS = itemFilterArrayList.get(8).getFilterS();
-                String carLicensed = itemFilterArrayList.get(9).getFilterS();
-
-                if (city.equals("empty")){
-                    resultFilter = getResultLicensed(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,carLicensed,numberResult);
-                }else{
-                    resultFilter = getResultLicensedWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,carLicensed,city,neighborhood,numberResult);
-                }
-            }
-        }
-
-        if (itemFilterArrayList.size() ==11)
-        {
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
-                    || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
-            )
-            {
-                double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
-                double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
-                String carMake = itemFilterArrayList.get(3).getFilterS();
-                String carModel = itemFilterArrayList.get(4).getFilterS();
-                int year = Integer.parseInt(itemFilterArrayList.get(5).getFilterS());
-                String carPayment = itemFilterArrayList.get(6).getFilterS();
-                String carCondition = itemFilterArrayList.get(7).getFilterS();
-                String carInsuranceS = itemFilterArrayList.get(8).getFilterS();
-                String carLicensed = itemFilterArrayList.get(9).getFilterS();
-                String carFuel = itemFilterArrayList.get(10).getFilterS();
-
-                if (city.equals("empty")){
-                    resultFilter = getResultFuel(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,carLicensed,carFuel,numberResult);
-                }else{
-                    resultFilter = getResultFuelWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,carPayment,carCondition,carInsuranceS,carLicensed,carFuel,city,neighborhood,numberResult);
-                }
-            }
-        }
-
-        return resultFilter;
-    }
-
-
-
-
-
-
-
-
-
-
-
 
     public static ResultFilter filterResult2(ArrayList<ItemSelectedFilterModel> itemFilterArrayList
-            , int burnedPrice, Context context, String city, String neighborhood, int numberResult, SearchResult searchResult){
+            , int burnedPrice, Context context, String city, String neighborhood, int numberResult, SearchResult searchResult,int pageNumber){
         /*
         I return data from server as a object coz i well needed if user have to get more
         data same data must to base 1.CollectionReference "bath data coz we have categories"
@@ -370,9 +66,11 @@ public class FilterFireStore {
         if (itemFilterArrayList.size() ==1)
         {
             if (city.equals("empty")){
-                getItems(category_id,0.0,100000000.0,context,itemFilterArrayList.get(0),searchResult);
+                getItems(category_id,0.0,100000000.0,context,itemFilterArrayList.get(0),searchResult,pageNumber);
             }else{
-                resultFilter = getResultWithCityOrNeighborhood(category,categoryBefore,0.0,100000000.0,burnedPrice,city,neighborhood,numberResult);
+                Log.i("TAG ","city "+city);
+                Log.i("TAG ","neighborhood "+neighborhood);
+                getItemsWithCityAndNe(category_id,0.0,100000000.0,context,itemFilterArrayList.get(0),searchResult,city,neighborhood,pageNumber);
             }
         }
 
@@ -389,9 +87,10 @@ public class FilterFireStore {
             }else{
                 double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
                 if (city.equals("empty")) {
-                    resultFilter = getResult(category, categoryBefore, priceFrom, 100000000.0, burnedPrice,numberResult);
+                    //city empty
+                    getItems(category_id,priceFrom,100000000.0,context,itemFilterArrayList.get(0),searchResult,pageNumber);
                 }else{
-                    resultFilter = getResultWithCityOrNeighborhood(category, categoryBefore, priceFrom, 100000000.0, burnedPrice,city,neighborhood,numberResult);
+                    getItemsWithCityAndNe(category_id,priceFrom,100000000.0,context,itemFilterArrayList.get(0),searchResult,city,neighborhood,pageNumber);
                 }
             }
         }
@@ -411,9 +110,10 @@ public class FilterFireStore {
                 double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
                 double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
                 if (city.equals("empty")) {
-                    resultFilter = getResult(category, categoryBefore, priceFrom, priceTo, burnedPrice,numberResult);
+                    //city empty
+                    getItems(category_id,priceFrom,priceTo,context,itemFilterArrayList.get(0),searchResult,pageNumber);
                 }else{
-                    resultFilter = getResultWithCityOrNeighborhood(category, categoryBefore, priceFrom, priceTo, burnedPrice,city,neighborhood,numberResult);
+                    getItemsWithCityAndNe(category_id,priceFrom,priceTo,context,itemFilterArrayList.get(0),searchResult,city,neighborhood,pageNumber);
                 }
             }
         }
@@ -423,7 +123,7 @@ public class FilterFireStore {
             double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
             double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
 
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+            if (itemFilterArrayList.get(0).getFilterS().equals("1")
                     || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
                     || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
                     || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
@@ -432,9 +132,10 @@ public class FilterFireStore {
                 String carMake = itemFilterArrayList.get(3).getFilterS();
                 if (city.equals("empty"))
                 {
-                    resultFilter = getResultMake(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,numberResult);
+                    //city empty
+                    getItemsFilterWithCarMake(category_id,priceFrom,priceTo,context,itemFilterArrayList.get(0),searchResult,carMake,pageNumber);
                 }else{
-                    resultFilter = getResultMakeWithCityOrNeighborhood(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake,city,neighborhood,numberResult);
+                    getItemsWithCityAndNeWithCarMake(category_id,priceFrom,priceTo,context,itemFilterArrayList.get(0),searchResult,city,neighborhood,carMake,pageNumber);
                 }
             }
 
@@ -467,7 +168,7 @@ public class FilterFireStore {
             double priceFrom = Double.parseDouble(itemFilterArrayList.get(1).getFilterS());
             double priceTo = Double.parseDouble(itemFilterArrayList.get(2).getFilterS());
 
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+            if (itemFilterArrayList.get(0).getFilterS().equals("1")
                     || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
                     || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
                     || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
@@ -477,9 +178,10 @@ public class FilterFireStore {
                 String carModel = itemFilterArrayList.get(4).getFilterS();
                 if (city.equals("empty"))
                 {
-                    resultFilter = getResultCarModel(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,numberResult);
+                    getItemsFilterWithCarMakeAndCarModel(category_id,priceFrom,priceTo,context,itemFilterArrayList.get(0),searchResult,carMake,carModel,pageNumber);
+                    //resultFilter = getResultCarModel(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,numberResult);
                 }else{
-                    resultFilter = getResultCarModelWithCityOrNeighborhood(category, categoryBefore, 0.0, 100000000.0, burnedPrice, carMake, carModel,city,neighborhood,numberResult);
+                    getItemsWithCityAndNeWithCarMakeAndCarModel(category_id,priceFrom,priceTo,context,itemFilterArrayList.get(0),searchResult,city,neighborhood,carMake,carModel,pageNumber);
                 }
 
             }
@@ -500,7 +202,7 @@ public class FilterFireStore {
 
         if (itemFilterArrayList.size() ==6)
         {
-            if (itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_sale))
+            if (itemFilterArrayList.get(0).getFilterS().equals("1")
                     || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.car_for_rent))
                     || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.motorcycle))
                     || itemFilterArrayList.get(0).getFilterType().equals(context.getResources().getString(R.string.trucks))
@@ -514,9 +216,10 @@ public class FilterFireStore {
 
                 if (city.equals("empty"))
                 {
-                    resultFilter = getResultYear(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,numberResult);
+                    getItemsFilterWithCarMakeAndCarModelAndYear(category_id,priceFrom,priceTo,context,itemFilterArrayList.get(0),searchResult,carMake,carModel,year,pageNumber);
                 }else{
-                    resultFilter = getResultYearWithCityOrNeighborhood(category,categoryBefore,priceFrom,priceTo,burnedPrice,carMake,carModel,year,city,neighborhood,numberResult);
+
+                    getItemsWithCityAndNeWithCarMakeAndCarModelAndYear(category_id,priceFrom,priceTo,context,itemFilterArrayList.get(0),searchResult,city,neighborhood,carMake,carModel,year,pageNumber);
                 }
             }
 
@@ -646,19 +349,21 @@ public class FilterFireStore {
 
 
     private static void getItems(int category_id, double price_from, double price_to
-            ,Context context,ItemSelectedFilterModel itemSelectedFilterModel,SearchResult searchResult) {
+            ,Context context,ItemSelectedFilterModel itemSelectedFilterModel,SearchResult searchResult,int pageNumber) {
 
         if (checkIfAndroidVBiggerThan9()) {
 
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             Request request = new Request.Builder()
-                    .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id)
+                    .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                            +"&price_to="+price_to+"&page="+pageNumber)
                     .method("GET", null)
                     .addHeader("Accept", "application/json")
                     .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
                     .addHeader("Accept-Language", getUserLanguage(context))
                     .build();
+            // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
 
             try {
                 Response response = client.newCall(request).execute();
@@ -682,6 +387,433 @@ public class FilterFireStore {
 
 
     }
+
+
+    private static void getItemsFilterWithCarMake(int category_id, double price_from, double price_to
+            ,Context context,ItemSelectedFilterModel itemSelectedFilterModel,SearchResult searchResult,String carMake,int pageNumber) {
+
+        if (checkIfAndroidVBiggerThan9()) {
+
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                            +"&price_to="+price_to+"&brand_id="+carMake+"&page="+pageNumber)
+                    .method("GET", null)
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                    .addHeader("Accept-Language", getUserLanguage(context))
+                    .build();
+            // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+            try {
+                Response response = client.newCall(request).execute();
+                JSONObject obj,adObj;
+                JSONArray jsonArray;
+
+                try {
+                    obj = new JSONObject(response.body().string());
+                    JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                    getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    private static void getItemsWithCityAndNeWithCarMake(int category_id, double price_from, double price_to
+            ,Context context,ItemSelectedFilterModel itemSelectedFilterModel,SearchResult searchResult
+            ,String city,String neighborhood,String carMake,int pageNumber) {
+
+        if (neighborhood.equals("empty"))
+        {
+            if (checkIfAndroidVBiggerThan9()) {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                                +"&price_to="+price_to+"&brand_id="+carMake+"&city_id="+city+"&page="+pageNumber)
+                        .method("GET", null)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                        .addHeader("Accept-Language", getUserLanguage(context))
+                        .build();
+                // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    JSONObject obj,adObj;
+                    JSONArray jsonArray;
+
+                    try {
+                        obj = new JSONObject(response.body().string());
+                        JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                        getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            if (checkIfAndroidVBiggerThan9()) {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                                +"&price_to="+price_to+"&brand_id="+carMake+"&city_id="+city+"&area_id="+neighborhood+"&page="+pageNumber)
+                        .method("GET", null)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                        .addHeader("Accept-Language", getUserLanguage(context))
+                        .build();
+                // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    JSONObject obj,adObj;
+                    JSONArray jsonArray;
+
+                    try {
+                        obj = new JSONObject(response.body().string());
+                        JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                        getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    private static void getItemsFilterWithCarMakeAndCarModel(int category_id, double price_from, double price_to
+            ,Context context,ItemSelectedFilterModel itemSelectedFilterModel
+            ,SearchResult searchResult,String carMake,String carModel,int pageNumber) {
+        if (checkIfAndroidVBiggerThan9()) {
+
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                            +"&price_to="+price_to+"&brand_id="+carMake+"&model_id="+carModel+"&page="+pageNumber)
+                    .method("GET", null)
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                    .addHeader("Accept-Language", getUserLanguage(context))
+                    .build();
+            // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+            try {
+                Response response = client.newCall(request).execute();
+                JSONObject obj,adObj;
+                JSONArray jsonArray;
+
+                try {
+                    obj = new JSONObject(response.body().string());
+                    JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                    getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void getItemsWithCityAndNeWithCarMakeAndCarModel(int category_id, double price_from, double price_to
+            ,Context context,ItemSelectedFilterModel itemSelectedFilterModel,SearchResult searchResult
+            ,String city,String neighborhood,String carMake,String carModel,int pageNumber) {
+
+        if (neighborhood.equals("empty"))
+        {
+            if (checkIfAndroidVBiggerThan9()) {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                                +"&price_to="+price_to+"&brand_id="+carMake+"&model_id="+carModel+"&city_id="+city+"&page="+pageNumber)
+                        .method("GET", null)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                        .addHeader("Accept-Language", getUserLanguage(context))
+                        .build();
+                // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    JSONObject obj,adObj;
+                    JSONArray jsonArray;
+
+                    try {
+                        obj = new JSONObject(response.body().string());
+                        JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                        getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            if (checkIfAndroidVBiggerThan9()) {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                                +"&price_to="+price_to+"&brand_id="+carMake+"&model_id="+carModel+"&city_id="+city
+                                +"&area_id="+neighborhood+"&page="+pageNumber)
+                        .method("GET", null)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                        .addHeader("Accept-Language", getUserLanguage(context))
+                        .build();
+                // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    JSONObject obj,adObj;
+                    JSONArray jsonArray;
+
+                    try {
+                        obj = new JSONObject(response.body().string());
+                        JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                        getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    private static void getItemsWithCityAndNe(int category_id, double price_from, double price_to
+            ,Context context,ItemSelectedFilterModel itemSelectedFilterModel,SearchResult searchResult,String city,String neighborhood,int pageNumber) {
+
+        if (neighborhood.equals("empty"))
+        {
+            if (checkIfAndroidVBiggerThan9()) {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                                +"&price_to="+price_to+"&city_id="+city+"&page="+pageNumber)
+                        .method("GET", null)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                        .addHeader("Accept-Language", getUserLanguage(context))
+                        .build();
+                // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    JSONObject obj,adObj;
+                    JSONArray jsonArray;
+
+                    try {
+                        obj = new JSONObject(response.body().string());
+                        JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                        getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            if (checkIfAndroidVBiggerThan9()) {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                                +"&price_to="+price_to+"&city_id="+city+"&area_id="+neighborhood+"&page="+pageNumber)
+                        .method("GET", null)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                        .addHeader("Accept-Language", getUserLanguage(context))
+                        .build();
+                // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    JSONObject obj,adObj;
+                    JSONArray jsonArray;
+
+                    try {
+                        obj = new JSONObject(response.body().string());
+                        JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                        getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    private static void getItemsFilterWithCarMakeAndCarModelAndYear(int category_id, double price_from, double price_to
+            ,Context context,ItemSelectedFilterModel itemSelectedFilterModel
+            ,SearchResult searchResult,String carMake,String carModel,int year,int pageNumber) {
+        if (checkIfAndroidVBiggerThan9()) {
+
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                            +"&price_to="+price_to+"&brand_id="+carMake+"&model_id="+carModel+"&year="+year+"&page="+pageNumber)
+                    .method("GET", null)
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                    .addHeader("Accept-Language", getUserLanguage(context))
+                    .build();
+            // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+            try {
+                Response response = client.newCall(request).execute();
+                JSONObject obj,adObj;
+                JSONArray jsonArray;
+
+                try {
+                    obj = new JSONObject(response.body().string());
+                    JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                    getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void getItemsWithCityAndNeWithCarMakeAndCarModelAndYear(int category_id, double price_from, double price_to
+            ,Context context,ItemSelectedFilterModel itemSelectedFilterModel,SearchResult searchResult
+            ,String city,String neighborhood,String carMake,String carModel,int year,int pageNumber) {
+
+        if (neighborhood.equals("empty"))
+        {
+            if (checkIfAndroidVBiggerThan9()) {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                                +"&price_to="+price_to+"&brand_id="+carMake+"&model_id="+carModel+"&year="+year+"&city_id="+city+"&page="+pageNumber)
+                        .method("GET", null)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                        .addHeader("Accept-Language", getUserLanguage(context))
+                        .build();
+                // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    JSONObject obj,adObj;
+                    JSONArray jsonArray;
+
+                    try {
+                        obj = new JSONObject(response.body().string());
+                        JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                        getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            if (checkIfAndroidVBiggerThan9()) {
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+category_id+"&price_from="+price_from
+                                +"&price_to="+price_to+"&brand_id="+carMake+"&model_id="+carModel+"&year="+year
+                                +"&city_id="+city+"&area_id="+neighborhood+"&page="+pageNumber)
+                        .method("GET", null)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                        .addHeader("Accept-Language", getUserLanguage(context))
+                        .build();
+                // http://174.138.4.155/api/ads?is_active=1&is_hot_price=0&category_id=1&page=1
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    JSONObject obj,adObj;
+                    JSONArray jsonArray;
+
+                    try {
+                        obj = new JSONObject(response.body().string());
+                        JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                        getAdsList(jsonArrayAllAds,context,itemSelectedFilterModel,searchResult);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+
+
+
+
+
+
+
+
 
     private static void getAdsList(JSONArray jsonArrayAllAds, Context context
             ,ItemSelectedFilterModel itemSelectedFilterModel,SearchResult searchResult) {

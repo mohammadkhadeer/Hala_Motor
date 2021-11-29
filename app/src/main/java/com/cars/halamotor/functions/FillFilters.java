@@ -220,9 +220,9 @@ public class FillFilters {
     public static ArrayList<ItemFilterModel> fillPaymentArrayL(Context context) {
         ArrayList<ItemFilterModel> carPMFilterArrayL = new ArrayList<ItemFilterModel>();
 
-        carPMFilterArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.payment_method_1),context.getResources().getString(R.string.payment_method_1_s)));
-        carPMFilterArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.payment_method_2),context.getResources().getString(R.string.payment_method_2_s)));
-        carPMFilterArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.payment_method_3),context.getResources().getString(R.string.payment_method_3_s)));
+//        carPMFilterArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.payment_method_1),context.getResources().getString(R.string.payment_method_1_s)));
+//        carPMFilterArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.payment_method_2),context.getResources().getString(R.string.payment_method_2_s)));
+//        carPMFilterArrayL.add(new ItemFilterModel(context.getResources().getString(R.string.payment_method_3),context.getResources().getString(R.string.payment_method_3_s)));
 
         return carPMFilterArrayL;
     }

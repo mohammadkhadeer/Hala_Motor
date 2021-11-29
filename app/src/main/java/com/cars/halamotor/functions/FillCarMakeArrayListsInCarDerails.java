@@ -226,7 +226,7 @@ public class FillCarMakeArrayListsInCarDerails {
             String name=getTextEngOrLocal(context,carMakeArrayList.get(i).getName_en(),carMakeArrayList.get(i).getName_ar());
             ItemFilterModel itemFilterModel = new ItemFilterModel(
                     name
-                    ,carMakeArrayList.get(i).getName_en()
+                    ,carMakeArrayList.get(i).getId()
             );
             carMakeFilterArrayList.add(itemFilterModel);
         }

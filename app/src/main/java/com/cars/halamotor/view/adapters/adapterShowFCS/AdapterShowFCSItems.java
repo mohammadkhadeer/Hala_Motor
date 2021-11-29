@@ -560,32 +560,39 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
     public void onBind(int position) {
       super.onBind(position);
       int a=suggestedItemsList.size()-1, x = 0,mod=0;
-      if (9 == suggestedItemsList.size())
-      {
-        x= 0;
-        mod = 0;
-      }else{
-        x= a/8;
-        mod = a % 8;
-      }
-
-      if (suggestedItemsList.size() ==1)
+      if (mod ==0)
       {
         cardView.setVisibility(View.GONE);
         relativeLayoutNoMoreItem.setVisibility(View.GONE);
-      }else {
-        if(mod>0)
-        {
-          cardView.setVisibility(View.GONE);
-          relativeLayoutNoMoreItem.setVisibility(View.VISIBLE);
-          changeFont(textViewNoMoreMessage);
-        }else {
-          AddShineEffect(relativeLayout, shinImageView);
-          AddShineEffect(relativeLayout2, shinImageView2);
-          AddShineEffect(relativeLayout3, shinImageView3);
-          AddShineEffect(relativeLayout4, shinImageView4);
-        }
       }
+
+//      if (9 == suggestedItemsList.size())
+//      {
+//        x= 0;
+//        mod = 0;
+//      }else{
+//        x= a/8;
+//        mod = a % 8;
+//      }
+//
+//      if (mod ==0)
+//      {
+//        cardView.setVisibility(View.GONE);
+//        relativeLayoutNoMoreItem.setVisibility(View.GONE);
+//      }else {
+//        if(mod>0)
+//        {
+//          cardView.setVisibility(View.GONE);
+//          relativeLayoutNoMoreItem.setVisibility(View.VISIBLE);
+//          changeFont(textViewNoMoreMessage);
+//        }else {
+//          AddShineEffect(relativeLayout, shinImageView);
+//          AddShineEffect(relativeLayout2, shinImageView2);
+//          AddShineEffect(relativeLayout3, shinImageView3);
+//          AddShineEffect(relativeLayout4, shinImageView4);
+//        }
+//      }
+
     }
   }
 

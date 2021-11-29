@@ -14,40 +14,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cars.halamotor.R;
-import com.cars.halamotor.functions.FCSFunctions;
 import com.cars.halamotor.functions.Functions;
 import com.cars.halamotor.model.CCEMTModel;
 import com.cars.halamotor.model.ItemSelectedFilterModel;
 import com.cars.halamotor.model.ResultFilter;
-import com.cars.halamotor.model.SimilarAdsComp;
-import com.cars.halamotor.model.SimilarNeeded;
+
 import com.cars.halamotor.model.SuggestedItem;
 import com.cars.halamotor.new_presenter.RelativeResult;
-import com.cars.halamotor.new_presenter.SearchResult;
-import com.cars.halamotor.utils.PaginationListenerUser;
+
 import com.cars.halamotor.view.adapters.adapterShowItemDetails.AdapterUserItemLoading;
 import com.cars.halamotor.view.adapters.userAds.AdapterShowUserItems;
 import com.cars.halamotor.view.adapters.userAds.AdapterSuggestedItems;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
+
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.cars.halamotor.algorithms.RebuildItemFilter.rebuildItemFilter;
-import static com.cars.halamotor.fireBaseDB.FilterFireStore.filterResult;
-import static com.cars.halamotor.fireBaseDB.FilterFireStore.filterResult2;
-import static com.cars.halamotor.fireBaseDB.FireStorePaths.getDataStoreInstance;
-import static com.cars.halamotor.functions.FCSFunctions.convertCat;
-import static com.cars.halamotor.functions.NewFunction.handelNumberOfObject;
-import static com.cars.halamotor.functions.NewFunction.nowNumberOfObject;
 import static com.cars.halamotor.new_presenter.RelatedAdToSameAd.getRelatedAds;
 import static com.cars.halamotor.view.adapters.adapterShowFCS.PaginationListener.PAGE_START;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -133,23 +115,31 @@ public class FragmentSuggestedAds extends Fragment {
     private void setData(ArrayList<CCEMTModel> ccemtModelArrayList) {
 
         suggestedItemsArrayListDO = new ArrayList<>();
-        ccemtModelArrayList.addAll(suggestedItemsArrayListDO);
+        //ccemtModelArrayList.addAll(suggestedItemsArrayListDO);
+        if (ccemtModelArrayList.size()>9)
+        {
+            for (int i =0;i<9;i++)
+            {
+                suggestedItemsArrayListDO.add(ccemtModelArrayList.get(i));
+            }
+        }else{
+            ccemtModelArrayList.addAll(suggestedItemsArrayListDO);
+        }
 
-        if (currentPage != PAGE_START) adapterShowUserItems.removeLoading();
-        adapterShowUserItems.addItems(ccemtModelArrayList);
-
-        isLoading = false;
-
-
-        suggestedItemsArrayListDO.addAll(ccemtModelArrayList);
+        Log.i("TAG","suggestedItemsArrayListDO "+String.valueOf(suggestedItemsArrayListDO.size()));
         if (currentPage != PAGE_START) adapterShowUserItems.removeLoading();
         adapterShowUserItems.addItems(suggestedItemsArrayListDO);
-        if (currentPage < totalPage) {
-            adapterShowUserItems.addLoading();
-        } else {
-            isLastPage = true;
-        }
+
         isLoading = false;
+
+//        if (currentPage != PAGE_START) adapterShowUserItems.removeLoading();
+//        adapterShowUserItems.addItems(suggestedItemsArrayListDO);
+////        if (currentPage < totalPage) {
+////            adapterShowUserItems.addLoading();
+////        } else {
+////            isLastPage = true;
+////        }
+//        isLoading = false;
     }
 
     private void createRV() {
