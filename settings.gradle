@@ -1,0 +1,2 @@
+include ':YCGalleryLib'
+include ':app', ':bottom-bar', ':spinner'

@@ -1,0 +1,279 @@
+{
+  "project_info": {
+    "project_number": "163503473637",
+    "firebase_url": "https://hala-motor-8ff46.firebaseio.com",
+    "project_id": "hala-motor-8ff46",
+    "storage_bucket": "hala-motor-8ff46.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163503473637:android:588ede8e4c3d24ec45250c",
+        "android_client_info": {
+          "package_name": "com.cars.halamotor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "163503473637-6pq30m53jg9d56bajqqqs5c2suugqvu4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cars.halamotor",
+            "certificate_hash": "d6fb23e42dcb4a1c80ad6272f9cdf9fda9a2b5aa"
+          }
+        },
+        {
+          "client_id": "163503473637-8qbhp9do30qa1epnkpt2lr7pfieq5ra3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cars.halamotor",
+            "certificate_hash": "acca43e95f69c567a41f7f2af930099a7c147866"
+          }
+        },
+        {
+          "client_id": "163503473637-r652j7dpgvrgsvpudjc4tvirgogbp380.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cars.halamotor",
+            "certificate_hash": "835f8987ff627cbffb66dae626a0d88cc7134b65"
+          }
+        },
+        {
+          "client_id": "163503473637-v83gi5bvpnvd018rk15ppp03eapfd9nn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cars.halamotor",
+            "certificate_hash": "9e99ef469cad497146a0a2dcf26a5ae7273ffcc6"
+          }
+        },
+        {
+          "client_id": "163503473637-iladeqi6n2u8lv1t51b27tr0o5me09q7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDmTBWYvRTkLxu8R8bbXitB1yEyfr5qQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "163503473637-iladeqi6n2u8lv1t51b27tr0o5me09q7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "163503473637-259595fm0uvmipmsofd578p9uagptosk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.halamotor"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163503473637:android:9846706f9c8828fc45250c",
+        "android_client_info": {
+          "package_name": "com.cars.halamotor_obeidat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "163503473637-n2kk31mc25ljuucnjdrci82qq79jd97i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cars.halamotor_obeidat",
+            "certificate_hash": "9e99ef469cad497146a0a2dcf26a5ae7273ffcc6"
+          }
+        },
+        {
+          "client_id": "163503473637-iladeqi6n2u8lv1t51b27tr0o5me09q7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDmTBWYvRTkLxu8R8bbXitB1yEyfr5qQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "163503473637-iladeqi6n2u8lv1t51b27tr0o5me09q7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "163503473637-259595fm0uvmipmsofd578p9uagptosk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.halamotor"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163503473637:android:4b262b1ea268575c45250c",
+        "android_client_info": {
+          "package_name": "com.cars.new_halamotor_ra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "163503473637-ghf03s0sohnsii9aa837fhe0pqp5hsvs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cars.new_halamotor_ra",
+            "certificate_hash": "5e5a5a3588cffac03962adb96659a4dc2fbb2a7d"
+          }
+        },
+        {
+          "client_id": "163503473637-hggc007p3uqotj9ucn6quc8qtci3evp7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cars.new_halamotor_ra",
+            "certificate_hash": "6a608ef84d0f72daadaa437310300f5bf5dffb80"
+          }
+        },
+        {
+          "client_id": "163503473637-iladeqi6n2u8lv1t51b27tr0o5me09q7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDmTBWYvRTkLxu8R8bbXitB1yEyfr5qQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "163503473637-iladeqi6n2u8lv1t51b27tr0o5me09q7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "163503473637-259595fm0uvmipmsofd578p9uagptosk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.halamotor"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163503473637:android:9a7fe4cce71d1a3145250c",
+        "android_client_info": {
+          "package_name": "com.cars_new.halamotor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "163503473637-37ou8cgr1o713o9lso05dn3b4sjncatu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cars_new.halamotor",
+            "certificate_hash": "d6fb23e42dcb4a1c80ad6272f9cdf9fda9a2b5aa"
+          }
+        },
+        {
+          "client_id": "163503473637-f68u5htsuhou8umldeodkm635eili1a9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cars_new.halamotor",
+            "certificate_hash": "97e5a8167db7e194179909b7f08bf736758ff5f8"
+          }
+        },
+        {
+          "client_id": "163503473637-iladeqi6n2u8lv1t51b27tr0o5me09q7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDmTBWYvRTkLxu8R8bbXitB1yEyfr5qQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "163503473637-iladeqi6n2u8lv1t51b27tr0o5me09q7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "163503473637-259595fm0uvmipmsofd578p9uagptosk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.halamotor"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163503473637:android:46b98a281853558b45250c",
+        "android_client_info": {
+          "package_name": "com.halamotor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "163503473637-bf4c60u6u1cmgnpa7gkp5so6iuioh040.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.halamotor",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "163503473637-sg7t7l0381p0b20r9a4l98tdm98s0mic.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.halamotor",
+            "certificate_hash": "d25ee27dc8d115b14f4365e30743a4ffba8fefea"
+          }
+        },
+        {
+          "client_id": "163503473637-iladeqi6n2u8lv1t51b27tr0o5me09q7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDmTBWYvRTkLxu8R8bbXitB1yEyfr5qQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "163503473637-iladeqi6n2u8lv1t51b27tr0o5me09q7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "163503473637-259595fm0uvmipmsofd578p9uagptosk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.halamotor"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

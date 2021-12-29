@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="215dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="200dp"
+        android:layout_height="215dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:id="@+id/similar_container"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/similar_ads_bg"
+        >
+
+        <RelativeLayout
+            android:layout_width="200dp"
+            android:layout_height="215dp">
+
+            <ProgressBar
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/adapter_similar_progress"
+                />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:id="@+id/item_image_iv"
+            android:layout_marginTop="0.6dp"
+            android:layout_marginLeft="0.6dp"
+            android:layout_marginEnd="0.6dp"
+            android:layout_marginStart="0.6dp"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:id="@+id/item_user_info_load_rl"
+            android:layout_marginTop="182dp"
+            >
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                app:civ_border_color="@color/colorBlack"
+                app:civ_border_width="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginStart="8dp"
+                app:civ_shadow="true"
+                android:background="@drawable/circl_silver_bg"
+                app:civ_shadow_radius="3"
+                app:civ_shadow_color="#8BC34A"
+                android:id="@+id/adapter_similar_user_image_load"
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorSilver_"
+                android:layout_marginStart="40dp"
+                android:id="@+id/adapter_similar_user_name_load_tv"/>
+
+            <ImageView
+                android:id="@+id/adapter_similar_user_info_shine_load_tv"
+                android:layout_width="50dp"
+                android:layout_marginLeft="-50dp"
+                android:layout_height="180dp"
+                android:src="@drawable/shine" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:id="@+id/item_image_load_rl"
+            android:layout_marginTop="0.5dp"
+            android:layout_marginLeft="0.5dp"
+            android:layout_marginStart="0.5dp"
+            >
+
+            <ImageView
+                android:id="@+id/item_image_load2_iv"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="-50dp"
+                android:layout_height="180dp"
+                android:src="@color/colorSilver_"
+                />
+
+            <ImageView
+                android:id="@+id/item_image_load_iv"
+                android:layout_width="50dp"
+                android:layout_marginLeft="-50dp"
+                android:layout_height="180dp"
+                android:src="@drawable/shine" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="184dp"
+            >
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                app:civ_border_color="@color/colorBlack"
+                app:civ_border_width="1px"
+                android:layout_marginLeft="1dp"
+                android:layout_marginStart="8dp"
+                android:id="@+id/adapter_similar_user_image"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="4dp"
+                android:id="@+id/adapter_similar_user_name_tv"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                android:layout_marginTop="190dp"
+                android:layout_marginEnd="8dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/adapter_similar_fire_iv"
+                android:background="@drawable/fire"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:background="@color/colorBlack5"
+            android:alpha="0.8"
+            android:id="@+id/adapter_similar_price_ll"
+            android:layout_marginTop="152dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/strike"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="5dp"
+                    android:textSize="13dp"
+                    android:visibility="gone"
+                    android:textColor="@color/colorWhite"
+                    android:text="test text"
+                    android:id="@+id/adapter_similar_item_car_old_price"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/strike"
+                    android:layout_margin="3dp"
+                    android:textSize="15dp"
+                    android:textColor="@color/colorWhite"
+                    android:text="test text"
+                    android:id="@+id/adapter_similar_item_car_price"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:layout_margin="3dp"
+                        android:textColor="@color/colorWhite"
+                        android:text="test text"
+                        android:id="@+id/adapter_similar_item_car_new_price"
+                        />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="gone"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginStart="4dp"
+                        android:id="@+id/adapter_suggested_fire_iv"
+                        android:background="@drawable/fire"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

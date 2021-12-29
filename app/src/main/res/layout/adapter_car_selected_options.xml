@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/circl_car_option_bg"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack6"
+            android:textSize="15dp"
+            android:layout_marginStart="10dp"
+            android:text="test text"
+            android:id="@+id/adapter_car_selected_options"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

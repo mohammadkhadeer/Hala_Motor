@@ -1,0 +1,59 @@
+package com.cars.halamotor_obeidat.functions;
+
+import android.content.Context;
+import android.widget.ImageView;
+
+import com.cars.halamotor_obeidat.R;
+import com.squareup.picasso.Picasso;
+
+import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserLanguage;
+
+public class FillText {
+    public static String getTextEngOrLocal(Context context, String eng, String local) {
+//        if (Locale.getDefault().getLanguage().equals("en"))
+        if (getUserLanguage(context).equals("en"))
+            return eng;
+        else
+            return local;
+    }
+
+    public static void fillImageView(Context context, ImageView imageView) {
+//        if (Locale.getDefault().getLanguage().equals("en"))
+        if (getUserLanguage(context).equals("en"))
+        {
+            Picasso.get()
+                    .load(R.drawable.arrow)
+                    .fit()
+                    .centerCrop()
+                    .into(imageView);
+        }
+        else
+        {
+            Picasso.get()
+                    .load(R.drawable.arrow_ar)
+                    .fit()
+                    .centerCrop()
+                    .into(imageView);
+        }
+    }
+
+    public static void fillBackImageView(Context context, ImageView imageView) {
+//        if (Locale.getDefault().getLanguage().equals("en"))
+        if (getUserLanguage(context).equals("en"))
+        {
+            Picasso.get()
+                    .load(R.drawable.back)
+                    .fit()
+                    .centerCrop()
+                    .into(imageView);
+        }
+        else
+        {
+            Picasso.get()
+                    .load(R.drawable.back_ar)
+                    .fit()
+                    .centerCrop()
+                    .into(imageView);
+        }
+    }
+}

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorSilverSelectedItem"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.fragments.fragmentInSaidShowItemDetails.FragmentUserInfo">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite"
+            android:weightSum="100">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_marginTop="1dp"
+                android:id="@+id/fragment_u_i_RL"
+                android:layout_weight="55">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                        <com.mikhaellopez.circularimageview.CircularImageView
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            app:civ_border_width="1dip"
+                            app:civ_border_color="@color/colorSilver"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginStart="8dp"
+                            app:civ_shadow="true"
+                            app:civ_shadow_radius="0"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/circl_silver_bg"
+                            android:id="@+id/fragment_u_i_a_m_image_IV"
+                            />
+
+                        <RelativeLayout
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginTop="53dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginStart="45dp"
+                            android:id="@+id/fragment_u_i_a_m_status"
+                            android:background="@drawable/onlin_bg">
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorBlack"
+                            android:text="User Name"
+                            android:textSize="18dp"
+                            android:id="@+id/fragment_u_i_a_m_user_name_TV"
+                            android:layout_marginTop="20dp"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGreen"
+                            android:text="Status"
+                            android:textSize="11dp"
+                            android:id="@+id/fragment_u_i_a_m_user_status_TV"
+                            android:layout_marginTop="42dp"
+                            />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5">
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="40">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal"
+                    android:weightSum="100">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/fragment_u_i_a_m_favourite_RL"
+                        android:layout_weight="33">
+
+                        <ImageView
+                            android:layout_width="29dp"
+                            android:layout_height="29dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/item_favu"
+                            android:id="@+id/fragment_u_i_a_m_favourite_IV"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:id="@+id/fragment_u_i_a_m_share_RL"
+                        android:layout_weight="34">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/share"
+                            android:alpha="0.5"
+                            android:id="@+id/fragment_u_i_a_m_share_IV"
+                            />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:id="@+id/fragment_u_i_a_m_report_RL"
+                        android:layout_weight="33">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="29dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="3dp"
+                            android:background="@drawable/report"
+                            android:id="@+id/fragment_u_i_a_m_report_IV"
+                            />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0.5dp"
+            android:background="@color/colorWhite"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Item name"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginStart="16dp"
+                android:id="@+id/fragment_u_i_a_m_user_item_name_TV"
+                android:textColor="@color/colorBlack"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 hour"
+                android:id="@+id/fragment_u_i_a_m_user_item_date_TV"
+                android:layout_marginLeft="1dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="16dp"
+                android:textSize="14dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+
