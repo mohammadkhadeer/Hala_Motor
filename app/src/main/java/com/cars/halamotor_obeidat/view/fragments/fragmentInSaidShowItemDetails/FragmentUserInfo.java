@@ -159,8 +159,7 @@ public class FragmentUserInfo extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("userID", userID);
-                bundle.putString("type", "person");
+                bundle.putParcelable("creator_info",creatorInfo);
 
                 Intent intent = new Intent(getActivity(), UserProfile.class);
                 intent.putExtras(bundle);

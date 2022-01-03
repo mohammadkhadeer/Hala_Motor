@@ -9,7 +9,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.cars.halamotor_obeidat.model.Attributes;
+import com.cars.halamotor_obeidat.model.CCEMTModel;
+import com.cars.halamotor_obeidat.model.CCEMTModelDetails;
 import com.cars.halamotor_obeidat.model.CCEMTSmallObject;
+import com.cars.halamotor_obeidat.model.CategoryComp;
 import com.cars.halamotor_obeidat.model.CreatorInfo;
 import com.cars.halamotor_obeidat.model.SuggestedItem;
 
@@ -51,7 +54,7 @@ public class RelatedAdToSameCreator {
                 try {
                     obj = new JSONObject(response.body().string());
                     jsonArray = obj.getJSONArray("DATA");
-                    Log.w("TAG",jsonArray.toString());
+                    //Log.w("TAG",jsonArray.toString());
 
                     getAdsDetails(jsonArray,relatedAds);
 
@@ -72,6 +75,9 @@ public class RelatedAdToSameCreator {
         ArrayList <String> optionsArrayList = null;
         ArrayList <Attributes> attributesArrayList ;
         //Log.w("TAG",adObj.toString());
+        CCEMTModelDetails ccemtModelDetails=null;
+        ArrayList <String> photosArrayList= null ;
+        ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
 
         for (int i=0;i<arrayOfObjects.length();i++)
         {
@@ -88,42 +94,39 @@ public class RelatedAdToSameCreator {
                         ,creatorInfo.getString("photo")
                 );
 
-                CCEMTSmallObject ccemtSmallObject = new CCEMTSmallObject(
-                        addObject.getString("id")
+                JSONArray jsonArrayPhotos = addObject.getJSONArray("photos");
+                JSONArray jsonArrayAttributes = addObject.getJSONArray("attributes");
 
-                        ,addObject.getString("title")
-                        ,addObject.getString("description")
-                        ,addObject.getString("price")
-                        ,addObject.getString("phone")
+                photosArrayList =new ArrayList<>();
+                if (jsonArrayPhotos !=null && jsonArrayPhotos.length()>0)
+                {
+                    for (int x=0;x<jsonArrayPhotos.length();x++)
+                    {
+                        photosArrayList.add(jsonArrayPhotos.getString(x));
+                    }
+                }
 
-                        ,addObject.getString("created_at")
+                attributesArrayList =new ArrayList<>();
+                for (int j=0;j<jsonArrayAttributes.length();j++)
+                {
+                    attributes =  jsonArrayAttributes.getJSONObject(j);
+                    Attributes attributesObj = new Attributes(attributes.getString("type"),attributes.getString("value"),attributes.getString("title"));
+                    attributesArrayList.add(attributesObj);
+                }
 
-                        ,addObject.getString("year")
-                        ,addObject.getString("kilometers_from")
-                        ,addObject.getString("kilometers_to")
-                        ,addObject.getString("car_insurance_type")
-                        ,addObject.getString("car_license_type")
-                        ,addObject.getString("car_fuel_type")
-                        ,addObject.getString("car_transmission_type")
-                        ,addObject.getString("car_condition_type")
-                        ,addObject.getString("payment_method")
-                        ,addObject.getString("color")
-                        ,addObject.getString("area")
-                        ,addObject.getString("model")
+                CategoryComp categoryComp =null;
+                CCEMTModel ccemtModel = new CCEMTModel(addObject.getString("id"),addObject.getString("title"),addObject.getString("description"),addObject.getString("price"),addObject.getString("phone"),addObject.getString("created_at"),categoryComp,photosArrayList,attributesArrayList,creatorInfo1);
 
-                        ,optionsArrayList
-                        ,creatorInfo1
-                );
+
+                adsArrayList.add(ccemtModel);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        Log.w("TAG","relatedAdsToSameUser: "+adsArrayList.size());
 
-
-
-        //relatedAds.relatedAdsToSameUser();
-
+        relatedAds.relatedAdsToSameUser(adsArrayList);
 
     }
 }

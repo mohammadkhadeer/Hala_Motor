@@ -231,7 +231,7 @@ public class FragmentUserAds extends Fragment implements RelatedAds {
     }
 
     @Override
-    public void relatedAdsToSameUser(List<SuggestedItem> relatedAdsToSameUserList) {
+    public void relatedAdsToSameUser(List<CCEMTModel> relatedAdsToSameUserList) {
         Log.i("TAG InFragment: ","T");
     }
 

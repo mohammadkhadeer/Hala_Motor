@@ -53,7 +53,7 @@ import static com.cars.halamotor_obeidat.functions.Functions.setLocale;
 import static com.cars.halamotor_obeidat.presnter.CCEMTObjectDetailsFromServer.getCCEMTObjectDetails;
 
 public class ShowItemDetails extends AppCompatActivity
-         implements FavouriteChange , ItemModel, ImageClicked , RelatedAds, RelativeResult {
+         implements FavouriteChange , ItemModel, ImageClicked , RelativeResult {
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -542,11 +542,6 @@ public class ShowItemDetails extends AppCompatActivity
         }else{
             finish();
         }
-    }
-
-    @Override
-    public void relatedAdsToSameUser(List<SuggestedItem> relatedAdsToSameUserList) {
-
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.cars.halamotor_obeidat.model.BoostPost;
 import com.cars.halamotor_obeidat.model.CarInformation;
 import com.cars.halamotor_obeidat.model.CommentsComp;
+import com.cars.halamotor_obeidat.model.CreatorInfo;
 import com.cars.halamotor_obeidat.model.DriverInformation;
 import com.cars.halamotor_obeidat.model.Following;
 import com.cars.halamotor_obeidat.model.ItemAccAndJunk;
@@ -39,14 +40,21 @@ public class InsertFunctions {
         );
         return isInserted;
     }
-    public static boolean insertFollowingTable(Following following, DBHelper database) {
+    public static boolean insertFollowingTable(CreatorInfo creatorInfo, DBHelper database) {
         boolean isInserted = database.insertFollowing(
-                following.getName()
-                ,following.getImage()
-                ,following.getUserID()
-                ,following.getFollowID()
-                ,following.getFollowerIDOtherSaid()
+                creatorInfo.getName()
+                ,creatorInfo.getPhoto()
+                ,creatorInfo.getUser_id()
+                ,creatorInfo.getUser_id()
+                ,creatorInfo.getUser_id()
         );
+//        boolean isInserted = database.insertFollowing(
+//                following.getName()
+//                ,following.getImage()
+//                ,following.getUserID()
+//                ,following.getFollowID()
+//                ,following.getFollowerIDOtherSaid()
+//        );
         return isInserted;
     }
 

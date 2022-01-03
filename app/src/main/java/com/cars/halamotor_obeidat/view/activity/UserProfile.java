@@ -2,10 +2,15 @@ package com.cars.halamotor_obeidat.view.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.cars.halamotor_obeidat.R;
+import com.cars.halamotor_obeidat.model.CCEMTModel;
+import com.cars.halamotor_obeidat.model.CreatorInfo;
+import com.cars.halamotor_obeidat.model.SuggestedItem;
 import com.cars.halamotor_obeidat.model.UserProfileInfo;
+import com.cars.halamotor_obeidat.presnter.RelatedAds;
 import com.cars.halamotor_obeidat.presnter.UserInfo;
 import com.cars.halamotor_obeidat.view.fragments.userProfileFragment.UserProfileDetailsInfo;
 import com.cars.halamotor_obeidat.view.fragments.userProfileFragment.UserProfilePostsList;
@@ -13,29 +18,32 @@ import com.cars.halamotor_obeidat.view.fragments.userProfileFragment.UserProfile
 import static com.cars.halamotor_obeidat.fireBaseDB.GetFromFireBaseDB.getProfileUserInfo;
 import static com.cars.halamotor_obeidat.functions.Functions.setLocale;
 
-public class UserProfile extends AppCompatActivity implements UserInfo {
+import java.util.List;
+
+public class UserProfile extends AppCompatActivity implements RelatedAds {
 
     UserProfileDetailsInfo userProfileDetailsInfo = new UserProfileDetailsInfo();
     UserProfilePostsList userProfilePostsList = new UserProfilePostsList();
 
-    String userID,type;
-    UserInfo userInfo;
+    CreatorInfo creatorInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLocale(this);
         setContentView(R.layout.activity_user_profile);
         getInfoFromIntent();
-        fillStatusBar();
-        userInfo = (UserInfo) this;
-        getProfileUserInfo(userID,userInfo);
+        statusBarColorWhite();
+
+        intiFragment();
+//        userInfo = (UserInfo) this;
+//        getProfileUserInfo(userID,userInfo);
         intiUserPostsFragment();
 
     }
 
     private void intiUserPostsFragment() {
         Bundle bundle = new Bundle();
-        bundle.putString("userID", userID);
+        bundle.putParcelable("creator_info", creatorInfo);
         userProfilePostsList.setArguments(bundle);
 
         getSupportFragmentManager().beginTransaction()
@@ -43,12 +51,6 @@ public class UserProfile extends AppCompatActivity implements UserInfo {
                 .commit();
     }
 
-    private void fillStatusBar() {
-        if (type.equals("person"))
-        {
-            statusBarColorWhite();
-        }
-    }
 
     private void statusBarColorWhite() {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -56,16 +58,14 @@ public class UserProfile extends AppCompatActivity implements UserInfo {
 
     private void getInfoFromIntent() {
         Bundle bundle = getIntent().getExtras();
-        userID =bundle.getString("userID");
-        type =bundle.getString("type");
+        creatorInfo = bundle.getParcelable("creator_info");
 
     }
 
-    private void intiFragment(UserProfileInfo userProfileInfo) {
+    private void intiFragment() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("object", userProfileInfo);
-        bundle.putString("userID", userID);
-        bundle.putString("type", type);
+        bundle.putParcelable("creator_info", creatorInfo);
+
         userProfileDetailsInfo.setArguments(bundle);
 
         getSupportFragmentManager().beginTransaction()
@@ -74,9 +74,10 @@ public class UserProfile extends AppCompatActivity implements UserInfo {
 
     }
 
-    @Override
-    public void userInfo(UserProfileInfo userProfileInfo) {
-        intiFragment(userProfileInfo);
 
+    @Override
+    public void relatedAdsToSameUser(List<CCEMTModel> relatedAdsToSameUserList) {
+        Log.i("TAG","I'm here in activity");
+        userProfilePostsList.handleList(relatedAdsToSameUserList);
     }
 }

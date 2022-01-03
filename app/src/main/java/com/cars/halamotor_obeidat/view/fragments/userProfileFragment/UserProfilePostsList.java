@@ -17,8 +17,12 @@ import android.widget.ProgressBar;
 
 import com.cars.halamotor_obeidat.R;
 import com.cars.halamotor_obeidat.functions.FCSFunctions;
+import com.cars.halamotor_obeidat.model.CCEMTModel;
+import com.cars.halamotor_obeidat.model.CreatorInfo;
 import com.cars.halamotor_obeidat.model.SuggestedItem;
 import com.cars.halamotor_obeidat.model.UserItem;
+import com.cars.halamotor_obeidat.presnter.RelatedAds;
+import com.cars.halamotor_obeidat.presnter.WheelsComp;
 import com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.AdapterShowFCSItems;
 import com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.PaginationListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,9 +41,10 @@ import static com.cars.halamotor_obeidat.fireBaseDB.FireStorePaths.getDataStoreI
 import static com.cars.halamotor_obeidat.functions.FCSFunctions.convertCat;
 import static com.cars.halamotor_obeidat.functions.NewFunction.handelNumberOfObject;
 import static com.cars.halamotor_obeidat.functions.NewFunction.nowNumberOfObject;
+import static com.cars.halamotor_obeidat.presnter.RelatedAdToSameCreator.getRelatedAds;
 import static com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.PaginationListener.PAGE_START;
 
-public class UserProfilePostsList extends Fragment {
+public class UserProfilePostsList extends Fragment implements RelatedAds{
 
     View view;
     ProgressBar progressBar;
@@ -56,17 +61,31 @@ public class UserProfilePostsList extends Fragment {
     private int totalPage = 10;
     private boolean isLastPage = false;
     private boolean isLoading = false;
-    String userID;
+
+    CreatorInfo creatorInfo;
     int numberOfObjectNow = 0;
 
     public UserProfilePostsList(){}
+    RelatedAds relatedAds;
 
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
-            userID = getArguments().getString("userID");
+            creatorInfo = getArguments().getParcelable("creator_info");
         }
         super.onAttach(context);
+        if (context instanceof RelatedAds) {
+            relatedAds = (RelatedAds) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        relatedAds = null;
     }
 
     @Override
@@ -74,10 +93,15 @@ public class UserProfilePostsList extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_posts_list, container, false);
         inti();
+        createRV();
+
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorRed), PorterDuff.Mode.SRC_IN );
-        getUserItemInfoList();
-        timer();
+
+        getRelatedAds(getActivity(),creatorInfo.getUser_id(),creatorInfo.getType(),relatedAds);
+
+//        getUserItemInfoList();
+//        timer();
 
         return view;
     }
@@ -111,7 +135,7 @@ public class UserProfilePostsList extends Fragment {
                 numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
                 isLoading = true;
                 currentPage++;
-                getData();
+                //getData();
             }
 
             @Override
@@ -126,107 +150,29 @@ public class UserProfilePostsList extends Fragment {
         });
     }
 
-    private void doApiCall() {
-        suggestedItemsArrayListDO = new ArrayList<>();
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.GONE);
-                suggestedItemsArrayListDO.addAll(suggestedItemsArrayListTest);
-                if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
-                //adapterShowFCSItems.addItems(suggestedItemsArrayListDO);
-                if (currentPage < totalPage) {
-                    adapterShowFCSItems.addLoading();
-                } else {
-                    isLastPage = true;
-                }
-                isLoading = false;
-            }
-        }, 100);
-    }
-
-    int loopStart=0;
-    private void getData() {
-        final List<SuggestedItem> fcsItemsArrayList = new ArrayList<>();
-        suggestedItemsArrayListTest = new ArrayList<>();
-
-        //int numberOfObject = currentPage*10;
-        int numberOfObject = nowNumberOfObject(numberOfObjectNow,itemIDsArrayL.size());
-
-
-        if (numberOfObject!=1000) {
-            for (int i = 0; i < numberOfObject; i++) {
-                loopStart++;
-                int xx=itemIDsArrayL.size()-2;
-                if (loopStart < xx)
-                {
-                    final String category = convertCat(itemIDsArrayL.get(loopStart).getCategoryS());
-                    final String categoryBefore = itemIDsArrayL.get(loopStart).getCategoryS();
-                    DocumentReference mRef = null;
-                    mRef = getDataStoreInstance().collection(category)
-                            .document(itemIDsArrayL.get(loopStart).getItemID());
-                    mRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    Long itemBurnedPrice = (Long) document.getLong("burnedPrice");
-                                    String itemActiveOrNotT = (String) document.getString("activeOrNotS");
-                                    fcsItemsArrayList.add(FCSFunctions.handelNumberOfObject(document, categoryBefore));
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                suggestedItemsArrayListTest.addAll(fcsItemsArrayList);
-                doApiCall();
-            }
-        }, 3000);
-    }
-
-    private void createRV() {
-        recyclerView.setHasFixedSize(true);
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        //adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<SuggestedItem>(),getActivity(),"call");
-        recyclerView.setAdapter(adapterShowFCSItems);
-        getData();
-    }
-
-    private void getUserItemInfoList() {
-        itemIDsArrayL = new ArrayList<>();
-        getUserPathInServer(userID)
-                .child("usersAds")
-                .limitToFirst(500)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()) {
-                            UserItem userItem = dataSnapshot1.getValue(UserItem.class);
-                            itemIDsArrayL.add(userItem);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.i("TAG ERROR", databaseError.toString());
-
-                    }
-
-                });
-    }
 
     private void inti() {
         progressBar = (ProgressBar) view.findViewById(R.id.fragment_user_show_posts_progress);
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_user_show_posts_RV);
     }
 
+    @Override
+    public void relatedAdsToSameUser(List<CCEMTModel> relatedAdsToSameUserList) {
+        Log.i("TAG","I'm here in fragment");
+
+    }
+
+    public void handleList(List<CCEMTModel> relatedAdsToSameUserList){
+        //adapterShowFCSItems.addItems(relatedAdsToSameUserList);
+    }
+
+    private void createRV() {
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setHasFixedSize(true);
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<CCEMTModel>(),getActivity(),"search");
+        recyclerView.setAdapter(adapterShowFCSItems);
+    }
 }

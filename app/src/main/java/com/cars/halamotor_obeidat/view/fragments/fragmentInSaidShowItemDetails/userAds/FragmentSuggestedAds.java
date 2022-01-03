@@ -101,7 +101,7 @@ public class FragmentSuggestedAds extends Fragment {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Log.i("TAG",String.valueOf(ccemtModelArrayList.size()));
+                //Log.i("TAG",String.valueOf(ccemtModelArrayList.size()));
                 recyclerViewLoading.setVisibility(View.GONE);
                 createRV();
                 setData(ccemtModelArrayList);
@@ -125,7 +125,7 @@ public class FragmentSuggestedAds extends Fragment {
             ccemtModelArrayList.addAll(suggestedItemsArrayListDO);
         }
 
-        Log.i("TAG","suggestedItemsArrayListDO "+String.valueOf(suggestedItemsArrayListDO.size()));
+        //Log.i("TAG","suggestedItemsArrayListDO "+String.valueOf(suggestedItemsArrayListDO.size()));
         if (currentPage != PAGE_START) adapterShowUserItems.removeLoading();
         adapterShowUserItems.addItems(suggestedItemsArrayListDO);
 
