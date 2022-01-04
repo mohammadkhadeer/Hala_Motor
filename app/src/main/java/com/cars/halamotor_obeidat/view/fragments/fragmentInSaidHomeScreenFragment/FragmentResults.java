@@ -145,14 +145,15 @@ public class FragmentResults extends Fragment {
     }
 
     ////////////////////////+search
+
     public void onSearchClicked(final ArrayList<ItemSelectedFilterModel> newItemFilterArrayList) {
         // i use handler cos i don't know why context not created
+        itemFilterArrayList = new ArrayList<>();
         currentPage =1;
         itemFilterArrayList.addAll(newItemFilterArrayList);
         if (newItemFilterArrayList.size() == 0)
         {
             showMessageNoResult();
-
         }else{
             new Handler().postDelayed(new Runnable() {
                 @Override

@@ -1,6 +1,7 @@
 package com.cars.halamotor_obeidat.functions;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cars.halamotor_obeidat.R;
 import com.cars.halamotor_obeidat.model.CarMake;
@@ -1912,38 +1913,40 @@ public class FillCarModel {
             }else{
                 nameBrand = carMakeArrayList.get(i).getName_ar();
             }
+
             carModelArrayL = getModelsToSpecificBrand(context,carMakeArrayList.get(i).getName_en());
+
             for (int j =0;j<carModelArrayL.size();j++)
             {
                 String im ="https://firebasestorage.googleapis.com/v0/b/hala-motor-8ff46.appspot.com/o/carLogos%2Fbmw.png?alt=media&token=7c5e9d9f-1fdc-4722-beea-4814203bc904";
 
                 if (getUserLanguage(context).equals("en"))
                 {
-                    modelName = carModelArrayL.get(i).getModel_name_en();
+                    modelName = carModelArrayL.get(j).getModel_name_en();
                 }else{
-                    modelName = carModelArrayL.get(i).getModel_name_ar();
+                    modelName = carModelArrayL.get(j).getModel_name_ar();
                 }
 
                 SearchCar searchCarSale = new SearchCar(im
                         ,context.getResources().getString(R.string.car_for_sale)
-                        ,context.getResources().getString(R.string.car_for_sale_s)
+                        ,"Car for sale"
 
                         ,nameBrand
-                        ,carMakeArrayList.get(i).getName_en()
+                        ,carMakeArrayList.get(i).getId()
 
                         ,modelName
-                        ,carModelArrayL.get(i).getModel_name_en()
+                        ,carModelArrayL.get(j).getModel_id()
                 );
 
                 SearchCar searchCarRent = new SearchCar(im
                         ,context.getResources().getString(R.string.car_for_rent)
-                        ,context.getResources().getString(R.string.car_for_rent_s)
+                        ,"Car for rent"
 
                         ,nameBrand
-                        ,carMakeArrayList.get(i).getName_en()
+                        ,carMakeArrayList.get(i).getId()
 
                         ,modelName
-                        ,carModelArrayL.get(i).getModel_name_en()
+                        ,carModelArrayL.get(j).getModel_id()
                 );
                 allCarArrayList.add(searchCarSale);
                 allCarArrayList.add(searchCarRent);

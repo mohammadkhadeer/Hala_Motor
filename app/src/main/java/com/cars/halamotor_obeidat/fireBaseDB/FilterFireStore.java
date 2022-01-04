@@ -63,6 +63,7 @@ public class FilterFireStore {
 
         final String category = convertCat(itemFilterArrayList.get(0).getFilterType());
         final String categoryBefore = itemFilterArrayList.get(0).getFilterType();
+
         if (itemFilterArrayList.size() ==1)
         {
             if (city.equals("empty")){
@@ -130,6 +131,8 @@ public class FilterFireStore {
             )
             {
                 String carMake = itemFilterArrayList.get(3).getFilterS();
+                Log.i("TAG ","carMake "+carMake);
+
                 if (city.equals("empty"))
                 {
                     //city empty

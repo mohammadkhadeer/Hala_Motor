@@ -146,6 +146,10 @@ public class MainActivity extends AppCompatActivity implements Filter, FragmentS
         bottomRL.setVisibility(View.GONE);
         searchOnTheTop = 1;
         searchRL.setVisibility(View.VISIBLE);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("categories", categoriesArrayL);
+        fragmentSearch.setArguments(bundle);
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container_search, fragmentSearch)
                 .commit();
@@ -157,9 +161,11 @@ public class MainActivity extends AppCompatActivity implements Filter, FragmentS
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
                 if (cs.length() != 0)
-                    Log.i("TAG", "test");//makeCancelTitleIVVISIBLE();
-                else
-                    Log.i("TAG", "test");//makeCancelTitleIVGONE();
+                {
+                    //makeCancelTitleIVVISIBLE();
+                } else{
+                    //Log.i("TAG", "test");//makeCancelTitleIVGONE();
+                }
             }
 
             @Override
@@ -169,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements Filter, FragmentS
 
             @Override
             public void afterTextChanged(Editable editable) {
-                //fragmentSearch.filter(editable.toString());
+                fragmentSearch.filter(editable.toString());
             }
 
         });

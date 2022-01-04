@@ -112,6 +112,7 @@ public class FragmentHomeScreen extends Fragment {
     }
 
     ////////////////////////+searchResult
+
     public void onFilterClicked(ArrayList<ItemSelectedFilterModel> newItemFilterArrayList) {
         itemFilterArrayList.addAll(newItemFilterArrayList);
 

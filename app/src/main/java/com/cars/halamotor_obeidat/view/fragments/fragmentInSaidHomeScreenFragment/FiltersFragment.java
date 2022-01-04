@@ -254,6 +254,7 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
 
     }
 
+
     public void onSearch(ArrayList<ItemSelectedFilterModel> newSelectedFilterArrayL){
         if (numberOfSelectedFilter==0)
         {
