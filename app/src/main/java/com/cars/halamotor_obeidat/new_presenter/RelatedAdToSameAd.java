@@ -52,7 +52,6 @@ public class RelatedAdToSameAd {
                 try {
                     obj = new JSONObject(response.body().string());
                     jsonArray = obj.getJSONArray("DATA");
-                    Log.w("TAG",jsonArray.toString());
 
                     getAdsDetails(jsonArray,relativeResult);
 

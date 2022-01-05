@@ -120,21 +120,11 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         String[] cat_en_and_ar = splitString(cat,"#");
         cat_en = cat_en_and_ar[0];
         cat_ar = cat_en_and_ar[1];
-        Log.i("TAG","cat: "+notificationCompsArrayL.get(position).getProcess());
-        Log.i("TAG","cat_en: "+cat_en);
-        Log.i("TAG","cat_ar: "+cat_ar);
+
         String category_id =notificationCompsArrayL.get(position).getAuctionORItem();
-        Log.i("TAG","category_id: "+notificationCompsArrayL.get(position).getAuctionORItem());
 
         CategoryComp categoryComp =null;
-        if (cat_en.equals("Car For Sale"))
-        {
-            Log.i("TAG","==");
-        }else{
-            Log.i("TAG","cat_enN "+cat_en);
-            Log.i("TAG","cat_enS "+"Car For Sale");
 
-        }
         if (cat_en.equals("Car for sale"))
         {
             categoryComp = new CategoryComp(0,category_id,"car_for_sale"

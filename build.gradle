@@ -49,10 +49,10 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 30
+    compileSdkVersion = 31
     buildToolsVersion = "27.1.1"
     minSdkVersion = 15
-    targetSdkVersion = 30
+    targetSdkVersion = 31
     supportLibraryVersion = "27.1.1"
 
     junitVersion = "4.12"

@@ -18,6 +18,7 @@ import static com.cars.halamotor_obeidat.fireBaseDB.UpdateFireBase.setFavouriteC
 import static com.cars.halamotor_obeidat.functions.Functions.convertCategoryToCategoryS;
 import static com.cars.halamotor_obeidat.functions.Functions.openWhatsApp;
 import static com.cars.halamotor_obeidat.functions.NewFunction.callAds;
+import static com.cars.halamotor_obeidat.presnter.UploadLogAdActions.postAdAction;
 
 public class FragmentContact extends Fragment {
 
@@ -61,7 +62,8 @@ public class FragmentContact extends Fragment {
             @Override
             public void onClick(View v) {
                 insertItemsToFCS(itemID,convertCategoryToCategoryS(category,getActivity()),getDataBaseInstance(getActivity()),"message",getActivity());
-                setFavouriteCallSearchOnServer(getActivity(),itemID,category,"message");
+                postAdAction(itemID,"message",getActivity());
+                //setFavouriteCallSearchOnServer(getActivity(),itemID,category,"message");
                 openWhatsApp(phoneNumber,getActivity());
             }
         });
@@ -71,7 +73,8 @@ public class FragmentContact extends Fragment {
     private void callAdsHere() {
         if (CheckPermission.checkPermissionMethodToPhone(getActivity()) == true) {
             insertItemsToFCS(itemID,convertCategoryToCategoryS(category,getActivity()),getDataBaseInstance(getActivity()),"call",getActivity());
-            setFavouriteCallSearchOnServer(getActivity(),itemID,category,"call");
+            postAdAction(itemID,"call",getActivity());
+            //setFavouriteCallSearchOnServer(getActivity(),itemID,category,"call");
             callAds(getActivity(),phoneNumber);
         }else{
             //Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.we_cant),Toast.LENGTH_SHORT).show();

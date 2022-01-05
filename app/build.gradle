@@ -3,14 +3,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.cars.halamotor_obeidat"
         minSdkVersion 22
-        targetSdkVersion 30
-        versionCode 8
-        versionName "0.08.0"
+        targetSdkVersion 31
+        versionCode 9
+        versionName "0.09.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 

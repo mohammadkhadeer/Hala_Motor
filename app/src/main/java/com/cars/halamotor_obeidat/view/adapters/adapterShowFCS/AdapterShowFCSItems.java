@@ -211,6 +211,7 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
                 ,getDataBaseInstance(context),"message",context);
         setFavouriteCallSearchOnServer(context,getObject(position).getAd_id(),getObject(position).getCategoryComp().getId(),"message");
         openWhatsApp(getObject(position).getAd_phone(),context);
+        postAdAction(getObject(position).getAd_id(),"message",context);
       }
     });
   }
@@ -289,6 +290,7 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
         if (CheckPermission.checkPermissionMethodToPhone((Activity) context) == true) {
           setFavouriteCallSearchOnServer(context,getObject(position).getAd_id(),getObject(position).getCategoryComp().getId(),"call");
           callAds(context,getObject(position).getAd_phone());
+          postAdAction(getObject(position).getAd_id(),"call",context);
         }
       }
     });

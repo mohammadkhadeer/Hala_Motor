@@ -12,6 +12,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.telephony.PhoneNumberUtils;
 import android.text.Html;
 import android.text.SpannableStringBuilder;

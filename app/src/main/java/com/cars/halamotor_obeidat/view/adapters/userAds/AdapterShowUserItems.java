@@ -196,6 +196,7 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
       actionListenerToCallButton(context, callButtonRL, position);
 
       postAdAction(getObject(position).getAd_id(),"view",context);
+      postAdAction(getObject(position).getAd_id(),"search",context);
 
     }
   }
@@ -274,6 +275,7 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
         if (CheckPermission.checkPermissionMethodToPhone((Activity) context) == true) {
           setFavouriteCallSearchOnServer(context,getObject(position).getAd_id(),getObject(position).getCategoryComp().getCode(),"call");
           callAds(context,getObject(position).getAd_phone());
+          postAdAction(getObject(position).getAd_id(),"call",context);
         }
       }
     });
