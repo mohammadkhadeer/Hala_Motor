@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.cars.halamotor_obeidat.R;
 import com.cars.halamotor_obeidat.model.BrowsingFilter;

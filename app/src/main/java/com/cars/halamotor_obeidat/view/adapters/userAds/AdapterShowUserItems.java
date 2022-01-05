@@ -37,6 +37,7 @@ import static com.cars.halamotor_obeidat.dataBase.InsertFunctions.insertItemsToF
 import static com.cars.halamotor_obeidat.fireBaseDB.UpdateFireBase.setFavouriteCallSearchOnServer;
 import static com.cars.halamotor_obeidat.functions.Functions.convertCategoryToCategoryS;
 import static com.cars.halamotor_obeidat.functions.NewFunction.callAds;
+import static com.cars.halamotor_obeidat.functions.NewFunction.getTitle;
 import static com.cars.halamotor_obeidat.presnter.UploadLogAdActions.postAdAction;
 
 public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUser> {
@@ -193,6 +194,8 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
       actionListenerToFavorite(context, favoriteRL, position,favoriteIV);
       actionListenerToGoShowItemDetails(context, cardShowFCS, position);
       actionListenerToCallButton(context, callButtonRL, position);
+
+      postAdAction(getObject(position).getAd_id(),"view",context);
 
     }
   }
@@ -415,7 +418,10 @@ public class AdapterShowUserItems extends RecyclerView.Adapter<BaseViewHolderUse
   }
 
   private void fillTitleAndUserName(TextView itemTitleTV,TextView userNameTV, int position) {
-    String title = getObject(position).getAd_title().replace("\n","");
+    String title = getTitle(getObject(position).getAd_title().replace("\n",""),
+            getObject(position).getAttributesArrayList().get(0).getTitle()
+                    +" "+getObject(position).getAttributesArrayList().get(1).getTitle(),context);
+
     if (title.length()>20)
     {
       String newTitle="";

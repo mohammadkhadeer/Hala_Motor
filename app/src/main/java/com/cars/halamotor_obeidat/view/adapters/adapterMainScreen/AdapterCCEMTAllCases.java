@@ -215,7 +215,6 @@ public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCa
     }
 
     private void fillTitleAndUserName(ViewHolder holder, int position, Context context) {
-//        holder.itemTitleTV.setText(ccemtArrayL.get(position).getAd_title());
         holder.itemTitleTV.setText(getTitle(ccemtArrayL.get(position).getAd_title(),
                 ccemtArrayL.get(position).getAttributesArrayList().get(0).getTitle()
                         +" "+ccemtArrayL.get(position).getAttributesArrayList().get(1).getTitle(),context));

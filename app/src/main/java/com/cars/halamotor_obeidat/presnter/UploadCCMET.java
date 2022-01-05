@@ -43,6 +43,7 @@ public class UploadCCMET {
         Log.w("TAG","area_id: "+area_id);
 
         Log.w("TAG","category_id: "+category_id);
+        Log.w("TAG","image_path: "+photos.get(0));
 //        Log.w("TAG","area_id: "+area_id);
 //        Log.w("TAG","title: "+title);
 //        Log.w("TAG","description: "+description);
@@ -89,7 +90,7 @@ public class UploadCCMET {
             {
                 bodyBuilder.addFormDataPart("photos[]",photos.get(i),
                         RequestBody.create(MediaType.parse("application/octet-stream"),
-                                new File("/Users/apple/Downloads"+photos.get(i))));
+                                new File(photos.get(i))));
             }
 
             bodyBuilder.addFormDataPart("price",String.valueOf(price));
@@ -154,7 +155,7 @@ public class UploadCCMET {
                     Log.w("TAG", "post id: " + data.getString("id"));
 
 
-                    insertNotificationTable(getNotificationObject(categoryCompNow.getName_en()+"#"+categoryCompNow.getName_ar(),title,data.getString("id"),"out","item",image_path),getDataBaseInstance(context));
+                    insertNotificationTable(getNotificationObject(categoryCompNow.getName_en()+"#"+categoryCompNow.getName_ar(),title,data.getString("id"),"out",category_id,image_path),getDataBaseInstance(context));
 
                 } catch (JSONException e) {
                     e.printStackTrace();

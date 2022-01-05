@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.cars.halamotor_obeidat.R;
 import com.cars.halamotor_obeidat.functions.Functions;
+import com.cars.halamotor_obeidat.model.CategoryComp;
 import com.cars.halamotor_obeidat.model.NotificationComp;
 import com.cars.halamotor_obeidat.view.activity.AboutUs;
 import com.cars.halamotor_obeidat.view.activity.ShowItemDetails;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import static com.cars.halamotor_obeidat.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor_obeidat.functions.FillText.getTextEngOrLocal;
 import static com.cars.halamotor_obeidat.functions.Functions.splitNotification;
+import static com.cars.halamotor_obeidat.functions.Functions.splitString;
 
 public class AdapterNotification extends RecyclerView.Adapter<AdapterNotification.ViewHolder>{
 
@@ -113,34 +116,74 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
 
     private void transporteToShowItemSelectedDetails(Context context, int position, ViewHolder holder) {
         String cat =notificationCompsArrayL.get(position).getProcess();
-        if (cat.equals("Car_For_Sale"))
+        String cat_en,cat_ar;
+        String[] cat_en_and_ar = splitString(cat,"#");
+        cat_en = cat_en_and_ar[0];
+        cat_ar = cat_en_and_ar[1];
+        Log.i("TAG","cat: "+notificationCompsArrayL.get(position).getProcess());
+        Log.i("TAG","cat_en: "+cat_en);
+        Log.i("TAG","cat_ar: "+cat_ar);
+        String category_id =notificationCompsArrayL.get(position).getAuctionORItem();
+        Log.i("TAG","category_id: "+notificationCompsArrayL.get(position).getAuctionORItem());
+
+        CategoryComp categoryComp =null;
+        if (cat_en.equals("Car For Sale"))
         {
-            cat = "Car for sale";
+            Log.i("TAG","==");
+        }else{
+            Log.i("TAG","cat_enN "+cat_en);
+            Log.i("TAG","cat_enS "+"Car For Sale");
+
         }
-        if (cat.equals("Car_For_Rent"))
+        if (cat_en.equals("Car for sale"))
         {
-            cat = "Car for rent";
+            categoryComp = new CategoryComp(0,category_id,"car_for_sale"
+                    ,context.getResources().getString(R.string.car_for_sale)
+            ,cat_en
+            ,cat_ar);
         }
-        if (cat.equals("Car_For_Exchange"))
+        if (cat_en.equals("Car for rent"))
         {
-            cat = "Exchange car";
+            categoryComp = new CategoryComp(0,category_id,"car_for_rent"
+                    ,context.getResources().getString(R.string.car_for_rent_s)
+                    ,cat_en
+                    ,cat_ar);
+        }
+        if (cat_en.equals("Exchange"))
+        {
+            categoryComp = new CategoryComp(0,category_id,"exchange"
+                    ,context.getResources().getString(R.string.exchange_car_s)
+                    ,cat_en
+                    ,cat_ar);
         }
 
-        if (cat.equals("Plates"))
+        if (cat_en.equals("Plates"))
         {
-            cat = "Car plates";
+            categoryComp = new CategoryComp(0,category_id,"plates"
+                    ,context.getResources().getString(R.string.car_plates_s)
+                    ,cat_en
+                    ,cat_ar);
         }
-        if (cat.equals("Wheels_Rim"))
+        if (cat_en.equals("Wheels rim"))
         {
-            cat = "Wheels rim";
+            categoryComp = new CategoryComp(0,category_id,"wheels_rim"
+                    ,context.getResources().getString(R.string.wheels_rim_s)
+                    ,cat_en
+                    ,cat_ar);
+
         }
-        if (cat.equals("JunkCar"))
+        if (cat_en.equals("Junk car"))
         {
-            cat = "Junk car";
+            categoryComp = new CategoryComp(0,category_id,"junk_car"
+                    ,context.getResources().getString(R.string.junk_car_s)
+                    ,cat_en
+                    ,cat_ar);
         }
+
         Bundle bundle = new Bundle();
-        bundle.putString("category",cat);
-        bundle.putString("from","not");
+        bundle.putString("category",categoryComp.getCode());
+        bundle.putParcelable("category_comp",categoryComp);
+        bundle.putString("from","ml");
         bundle.putString("itemID",notificationCompsArrayL.get(position).getItemServerID());
 
         Intent intent = new Intent(context, ShowItemDetails.class);

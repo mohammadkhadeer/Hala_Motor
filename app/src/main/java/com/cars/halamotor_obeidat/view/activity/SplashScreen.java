@@ -24,7 +24,6 @@ import com.cars.halamotor_obeidat.model.CategoryComp;
 import com.cars.halamotor_obeidat.model.NotificationComp;
 import com.cars.halamotor_obeidat.presnter.CategoriesPresenter;
 import com.cars.halamotor_obeidat.presnter.CountryCitesAndAreas;
-import com.cars.halamotor_obeidat.presnter.ModelsInstald;
 import com.cars.halamotor_obeidat.presnter.UpdateProfile;
 import com.cars.halamotor_obeidat.service.CarBrandsAndModelService;
 import com.cars.halamotor_obeidat.view.activity.selectAddress.SelectCityAndNeighborhood;
@@ -66,7 +65,6 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     CountryCitesAndAreas countryCitesAndAreas;
     UpdateProfile updateProfile;
     CategoriesPresenter categoriesPresenter;
-    ModelsInstald modelsInstald;
     TextView setup_messageTextView,setup_message_per;
     RelativeLayout setup_profile_message_rl;
     ArrayList<CategoryComp> categoriesArrayL2 = new ArrayList<>();
@@ -98,7 +96,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         setup_message_per.setText(getResources().getString(R.string.setup_message_2));
 
 //        to update brands every user open app 10 the table updates every 10's
-        if (getNumberOfUse(this) == "empty" || getNumberOfUse(this).equals("170")) {
+        if (getNumberOfUse(this).equals("empty") || getNumberOfUse(this).equals("170")) {
             new Handler().postDelayed(new Runnable() {
 
                 @Override
@@ -135,13 +133,15 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
             }
         }
         catch (PackageManager.NameNotFoundException e) {
+            Log.d("TAG KeyHash:", e.getMessage());
         }
         catch (NoSuchAlgorithmException e) {
+            Log.d("TAG KeyHash:", e.getMessage());
         }
     }
 
     private void getCitesAndAreasAndCarsSetting() {
-        if (getCountryId(this) == "empty") {
+        if (getCountryId(this).equals("empty")) {
             getCountryCitesAndAreas(countryCitesAndAreas,myDB,getApplicationContext());
             Thread thread = new Thread(new Runnable() {
                 @Override
@@ -166,7 +166,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     }
 
     private void updateNumberOfOpenApp() {
-        if (getNumberOfUse(this) != "empty") {
+        if (!getNumberOfUse(this).equals("empty")) {
             String numberOfUse = getNumberOfUse(this);
             int i = Integer.parseInt(numberOfUse);
             i = i + 1;
@@ -195,7 +195,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     }
 
     private void loginCheck() {
-        if (getPlatform_id(this) == "empty")
+        if (getPlatform_id(this).equals("empty"))
         {
             transportToLoginScreen();
         }

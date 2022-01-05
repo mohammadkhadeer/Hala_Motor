@@ -37,6 +37,7 @@ import static com.cars.halamotor_obeidat.dataBase.InsertFunctions.insertItemsToF
 import static com.cars.halamotor_obeidat.fireBaseDB.UpdateFireBase.setFavouriteCallSearchOnServer;
 import static com.cars.halamotor_obeidat.functions.Functions.openWhatsApp;
 import static com.cars.halamotor_obeidat.functions.NewFunction.callAds;
+import static com.cars.halamotor_obeidat.functions.NewFunction.getTitle;
 import static com.cars.halamotor_obeidat.presnter.UploadLogAdActions.postAdAction;
 
 public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
@@ -186,6 +187,7 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
       personInfoRL.setVisibility(View.VISIBLE);
       makeAllTextViewVISIBLE(text1, text2, text3, text4, itemCityTV, text2RL, text3RL, text4RL, itemCityRL);
       fillImage(itemImage, userImage, position, context);
+
       fillTitleAndUserName(itemTitleTV, userNameTV, position);
       fillPrice(itemPriceTV, oldPriceTV, fireIV, itemNewPriceTV, position, context);
       changeFont(context, text1, text2, text3, text4, itemCityTV, userNameTV, itemPriceTV, itemTitleTV);
@@ -197,6 +199,7 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
       actionListenerToCallButton(context, callButtonRL, position);
       actionListenerToMessage(context,position,messageRL);
 
+      postAdAction(getObject(position).getAd_id(),"view",context);
     }
   }
 
@@ -459,7 +462,10 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
   }
 
   private void fillTitleAndUserName(TextView itemTitleTV,TextView userNameTV, int position) {
-    String title = getObject(position).getAd_title().replace("\n","");
+    String title = getTitle(getObject(position).getAd_title().replace("\n",""),
+            getObject(position).getAttributesArrayList().get(0).getTitle()
+                    +" "+getObject(position).getAttributesArrayList().get(1).getTitle(),context);
+
     if (title.length()>30)
     {
       String newTitle="";

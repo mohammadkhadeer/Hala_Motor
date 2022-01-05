@@ -98,9 +98,7 @@ public class FragmentResults extends Fragment {
 
     public void onCityClicked(CityModel cityModel) {
         citySelected = true;
-        Log.i("TAG ","cityModel getCity "+cityModel.getCity());
-        Log.i("TAG ","cityModel getCityS "+cityModel.getCityS());
-        Log.i("TAG ","cityModel getCityAr "+cityModel.getCityAr());
+
         city = cityModel.getCityS();
         if (check())
         {

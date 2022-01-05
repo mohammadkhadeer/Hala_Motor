@@ -50,7 +50,7 @@ public class LoginAndUpdateProfile {
                 .addFormDataPart("name",name)
                 .addFormDataPart("email",email)
                 .addFormDataPart("password","123456")
-                .addFormDataPart("platform","facebook")
+                .addFormDataPart("platform",platform)
                 .addFormDataPart("platform_id",platform_id)
                 .addFormDataPart("platform_token",userToken)
                 .addFormDataPart("photo",photo)
