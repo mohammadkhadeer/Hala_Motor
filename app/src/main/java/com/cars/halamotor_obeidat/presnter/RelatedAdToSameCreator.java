@@ -31,7 +31,8 @@ import okhttp3.Response;
 public class RelatedAdToSameCreator {
     List<SuggestedItem> relatedAdsToSameUserList = new ArrayList<>();
 
-    public static void getRelatedAds(Context context, String user_id, String user_type,RelatedAds relatedAds)
+    public static void getRelatedAds(Context context, String user_id, String user_type
+            ,RelatedAds relatedAds,int pageNumber)
     {
 
         if (checkIfAndroidVBiggerThan9()) {
@@ -39,7 +40,7 @@ public class RelatedAdToSameCreator {
             OkHttpClient client = new OkHttpClient().newBuilder()
                     .build();
             Request request = new Request.Builder()
-                    .url(BASE_API+"/ads?creator_id="+user_id+"&creator_type="+user_type)
+                    .url(BASE_API+"/ads?creator_id="+user_id+"&creator_type="+user_type+"&page="+pageNumber)
                     .method("GET", null)
                     .addHeader("Accept", "application/json")
                     .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
@@ -70,7 +71,7 @@ public class RelatedAdToSameCreator {
 
     private static void getAdsDetails(JSONArray arrayOfObjects,RelatedAds relatedAds) {
         //create suggested to you as object
-        JSONObject creatorInfo,attributes;
+        JSONObject creatorInfo,attributes,CategoryComp;
         CreatorInfo creatorInfo1;
         ArrayList <String> optionsArrayList = null;
         ArrayList <Attributes> attributesArrayList ;
@@ -114,8 +115,17 @@ public class RelatedAdToSameCreator {
                     attributesArrayList.add(attributesObj);
                 }
 
-                CategoryComp categoryComp =null;
-                CCEMTModel ccemtModel = new CCEMTModel(addObject.getString("id"),addObject.getString("title"),addObject.getString("description"),addObject.getString("price"),addObject.getString("phone"),addObject.getString("created_at"),categoryComp,photosArrayList,attributesArrayList,creatorInfo1);
+                CategoryComp = addObject.getJSONObject("category");
+                CategoryComp categoryComp1 =new CategoryComp(
+                        Integer.parseInt(CategoryComp.getString("id"))
+                        ,CategoryComp.getString("id")
+                        ,CategoryComp.getString("code")
+                        ,CategoryComp.getString("name")
+                        ,CategoryComp.getString("name_en")
+                        ,CategoryComp.getString("name_ar")
+                );
+
+                CCEMTModel ccemtModel = new CCEMTModel(addObject.getString("id"),addObject.getString("title"),addObject.getString("description"),addObject.getString("price"),addObject.getString("phone"),addObject.getString("created_at"),categoryComp1,photosArrayList,attributesArrayList,creatorInfo1);
 
 
                 adsArrayList.add(ccemtModel);

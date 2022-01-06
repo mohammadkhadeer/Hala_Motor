@@ -7,12 +7,14 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ProgressBar;
 
 import com.cars.halamotor_obeidat.R;
@@ -44,7 +46,7 @@ import static com.cars.halamotor_obeidat.functions.NewFunction.nowNumberOfObject
 import static com.cars.halamotor_obeidat.presnter.RelatedAdToSameCreator.getRelatedAds;
 import static com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.PaginationListener.PAGE_START;
 
-public class UserProfilePostsList extends Fragment implements RelatedAds{
+public class UserProfilePostsList extends Fragment {
 
     View view;
     ProgressBar progressBar;
@@ -67,6 +69,7 @@ public class UserProfilePostsList extends Fragment implements RelatedAds{
 
     public UserProfilePostsList(){}
     RelatedAds relatedAds;
+    NestedScrollView nestedScrollView;
 
     @Override
     public void onAttach(Context context) {
@@ -93,12 +96,15 @@ public class UserProfilePostsList extends Fragment implements RelatedAds{
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_posts_list, container, false);
         inti();
-        createRV();
+        //createRV();
 
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorRed), PorterDuff.Mode.SRC_IN );
 
-        getRelatedAds(getActivity(),creatorInfo.getUser_id(),creatorInfo.getType(),relatedAds);
+        getRelatedAds(getActivity(),creatorInfo.getUser_id(),creatorInfo.getType(),relatedAds,currentPage);
+
+        createRV();
+        scrollView();
 
 //        getUserItemInfoList();
 //        timer();
@@ -106,25 +112,27 @@ public class UserProfilePostsList extends Fragment implements RelatedAds{
         return view;
     }
 
-    private void timer() {
-        new Handler().postDelayed(new Runnable() {
 
-            @Override
-            public void run() {
-                prite();
-            }
-        }, 1000);
-    }
 
-    private void prite() {
-        if (itemIDsArrayL.size()==0)
-        {
-            timer();
-        }else {
-            //number of ads itemIDsArrayL
-            createRV();
-            actionListenerToRV();
-        }
+    private void scrollView() {
+        nestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new
+                                                                                  ViewTreeObserver.OnScrollChangedListener() {
+                                                                                      @Override
+                                                                                      public void onScrollChanged() {
+                                                                                          View view = (View) nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
+                                                                                          int diff = (view.getBottom() - (nestedScrollView.getHeight() + nestedScrollView.getScrollY()));
+                                                                                          if (diff == 0) {
+
+                                                                                              progressBar.setVisibility(View.VISIBLE);
+                                                                                              //numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
+                                                                                              isLoading = true;
+                                                                                              currentPage++;
+                                                                                              Log.i("TAG","currentPage"+currentPage);
+                                                                                              getRelatedAds(getActivity(),creatorInfo.getUser_id(),creatorInfo.getType(),relatedAds,currentPage);
+
+                                                                                          }
+                                                                                      }
+                                                                                  });
     }
 
     private void actionListenerToRV() {
@@ -132,10 +140,11 @@ public class UserProfilePostsList extends Fragment implements RelatedAds{
             @Override
             protected void loadMoreItems() {
                 progressBar.setVisibility(View.VISIBLE);
-                numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
+                //numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
                 isLoading = true;
                 currentPage++;
-                //getData();
+                Log.i("TAG","currentPage"+currentPage);
+                getRelatedAds(getActivity(),creatorInfo.getUser_id(),creatorInfo.getType(),relatedAds,currentPage);
             }
 
             @Override
@@ -152,18 +161,20 @@ public class UserProfilePostsList extends Fragment implements RelatedAds{
 
 
     private void inti() {
+        nestedScrollView = (NestedScrollView) view.findViewById(R.id.nested);
         progressBar = (ProgressBar) view.findViewById(R.id.fragment_user_show_posts_progress);
         recyclerView = (RecyclerView) view.findViewById(R.id.fragment_user_show_posts_RV);
     }
 
-    @Override
-    public void relatedAdsToSameUser(List<CCEMTModel> relatedAdsToSameUserList) {
-        Log.i("TAG","I'm here in fragment");
+    public void handleList(final List<CCEMTModel> relatedAdsToSameUserList){
+        new Handler().postDelayed(new Runnable() {
 
-    }
-
-    public void handleList(List<CCEMTModel> relatedAdsToSameUserList){
-        //adapterShowFCSItems.addItems(relatedAdsToSameUserList);
+            @Override
+            public void run() {
+                adapterShowFCSItems.addItems(relatedAdsToSameUserList);
+            }
+        }, 50);
+        //
     }
 
     private void createRV() {

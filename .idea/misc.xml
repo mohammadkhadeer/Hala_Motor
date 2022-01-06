@@ -8,9 +8,12 @@
         <entry key="app/src/main/res/layout/activity_contact_us.xml" value="0.35190217391304346" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.35190217391304346" />
         <entry key="app/src/main/res/layout/adapter_fcs_items.xml" value="0.35190217391304346" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17980072463768115" />
         <entry key="app/src/main/res/layout/fragment_item_selected_suggested.xml" value="0.4671875" />
+        <entry key="app/src/main/res/layout/fragment_results.xml" value="0.17980072463768115" />
         <entry key="app/src/main/res/layout/fragment_suggested_ads.xml" value="0.17980072463768115" />
         <entry key="app/src/main/res/layout/fragment_user_info.xml" value="0.22720364741641338" />
+        <entry key="app/src/main/res/layout/fragment_user_posts_list.xml" value="0.16077898550724637" />
       </map>
     </option>
   </component>

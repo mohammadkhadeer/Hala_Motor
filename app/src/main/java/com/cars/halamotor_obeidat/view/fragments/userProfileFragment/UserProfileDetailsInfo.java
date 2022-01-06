@@ -22,6 +22,7 @@ import com.cars.halamotor_obeidat.model.CreatorInfo;
 import com.cars.halamotor_obeidat.model.Follower;
 import com.cars.halamotor_obeidat.model.Following;
 import com.cars.halamotor_obeidat.model.UserProfileInfo;
+import com.cars.halamotor_obeidat.new_presenter.UserInfoP;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.squareup.picasso.Picasso;
@@ -61,6 +62,7 @@ public class UserProfileDetailsInfo extends Fragment {
     CreatorInfo creatorInfo;
 
     public UserProfileDetailsInfo(){}
+    UserInfoP userInfoP;
 
     @Override
     public void onAttach(Context context) {
@@ -68,9 +70,19 @@ public class UserProfileDetailsInfo extends Fragment {
             creatorInfo = getArguments().getParcelable("creator_info");
         }
         super.onAttach(context);
-
+        if (context instanceof UserInfoP) {
+            userInfoP = (UserInfoP) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        userInfoP = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -162,7 +174,7 @@ public class UserProfileDetailsInfo extends Fragment {
 
     private void addNewFollowing() {
         insertFollowingTable(creatorInfo,myDB);
-        //addNewFollower(creatorInfo.getUser_id(),getActivity());
+        addNewFollower(creatorInfo.getUser_id(),getActivity(),creatorInfo.getFollowers_count(),userInfoP);
     }
 
     @SuppressLint("ResourceAsColor")
@@ -172,7 +184,7 @@ public class UserProfileDetailsInfo extends Fragment {
         followTV.setTextColor(R.color.colorBlue5);
 
         myDB.deleteFollowing(creatorInfo.getUser_id());
-        //deleteFollow(creatorInfo.getUser_id(),getActivity());
+        deleteFollow(creatorInfo.getUser_id(),getActivity(),creatorInfo.getFollowers_count(),userInfoP);
     }
 
     private void makeButtonFreezeTowSec() {
@@ -207,5 +219,9 @@ public class UserProfileDetailsInfo extends Fragment {
                 .into(userImageIV);
 
         userNameTV.setText(userNameStr);
+    }
+
+    public void updateNumberOfFollower(String new_number) {
+        numberOfFollowersTV.setText(new_number);
     }
 }

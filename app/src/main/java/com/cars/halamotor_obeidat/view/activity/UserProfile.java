@@ -10,6 +10,7 @@ import com.cars.halamotor_obeidat.model.CCEMTModel;
 import com.cars.halamotor_obeidat.model.CreatorInfo;
 import com.cars.halamotor_obeidat.model.SuggestedItem;
 import com.cars.halamotor_obeidat.model.UserProfileInfo;
+import com.cars.halamotor_obeidat.new_presenter.UserInfoP;
 import com.cars.halamotor_obeidat.presnter.RelatedAds;
 import com.cars.halamotor_obeidat.presnter.UserInfo;
 import com.cars.halamotor_obeidat.view.fragments.userProfileFragment.UserProfileDetailsInfo;
@@ -20,7 +21,7 @@ import static com.cars.halamotor_obeidat.functions.Functions.setLocale;
 
 import java.util.List;
 
-public class UserProfile extends AppCompatActivity implements RelatedAds {
+public class UserProfile extends AppCompatActivity implements RelatedAds, UserInfoP {
 
     UserProfileDetailsInfo userProfileDetailsInfo = new UserProfileDetailsInfo();
     UserProfilePostsList userProfilePostsList = new UserProfilePostsList();
@@ -77,7 +78,12 @@ public class UserProfile extends AppCompatActivity implements RelatedAds {
 
     @Override
     public void relatedAdsToSameUser(List<CCEMTModel> relatedAdsToSameUserList) {
-        Log.i("TAG","I'm here in activity");
+        //Log.i("TAG","I'm here in activity");
         userProfilePostsList.handleList(relatedAdsToSameUserList);
+    }
+
+    @Override
+    public void updateNumberOfFollowers(String numberOfFollowers) {
+        userProfileDetailsInfo.updateNumberOfFollower(numberOfFollowers);
     }
 }

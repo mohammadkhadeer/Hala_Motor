@@ -63,7 +63,7 @@ public class FragmentAdsList extends Fragment implements AdapterAdsList.PassCate
 
     @Override
     public void onSeeAllClicked(CategoryComp categoryComp) {
-        Log.w("TAG","CategoryComp name: "+categoryComp.getName_en());
+        //Log.w("TAG","CategoryComp name: "+categoryComp.getName_en());
 
     }
 }

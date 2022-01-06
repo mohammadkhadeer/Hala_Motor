@@ -76,7 +76,7 @@ public class FragmentUserAds extends Fragment implements RelatedAds {
 
         fillTextView();
 
-        getRelatedAds(getActivity(),user_id,user_type,relatedAds);
+        //getRelatedAds(getActivity(),user_id,user_type,relatedAds);
 
         createLoadingRV();
         //createRV();

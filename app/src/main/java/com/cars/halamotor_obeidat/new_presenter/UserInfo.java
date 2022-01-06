@@ -43,7 +43,7 @@ public class UserInfo {
             try {
                 JSONObject objData = null,objUser=null;
 
-                Log.i("TAG","creator response: "+response.toString());
+                //Log.i("TAG","creator response: "+response.toString());
 
                 obj = new JSONObject(response.body().string());
                 creator_info = obj.getJSONObject("DATA");

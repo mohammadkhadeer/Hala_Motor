@@ -157,7 +157,6 @@ public class FragmentFollowUser extends Fragment {
                         if (followTV.getText().toString().equals(getActivity().getResources().getString(R.string.unfollow))) {
                             deleteFollowing();
                         } else {
-
                             addFollowing();
                         }
                     }
