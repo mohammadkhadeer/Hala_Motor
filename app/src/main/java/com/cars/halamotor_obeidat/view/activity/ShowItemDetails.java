@@ -28,6 +28,7 @@ import com.cars.halamotor_obeidat.model.ItemPlates;
 import com.cars.halamotor_obeidat.model.ItemWheelsRim;
 import com.cars.halamotor_obeidat.model.SuggestedItem;
 import com.cars.halamotor_obeidat.new_presenter.RelativeResult;
+import com.cars.halamotor_obeidat.new_presenter.UserInfoP;
 import com.cars.halamotor_obeidat.presnter.FavouriteChange;
 import com.cars.halamotor_obeidat.presnter.ImageClicked;
 import com.cars.halamotor_obeidat.presnter.ItemModel;
@@ -53,7 +54,7 @@ import static com.cars.halamotor_obeidat.functions.Functions.setLocale;
 import static com.cars.halamotor_obeidat.presnter.CCEMTObjectDetailsFromServer.getCCEMTObjectDetails;
 
 public class ShowItemDetails extends AppCompatActivity
-         implements FavouriteChange , ItemModel, ImageClicked , RelativeResult {
+         implements FavouriteChange , ItemModel, ImageClicked , RelativeResult , UserInfoP {
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -547,5 +548,10 @@ public class ShowItemDetails extends AppCompatActivity
     @Override
     public void whenGetCCEMTListSearchSuccess(ArrayList<CCEMTModel> ccemtModelArrayList) {
         fragmentSuggestedAntherItems.recivedARelativeRe(ccemtModelArrayList);
+    }
+
+    @Override
+    public void updateNumberOfFollowers(String numberOfFollowers) {
+        fragmentFollowUser.updateNumberOfFollowers(numberOfFollowers);
     }
 }

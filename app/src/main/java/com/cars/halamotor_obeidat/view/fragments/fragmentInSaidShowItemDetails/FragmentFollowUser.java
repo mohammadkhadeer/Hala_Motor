@@ -23,6 +23,8 @@ import com.cars.halamotor_obeidat.dataBase.DBHelper;
 import com.cars.halamotor_obeidat.functions.Functions;
 import com.cars.halamotor_obeidat.model.CreatorInfo;
 import com.cars.halamotor_obeidat.model.Following;
+import com.cars.halamotor_obeidat.new_presenter.UserInfoP;
+import com.cars.halamotor_obeidat.presnter.RelatedAds;
 import com.cars.halamotor_obeidat.view.activity.ShowItemDetails;
 import com.cars.halamotor_obeidat.view.activity.UserProfile;
 import com.squareup.picasso.Picasso;
@@ -55,6 +57,7 @@ public class FragmentFollowUser extends Fragment {
     ArrayList<Following> followingArrayList = new ArrayList<Following>();
     int test2Seconed = 1;
     CreatorInfo creatorInfo;
+    UserInfoP userInfoP;
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
@@ -62,9 +65,21 @@ public class FragmentFollowUser extends Fragment {
         }
         super.onAttach(context);
         followOrNot = checkIfFollow(getActivity(), creatorInfo.getUser_id());
+        if (context instanceof UserInfoP) {
+            userInfoP = (UserInfoP) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement FragmentAListener");
+        }
         //set userName in followID just as init value well need it to insert in
         //fireBase as object after added well updated
         //userFollowingInfo = new Following(userNameStr, creatorInfo.getPhoto(), userID, userNameStr,userNameStr);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        userInfoP = null;
     }
 
     private void inti() {
@@ -142,6 +157,7 @@ public class FragmentFollowUser extends Fragment {
                         if (followTV.getText().toString().equals(getActivity().getResources().getString(R.string.unfollow))) {
                             deleteFollowing();
                         } else {
+
                             addFollowing();
                         }
                     }
@@ -170,7 +186,7 @@ public class FragmentFollowUser extends Fragment {
 
     private void addNewFollowing() {
         insertFollowingTable(creatorInfo,myDB);
-        addNewFollower(creatorInfo.getUser_id(),getActivity());
+        addNewFollower(creatorInfo.getUser_id(),getActivity(),creatorInfo.getFollowers_count(),userInfoP);
     }
 
     @SuppressLint("ResourceAsColor")
@@ -181,7 +197,7 @@ public class FragmentFollowUser extends Fragment {
         //userFollowingInfoFromDB = getFollowingObjectFromDB(userID, getActivity());
         //deleteFollowingFromUserSaid(userFollowingInfoFromDB.getFollowID(), getActivity());
         myDB.deleteFollowing(creatorInfo.getUser_id());
-        deleteFollow(creatorInfo.getUser_id(),getActivity());
+        deleteFollow(creatorInfo.getUser_id(),getActivity(),creatorInfo.getFollowers_count(),userInfoP);
     }
 
     private void fullMessage() {
@@ -221,5 +237,9 @@ public class FragmentFollowUser extends Fragment {
         followingTV.setTypeface(Functions.changeFontGeneral(getActivity()));
         followTV.setTypeface(Functions.changeFontGeneral(getActivity()));
         // userStatusTV.setTypeface(Functions.changeFontGeneral(getActivity()));
+    }
+
+    public void updateNumberOfFollowers(String new_number) {
+        numberOfFollowersTV.setText(new_number);
     }
 }

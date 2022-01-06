@@ -162,7 +162,7 @@ public class UserProfileDetailsInfo extends Fragment {
 
     private void addNewFollowing() {
         insertFollowingTable(creatorInfo,myDB);
-        addNewFollower(creatorInfo.getUser_id(),getActivity());
+        //addNewFollower(creatorInfo.getUser_id(),getActivity());
     }
 
     @SuppressLint("ResourceAsColor")
@@ -172,7 +172,7 @@ public class UserProfileDetailsInfo extends Fragment {
         followTV.setTextColor(R.color.colorBlue5);
 
         myDB.deleteFollowing(creatorInfo.getUser_id());
-        deleteFollow(creatorInfo.getUser_id(),getActivity());
+        //deleteFollow(creatorInfo.getUser_id(),getActivity());
     }
 
     private void makeButtonFreezeTowSec() {

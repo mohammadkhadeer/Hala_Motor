@@ -156,7 +156,7 @@ public class FragmentBrowsing extends Fragment implements AdapterBrowsingFilter.
                 if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
                 //adapterShowFCSItems.addItems(suggestedItemsArrayListDO);
                 if (getNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size())==false) {
-                    adapterShowFCSItems.addLoading();
+                    //adapterShowFCSItems.addLoading();
                 } else {
                     isLastPage = true;
                 }
