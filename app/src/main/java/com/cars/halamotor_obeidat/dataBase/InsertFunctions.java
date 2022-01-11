@@ -1,6 +1,7 @@
 package com.cars.halamotor_obeidat.dataBase;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.cars.halamotor_obeidat.model.BoostPost;
 import com.cars.halamotor_obeidat.model.CarInformation;
@@ -70,6 +71,9 @@ public class InsertFunctions {
                 ,category
                 ,fcsType
         );
+        //Log.i("TAG","fcsType "+fcsType);
+        //Log.i("TAG","isInserted "+String.valueOf(isInserted));
+
         return isInserted;
     }
 

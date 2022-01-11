@@ -291,13 +291,14 @@ public class ShowItemDetails extends AppCompatActivity
 //    }
 
     private void intiSuggestedFragment() {
+
         Bundle bundle = new Bundle();
         bundle.putString("category", getCategoryFromIntent());
         bundle.putString("item_id", item_id);
         bundle.putString("user_id", user_id);
         bundle.putString("user_type", personOrGallery);
         bundle.putString("user_name", userNameStr);
-        bundle.putString("category", category);
+        bundle.putString("category", categoryComp.getId());
 
         fragmentSuggestedAntherItems.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

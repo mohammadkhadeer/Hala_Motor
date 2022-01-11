@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,7 +139,7 @@ public class AdapterCCEMTAllCases extends RecyclerView.Adapter<AdapterCCEMTAllCa
                 if (checkFavouriteOrNot1(context,ccemtArrayL.get(position).getAd_id()).equals("not_favorite"))
                 {
                     holder.favoriteIV.setBackgroundResource(R.drawable.selcted_favorite);
-                    insertItemsToFCS(ccemtArrayL.get(position).getAd_id(),ccemtArrayL.get(position).getCategoryComp().getCode()
+                    insertItemsToFCS(ccemtArrayL.get(position).getAd_id(),ccemtArrayL.get(position).getCategoryComp().getId()
                             ,getDataBaseInstance(context),"favorite",context);
 
                     postAdAction(ccemtArrayL.get(position).getAd_id(),"favorite",context);

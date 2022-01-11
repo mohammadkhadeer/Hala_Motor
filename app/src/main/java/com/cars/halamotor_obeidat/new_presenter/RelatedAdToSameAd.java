@@ -66,7 +66,7 @@ public class RelatedAdToSameAd {
     }
 
     private static void getAdsDetails(JSONArray arrayOfObjects,RelativeResult relativeResult) {
-        JSONObject adsDetails=null,attributes=null,creator_json_info=null;
+        JSONObject adsDetails=null,attributes=null,creator_json_info=null,categoryComp=null;
         ArrayList <String> photosArrayList ;
         ArrayList <Attributes> attributesArrayList ;
         ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
@@ -104,8 +104,18 @@ public class RelatedAdToSameAd {
                     attributesArrayList.add(attributesObj);
                 }
 
-                CategoryComp categoryComp = new CategoryComp(1,"1","car for sale","car for sale","car for sale","car for sale");
-                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp,photosArrayList,attributesArrayList,creatorInfo);
+
+                categoryComp = adsDetails.getJSONObject("category");
+                CategoryComp categoryComp1 =new CategoryComp(
+                        Integer.parseInt(categoryComp.getString("id"))
+                        ,categoryComp.getString("id")
+                        ,categoryComp.getString("code")
+                        ,categoryComp.getString("name")
+                        ,categoryComp.getString("name_en")
+                        ,categoryComp.getString("name_ar")
+                );
+
+                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryComp1,photosArrayList,attributesArrayList,creatorInfo);
 
 
                 adsArrayList.add(ccemtModel);

@@ -15,6 +15,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static com.cars.halamotor_obeidat.API.APIS.BASE_API;
+import static com.cars.halamotor_obeidat.sharedPreferences.SharedPreferencesInApp.getUserTokenInFromSP;
+
+import com.cars.halamotor_obeidat.model.CategoryComp;
 
 public class LoginAndUpdateProfile {
 
@@ -22,9 +25,9 @@ public class LoginAndUpdateProfile {
                                                 String userToken, String photo, String phone,Login login)
     {
         JSONObject obj = null;
-        Log.i("TAG","name: "+name);
         Log.i("TAG","email: "+email);
         Log.i("TAG","password: "+password);
+        Log.i("TAG","name: "+name);
         Log.i("TAG","platform: "+platform);
         Log.i("TAG","platform_id: "+platform_id);
         Log.i("TAG","platform_token: "+userToken);
@@ -47,16 +50,18 @@ public class LoginAndUpdateProfile {
 //                .build();
 
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("name",name)
                 .addFormDataPart("email",email)
                 .addFormDataPart("password","123456")
+                .addFormDataPart("name",name)
                 .addFormDataPart("platform",platform)
-                .addFormDataPart("platform_id",platform_id)
-                .addFormDataPart("platform_token",userToken)
                 .addFormDataPart("photo",photo)
-                .addFormDataPart("phone",phone)
                 .build();
 
+
+//        .addFormDataPart("platform_id",platform_id)
+//            .addFormDataPart("platform_token",userToken)
+//            .addFormDataPart("photo",photo)
+//            .addFormDataPart("phone",phone)
 
         Request request = new Request.Builder()
                 .url(BASE_API+"/login")
@@ -74,12 +79,10 @@ public class LoginAndUpdateProfile {
                 objData = obj.getJSONObject("DATA");
                 objUser =objData.getJSONObject("user");
 
-                Log.i("TAG","name: "+objUser.getString("name"));
-                Log.i("TAG","email: "+objUser.getString("email"));
 
-                Log.i("TAG","photo: "+objUser.getString("phone"));
                 //send response by interface
                 login.whenLoginSuccess(obj,platform,platform_id,photo);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -89,8 +92,10 @@ public class LoginAndUpdateProfile {
         }
     }
 
+
     public static void updateProfileSuccess(final String userTokenInServer, final UpdateProfile updateProfile
-            , final String areaId, final String area) {
+            , final String areaId, final String area, final String device_token) {
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -99,6 +104,7 @@ public class LoginAndUpdateProfile {
                 OkHttpClient client = new OkHttpClient().newBuilder()
                         .build();
                 RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                        .addFormDataPart("device_token", device_token)
                         .addFormDataPart("area_id", areaId)
                         .addFormDataPart("area", area)
                         .build();
@@ -112,13 +118,59 @@ public class LoginAndUpdateProfile {
                     Response response = client.newCall(request).execute();
 
                     try {
-                        Log.w("TAG", "Response " + response);
+                        Log.w("TAG", "Response update" + response);
 
                         obj = new JSONObject(response.body().string());
 
                         JSONObject data = obj.getJSONObject("DATA");
+                        Log.w("TAG", "data " + data.toString());
+                        //data.getString("id")
 
                         updateProfile.updateSuccess(obj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        thread.start();
+    }
+
+    public static void updateDeviceToken(final String userTokenInServer,
+             final String device_token) {
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                JSONObject obj = null;
+                OkHttpClient client = new OkHttpClient().newBuilder()
+                        .build();
+                RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                        .addFormDataPart("device_token", device_token)
+                        .build();
+                Request request = new Request.Builder()
+                        .url(BASE_API + "/profile")
+                        .method("POST", body)
+                        .addHeader("Accept", "application/json")
+                        .addHeader("Authorization", "Bearer " + userTokenInServer)
+                        .build();
+                try {
+                    Response response = client.newCall(request).execute();
+
+                    try {
+                        Log.w("TAG", "Response update" + response);
+
+                        obj = new JSONObject(response.body().string());
+
+                        JSONObject data = obj.getJSONObject("DATA");
+                        Log.w("TAG", "data " + data.toString());
+                        //data.getString("id")
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

@@ -233,7 +233,7 @@ public class LoginWithSocialMedia extends AppCompatActivity implements Login{
                         try {
                             String photo = "https://graph.facebook.com/" + object.getString("id") + "/picture?type=normal";
                             whenLoginCompleteSuccess(object.getString("first_name") + " " + object.getString("last_name"),
-                                    object.getString("email"), "123456", "facebook", object.getString("id"),
+                                    object.getString("email"), "123456", "google", object.getString("id"),
                                     getUserTokenInFromSP(getApplicationContext()), photo, "00", login);
                         } catch (JSONException e) {
                             Log.w("TAG","error");

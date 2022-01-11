@@ -2,6 +2,7 @@ package com.cars.halamotor_obeidat.algorithms;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.cars.halamotor_obeidat.model.AccAndJunkFirstCase;
 import com.cars.halamotor_obeidat.model.CCEMTFirestCase;
@@ -20,20 +21,26 @@ public class ArrangingLists {
     //2. must to use quick sort algo to check in best performance
 
     public static String checkFavouriteOrNot1(Context context,String itemID) {
-
         String favouriteOrNot = "";
         ArrayList<FavouriteCallSearch> favouriteCallSearchesArrayL = new ArrayList<FavouriteCallSearch>();
 
         Cursor res = getDataBaseInstance(context).descendingFCS();
+        //Log.i("TAG","checkFavouriteOrNot1");
 
         while (res.moveToNext()) {
+            //Log.i("TAG",res.getString(3).replace("\n", ""));
+
             if (res.getString(3).replace("\n", "").equals("favorite"))
             {
+
                 FavouriteCallSearch favouriteCallSearch = new FavouriteCallSearch(
                         res.getString(1).replace("\n", "")
                         , res.getString(2).replace("\n", "")
                         , res.getString(3).replace("\n", "")
                 );
+//                Log.i("TAG","col 1 "+res.getString(1).replace("\n", ""));
+//                Log.i("TAG","col 2 "+res.getString(2).replace("\n", ""));
+//                Log.i("TAG","col 3 "+res.getString(3).replace("\n", ""));
                 favouriteCallSearchesArrayL.add(favouriteCallSearch);
             }
         }
@@ -45,6 +52,10 @@ public class ArrangingLists {
             int flag = 0;
             for (int i = 0; i < favouriteCallSearchesArrayL.size(); i++) {
                 if (favouriteCallSearchesArrayL.get(i).getFcsType().equals("favorite")) {
+
+                    //Log.i("TAG","favorite getIdInDatabase "+favouriteCallSearchesArrayL.get(i).getIdInDatabase());
+                    //Log.i("TAG","favorite itemID "+itemID);
+
                     if (favouriteCallSearchesArrayL.get(i).getIdInDatabase().equals(itemID)) {
                         flag = 1;
                         favouriteOrNot = "favorite";

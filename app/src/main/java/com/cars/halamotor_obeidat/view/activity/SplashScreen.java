@@ -52,6 +52,7 @@ import static com.cars.halamotor_obeidat.sharedPreferences.NotificationSharedPre
 import static com.cars.halamotor_obeidat.sharedPreferences.NotificationSharedPreferences.welcomeNotifications;
 import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getPlatform_id;
 import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserTokenFromServer;
+import static com.cars.halamotor_obeidat.sharedPreferences.SharedPreferencesInApp.getUserTokenInFromSP;
 import static com.cars.halamotor_obeidat.staticFiles.StaticFiles.setCategoriesArrayL;
 
 public class SplashScreen extends AppCompatActivity implements CountryCitesAndAreas, UpdateProfile, CategoriesPresenter {
@@ -249,7 +250,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
             saveUserInfoInSP(this,city_en,city_ar,city_code,city_id,area_id,area_name_en,area_name_ar);
             updateProfileSuccess(
                     getUserTokenFromServer(getApplicationContext())
-                    ,updateProfile,area_id,area_name_en);
+                    ,updateProfile,area_id,area_name_en,getUserTokenInFromSP(getApplicationContext()));
             //updateCityNeighborhood(this,cityS,neighborhoodS);
             splashScreenTime =700;
             transportToMainActivity();

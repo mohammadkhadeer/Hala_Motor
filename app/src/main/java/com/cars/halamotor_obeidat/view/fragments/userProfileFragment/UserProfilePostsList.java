@@ -143,7 +143,7 @@ public class UserProfilePostsList extends Fragment {
                 //numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
                 isLoading = true;
                 currentPage++;
-                Log.i("TAG","currentPage"+currentPage);
+                //Log.i("TAG","currentPage"+currentPage);
                 getRelatedAds(getActivity(),creatorInfo.getUser_id(),creatorInfo.getType(),relatedAds,currentPage);
             }
 

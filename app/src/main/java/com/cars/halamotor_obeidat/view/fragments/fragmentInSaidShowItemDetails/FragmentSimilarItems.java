@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,7 @@ public class FragmentSimilarItems extends Fragment {
     }
 
     private void intiSuggestedAds() {
+        //Log.i("TAG","Category_id: "+category);
         Bundle bundle = new Bundle();
         bundle.putString("userID", user_id);
         bundle.putString("category", category);
