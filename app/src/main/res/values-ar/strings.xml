@@ -446,6 +446,7 @@
     <string name="invite_your_friends">"قم بدعوة اصدقتئك "</string>
     <string name="share_my_profile">مشاركت ملفي</string>
     <string name="help">مساعدة</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
     <string name="filter">تصفية</string>
     <string name="all">الكل</string>
     <string name="arrangement">Arrangement</string>
@@ -10864,5 +10865,59 @@
     <string name="uae">الدولة   الامارات العربية المتحدة</string>
     <string name="hot_price">السعر المحروق</string>
 
+    <string name="pp_content">
+        Please read this Privacy Policy carefully before using our Services\n\n
+
+        In this Privacy Policy the following words and expressions shall have the meanings hereby assigned to them:\n\n
+
+        Services means any products, services, content, features, technologies, or functions, and all related websites, applications and services offered to you by us.
+        Platform means the websites, mobile apps, mobile sites or other online properties through which we offer our Services.\n\n
+
+        By using Hala motor new and related Services, you give explicit consent to Hala motor new for the collection, use, disclosure and retention of your personal information by us, as described in this Privacy Policy and our Terms of Use.\n\n
+
+        Hala motor new may change this Privacy Policy from time to time as described below. We advise you to read it regularly to check for changes. Any amended Privacy Policy will be effective immediately after it is posted on our Website.\n\n\n\n
+
+        1. What data do we collect about you? \n\n
+
+        Registration and other account information: When you register to use our Services, we may collect the following information about you depending on how you register on our Platform that can include mobile number and name amongst other basic info \n\n\n\n
+
+        Data we collect automatically when you use of our Services: When you interact with our Platform or use our Services, we automatically collect various information that includes but is not limited to device information, location information, log data, click stream data, cookies and similar technologies \n\n\n\n
+
+        Data from third parties or publicly available sources: We may receive personal data about you from various third parties and public sources. \n\n\n\n\n\n
+
+        2. Why do we process your personal information?\n\n
+
+        We use your personal data when the law allows us to. Most commonly but not limited to, we will use the data where we need to perform the contract we are about to enter into or have entered into with you, to improve, personalize and deliver our current and upcoming Services and Platform, to do our best to catch scam and fraud,
+        to introduce Services and Platform features, to better serve you via help tools, and  to comply with a legal or regulatory obligation with authorities as need be.\n\n\n\n
+
+
+        3. How will we inform you about changes in our Privacy Policy?\n\n
+        We may amend this Privacy Policy from time to time. We will post changes on this page for any change we do. If you or your guardian (as the case may be)
+        do not agree with the changes, please stop using the Services and Platform.\n\n\n\n
+
+
+        4. Your rights \n\n
+        You may have certain legal rights regarding your personal data depending on the country you are
+        in or how we interact with you. You will not have to pay a fee to access your personal
+        data (or to exercise any of the other rights). However, we may charge a reasonable fee if your
+        request is clearly unfounded, repetitive or excessive or for any other reason. Alternatively, we may
+        refuse to comply with your request in these circumstances. We try to respond to all legitimate
+        requests within three months. Occasionally it may take us longer if your request is particularly
+        complex or you have made several requests. In this case, we will notify you and keep you updated.\n\n\n\n
+
+        5. Contact \n\n
+        For any additional information or to exercise your rights, please contact our team at mohammadkhadeer1992@gmail.com,
+        or call +971582402431.\n\n\n\n
+
+
+        12. Acceptance of this Policy \n\n
+        You acknowledge you have read this Policy and agree to all its terms and conditions.
+        By accessing and using the Platforms and Services you agree to be bound by this Policy
+        and the Terms of Use. If you do not agree to abide by the terms of this Policy and our
+        other Policies, you are not authorized to access or use the Platform(s) and Service(s).\n\n\n\n\n\n\n\n
+
+
+
+    </string>
 
 </resources>

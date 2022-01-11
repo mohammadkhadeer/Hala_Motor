@@ -1,6 +1,7 @@
 package com.cars.halamotor_obeidat.view.fragments;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +18,7 @@ import com.cars.halamotor_obeidat.functions.Functions;
 import com.cars.halamotor_obeidat.view.activity.AboutUs;
 import com.cars.halamotor_obeidat.view.activity.AddItem;
 import com.cars.halamotor_obeidat.view.activity.ContactUs;
+import com.cars.halamotor_obeidat.view.activity.PrivacyPolicy;
 import com.cars.halamotor_obeidat.view.activity.Setting;
 import com.cars.halamotor_obeidat.view.activity.ShowFCS;
 import com.cars.halamotor_obeidat.view.activity.ShowPostsActivity;
@@ -84,6 +86,16 @@ public class FragmentProfile extends Fragment {
         actionListenerToContactUs();
         actionListenerAboutTheApp();
         actionListenerSetting();
+        actionListenerToPP();
+    }
+
+    private void actionListenerToPP() {
+        helpRL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                moveToPP();
+            }
+        });
     }
 
     private void actionListenerSetting() {
@@ -101,6 +113,12 @@ public class FragmentProfile extends Fragment {
 
         Intent intent = new Intent(getActivity(), Setting.class);
 //                intent.putExtras(bundle);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_up, R.anim.no_animation);
+    }
+
+    private void moveToPP() {
+        Intent intent = new Intent(getActivity(), PrivacyPolicy.class);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_up, R.anim.no_animation);
     }

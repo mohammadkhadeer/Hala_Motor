@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:tools="http://schemas.android.com/tools"
-    android:requestLegacyExternalStorage="true"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cars.halamotor_obeidat">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.cars.halamotor_obeidat"
+    android:requestLegacyExternalStorage="true">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,63 +10,68 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.cars.halamotor_obeidat.utils.App"
+        android:name=".utils.App"
         android:allowBackup="true"
-        android:supportsRtl="true"
-        android:requestLegacyExternalStorage="true"
         android:icon="@drawable/hala_logo"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/hala_logo"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.cars.halamotor_obeidat.view.activity.Language"></activity>
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.Setting"
+            android:name=".view.activity.PrivacyPolicy"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme22"/>
+
+        <activity android:name=".view.activity.Language" />
+        <activity
+            android:name=".view.activity.Setting"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.CompleteInsuranceInfo"
+            android:name=".view.activity.CompleteInsuranceInfo"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.EditInsuranceInfoCarOrDriver"
+            android:name=".view.activity.EditInsuranceInfoCarOrDriver"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme23" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.ReportActivity"
+            android:name=".view.activity.ReportActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme44" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.AboutUs"
+            android:name=".view.activity.AboutUs"
             android:theme="@style/AppTheme22" />
-        <activity android:name="com.cars.halamotor_obeidat.view.activity.EditPostActivity" />
+        <activity android:name=".view.activity.EditPostActivity" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.UserProfile"
+            android:name=".view.activity.UserProfile"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme22" />
-        <activity android:name="com.cars.halamotor_obeidat.view.activity.FollowingActivity" />
-        <activity android:name="com.cars.halamotor_obeidat.view.activity.ShowPostsActivity" />
+        <activity android:name=".view.activity.FollowingActivity" />
+        <activity android:name=".view.activity.ShowPostsActivity" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.ContactUs"
+            android:name=".view.activity.ContactUs"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme22" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.ShowFCS"
+            android:name=".view.activity.ShowFCS"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme23" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.Insurance"
+            android:name=".view.activity.Insurance"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme24" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.ShowItemDetails"
+            android:name=".view.activity.ShowItemDetails"
             android:label="@string/title_activity_show_item_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".view.activity.SplashScreen"
             android:exported="true"
-            android:name="com.cars.halamotor_obeidat.view.activity.SplashScreen"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme23"
-            >
+            android:theme="@style/AppTheme23">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,35 +79,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.LoginWithSocialMedia"
+            android:name=".view.activity.LoginWithSocialMedia"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme23" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.CarPlates"
+            android:name=".view.activity.CarPlates"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.WheelsRim"
+            android:name=".view.activity.WheelsRim"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.selectAddress.SelectCityAndNeighborhood"
+            android:name=".view.activity.selectAddress.SelectCityAndNeighborhood"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.CarDetails"
+            android:name=".view.activity.CarDetails"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.AddItem"
+            android:name=".view.activity.AddItem"
             android:theme="@style/AppTheme2" />
         <activity
-            android:name="com.cars.halamotor_obeidat.view.activity.MainActivity"
+            android:name=".view.activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme9" />
         <activity
-            android:exported="true"
-            android:name="com.cars.halamotor_obeidat.view.showImageFromGallery.CustomGalleryActivity">
+            android:name=".view.showImageFromGallery.CustomGalleryActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="luminous.ACTION_PICK" />
                 <action android:name="luminous.ACTION_MULTIPLE_PICK" />
@@ -129,28 +134,28 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/fb_login_protocol_scheme"
+                <data
+                    android:scheme="@string/fb_login_protocol_scheme"
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
 
         <service
-            android:name="com.cars.halamotor_obeidat.service.FcmMessagingService"
+            android:name=".service.FcmMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
+            android:name=".service.MyFireBaseServiceToGetToken"
             android:exported="true"
-            android:name="com.cars.halamotor_obeidat.service.MyFireBaseServiceToGetToken"
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="com.cars.halamotor_obeidat.service.CarBrandsAndModelService" />
+        <service android:name=".service.CarBrandsAndModelService" />
     </application>
 
 </manifest>
