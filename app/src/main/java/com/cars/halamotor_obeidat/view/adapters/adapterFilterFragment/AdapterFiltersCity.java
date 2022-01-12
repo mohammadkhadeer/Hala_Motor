@@ -1,8 +1,11 @@
 package com.cars.halamotor_obeidat.view.adapters.adapterFilterFragment;
 
+import static com.cars.halamotor_obeidat.functions.NewFunction.getTitle;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +44,7 @@ public class AdapterFiltersCity extends RecyclerView.Adapter<AdapterFiltersCity.
 
     @Override
     public void onBindViewHolder(final AdapterFiltersCity.ViewHolder holder, final int position) {
-        holder.filterContentTV.setText(filterContentArrayL.get(position).getCity());
+        holder.filterContentTV.setText(getTitle(filterContentArrayL.get(position).getCity(),filterContentArrayL.get(position).getCityAr(),context));
         holder.filterContentTV.setTypeface(Functions.changeFontGeneral(context));
         actionListenerToCardView(context,position,holder);
     }

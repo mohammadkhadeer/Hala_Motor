@@ -33,6 +33,7 @@ import static com.cars.halamotor_obeidat.functions.FillFilters.fillFilter;
 import static com.cars.halamotor_obeidat.functions.FillNeighborhood.fillCityArrayL;
 import static com.cars.halamotor_obeidat.functions.FillNeighborhood.fillNeighborhoodArrayLFromDataBase;
 import static com.cars.halamotor_obeidat.functions.FillNeighborhood.resortNeighborhoodArrayL;
+import static com.cars.halamotor_obeidat.functions.NewFunction.getTitle;
 
 public class FiltersFragment extends Fragment implements AdapterFiltersCity.PassCity
             , AdapterFiltersNeighborhood.PassNeighborhood,AdapterFiltersItem.PassFilter
@@ -180,7 +181,7 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
 
     @Override
     public void onCityClicked(CityModel cityModel) {
-        cityNameTV.setText(cityModel.getCity());
+        cityNameTV.setText(getTitle(cityModel.getCity(),cityModel.getCityAr(),getActivity()));
         selectedCityCV.setVisibility(View.VISIBLE);
         filter1RV.setVisibility(View.GONE);
 

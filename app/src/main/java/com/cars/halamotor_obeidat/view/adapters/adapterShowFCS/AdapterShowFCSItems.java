@@ -113,7 +113,7 @@ public class AdapterShowFCSItems extends RecyclerView.Adapter<BaseViewHolder> {
     isLoaderVisible = false;
     ////////////here
     int position = suggestedItemsList.size() - 1;
-    Log.i("TAG","position: "+String.valueOf(suggestedItemsList.size() - 1));
+//    Log.i("TAG","position: "+String.valueOf(suggestedItemsList.size() - 1));
     CCEMTModel item = getItem(position);
     if (item != null) {
       suggestedItemsList.remove(position);

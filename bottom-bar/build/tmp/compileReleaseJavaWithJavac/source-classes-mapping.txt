@@ -1,0 +1,59 @@
+com/roughike/bottombar/BatchTabPropertyApplier.java
+ com.roughike.bottombar.BatchTabPropertyApplier
+ com.roughike.bottombar.BatchTabPropertyApplier$TabPropertyUpdater
+com/roughike/bottombar/VerticalScrollingBehavior.java
+ com.roughike.bottombar.VerticalScrollingBehavior
+ com.roughike.bottombar.VerticalScrollingBehavior$ScrollDirection
+com/roughike/bottombar/BottomBarBadge.java
+ com.roughike.bottombar.BottomBarBadge
+ com.roughike.bottombar.BottomBarBadge$1
+com/roughike/bottombar/MiscUtils.java
+ com.roughike.bottombar.MiscUtils
+com/roughike/bottombar/NavbarUtils.java
+ com.roughike.bottombar.NavbarUtils
+com/roughike/bottombar/BadgeCircle.java
+ com.roughike.bottombar.BadgeCircle
+com/roughike/bottombar/BottomBarTab.java
+ com.roughike.bottombar.BottomBarTab
+ com.roughike.bottombar.BottomBarTab$1
+ com.roughike.bottombar.BottomBarTab$2
+ com.roughike.bottombar.BottomBarTab$3
+ com.roughike.bottombar.BottomBarTab$4
+ com.roughike.bottombar.BottomBarTab$5
+ com.roughike.bottombar.BottomBarTab$Config
+ com.roughike.bottombar.BottomBarTab$Config$Builder
+ com.roughike.bottombar.BottomBarTab$Type
+com/roughike/bottombar/TabParser.java
+ com.roughike.bottombar.TabParser
+ com.roughike.bottombar.TabParser$TabAttribute
+ com.roughike.bottombar.TabParser$TabParserException
+com/roughike/bottombar/BottomBar.java
+ com.roughike.bottombar.BottomBar
+ com.roughike.bottombar.BottomBar$1
+ com.roughike.bottombar.BottomBar$10
+ com.roughike.bottombar.BottomBar$2
+ com.roughike.bottombar.BottomBar$3
+ com.roughike.bottombar.BottomBar$4
+ com.roughike.bottombar.BottomBar$5
+ com.roughike.bottombar.BottomBar$6
+ com.roughike.bottombar.BottomBar$7
+ com.roughike.bottombar.BottomBar$8
+ com.roughike.bottombar.BottomBar$9
+com/roughike/bottombar/BottomNavigationBehavior.java
+ com.roughike.bottombar.BottomNavigationBehavior
+ com.roughike.bottombar.BottomNavigationBehavior$1
+ com.roughike.bottombar.BottomNavigationBehavior$BottomNavigationWithSnackbar
+ com.roughike.bottombar.BottomNavigationBehavior$LollipopBottomNavWithSnackBarImpl
+ com.roughike.bottombar.BottomNavigationBehavior$PreLollipopBottomNavWithSnackBarImpl
+com/roughike/bottombar/OnTabSelectListener.java
+ com.roughike.bottombar.OnTabSelectListener
+com/roughike/bottombar/BuildConfig.java
+ com.roughike.bottombar.BuildConfig
+com/roughike/bottombar/TabSelectionInterceptor.java
+ com.roughike.bottombar.TabSelectionInterceptor
+com/roughike/bottombar/ShySettings.java
+ com.roughike.bottombar.ShySettings
+com/roughike/bottombar/OnTabReselectListener.java
+ com.roughike.bottombar.OnTabReselectListener
+com/roughike/bottombar/BadgeContainer.java
+ com.roughike.bottombar.BadgeContainer
