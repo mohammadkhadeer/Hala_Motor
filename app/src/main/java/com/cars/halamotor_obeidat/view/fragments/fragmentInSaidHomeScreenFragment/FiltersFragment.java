@@ -224,7 +224,7 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
     @Override
     public void onNeighborhoodClicked(Neighborhood neighborhood) {
         filter.onFilterNeighborhoodClick(neighborhood);
-        neighborhoodNameTV.setText(neighborhood.getNeighborhood());
+        neighborhoodNameTV.setText(getTitle(neighborhood.getNeighborhood(),neighborhood.getNeighborhoodAr(),getActivity()));
         selectedNeighborhoodCV.setVisibility(View.VISIBLE);
         recyclerViewNeighborhood.setVisibility(View.GONE);
     }
@@ -279,6 +279,7 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
     }
 
     private void createFilterTowRV() {
+
         filterItemsArrayL = fillFilter(getActivity(),numberOfSelectedFilter,itemTypeFromFilterAdapter);
         filter2RV.setHasFixedSize(true);
         layoutManagerSuggested = new LinearLayoutManager(getActivity(),

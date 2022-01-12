@@ -26,6 +26,9 @@ public class FillFilters {
     {
         ArrayList<ItemFilterModel> filterArrayL = new ArrayList<>();
 
+        //Log.i("TAG","Filter type"+filterType.get(0).getFilterType());
+        //Log.i("TAG","numberOfFilterSelectedNow "+String.valueOf(numberOfFilterSelectedNow));
+
         if (numberOfFilterSelectedNow ==0)
         {
             filterArrayL = fillCategory(context);
@@ -33,8 +36,6 @@ public class FillFilters {
 
         if (numberOfFilterSelectedNow ==1)
         {
-            Log.i("TAG","Filter type"+filterType.get(0).getFilterType());
-
             if (!filterType.get(0).getFilterType().equals(context.getResources().getString(R.string.exchange_car)))
             {
                 filterArrayL = fillFromPrice(context,filterType.get(0).getFilterType());
@@ -61,6 +62,7 @@ public class FillFilters {
                 });
             }
         }
+
         if (numberOfFilterSelectedNow ==3)
         {
             if (filterType.get(0).getFilterType().equals(context.getResources().getString(R.string.exchange_car))
@@ -106,7 +108,7 @@ public class FillFilters {
             )
             {
 //                textView.setText(context.getResources().getString(R.string.detect_car_make));
-                filterArrayL =fillCarmodelFilterArrayL(context,filterType.get(3).getFilterType());
+                filterArrayL =fillCarmodelFilterArrayL(context,filterType.get(3).getFilterS());
                 Collections.sort(filterArrayL, new Comparator<ItemFilterModel>() {
                     @Override
                     public int compare(ItemFilterModel lhs, ItemFilterModel rhs) {

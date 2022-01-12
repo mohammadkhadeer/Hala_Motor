@@ -50,7 +50,8 @@ public class ReadCarsAndCarModels {
         Cursor res = getDataBaseInstance(context).descendingBrandsModel();
 
         while (res.moveToNext()) {
-            if (carBrandName.equals(res.getString(7).replace("\n", "")))
+            //note brand id in model id
+            if (carBrandName.equals(res.getString(5).replace("\n", "")))
             {
                 CarModel carModel= new CarModel(
                         res.getString(5).replace("\n", "")
