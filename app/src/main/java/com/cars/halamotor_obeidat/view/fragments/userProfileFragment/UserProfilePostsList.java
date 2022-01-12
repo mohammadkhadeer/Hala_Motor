@@ -55,9 +55,10 @@ public class UserProfilePostsList extends Fragment {
     AdapterShowFCSItems adapterShowFCSItems;
 
     ArrayList<UserItem> itemIDsArrayL= new ArrayList<>();
-    public List<SuggestedItem> suggestedItemsArrayListTest;
+    public List<CCEMTModel> userPostsArrayL;
     public List<SuggestedItem> suggestedItemsArrayListDO;
 
+    int numberOfResultAfterRe;
 
     private int currentPage = PAGE_START;
     private int totalPage = 10;
@@ -122,13 +123,16 @@ public class UserProfilePostsList extends Fragment {
                                                                                           View view = (View) nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
                                                                                           int diff = (view.getBottom() - (nestedScrollView.getHeight() + nestedScrollView.getScrollY()));
                                                                                           if (diff == 0) {
+                                                                                              if (numberOfResultAfterRe!=0)
+                                                                                              {
+                                                                                                  progressBar.setVisibility(View.VISIBLE);
+                                                                                                  //numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
+                                                                                                  isLoading = true;
+                                                                                                  currentPage++;
+                                                                                                  //Log.i("TAG","currentPage"+currentPage);
+                                                                                                  getRelatedAds(getActivity(),creatorInfo.getUser_id(),creatorInfo.getType(),relatedAds,currentPage);
 
-                                                                                              progressBar.setVisibility(View.VISIBLE);
-                                                                                              //numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
-                                                                                              isLoading = true;
-                                                                                              currentPage++;
-                                                                                              Log.i("TAG","currentPage"+currentPage);
-                                                                                              getRelatedAds(getActivity(),creatorInfo.getUser_id(),creatorInfo.getType(),relatedAds,currentPage);
+                                                                                              }
 
                                                                                           }
                                                                                       }
@@ -139,6 +143,7 @@ public class UserProfilePostsList extends Fragment {
         recyclerView.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
+
                 progressBar.setVisibility(View.VISIBLE);
                 //numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
                 isLoading = true;
@@ -167,6 +172,8 @@ public class UserProfilePostsList extends Fragment {
     }
 
     public void handleList(final List<CCEMTModel> relatedAdsToSameUserList){
+        numberOfResultAfterRe = 0;
+        numberOfResultAfterRe = relatedAdsToSameUserList.size();
         new Handler().postDelayed(new Runnable() {
 
             @Override

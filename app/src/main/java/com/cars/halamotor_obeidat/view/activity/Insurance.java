@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cars.halamotor_obeidat.R;
-import com.cars.halamotor_obeidat.dataBase.DBHelper2;
 import com.cars.halamotor_obeidat.functions.Functions;
 import com.cars.halamotor_obeidat.model.CarMake;
 import com.cars.halamotor_obeidat.model.CarModel;
@@ -41,9 +40,6 @@ public class Insurance extends AppCompatActivity implements CarDetailsInsurance.
     SharedPreferences.Editor editor;
     SharedPreferences sharedPreferences;
     String insurancePic = "https://firebasestorage.googleapis.com/v0/b/hala-motor-8ff46.appspot.com/o/pic%2Finsurance_logo.png?alt=media&token=b00be8d9-b881-4c8a-95a0-8b3e74791c88";
-
-    DBHelper2 myDB2;
-    //DBHelper3 myDB3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

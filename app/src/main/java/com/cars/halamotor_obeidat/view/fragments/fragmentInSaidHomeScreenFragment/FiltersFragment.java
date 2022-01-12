@@ -279,7 +279,6 @@ public class FiltersFragment extends Fragment implements AdapterFiltersCity.Pass
     }
 
     private void createFilterTowRV() {
-
         filterItemsArrayL = fillFilter(getActivity(),numberOfSelectedFilter,itemTypeFromFilterAdapter);
         filter2RV.setHasFixedSize(true);
         layoutManagerSuggested = new LinearLayoutManager(getActivity(),

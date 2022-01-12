@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hala motor</string>
+    <string name="app_name">هلا موتر</string>
     <string name="facebook_app_id">648618505975230</string>
     <string name="fb_login_protocol_scheme">fb648618505975230</string>
     <string name="email_contact_us">home</string>
@@ -1811,6 +1811,7 @@
 
 
 
+    <string name="detect_language">حدد اللغة</string>
 
     <string name="detect_address">حدد الموقع</string>
     <string name="detect_wheels_siz">حدد حجم الاطار</string>

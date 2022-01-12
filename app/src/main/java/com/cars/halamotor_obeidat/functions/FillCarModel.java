@@ -1914,7 +1914,7 @@ public class FillCarModel {
                 nameBrand = carMakeArrayList.get(i).getName_ar();
             }
 
-            carModelArrayL = getModelsToSpecificBrand(context,carMakeArrayList.get(i).getName_en());
+            carModelArrayL = getModelsToSpecificBrand(context,carMakeArrayList.get(i).getId());
 
             for (int j =0;j<carModelArrayL.size();j++)
             {

@@ -25,7 +25,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme22"/>
 
-        <activity android:name=".view.activity.Language" />
+        <activity android:name=".view.activity.Language"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme22"/>
         <activity
             android:name=".view.activity.Setting"
             android:theme="@style/AppTheme.NoActionBar" />

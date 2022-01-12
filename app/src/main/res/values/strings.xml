@@ -1883,6 +1883,7 @@
 
 
     <string name="detect_address">Detect address</string>
+    <string name="detect_language">Detect language</string>
     <string name="detect_wheels_siz">Detect Wheels size</string>
 
     <string name="wheels_inch">Inch</string>
