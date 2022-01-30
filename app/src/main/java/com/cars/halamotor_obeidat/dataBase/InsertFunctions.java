@@ -61,18 +61,20 @@ public class InsertFunctions {
 
     public static boolean insertItemsToFCS(String itemID, String category, DBHelper database, String fcsType, Context context) {
         //remove item if already exist
-        DBHelper dataBase = getDataBaseInstance(context);
-        if (dataBase.CheckIsDataAlreadyInDBorNot(itemID))
+        boolean isInserted =false;
+        if (fcsType.equals("favorite"))
         {
-            dataBase.deleteFCS(itemID);
+            DBHelper dataBase = getDataBaseInstance(context);
+            if (dataBase.CheckIsDataAlreadyInDBorNot(itemID))
+            {
+                dataBase.deleteFCS(itemID);
+            }
+             isInserted = database.insertDataFCSItem(
+                    itemID
+                    ,category
+                    ,fcsType
+            );
         }
-        boolean isInserted = database.insertDataFCSItem(
-                itemID
-                ,category
-                ,fcsType
-        );
-        //Log.i("TAG","fcsType "+fcsType);
-        //Log.i("TAG","isInserted "+String.valueOf(isInserted));
 
         return isInserted;
     }

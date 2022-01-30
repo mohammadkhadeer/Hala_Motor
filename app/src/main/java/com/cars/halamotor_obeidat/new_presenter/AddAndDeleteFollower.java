@@ -27,7 +27,7 @@ public class AddAndDeleteFollower {
     public static void addNewFollower(String user_id, Context context,String number_of_follower,UserInfoP userInfoP)
     {
         JSONObject obj = null;
-        //Log.i("TAG","user_id: "+user_id);
+        Log.i("TAG","user_id: "+user_id);
         //Log.i("TAG","Bearer: "+getUserTokenFromServer(context));
 
         OkHttpClient client = new OkHttpClient().newBuilder()
@@ -53,10 +53,10 @@ public class AddAndDeleteFollower {
                 {
                     userInfo(user_id,context,userInfoP);
                 }
-                //Log.i("TAG","response: "+response.toString());
+                Log.i("TAG","response: "+response.toString());
 
                 obj = new JSONObject(response.body().string());
-                //Log.i("TAG","obj: "+obj.toString());
+                Log.i("TAG","obj: "+obj.toString());
 
                 //login.whenLoginSuccess(obj,platform,platform_id,photo);
             } catch (JSONException e) {
@@ -96,7 +96,7 @@ public class AddAndDeleteFollower {
             try {
                 JSONObject objData = null,objUser=null;
 
-                //Log.i("TAG","response: "+response.toString());
+                Log.i("TAG","response: "+response.toString());
                 int numberOfUser = Integer.parseInt(number_of_follower);
 
                 if (numberOfUser <1000)
@@ -104,7 +104,7 @@ public class AddAndDeleteFollower {
                     userInfo(user_id,context,userInfoP);
                 }
                 obj = new JSONObject(response.body().string());
-                //Log.i("TAG","obj: "+obj.toString());
+                Log.i("TAG","obj: "+obj.toString());
 
                 //login.whenLoginSuccess(obj,platform,platform_id,photo);
             } catch (JSONException e) {

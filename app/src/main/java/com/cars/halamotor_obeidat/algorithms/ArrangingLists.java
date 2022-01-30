@@ -25,11 +25,7 @@ public class ArrangingLists {
         ArrayList<FavouriteCallSearch> favouriteCallSearchesArrayL = new ArrayList<FavouriteCallSearch>();
 
         Cursor res = getDataBaseInstance(context).descendingFCS();
-        //Log.i("TAG","checkFavouriteOrNot1");
-
         while (res.moveToNext()) {
-            //Log.i("TAG",res.getString(3).replace("\n", ""));
-
             if (res.getString(3).replace("\n", "").equals("favorite"))
             {
 
@@ -38,9 +34,6 @@ public class ArrangingLists {
                         , res.getString(2).replace("\n", "")
                         , res.getString(3).replace("\n", "")
                 );
-//                Log.i("TAG","col 1 "+res.getString(1).replace("\n", ""));
-//                Log.i("TAG","col 2 "+res.getString(2).replace("\n", ""));
-//                Log.i("TAG","col 3 "+res.getString(3).replace("\n", ""));
                 favouriteCallSearchesArrayL.add(favouriteCallSearch);
             }
         }

@@ -58,45 +58,4 @@ public class SaveFCMTokenService extends Service {
     }
 
 
-    private void registerToTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic("important_message")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "msg topic scsess important_message";
-                        if (!task.isSuccessful()) {
-                            msg = "not";
-                        }
-                        Log.d("TAG important_message", msg);
-                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        FirebaseMessaging.getInstance().subscribeToTopic("new_items")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "msg topic scsess";
-                        if (!task.isSuccessful()) {
-                            msg = "not";
-                        }
-                        Log.d("TAG new_items", msg);
-                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        FirebaseMessaging.getInstance().subscribeToTopic("new_offers")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "msg topic scsess";
-                        if (!task.isSuccessful()) {
-                            msg = "not";
-                        }
-                        Log.d("TAG new_offers", msg);
-                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
 }

@@ -36,6 +36,7 @@ import java.util.ArrayList;
 
 import static com.cars.halamotor_obeidat.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor_obeidat.dataBase.InsertFunctions.insertNotificationTable;
+import static com.cars.halamotor_obeidat.functions.Functions.checkIfAndroidVBiggerThan9;
 import static com.cars.halamotor_obeidat.functions.Functions.getNotification;
 import static com.cars.halamotor_obeidat.functions.Functions.setLocale;
 import static com.cars.halamotor_obeidat.presnter.CategoriesFromServer.getCategories;
@@ -83,6 +84,8 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         addWelcomeNotifications();
 
         //getFBKey();
+
+        Log.i("TAG","Device token: "+getUserTokenInFromSP(getApplicationContext()));
 
         init();
         changeFont();
@@ -144,13 +147,16 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     private void getCitesAndAreasAndCarsSetting() {
         if (getCountryId(this).equals("empty")) {
             getCountryCitesAndAreas(countryCitesAndAreas,myDB,getApplicationContext());
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    getSetting(myDB);
-                }
-            });
-            thread.start();
+            if (checkIfAndroidVBiggerThan9()) {
+                getSetting(myDB);
+            }
+//            Thread thread = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//            });
+//            thread.start();
         }
     }
 

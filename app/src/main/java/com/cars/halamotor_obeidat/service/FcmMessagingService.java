@@ -28,6 +28,9 @@ import static com.cars.halamotor_obeidat.dataBase.DataBaseInstance.getDataBaseIn
 import static com.cars.halamotor_obeidat.presnter.LoginAndUpdateProfile.updateDeviceToken;
 import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserTokenFromServer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class FcmMessagingService extends FirebaseMessagingService {
     private NotificationManagerCompat notificationManager;
     Bitmap bitmap1;
@@ -71,27 +74,45 @@ public class FcmMessagingService extends FirebaseMessagingService {
 //         Check if message contains a notification payload.
 
         if (remoteMessage.getNotification() != null) {
-            setValue(remoteMessage);
+
+            Log.d("TAG", "remoteMessage: " + remoteMessage.getData().toString());
+            Log.d("TAG", "Key Data : " +  remoteMessage.getData().get("priority").toString());
+            Log.d("TAG", "Key Data : " +  remoteMessage.getData().get("object").toString());
+            Log.d("TAG", "Key Data : " +  remoteMessage.getData().get("ad").toString());
+            String testS = remoteMessage.getData().get("ad").toString();
+            Log.d("TAG", "testS : " +  testS);
+            JSONObject json = null;
+            try {
+                json = new JSONObject(testS);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d("TAG json", json.toString());
+
+
+
+
+//            title = remoteMessage.getNotification().getTitle();
+//            des = remoteMessage.getNotification().getBody();
+
             //updateNotOpenNotificationNumber();
             //insetNotificationToDB();
 
             //Log.d("TAG", "channel_id: " + channel_id);
-            Log.d("TAG", "title_en: " + title);
-            Log.d("TAG", "des: " + des);
+            //Log.d("TAG", "title_en: " + title);
+            //Log.d("TAG", "des: " + des);
 //            Log.d("TAG", "des_en: " + desArray[0]);
 //            Log.d("TAG", "des_Local: " + desArray[1]);
 //            Log.d("TAG", "optional_en: " + optionalArray[0]);
 //            Log.d("TAG", "optional_Local: " + optionalArray[1]);
 //
-            Log.d("TAG", "imageUrl: " + imageUrl);
-            convertUrlToBitmap = (ConvertUrlToBitmap) new ConvertUrlToBitmap().execute(imageUrl);
+            //Log.d("TAG", "imageUrl: " + imageUrl);
+            //convertUrlToBitmap = (ConvertUrlToBitmap) new ConvertUrlToBitmap().execute(imageUrl);
 
         }else{
             Log.i("TAG", "onMessageReceived: remoteMessage.getNotification() == null");
         }
     }
-
-
 
 
 //    private void sendNotificationAPI(RemoteMessage remoteMessage) {
@@ -263,26 +284,6 @@ public class FcmMessagingService extends FirebaseMessagingService {
                 return false;
             }
         }
-    }
-
-    private void setValue(RemoteMessage remoteMessage) {
-        //optional = remoteMessage.getNotification().getTitleLocalizationArgs()
-        title = remoteMessage.getNotification().getTitle();
-        des = remoteMessage.getNotification().getBody();
-        //channel_id = remoteMessage.getNotification().getChannelId();
-        String imageUri = remoteMessage.getNotification().getIcon();
-        imageUrl = String.valueOf(imageUri);
-//        titleArray = splitString(title, "@");
-//        if (des.contains("&"))
-//        {
-//            optionalAndDesArray = splitString(des, "&");
-//            desArray = splitString(optionalAndDesArray[0], "@");
-//            optionalArray = splitString(optionalAndDesArray[1], "#");
-//        }else{
-//            desArray = splitString(des, "@");
-//            optionalArray[0] = "optional";
-//            optionalArray[1] = "اختياري";
-//        }
     }
 
     private void intiValue() {

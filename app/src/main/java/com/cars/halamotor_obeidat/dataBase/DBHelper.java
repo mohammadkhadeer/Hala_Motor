@@ -477,6 +477,7 @@ public static final String TABLE_CITYS="cites";
 
 
         db.insert(TABLE_MODEL_SETTING,null,contentValues);
+
 //        if(result == -1)
 //            return false;
 //        else

@@ -270,7 +270,7 @@ public class CarDetails extends AppCompatActivity implements CarBrand , CarModel
         carDetailsProNowArrayL.add(getResources().getString(R.string.model));
         //pass value to model fragment
         Bundle bundle = new Bundle();
-        bundle.putString("carMake", carMake.getName_en());
+        bundle.putString("carMake", carMake.getId());
         fragmentModel.setArguments(bundle);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
