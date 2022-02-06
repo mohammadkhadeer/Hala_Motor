@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
@@ -20,12 +21,14 @@ import android.util.Log;
 import com.cars.halamotor_obeidat.dataBase.DBHelper;
 import com.cars.halamotor_obeidat.model.Attributes;
 import com.cars.halamotor_obeidat.model.CategoryComp;
+import com.cars.halamotor_obeidat.utils.NotificationHelper;
 import com.cars.halamotor_obeidat.view.activity.AboutUs;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 
 import static com.cars.halamotor_obeidat.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor_obeidat.dataBase.InsertFunctions.insertNotificationTable;
@@ -43,6 +46,8 @@ public class FcmMessagingService extends FirebaseMessagingService {
     private NotificationManagerCompat notificationManager;
     Bitmap bitmap1;
     ConvertUrlToBitmap convertUrlToBitmap;
+    NotificationHelper helper;
+
     String process_en="",process_ar="",ads_id="",creator_image=""
             ,creator_name="",category_id="",ads_image="",title,des,ads_des;
     ArrayList <String> photosArrayList ;
@@ -109,7 +114,7 @@ public class FcmMessagingService extends FirebaseMessagingService {
 //                convertUrlToBitmap = (ConvertUrlToBitmap) new ConvertUrlToBitmap().execute(ads_image);
 
         }else{
-            Log.i("TAG", "onMessageReceived: remoteMessage.getNotification() == null");
+            //Log.i("TAG", "onMessageReceived: remoteMessage.getNotification() == null");
             //Log.d("TAG", "remoteMessage: " + remoteMessage.getData().toString());
         }
     }
@@ -190,30 +195,13 @@ public class FcmMessagingService extends FirebaseMessagingService {
     private void sendNotificationAPI26() {
         Log.i("TAG","sendNotificationAPI26: "+"on");
 
-        Intent resultIntent = new Intent(getApplicationContext(), AboutUs.class);
-        resultIntent.putExtra("category",categoryCompModel.getCode());
-        resultIntent.putExtra("category_comp",categoryCompModel);
-        resultIntent.putExtra("from","ml");
-        resultIntent.putExtra("itemID",ads_id);
-        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),1,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-
         String content = creator_name + " "
                 + " " + ads_des;
-        Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_3_ID)
-                .setColor(Color.BLUE)
-                .setContentTitle(title)
-                .setContentText(content)
-                .setLargeIcon(bitmap1)
-                .setSmallIcon(com.cars.halamotor_obeidat.R.mipmap.ic_launcher)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .build();
 
-        notificationManager.notify(1, notification);
-        //notificationListener.ready(1);
+        NotificationCompat.Builder builder
+                =helper.getEDMTChannelNotification(title,content,categoryCompModel,ads_id,ads_image);
+        helper.getManager().notify(new Random().nextInt(),builder.build());
+
     }
 
     private void updateNotOpenNotificationNumber() {
@@ -232,75 +220,6 @@ public class FcmMessagingService extends FirebaseMessagingService {
                 URL url = new URL(params[0]);
                 bitmap1 = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
-                //Log.d("TAG", "channel_id: " + channel_id);
-
-                Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_1_ID)
-                        .setColor(Color.BLUE)
-                        .setContentTitle(title)
-                        .setContentText(des)
-                        .setLargeIcon(bitmap1)
-                        .setStyle(new NotificationCompat.BigPictureStyle()
-                                .bigPicture(bitmap1)
-                                .bigLargeIcon(null))
-                        .setSmallIcon(com.cars.halamotor_obeidat.R.mipmap.ic_launcher)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .build();
-
-                notificationManager.notify(123, notification);
-
-//                if (channel_id.equals("new_items"))
-//                {
-//                    Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_1_ID)
-//                            .setColor(Color.BLUE)
-//                            .setContentTitle(title)
-//                            .setContentText(des)
-//                            .setLargeIcon(bitmap1)
-//                            .setStyle(new NotificationCompat.BigPictureStyle()
-//                                .bigPicture(bitmap1)
-//                                .bigLargeIcon(null))
-//                            .setSmallIcon(com.cars.halamotor_obeidat.R.mipmap.ic_launcher)
-//                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                            .build();
-//
-//                    notificationManager.notify(123, notification);
-//                }
-//
-//                if (channel_id.equals("new_offers"))
-//                {
-//                    Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_1_ID)
-//                            .setColor(Color.BLUE)
-//                            .setContentTitle(title)
-//                            .setContentText(des)
-//                            .setLargeIcon(bitmap1)
-//                            .setSmallIcon(com.cars.halamotor_obeidat.R.mipmap.ic_launcher)
-//                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                            .build();
-//
-//                    notificationManager.notify(12, notification);
-//                }
-//
-//                if (channel_id.equals("important_message"))
-//                {
-//                    Intent resultIntent = new Intent(getApplicationContext(), AboutUs.class);
-////                    resultIntent.putExtra("item_object", notificationModel);
-//                    resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),1,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//                    Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_3_ID)
-//                            .setColor(Color.BLUE)
-//                            .setContentTitle(title)
-//                            .setContentText(des)
-//                            .setLargeIcon(bitmap1)
-//                            .setSmallIcon(com.cars.halamotor_obeidat.R.mipmap.ic_launcher)
-//                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                            .setAutoCancel(true)
-//                            .setContentIntent(pendingIntent)
-//                            .build();
-//
-//                    notificationManager.notify(1, notification);
-//                    //notificationListener.ready(1);
-//                }
-
                 return true;
             } catch (Exception e) {
                 Log.e("TAG", e.toString());
@@ -312,6 +231,9 @@ public class FcmMessagingService extends FirebaseMessagingService {
     private void intiValue() {
         notificationManager = NotificationManagerCompat.from(this);
         dbHelper = getDataBaseInstance(getApplicationContext());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            helper = new NotificationHelper(this);
+        }
     }
 
 }

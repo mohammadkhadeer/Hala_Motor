@@ -171,6 +171,15 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                     ,cat_ar);
         }
 
+//        Log.i("TAG","image_id:"+ String.valueOf(categoryComp.getImageIdInt()));
+//        Log.i("TAG","category_id:"+ categoryComp.getId());
+//        Log.i("TAG","code:"+ categoryComp.getCode());
+//        Log.i("TAG","name:"+ categoryComp.getName());
+//        Log.i("TAG","name_en:"+ categoryComp.getName_en());
+//        Log.i("TAG","name_ar:"+ categoryComp.getName_ar());
+//
+//        Log.i("TAG","ad_id:"+ notificationCompsArrayL.get(position).getItemServerID());
+
         Bundle bundle = new Bundle();
         bundle.putString("category",categoryComp.getCode());
         bundle.putParcelable("category_comp",categoryComp);

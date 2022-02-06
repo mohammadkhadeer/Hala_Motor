@@ -1,13 +1,19 @@
 package com.cars.halamotor_obeidat.view.activity;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.annotation.IdRes;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cars.halamotor_obeidat.R;
 import com.cars.halamotor_obeidat.functions.Functions;
@@ -32,6 +39,7 @@ import com.cars.halamotor_obeidat.model.Neighborhood;
 import com.cars.halamotor_obeidat.new_presenter.SearchResult;
 import com.cars.halamotor_obeidat.presnter.Filter;
 import com.cars.halamotor_obeidat.presnter.OnNewNotification;
+import com.cars.halamotor_obeidat.utils.NotificationHelper;
 import com.cars.halamotor_obeidat.view.fragments.FragmentHomeScreen;
 import com.cars.halamotor_obeidat.view.fragments.browsingFragment.FragmentBrowsing;
 import com.cars.halamotor_obeidat.view.fragments.FragmentNotification;
@@ -45,6 +53,7 @@ import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static com.cars.halamotor_obeidat.functions.Functions.AddShineEffect;
 import static com.cars.halamotor_obeidat.functions.Functions.setLocale;
@@ -84,7 +93,9 @@ public class MainActivity extends AppCompatActivity implements Filter, FragmentS
     RelativeLayout hot_price_rl;
     ImageView shineImageView;
     TextView hot_price_tv;
+    NotificationHelper helper;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements Filter, FragmentS
         statusBarColor();
         inti();
         AddShineEffect(hot_price_rl, shineImageView);
+        actionListenerToH();
         getCategoriesFromIntent();
         butCategoriesListOnFragmentHome();
 
@@ -105,6 +117,27 @@ public class MainActivity extends AppCompatActivity implements Filter, FragmentS
         updateNumberUnCheckedNotifications();
         actionListenerToSearch();
         onPressOnSearch();
+        helper = new NotificationHelper(this);
+
+    }
+
+
+    private void actionListenerToH() {
+        hot_price_rl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // Toast.makeText(MainActivity.this,"here",Toast.LENGTH_SHORT).show();
+//                String ad_image = "https://firebasestorage.googleapis.com/v0/b/hala-motor-8ff46.appspot.com/o/images%2F44.jpeg?alt=media&token=00c14c26-c87c-49b3-9941-e60f989dbaa6";
+//                CategoryComp categoryComp = new CategoryComp(
+//                        0,"1","car_for_sale","Car for sale","Car for sale"
+//                        ,"سيارات للبيع"
+//                );
+//                String title="Title";
+//                String content="Content";
+//                NotificationCompat.Builder builder=helper.getEDMTChannelNotification(title,content,categoryComp,"146",ad_image);
+//                helper.getManager().notify(new Random().nextInt(),builder.build());
+            }
+        });
     }
 
     private void butCategoriesListOnFragmentHome() {
