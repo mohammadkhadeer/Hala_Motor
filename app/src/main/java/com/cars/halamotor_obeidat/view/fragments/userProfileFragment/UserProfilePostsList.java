@@ -139,31 +139,6 @@ public class UserProfilePostsList extends Fragment {
                                                                                   });
     }
 
-    private void actionListenerToRV() {
-        recyclerView.addOnScrollListener(new PaginationListener(layoutManager) {
-            @Override
-            protected void loadMoreItems() {
-
-                progressBar.setVisibility(View.VISIBLE);
-                //numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
-                isLoading = true;
-                currentPage++;
-                //Log.i("TAG","currentPage"+currentPage);
-                getRelatedAds(getActivity(),creatorInfo.getUser_id(),creatorInfo.getType(),relatedAds,currentPage);
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        });
-    }
-
 
     private void inti() {
         nestedScrollView = (NestedScrollView) view.findViewById(R.id.nested);

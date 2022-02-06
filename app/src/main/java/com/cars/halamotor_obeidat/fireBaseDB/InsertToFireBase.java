@@ -75,8 +75,7 @@ public class InsertToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser+1);
                         //insert notification here to can get item id in server
-                        insertNotificationTable(getNotification(category,itemCCEMT.getCarMake() + " " +itemCCEMT.getCarModel(),context, uniqueKey,"out","item",itemCCEMT.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+
                     }
                 }
             }
@@ -109,8 +108,7 @@ public class InsertToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser+1);
                         //insert notification here to can get item id in server
-                        insertNotificationTable(getNotification("Plates",itemPlates.getCarPlatesCity() + " " +itemPlates.getCarPlatesNum(),context, uniqueKey,"out","item",itemPlates.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+
                     }
                 }
             }
@@ -134,8 +132,7 @@ public class InsertToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser+1);
                         //insert notification here to can get item id in server
-                        insertNotificationTable(getNotification("Wheels_Rim",itemWheelsRim.getWheelSize()+" "+ context.getResources().getString(R.string.wheels_inch),context, uniqueKey,"out","item",itemWheelsRim.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+
                     }
                 }
             }
@@ -160,8 +157,7 @@ public class InsertToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser + 1);
                         //insert notification
-                        insertNotificationTable(getNotification("Accessories",itemAccAndJunk.getItemName(),context, uniqueKey,"out","item",itemAccAndJunk.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+
                     }
                 }
             }
@@ -187,8 +183,7 @@ public class InsertToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser+1);
                         //insert notification here to can get item id in server
-                        insertNotificationTable(getNotification(category,itemCCEMT.getCarMake() + " " +itemCCEMT.getCarModel(),context, uniqueKey,"out","item",itemCCEMT.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+
                     }
                 }
             }
@@ -215,8 +210,7 @@ public class InsertToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser+1);
                         //insert notification here to can get item id in server
-                        insertNotificationTable(getNotification(category,itemCCEMT.getCarMake() + " " +itemCCEMT.getCarModel(),context, uniqueKey,"out","item",itemCCEMT.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+
                     }
                 }
             }
@@ -242,8 +236,7 @@ public class InsertToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser+1);
                         //insert notification here to can get item id in server
-                        insertNotificationTable(getNotification(category,itemCCEMT.getCarMake() + " " +itemCCEMT.getCarModel(),context, uniqueKey,"out","item",itemCCEMT.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+
                     }
                 }
             }
@@ -269,8 +262,7 @@ public class InsertToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser+1);
                         //insert notification here to can get item id in server
-                        insertNotificationTable(getNotification(category,itemCCEMT.getCarMake() + " " +itemCCEMT.getCarModel(),context, uniqueKey,"out","item",itemCCEMT.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+
                     }
                 }
             }
@@ -296,8 +288,7 @@ public class InsertToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser+1);
                         //insert notification here to can get item id in server
-                        insertNotificationTable(getNotification(category,itemCCEMT.getCarMake() + " " +itemCCEMT.getCarModel(),context, uniqueKey,"out","item",itemCCEMT.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+
                     }
                 }
             }
@@ -323,8 +314,7 @@ public class InsertToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser + 1);
                         //insert notification
-                        insertNotificationTable(getNotification("junkCar",itemAccAndJunk.getItemName(),context, uniqueKey,"out","item",itemAccAndJunk.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+
                     }
                 }
             }

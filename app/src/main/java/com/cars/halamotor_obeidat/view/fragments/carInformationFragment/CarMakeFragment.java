@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 import static com.cars.halamotor_obeidat.dataBase.DataBaseInstance.getDataBaseInstance;
 import static com.cars.halamotor_obeidat.dataBase.ReadCarsAndCarModels.getBrands;
-import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getAllCarProcess;
 import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class CarMakeFragment extends Fragment implements AdapterCarMake.PassCarMake {
@@ -164,14 +163,14 @@ public class CarMakeFragment extends Fragment implements AdapterCarMake.PassCarM
     }
 
     private void deleteCarModelIfSelected() {
-        carModel = getAllCarProcess(getActivity()).get(1).getProcessContent().getProcessContent();
-        if (!carModel.equals(getActivity().getResources().getString(R.string.empty)))
-        {
-            getDataBaseInstance(getActivity()).updateCarDetails(
-                    "Car model",getActivity().getResources().getString(R.string.car_model_process)
-                    ,getActivity().getResources().getString(R.string.empty)
-                    ,"empty","false");
-        }
+        //carModel = getAllCarProcess(getActivity()).get(1).getProcessContent().getProcessContent();
+//        if (!carModel.equals(getActivity().getResources().getString(R.string.empty)))
+//        {
+//            getDataBaseInstance(getActivity()).updateCarDetails(
+//                    "Car model",getActivity().getResources().getString(R.string.car_model_process)
+//                    ,getActivity().getResources().getString(R.string.empty)
+//                    ,"empty","false");
+//        }
     }
 
 

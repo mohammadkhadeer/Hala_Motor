@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -16,18 +17,25 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 
-import com.cars.halamotor_obeidat.R;
 import com.cars.halamotor_obeidat.dataBase.DBHelper;
+import com.cars.halamotor_obeidat.model.Attributes;
+import com.cars.halamotor_obeidat.model.CategoryComp;
 import com.cars.halamotor_obeidat.view.activity.AboutUs;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Map;
 
 import static com.cars.halamotor_obeidat.dataBase.DataBaseInstance.getDataBaseInstance;
+import static com.cars.halamotor_obeidat.dataBase.InsertFunctions.insertNotificationTable;
+import static com.cars.halamotor_obeidat.functions.Functions.getNotificationObject;
 import static com.cars.halamotor_obeidat.presnter.LoginAndUpdateProfile.updateDeviceToken;
+import static com.cars.halamotor_obeidat.sharedPreferences.NotificationSharedPreferences.getUnreadNotificationsInSP;
+import static com.cars.halamotor_obeidat.sharedPreferences.NotificationSharedPreferences.updateNumberUnreadNotifications;
 import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserTokenFromServer;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,7 +43,16 @@ public class FcmMessagingService extends FirebaseMessagingService {
     private NotificationManagerCompat notificationManager;
     Bitmap bitmap1;
     ConvertUrlToBitmap convertUrlToBitmap;
-    String title,des,imageUrl,optional;
+    String process_en="",process_ar="",ads_id="",creator_image=""
+            ,creator_name="",category_id="",ads_image="",title,des,ads_des;
+    ArrayList <String> photosArrayList ;
+    ArrayList <Attributes> attributesArrayList ;
+    JSONObject notification_json_object = null,creator_json_info=null,categoryComp=null,attributes=null;
+    SharedPreferences.Editor editor;
+    SharedPreferences sharedPreferences;
+
+    CategoryComp categoryCompModel =null;
+
     //String channel_id;
     String[] titleArray,desArray,optionalArray,optionalAndDesArray;
     DBHelper dbHelper;
@@ -72,140 +89,146 @@ public class FcmMessagingService extends FirebaseMessagingService {
 //
 //
 //         Check if message contains a notification payload.
+        //remoteMessage.getNotification()
 
-        if (remoteMessage.getNotification() != null) {
+        if (remoteMessage.getData() != null) {
 
-            Log.d("TAG", "remoteMessage: " + remoteMessage.getData().toString());
-            Log.d("TAG", "Key Data : " +  remoteMessage.getData().get("priority").toString());
-            Log.d("TAG", "Key Data : " +  remoteMessage.getData().get("object").toString());
-            Log.d("TAG", "Key Data : " +  remoteMessage.getData().get("ad").toString());
-            String testS = remoteMessage.getData().get("ad").toString();
-            Log.d("TAG", "testS : " +  testS);
-            JSONObject json = null;
-            try {
-                json = new JSONObject(testS);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Log.d("TAG json", json.toString());
+            //Log.d("TAG", "remoteMessage: " + remoteMessage.getData().toString());
+            String notification_object = remoteMessage.getData().get("ad").toString();
+            Log.d("TAG", "notification_object: " +  notification_object);
 
+            initNotificationComponent(notification_object);
 
+            updateNotOpenNotificationNumber();
 
+            insertNotificationInDataBase();
 
-//            title = remoteMessage.getNotification().getTitle();
-//            des = remoteMessage.getNotification().getBody();
-
-            //updateNotOpenNotificationNumber();
-            //insetNotificationToDB();
-
-            //Log.d("TAG", "channel_id: " + channel_id);
-            //Log.d("TAG", "title_en: " + title);
-            //Log.d("TAG", "des: " + des);
-//            Log.d("TAG", "des_en: " + desArray[0]);
-//            Log.d("TAG", "des_Local: " + desArray[1]);
-//            Log.d("TAG", "optional_en: " + optionalArray[0]);
-//            Log.d("TAG", "optional_Local: " + optionalArray[1]);
-//
-            //Log.d("TAG", "imageUrl: " + imageUrl);
-            //convertUrlToBitmap = (ConvertUrlToBitmap) new ConvertUrlToBitmap().execute(imageUrl);
+            Log.i("TAG","ads_image: "+ads_image);
+            sendNotificationAPI26();
+//            if (!ads_image.equals("no_image"))
+//                convertUrlToBitmap = (ConvertUrlToBitmap) new ConvertUrlToBitmap().execute(ads_image);
 
         }else{
             Log.i("TAG", "onMessageReceived: remoteMessage.getNotification() == null");
+            //Log.d("TAG", "remoteMessage: " + remoteMessage.getData().toString());
+        }
+    }
+
+    private void insertNotificationInDataBase() {
+        insertNotificationTable(
+                getNotificationObject(
+                        process_en +"#"+process_ar
+                        , title
+                        ,ads_id
+                        ,"in"
+                        ,creator_name
+                        ,creator_image
+                        ,ads_des
+                        ,category_id
+                        ,ads_image)
+                ,getDataBaseInstance(getApplicationContext()));
+    }
+
+    private void initNotificationComponent(String notification_object) {
+        try {
+            notification_json_object = new JSONObject(notification_object);
+
+            creator_json_info  = notification_json_object.getJSONObject("creator");
+            creator_image = creator_json_info.getString("photo");
+            creator_name = creator_json_info.getString("name");
+
+            categoryComp = notification_json_object.getJSONObject("category");
+            process_en = categoryComp.getString("name_en");
+            process_ar = categoryComp.getString("name_ar");
+            category_id = categoryComp.getString("id");
+            categoryCompModel = new CategoryComp(
+                    0
+                    ,categoryComp.getString("id")
+                    ,categoryComp.getString("code")
+                    ,categoryComp.getString("name")
+                    ,categoryComp.getString("name_en")
+                    ,categoryComp.getString("name_ar")
+            );
+
+            title = notification_json_object.getString("title");
+            ads_id = notification_json_object.getString("id");
+
+            JSONArray jsonArrayAttributes = notification_json_object.getJSONArray("attributes");
+            attributesArrayList =new ArrayList<>();
+            for (int j=0;j<jsonArrayAttributes.length();j++)
+            {
+                attributes =  jsonArrayAttributes.getJSONObject(j);
+                Attributes attributesObj = new Attributes(attributes.getString("type"),attributes.getString("value"),attributes.getString("title"));
+                attributesArrayList.add(attributesObj);
+            }
+
+            ads_des = attributesArrayList.get(0).getTitle()+" "+attributesArrayList.get(1).getTitle();
+
+            JSONArray jsonArrayPhotos = notification_json_object.getJSONArray("photos");
+            photosArrayList =new ArrayList<>();
+            if (jsonArrayPhotos !=null && jsonArrayPhotos.length()>0)
+            {
+                for (int x=0;x<jsonArrayPhotos.length();x++)
+                {
+                    photosArrayList.add(jsonArrayPhotos.getString(x));
+                }
+            }
+            if (!photosArrayList.isEmpty())
+                ads_image = photosArrayList.get(0);
+            else
+                ads_image = "no_image";
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
 
-//    private void sendNotificationAPI(RemoteMessage remoteMessage) {
-//        Map<String,String> data = remoteMessage.getData();
 //
-//        String title = data.get("title");
-//        String contact = data.get("des");
-//
-//
-//    }
-//
-//
-//
-//
-//    private void sendNotificationAPI26(RemoteMessage remoteMessage) {
-//        Map<String,String> data = remoteMessage.getData();
-//
-//        //cb2PcyO1I6Q:APA91bHSJOqgwgHKvPAg6pqztuu84l_3zpBhJ8UrxwaZHOZU-ukgdWTo-D0Pz7EvMStqJFh5NCaqBgF5rUCYshHX5qw3_k585rjT_CG3nBkIkF3Q7hyXUNWJd1atmilhyn_XB4s5WjAD
-//        String title = data.get("title");
-//        String contact = data.get("des");
-//        Log.i("TAG title: ", title);
-//        Log.i("TAG des" , contact);
-//
-//        Intent resultIntent = new Intent(getApplicationContext(), AboutUs.class);
-//        resultIntent.putExtra("item_object", notificationModel);
-//        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),1,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_3_ID)
-//                .setColor(Color.BLUE)
-//                .setContentTitle(title)
-//                .setContentText(contact)
-//                .setLargeIcon(bitmap1)
-//                .setSmallIcon(com.cars.halamotor_obeidat.R.mipmap.ic_launcher)
-//                .setPriority(NotificationCompat.PRIORITY_HIGH)
-//                .setAutoCancel(true)
-//                .setContentIntent(pendingIntent)
-//                .build();
-//
-//        notificationManager.notify(1, notification);
-//        //notificationListener.ready(1);
-//    }
+    private void sendNotificationAPI26() {
+        Log.i("TAG","sendNotificationAPI26: "+"on");
+
+        Intent resultIntent = new Intent(getApplicationContext(), AboutUs.class);
+        resultIntent.putExtra("category",categoryCompModel.getCode());
+        resultIntent.putExtra("category_comp",categoryCompModel);
+        resultIntent.putExtra("from","ml");
+        resultIntent.putExtra("itemID",ads_id);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),1,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
+        String content = creator_name + " "
+                + " " + ads_des;
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(),CHANNEL_3_ID)
+                .setColor(Color.BLUE)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setLargeIcon(bitmap1)
+                .setSmallIcon(com.cars.halamotor_obeidat.R.mipmap.ic_launcher)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .build();
 
+        notificationManager.notify(1, notification);
+        //notificationListener.ready(1);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-//    private void updateNotOpenNotificationNumber() {
-//        //check if app in the front ground update the number of notifications
-//
-//        String num = getNumberOfItemInCartFromSP(getApplicationContext());
-//        if (num != null && !num.isEmpty())
-//        {
-//         int x = Integer.parseInt(num);
-//         int y = x+1;
-//            saveNumberOfItemsInCartInSP(getApplicationContext(),String.valueOf(y));
-//        }else{
-//            saveNumberOfItemsInCartInSP(getApplicationContext(),"1");
-//        }
-//    }
-
-//    private void insetNotificationToDB() {
-//        String itemID = "null";
-//        if (!channel_id.equals("important_message"))
-//        { itemID = "empty"; }
-//
-//        notificationModel = new NotificationModel(
-//                imageUrl,titleArray[0],titleArray[1],desArray[0].replace("\n", "")
-//                ,desArray[1].replace("\n", ""),channel_id,itemID,getTimeStamp()
-//                ,optionalArray[0].replace("\n", "")
-//                ,optionalArray[1].replace("\n", ""),"0"
-//        );
-//
-//        dbHelper.insertNotifications(imageUrl,titleArray[0],titleArray[1],desArray[0].replace("\n", "")
-//                ,desArray[1].replace("\n", ""),channel_id,itemID,getTimeStamp()
-//                ,optionalArray[0].replace("\n", "")
-//                ,optionalArray[1].replace("\n", ""),"0");
-//    }
+    private void updateNotOpenNotificationNumber() {
+        //check if app in the front ground update the number of notifications
+        int unreadNotification = Integer.parseInt(getUnreadNotificationsInSP(this));
+        unreadNotification = unreadNotification + 1;
+        updateNumberUnreadNotifications(this, sharedPreferences, editor, String.valueOf(unreadNotification));
+    }
 
     private class ConvertUrlToBitmap extends AsyncTask<String, Long, Boolean> {
         @Override
         protected Boolean doInBackground(String... params) {
             try {
+                Log.i("TAG","ConvertUrlToBitmap: "+"on");
+
                 URL url = new URL(params[0]);
                 bitmap1 = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
@@ -290,34 +313,5 @@ public class FcmMessagingService extends FirebaseMessagingService {
         notificationManager = NotificationManagerCompat.from(this);
         dbHelper = getDataBaseInstance(getApplicationContext());
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //1.url image first image
-    //2. title (in case local langauge and the ads on eng i will take car_model + car_year + category)
-    // in case in eng i will take the normal title
-
-    //chanel 1
-    //1.image_url
-    //2.orgin title
-    //3.orgin des
-    //4.+ 5 title+des (car_model + car_year + category) athor language
-    //ad_id , ad_cat
-
-    //chanel 2
-    //1.image_url
-    //2.title_ar 3.title_en 4. des_ar 5. des_en 6.long_maessage_ar 7.long_message_en
 
 }

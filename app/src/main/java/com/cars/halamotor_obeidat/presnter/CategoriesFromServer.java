@@ -53,6 +53,7 @@ public class CategoriesFromServer {
 
     private static void getCategories(JSONArray jsonArrayAllCategories, CategoriesPresenter categoriesPresenter) {
         //create suggested to you as object
+
         CategoryComp suggestedToYou=new CategoryComp(0,"0","suggested","suggested","Suggested to you","مقترح لك");
         categoriesArrayL.add(suggestedToYou);
 
@@ -76,12 +77,15 @@ public class CategoriesFromServer {
                 if (i == (jsonArrayAllCategories.length()-1))
                 { flag =1; }
             }
+            Log.w("TAG","categoriesArrayL size"+String.valueOf(categoriesArrayL.size()));
 
-            if (flag==1)
-            {
-                Log.w("TAG","Categories done");
-                categoriesPresenter.whenGetCategoriesSuccess(categoriesArrayL);
-            }
+            categoriesPresenter.whenGetCategoriesSuccess(categoriesArrayL);
+
+//            if (flag==1)
+//            {
+//                Log.w("TAG","Categories done");
+//                categoriesPresenter.whenGetCategoriesSuccess(categoriesArrayL);
+//            }
 
         } catch (JSONException e) {
             e.printStackTrace();

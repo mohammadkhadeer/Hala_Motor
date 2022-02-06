@@ -41,32 +41,32 @@ public class LicenceExpired extends Fragment {
     }
 
     private void actionListenerToYes() {
-        relativeLayoutYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getProcessTypeFromIntent().equals("fill"))
-                {
-                    CompleteInsuranceInfo completeInsuranceInfo = (CompleteInsuranceInfo) getActivity();
-                    completeInsuranceInfo.nextFragmentCar("Follow GCC");
-                    completeInsuranceInfo.updateTitleCar("Follow GCC");
-                    getDataBaseInstance(getActivity()).updateCarDetails(
-                            "Licence expired", getActivity().getResources().getString(R.string.licence_expired_process)
-                            , getActivity().getResources().getString(R.string.licence_expired)
-                            , getActivity().getResources().getString(R.string.licence_expired_s)
-                            , "true");
-                }else {
-                    getDataBaseInstance(getActivity()).updateCarDetails(
-                            "Licence expired", getActivity().getResources().getString(R.string.licence_expired_process)
-                            , getActivity().getResources().getString(R.string.licence_expired)
-                            , getActivity().getResources().getString(R.string.licence_expired_s)
-                            , "true");
-
-                    Intent resultIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, resultIntent);
-                    getActivity().finish();
-                }
-            }
-        });
+//        relativeLayoutYes.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (getProcessTypeFromIntent().equals("fill"))
+//                {
+//                    CompleteInsuranceInfo completeInsuranceInfo = (CompleteInsuranceInfo) getActivity();
+//                    completeInsuranceInfo.nextFragmentCar("Follow GCC");
+//                    completeInsuranceInfo.updateTitleCar("Follow GCC");
+//                    getDataBaseInstance(getActivity()).updateCarDetails(
+//                            "Licence expired", getActivity().getResources().getString(R.string.licence_expired_process)
+//                            , getActivity().getResources().getString(R.string.licence_expired)
+//                            , getActivity().getResources().getString(R.string.licence_expired_s)
+//                            , "true");
+//                }else {
+//                    getDataBaseInstance(getActivity()).updateCarDetails(
+//                            "Licence expired", getActivity().getResources().getString(R.string.licence_expired_process)
+//                            , getActivity().getResources().getString(R.string.licence_expired)
+//                            , getActivity().getResources().getString(R.string.licence_expired_s)
+//                            , "true");
+//
+//                    Intent resultIntent = new Intent();
+//                    getActivity().setResult(Activity.RESULT_OK, resultIntent);
+//                    getActivity().finish();
+//                }
+//            }
+//        });
     }
 
     private String getProcessTypeFromIntent() {
@@ -98,11 +98,11 @@ public class LicenceExpired extends Fragment {
     }
 
     private void saveInDB() {
-        getDataBaseInstance(getActivity()).updateCarDetails(
-                "Licence expired", getActivity().getResources().getString(R.string.licence_expired_process)
-                , getActivity().getResources().getString(R.string.licence_not_expired)
-                , getActivity().getResources().getString(R.string.licence_not_expired_s)
-                , "true");
+//        getDataBaseInstance(getActivity()).updateCarDetails(
+//                "Licence expired", getActivity().getResources().getString(R.string.licence_expired_process)
+//                , getActivity().getResources().getString(R.string.licence_not_expired)
+//                , getActivity().getResources().getString(R.string.licence_not_expired_s)
+//                , "true");
     }
 
     private void inti() {

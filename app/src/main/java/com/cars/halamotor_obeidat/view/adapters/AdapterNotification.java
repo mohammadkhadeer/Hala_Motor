@@ -47,6 +47,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
     @Override
     public void onBindViewHolder(final AdapterNotification.ViewHolder holder, final int position) {
         changeFont(context, holder);
+//        Log.i("TAG","Image path: "+notificationCompsArrayL.get(position).getImagePath());
         changeNotificationColorIfUserOpen(position,holder,context);
         fillTextHeadAndDes(context,position,holder);
         fillProcessImageAndUserUserImage(context,holder,position);
@@ -82,7 +83,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                         .into(holder.processIV);
             }else{
                 Picasso.get()
-                        .load(notificationCompsArrayL.get(position).getProcessImage())
+                        .load(notificationCompsArrayL.get(position).getImagePath())
                         .fit()
                         .centerCrop()
                         .into(holder.processIV);
@@ -121,7 +122,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
         cat_en = cat_en_and_ar[0];
         cat_ar = cat_en_and_ar[1];
 
-        String category_id =notificationCompsArrayL.get(position).getAuctionORItem();
+        String category_id =notificationCompsArrayL.get(position).getCategory_id();
 
         CategoryComp categoryComp =null;
 
@@ -190,9 +191,18 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             notificationDes = context.getResources().getString(R.string.welcome_notifications);
         }
 
-        if (notificationCompsArrayL.get(position).getInOrOut().equals("out")) {
-            notificationDes = context.getResources().getString(R.string.ur_product) + " " + notificationCompsArrayL.get(position).getNotificationTitle() + " " + context.getResources().getString(R.string.live);
+        if (notificationCompsArrayL.get(position).getInOrOut().equals("out") || notificationCompsArrayL.get(position).getInOrOut().equals("in")) {
+            if (notificationCompsArrayL.get(position).getInOrOut().equals("out"))
+            {
+                notificationDes = context.getResources().getString(R.string.ur_product) + " " + notificationCompsArrayL.get(position).getNotificationTitle() + " " + context.getResources().getString(R.string.live);
+            }else{
+//                String[] stringProcess = splitNotification(notificationCompsArrayL.get(position).getProcess());
+//                + getTextEngOrLocal(context,stringProcess[0],stringProcess[1])
+                notificationDes = notificationCompsArrayL.get(position).getCreator_name() + " " +context.getResources().getString(R.string.new_post)
+                        + " " + notificationCompsArrayL.get(position).getAds_des();
+            }
         }
+
         holder.notificationDesTV.setText(notificationDes);
     }
 

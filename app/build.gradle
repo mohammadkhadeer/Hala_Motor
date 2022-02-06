@@ -9,8 +9,8 @@ android {
         applicationId "com.cars.halamotor_obeidat"
         minSdkVersion 22
         targetSdkVersion 31
-        versionCode 11
-        versionName "0.10.1"
+        versionCode 14
+        versionName "0.10.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 

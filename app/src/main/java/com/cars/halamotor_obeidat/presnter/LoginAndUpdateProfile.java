@@ -49,12 +49,17 @@ public class LoginAndUpdateProfile {
 //                .addFormDataPart("phone",phone)
 //                .build();
 
+        //                .addFormDataPart("photo",photo)
+
+        if (name == null)
+        {
+            name = "null";
+        }
         RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
                 .addFormDataPart("email",email)
                 .addFormDataPart("password","123456")
                 .addFormDataPart("name",name)
                 .addFormDataPart("platform",platform)
-                .addFormDataPart("photo",photo)
                 .build();
 
 

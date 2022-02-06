@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hala motor new</string>
+    <string name="app_name">Hala motor</string>
 
     <string name="log_out">Log out</string>
     <string name="language">Language</string>
@@ -528,6 +528,7 @@
 
     <string name="special">\"Special\"</string>
     <string name="ur_product">Your product </string>
+    <string name="new_post">add new</string>
     <string name="welcome_notifications">Welcome to Hala Motor </string>
     <string name="live">live now</string>
 

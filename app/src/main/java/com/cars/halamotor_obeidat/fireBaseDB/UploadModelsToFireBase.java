@@ -40,8 +40,10 @@ public class UploadModelsToFireBase {
                 //update number of ads to this user
                 getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser + 1);
                 //insert notification
-                insertNotificationTable(getNotification("Plates",carPlatesModel.getCarPlatesCity() + " " +carPlatesModel.getCarPlatesNum(),context, uniqueKey,"out","item",carPlatesModel.getImagePathArrayL().get(0))
-                        ,getDataBaseInstance(context));
+//                insertNotificationTable(getNotification("Plates",carPlatesModel.getCarPlatesCity()
+//                                + " " +carPlatesModel.getCarPlatesNum(),context, uniqueKey,"out"
+//                        ,"item",carPlatesModel.getImagePathArrayL().get(0))
+//                        ,getDataBaseInstance(context));
             }
         });
     }
@@ -64,8 +66,8 @@ public class UploadModelsToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser + 1);
                         //insert notification
-                        insertNotificationTable(getNotification("Wheels_Rim",wheelsRimModel.getWheelSize()+" "+ context.getResources().getString(R.string.wheels_inch),context, uniqueKey,"out","item",wheelsRimModel.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+//                        insertNotificationTable(getNotification("Wheels_Rim",wheelsRimModel.getWheelSize()+" "+ context.getResources().getString(R.string.wheels_inch),context, uniqueKey,"out","item",wheelsRimModel.getImagePathArrayL().get(0))
+//                                ,getDataBaseInstance(context));
                     }
                 });
     }
@@ -88,8 +90,8 @@ public class UploadModelsToFireBase {
                         //update number of ads to this user
                         getUserPathInServerFB(userID).child("numberOfAds").setValue(numberOfAdsToUser + 1);
                         //insert notification
-                        insertNotificationTable(getNotification("Accessories",accAndJunk.getItemName(),context, uniqueKey,"out","item",accAndJunk.getImagePathArrayL().get(0))
-                                ,getDataBaseInstance(context));
+//                        insertNotificationTable(getNotification("Accessories",accAndJunk.getItemName(),context, uniqueKey,"out","item",accAndJunk.getImagePathArrayL().get(0))
+//                                ,getDataBaseInstance(context));
                     }
                 });
     }

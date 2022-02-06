@@ -41,32 +41,32 @@ public class InsurancePolicy extends Fragment {
     }
 
     private void actionListenerToYes() {
-        relativeLayoutYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getProcessTypeFromIntent().equals("fill"))
-                {
-                    CompleteInsuranceInfo completeInsuranceInfo = (CompleteInsuranceInfo) getActivity();
-                    completeInsuranceInfo.nextFragmentCar("Agency repair");
-                    completeInsuranceInfo.updateTitleCar("Agency repair");
-                    getDataBaseInstance(getActivity()).updateCarDetails(
-                            "Insurance policy", getActivity().getResources().getString(R.string.insurance_policy_process)
-                            , getActivity().getResources().getString(R.string.insurance_policy_yes)
-                            , getActivity().getResources().getString(R.string.insurance_policy_yes_s)
-                            , "true");
-                }else {
-                    getDataBaseInstance(getActivity()).updateCarDetails(
-                            "Insurance policy", getActivity().getResources().getString(R.string.insurance_policy_process)
-                            , getActivity().getResources().getString(R.string.insurance_policy_yes)
-                            , getActivity().getResources().getString(R.string.insurance_policy_yes_s)
-                            , "true");
-
-                    Intent resultIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, resultIntent);
-                    getActivity().finish();
-                }
-            }
-        });
+//        relativeLayoutYes.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (getProcessTypeFromIntent().equals("fill"))
+//                {
+//                    CompleteInsuranceInfo completeInsuranceInfo = (CompleteInsuranceInfo) getActivity();
+//                    completeInsuranceInfo.nextFragmentCar("Agency repair");
+//                    completeInsuranceInfo.updateTitleCar("Agency repair");
+//                    getDataBaseInstance(getActivity()).updateCarDetails(
+//                            "Insurance policy", getActivity().getResources().getString(R.string.insurance_policy_process)
+//                            , getActivity().getResources().getString(R.string.insurance_policy_yes)
+//                            , getActivity().getResources().getString(R.string.insurance_policy_yes_s)
+//                            , "true");
+//                }else {
+//                    getDataBaseInstance(getActivity()).updateCarDetails(
+//                            "Insurance policy", getActivity().getResources().getString(R.string.insurance_policy_process)
+//                            , getActivity().getResources().getString(R.string.insurance_policy_yes)
+//                            , getActivity().getResources().getString(R.string.insurance_policy_yes_s)
+//                            , "true");
+//
+//                    Intent resultIntent = new Intent();
+//                    getActivity().setResult(Activity.RESULT_OK, resultIntent);
+//                    getActivity().finish();
+//                }
+//            }
+//        });
     }
 
     private String getProcessTypeFromIntent() {
@@ -98,11 +98,11 @@ public class InsurancePolicy extends Fragment {
     }
 
     private void saveInDB() {
-        getDataBaseInstance(getActivity()).updateCarDetails(
-                "Insurance policy", getActivity().getResources().getString(R.string.insurance_policy_process)
-                , getActivity().getResources().getString(R.string.insurance_policy_no)
-                , getActivity().getResources().getString(R.string.insurance_policy_no_s)
-                , "true");
+//        getDataBaseInstance(getActivity()).updateCarDetails(
+//                "Insurance policy", getActivity().getResources().getString(R.string.insurance_policy_process)
+//                , getActivity().getResources().getString(R.string.insurance_policy_no)
+//                , getActivity().getResources().getString(R.string.insurance_policy_no_s)
+//                , "true");
     }
 
     private void inti() {

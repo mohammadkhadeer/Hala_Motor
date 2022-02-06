@@ -54,31 +54,31 @@ public class ReadFunction {
         return driverInformationArrayList;
     }
 
-    public static ArrayList<CarInformation> getAllCarProcess(Context context) {
-
-        ArrayList<CarInformation> carInformationArrayList = new ArrayList<CarInformation>();
-
-        Cursor res = getDataBaseInstance(context).descendingCarDetails();
-
-        while (res.moveToNext()) {
-            CarProcess carProcess= new CarProcess(
-                    res.getString(2).replace("\n", "")
-                    ,res.getString(1).replace("\n", "")
-            );
-            ProcessContent processContent=new ProcessContent(
-                    res.getString(3).replace("\n", "")
-                    ,res.getString(4).replace("\n", "")
-            );
-            boolean isSelected = Boolean.valueOf(res.getString(5).replace("\n", ""));
-
-            CarInformation driverInformation = new CarInformation(
-                    carProcess,processContent,isSelected
-            );
-            carInformationArrayList.add(driverInformation);
-        }
-
-        return carInformationArrayList;
-    }
+//    public static ArrayList<CarInformation> getAllCarProcess(Context context) {
+//
+//        ArrayList<CarInformation> carInformationArrayList = new ArrayList<CarInformation>();
+//
+//        Cursor res = getDataBaseInstance(context).descendingCarDetails();
+//
+//        while (res.moveToNext()) {
+//            CarProcess carProcess= new CarProcess(
+//                    res.getString(2).replace("\n", "")
+//                    ,res.getString(1).replace("\n", "")
+//            );
+//            ProcessContent processContent=new ProcessContent(
+//                    res.getString(3).replace("\n", "")
+//                    ,res.getString(4).replace("\n", "")
+//            );
+//            boolean isSelected = Boolean.valueOf(res.getString(5).replace("\n", ""));
+//
+//            CarInformation driverInformation = new CarInformation(
+//                    carProcess,processContent,isSelected
+//            );
+//            carInformationArrayList.add(driverInformation);
+//        }
+//
+//        return carInformationArrayList;
+//    }
 
     //check if table have column
     public static long checkIfDriverProcessCreated(Context context) {
@@ -240,276 +240,6 @@ public class ReadFunction {
         return favouriteCallSearchesArrayL;
     }
 
-    public static ArrayList<SuggestedItem> getSuggestedItemFromDatabase(Context context) {
-        ArrayList<SuggestedItem> suggestedItemsArrayL = new ArrayList<SuggestedItem>();
-        Cursor res = getDataBaseInstance(context).descendingItem();
-        while (res.moveToNext()) {
-            //we can calling via number of col cos Suggested model build it like database exactly
-            SuggestedItem suggestedItem = new SuggestedItem(
-                    res.getString(1).replace("\n", "")
-                    ,res.getString(2).replace("\n", "")
-                    ,res.getString(3).replace("\n", "")
-                    ,res.getString(4).replace("\n", "")
-                    ,res.getString(5).replace("\n", "")
-                    ,res.getString(6).replace("\n", "")
-                    ,res.getString(7).replace("\n", "")
-                    ,res.getString(8).replace("\n", "")
-                    ,res.getString(9).replace("\n", "")
-                    ,res.getString(10).replace("\n", "")
-                    ,res.getString(11).replace("\n", "")
-                    ,res.getString(12).replace("\n", "")
-                    ,res.getString(13).replace("\n", "")
-                    ,res.getString(14).replace("\n", "")
-                    ,res.getString(15).replace("\n", "")
-                    ,res.getString(16).replace("\n", "")
-                    ,res.getString(17).replace("\n", "")
-                    ,res.getString(18).replace("\n", "")
-                    ,res.getString(19).replace("\n", "")
-                    ,res.getString(20).replace("\n", "")
-                    ,res.getString(21).replace("\n", "")
-                    ,res.getString(22).replace("\n", "")
-                    ,res.getString(23).replace("\n", "")
-                    ,res.getString(24).replace("\n", "")
-                    ,res.getString(25).replace("\n", "")
-                    ,res.getString(26).replace("\n", "")
-                    ,res.getString(27).replace("\n", "")
-                    ,res.getString(28).replace("\n", "")
-                    ,res.getString(29).replace("\n", "")
-                    ,res.getString(30).replace("\n", "")
-                    ,res.getString(31).replace("\n", "")
-                    ,res.getString(32).replace("\n", "")
-                    ,res.getString(33).replace("\n", "")
-                    ,res.getString(34).replace("\n", "")
-                    ,res.getString(35).replace("\n", "")
-                    ,res.getString(36).replace("\n", "")
-                    ,res.getString(37).replace("\n", "")
-                    ,res.getString(38).replace("\n", "")
-            );
-            suggestedItemsArrayL.add(suggestedItem);
-        }
-        return suggestedItemsArrayL;
-    }
-
-    public static ArrayList<SimilarItem> getSimilarFromDatabase(Context context) {
-        ArrayList<SimilarItem> similarItemsArrayL = new ArrayList<SimilarItem>();
-        Cursor res = getDataBaseInstance(context).descendingSimilarAds();
-        while (res.moveToNext()) {
-            //we can calling via number of col cos Suggested model build it like database exactly
-            SimilarItem similarItem = new SimilarItem(
-                    res.getString(1).replace("\n", "")
-                    ,res.getString(2).replace("\n", "")
-                    ,res.getString(3).replace("\n", "")
-                    ,res.getString(4).replace("\n", "")
-                    ,res.getString(5).replace("\n", "")
-                    ,res.getString(6).replace("\n", "")
-                    ,res.getString(7).replace("\n", "")
-                    ,res.getString(8).replace("\n", "")
-                    ,res.getString(9).replace("\n", "")
-                    ,res.getString(10).replace("\n", "")
-                    ,res.getString(11).replace("\n", "")
-                    ,res.getString(12).replace("\n", "")
-                    ,res.getString(13).replace("\n", "")
-                    ,res.getString(14).replace("\n", "")
-                    ,res.getString(15).replace("\n", "")
-                    ,res.getString(16).replace("\n", "")
-                    ,res.getString(17).replace("\n", "")
-                    ,res.getString(18).replace("\n", "")
-                    ,res.getString(19).replace("\n", "")
-                    ,res.getString(20).replace("\n", "")
-                    ,res.getString(21).replace("\n", "")
-                    ,res.getString(22).replace("\n", "")
-                    ,res.getString(23).replace("\n", "")
-                    ,res.getString(24).replace("\n", "")
-                    ,res.getString(25).replace("\n", "")
-                    ,res.getString(26).replace("\n", "")
-                    ,res.getString(27).replace("\n", "")
-                    ,res.getString(28).replace("\n", "")
-                    ,res.getString(29).replace("\n", "")
-                    ,res.getString(30).replace("\n", "")
-                    ,res.getString(31).replace("\n", "")
-                    ,res.getString(32).replace("\n", "")
-                    ,res.getString(33).replace("\n", "")
-                    ,res.getString(34).replace("\n", "")
-                    ,res.getString(35).replace("\n", "")
-                    ,res.getString(36).replace("\n", "")
-                    ,res.getString(37).replace("\n", "")
-            );
-            similarItemsArrayL.add(similarItem);
-        }
-        return similarItemsArrayL;
-    }
-
-
-    public static ArrayList<CarPlatesFirstCase> getCarPlatesDatabase(Context context) {
-        ArrayList<CarPlatesFirstCase> carPlatesArrayL = new ArrayList<CarPlatesFirstCase>();
-        Cursor res = getDataBaseInstance(context).descendingCarPlates();
-        while (res.moveToNext()) {
-
-            if (res.getString(21).replace("\n", "").equals("0"))
-            {
-                CarPlatesFirstCase carPlatesFirstCase = new CarPlatesFirstCase(
-                        res.getString(1).replace("\n", "")
-                        , res.getString(2).replace("\n", "")
-                        , res.getString(3).replace("\n", "")
-                        , res.getString(4).replace("\n", "")
-                        , res.getString(5).replace("\n", "")
-                        , res.getString(6).replace("\n", "")
-                        , res.getString(7).replace("\n", "")
-                        , res.getString(8).replace("\n", "")
-                        , res.getString(9).replace("\n", "")
-                        , res.getString(10).replace("\n", "")
-                        , res.getString(11).replace("\n", "")
-                        , res.getString(12).replace("\n", "")
-                        , res.getString(13).replace("\n", "")
-                        , res.getString(14).replace("\n", "")
-                        , res.getString(15).replace("\n", "")
-                        , res.getString(16).replace("\n", "")
-                        , res.getString(17).replace("\n", "")
-                        , res.getString(18).replace("\n", "")
-                        , res.getString(19).replace("\n", "")
-                        , res.getString(20).replace("\n", "")
-                        , res.getString(21).replace("\n", "")
-                        , res.getString(22).replace("\n", "")
-                        , res.getString(23).replace("\n", "")
-                        , res.getString(24).replace("\n", "")
-                        , res.getString(25).replace("\n", "")
-                        , res.getString(26).replace("\n", "")
-                );
-                carPlatesArrayL.add(carPlatesFirstCase);
-            }
-        }
-        return carPlatesArrayL;
-    }
-
-    public static ArrayList<AccAndJunkFirstCase> getAccAndJunkDatabase(Context context, String category) {
-        ArrayList<AccAndJunkFirstCase> accAndJunkRimArrayL = new ArrayList<AccAndJunkFirstCase>();
-        Cursor res = getDataBaseInstance(context).descendingAccAndJunk();
-        while (res.moveToNext()) {
-
-            if (res.getString(3).replace("\n", "").equals(category))
-            {
-                AccAndJunkFirstCase accAndJunkFirstCase = new AccAndJunkFirstCase(
-                        res.getString(1).replace("\n", "")
-                        , res.getString(2).replace("\n", "")
-                        , res.getString(3).replace("\n", "")
-                        , res.getString(4).replace("\n", "")
-                        , res.getString(5).replace("\n", "")
-                        , res.getString(6).replace("\n", "")
-                        , res.getString(7).replace("\n", "")
-                        , res.getString(8).replace("\n", "")
-                        , res.getString(9).replace("\n", "")
-                        , res.getString(10).replace("\n", "")
-                        , res.getString(11).replace("\n", "")
-                        , res.getString(12).replace("\n", "")
-                        , res.getString(13).replace("\n", "")
-                        , res.getString(14).replace("\n", "")
-                        , res.getString(15).replace("\n", "")
-                        , res.getString(16).replace("\n", "")
-                        , res.getString(17).replace("\n", "")
-                        , res.getString(18).replace("\n", "")
-                        , res.getString(19).replace("\n", "")
-                        , res.getString(20).replace("\n", "")
-                        , res.getString(21).replace("\n", "")
-                        , res.getString(22).replace("\n", "")
-                        , res.getString(23).replace("\n", "")
-                        , res.getString(24).replace("\n", "")
-                );
-                accAndJunkRimArrayL.add(accAndJunkFirstCase);
-            }
-        }
-        return accAndJunkRimArrayL;
-    }
-
-    public static ArrayList<WheelsRimFirstCase> getWheelsRimDatabase(Context context) {
-        ArrayList<WheelsRimFirstCase> wheelsRimArrayL = new ArrayList<WheelsRimFirstCase>();
-        Cursor res = getDataBaseInstance(context).descendingWheelsSize();
-        while (res.moveToNext()) {
-
-            if (res.getString(19).replace("\n", "").equals("0"))
-            {
-                WheelsRimFirstCase wheelsRimFirstCase = new WheelsRimFirstCase(
-                        res.getString(1).replace("\n", "")
-                        , res.getString(2).replace("\n", "")
-                        , res.getString(3).replace("\n", "")
-                        , res.getString(4).replace("\n", "")
-                        , res.getString(5).replace("\n", "")
-                        , res.getString(6).replace("\n", "")
-                        , res.getString(7).replace("\n", "")
-                        , res.getString(8).replace("\n", "")
-                        , res.getString(9).replace("\n", "")
-                        , res.getString(10).replace("\n", "")
-                        , res.getString(11).replace("\n", "")
-                        , res.getString(12).replace("\n", "")
-                        , res.getString(13).replace("\n", "")
-                        , res.getString(14).replace("\n", "")
-                        , res.getString(15).replace("\n", "")
-                        , res.getString(16).replace("\n", "")
-                        , res.getString(17).replace("\n", "")
-                        , res.getString(18).replace("\n", "")
-                        , res.getString(19).replace("\n", "")
-                        , res.getString(20).replace("\n", "")
-                        , res.getString(21).replace("\n", "")
-                        , res.getString(22).replace("\n", "")
-                        , res.getString(23).replace("\n", "")
-                        , res.getString(24).replace("\n", "")
-                );
-                wheelsRimArrayL.add(wheelsRimFirstCase);
-            }
-        }
-        return wheelsRimArrayL;
-    }
-
-    public static ArrayList<CCEMTFirestCase> getCarForSaleDatabase(Context context,String category) {
-        ArrayList<CCEMTFirestCase> carForSaleArrayL = new ArrayList<CCEMTFirestCase>();
-        Cursor res = getDataBaseInstance(context).descendingCCEMT();
-        while (res.moveToNext()) {
-
-            if (res.getString(3).replace("\n", "").equals(category)
-                && res.getString(31).replace("\n", "").equals("0"))
-            {
-                CCEMTFirestCase carForSaleCCEMT = new CCEMTFirestCase(
-                        res.getString(1).replace("\n", "")
-                        , res.getString(2).replace("\n", "")
-                        , res.getString(3).replace("\n", "")
-                        , res.getString(4).replace("\n", "")
-                        , res.getString(5).replace("\n", "")
-                        , res.getString(6).replace("\n", "")
-                        , res.getString(7).replace("\n", "")
-                        , res.getString(8).replace("\n", "")
-                        , res.getString(9).replace("\n", "")
-                        , res.getString(10).replace("\n", "")
-                        , res.getString(11).replace("\n", "")
-                        , res.getString(12).replace("\n", "")
-                        , res.getString(13).replace("\n", "")
-                        , res.getString(14).replace("\n", "")
-                        , res.getString(15).replace("\n", "")
-                        , res.getString(16).replace("\n", "")
-                        , res.getString(17).replace("\n", "")
-                        , res.getString(18).replace("\n", "")
-                        , res.getString(19).replace("\n", "")
-                        , res.getString(20).replace("\n", "")
-                        , res.getString(21).replace("\n", "")
-                        , res.getString(22).replace("\n", "")
-                        , res.getString(23).replace("\n", "")
-                        , res.getString(24).replace("\n", "")
-                        , res.getString(25).replace("\n", "")
-                        , res.getString(26).replace("\n", "")
-                        , res.getString(27).replace("\n", "")
-                        , res.getString(28).replace("\n", "")
-                        , res.getString(29).replace("\n", "")
-                        , res.getString(30).replace("\n", "")
-                        , res.getString(31).replace("\n", "")
-                        , res.getString(32).replace("\n", "")
-                        , res.getString(33).replace("\n", "")
-                        , res.getString(34).replace("\n", "")
-                        , res.getString(35).replace("\n", "")
-                        , res.getString(36).replace("\n", "")
-                );
-                carForSaleArrayL.add(carForSaleCCEMT);
-            }
-        }
-        return carForSaleArrayL;
-    }
 
     public static ArrayList<NotificationComp> getNotificationFromDatabase(Context context,int numberOfNotification) {
         ArrayList<NotificationComp> notificationCompsArrayL = new ArrayList<NotificationComp>();
@@ -530,6 +260,9 @@ public class ReadFunction {
                         , res.getString(9).replace("\n", "")
                         , res.getString(10).replace("\n", "")
                         , res.getString(11).replace("\n", "")
+                        , res.getString(12).replace("\n", "")
+                        , res.getString(13).replace("\n", "")
+                        , res.getString(14).replace("\n", "")
                 );
                 notificationCompsArrayL.add(notificationComp);
             }

@@ -20,11 +20,8 @@ import com.cars.halamotor_obeidat.model.ProcessContent;
 import java.util.ArrayList;
 
 import static com.cars.halamotor_obeidat.dataBase.DataBaseInstance.getDataBaseInstance;
-import static com.cars.halamotor_obeidat.dataBase.InsertFunctions.insertCarProcessTable;
-import static com.cars.halamotor_obeidat.dataBase.InsertFunctions.insertDriverProcessTable;
 import static com.cars.halamotor_obeidat.dataBase.ReadFunction.checkIfCarDetailsProcessCreated;
 import static com.cars.halamotor_obeidat.dataBase.ReadFunction.checkIfDriverProcessCreated;
-import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getAllCarProcess;
 import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getAllDriverProcess;
 
 public class InsuranceFunctions {
@@ -703,7 +700,7 @@ public class InsuranceFunctions {
             {
                 ProcessContent processContent = new ProcessContent(context.getResources().getString(R.string.empty),"empty");
                 DriverInformation driverInformation = new DriverInformation(driverProcessArrayL.get(i),processContent,false);
-                insertDriverProcessTable(driverInformation,database);
+                //insertDriverProcessTable(driverInformation,database);
             }
         }
     }
@@ -718,7 +715,7 @@ public class InsuranceFunctions {
             {
                 ProcessContent processContent = new ProcessContent(context.getResources().getString(R.string.empty),"empty");
                 CarInformation carInformation = new CarInformation(carProcessArrayL.get(i),processContent,false);
-                insertCarProcessTable(carInformation,database);
+                //insertCarProcessTable(carInformation,database);
             }
         }
     }
@@ -742,7 +739,7 @@ public class InsuranceFunctions {
     public static int numberOfCarProcessSelected(Context context){
         int numberOfCompletedProcess =0;
         ArrayList<CarInformation> carAllProcessArrayL = new ArrayList<CarInformation>();
-        carAllProcessArrayL = getAllCarProcess(context);
+        //carAllProcessArrayL = getAllCarProcess(context);
 
         if (checkIfCarDetailsProcessCreated(context) !=0)
         {
@@ -929,25 +926,25 @@ public class InsuranceFunctions {
         return driverInformation;
     }
 
-    public static CarInformation getCarProcess(Context context,String processTypeS){
-        Cursor res = getDataBaseInstance(context).getCarDetails(processTypeS);
-
-        CarProcess driverProcess= new CarProcess(
-                res.getString(2).replace("\n", "")
-                ,res.getString(1).replace("\n", "")
-        );
-        ProcessContent processContent=new ProcessContent(
-                res.getString(3).replace("\n", "")
-                ,res.getString(4).replace("\n", "")
-        );
-        boolean isSelected = Boolean.valueOf(res.getString(5).replace("\n", ""));
-
-        CarInformation carInformation = new CarInformation(
-                driverProcess,processContent,isSelected
-        );
-
-        return carInformation;
-    }
+//    public static CarInformation getCarProcess(Context context,String processTypeS){
+//        Cursor res = getDataBaseInstance(context).getCarDetails(processTypeS);
+//
+//        CarProcess driverProcess= new CarProcess(
+//                res.getString(2).replace("\n", "")
+//                ,res.getString(1).replace("\n", "")
+//        );
+//        ProcessContent processContent=new ProcessContent(
+//                res.getString(3).replace("\n", "")
+//                ,res.getString(4).replace("\n", "")
+//        );
+//        boolean isSelected = Boolean.valueOf(res.getString(5).replace("\n", ""));
+//
+//        CarInformation carInformation = new CarInformation(
+//                driverProcess,processContent,isSelected
+//        );
+//
+//        return carInformation;
+//    }
 
     public static void resetAllDriverInfoTable(Context context){
         DBHelper database=getDataBaseInstance(context);

@@ -4,22 +4,28 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cars.halamotor_obeidat.R;
 import com.cars.halamotor_obeidat.functions.FCSFunctions;
 import com.cars.halamotor_obeidat.functions.Functions;
+import com.cars.halamotor_obeidat.model.CCEMTModel;
 import com.cars.halamotor_obeidat.model.FavouriteCallSearch;
 import com.cars.halamotor_obeidat.model.SuggestedItem;
 import com.cars.halamotor_obeidat.presnter.FCSItems;
+import com.cars.halamotor_obeidat.presnter.FCSItemsList;
+import com.cars.halamotor_obeidat.presnter.ItemModel;
 import com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.AdapterShowFCSItems;
 import com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.PaginationListener;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,9 +45,11 @@ import static com.cars.halamotor_obeidat.functions.NewFunction.actionBarTitleInF
 import static com.cars.halamotor_obeidat.functions.NewFunction.getNumberOfObject;
 import static com.cars.halamotor_obeidat.functions.NewFunction.handelNumberOfObject;
 import static com.cars.halamotor_obeidat.functions.NewFunction.nowNumberOfObject;
+import static com.cars.halamotor_obeidat.presnter.FCSFromServer.getFCS;
+import static com.cars.halamotor_obeidat.presnter.RelatedAdToSameCreator.getRelatedAds;
 import static com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.PaginationListener.PAGE_START;
 
-public class ShowFCS extends AppCompatActivity {
+public class ShowFCS extends AppCompatActivity implements FCSItemsList{
     String fcsTypeStr;
     ArrayList<FavouriteCallSearch> favouriteCallSearchesArrayList;
     ArrayList<FavouriteCallSearch> favouriteCallSearchesArrayListNew;
@@ -58,6 +66,10 @@ public class ShowFCS extends AppCompatActivity {
     private boolean isLoading = false;
     LinearLayoutManager layoutManager;
     AdapterShowFCSItems adapterShowFCSItems;
+    FCSItemsList fcsItemsList;
+    NestedScrollView nestedScrollView;
+    int numberOfResultAfterRe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,19 +77,44 @@ public class ShowFCS extends AppCompatActivity {
         setContentView(R.layout.activity_show_fcs);
 
         statusBarColor();
+        fcsItemsList = (FCSItemsList) this;
         init();
-        changeFont();
+        //changeFont();
         getInfoFromIntent();
-        actionBarTitle();
-        favouriteCallSearchesArrayList = new ArrayList<FavouriteCallSearch>();
-        favouriteCallSearchesArrayList = getFavouriteCallSearch(getApplicationContext(),fcsTypeStr);
+        //actionBarTitle();
+        //favouriteCallSearchesArrayList = new ArrayList<FavouriteCallSearch>();
+        //favouriteCallSearchesArrayList = getFavouriteCallSearch(getApplicationContext(),fcsTypeStr);
 //        numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size());
-        checkIfHaveFavOrNot();
+        //checkIfHaveFavOrNot();
 
-        createRV();
         getData();
-        doApiCall();
-        actionListenerToRV();
+        createRV();
+
+
+    }
+
+    private void scrollView() {
+        nestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new
+                                                                                  ViewTreeObserver.OnScrollChangedListener() {
+                                                                                      @Override
+                                                                                      public void onScrollChanged() {
+                                                                                          View view = (View) nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
+                                                                                          int diff = (view.getBottom() - (nestedScrollView.getHeight() + nestedScrollView.getScrollY()));
+                                                                                          if (diff == 0) {
+                                                                                              if (numberOfResultAfterRe!=0)
+                                                                                              {
+                                                                                                  progressBar.setVisibility(View.VISIBLE);
+                                                                                                  //numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,suggestedItemsArrayListTest.size());
+                                                                                                  isLoading = true;
+                                                                                                  currentPage++;
+                                                                                                  //Log.i("TAG","currentPage"+currentPage);
+                                                                                                  getFCS(ShowFCS.this,fcsTypeStr,fcsItemsList,currentPage);
+
+                                                                                              }
+
+                                                                                          }
+                                                                                      }
+                                                                                  });
     }
 
     private void checkIfHaveFavOrNot() {
@@ -88,13 +125,13 @@ public class ShowFCS extends AppCompatActivity {
         }
     }
 
-    private void changeFont() {
-        if (numberOfObjectNow == 0)
-            messageTV.setTypeface(Functions.changeFontGeneral(getApplicationContext()));
-    }
+//    private void changeFont() {
+//        if (numberOfObjectNow == 0)
+//            messageTV.setTypeface(Functions.changeFontGeneral(getApplicationContext()));
+//    }
 
     private void init() {
-        messageTV = (TextView) findViewById(R.id.show_fcs_messageTV);
+        nestedScrollView = (NestedScrollView) findViewById(R.id.nested_fcs);
         fcsItemsRecyclerView = (RecyclerView) findViewById(R.id.show_fcs_RV);
         progressBar = (ProgressBar) findViewById(R.id.show_fcs_progress);
     }
@@ -108,131 +145,63 @@ public class ShowFCS extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 
-    private void actionBarTitle() {
-        Typeface typeface;
-        final ActionBar abar = getSupportActionBar();
-        View viewActionBar = getLayoutInflater().inflate(R.layout.actionbar_custom_title_view_centered, null);
-        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
-                ActionBar.LayoutParams.WRAP_CONTENT,
-                ActionBar.LayoutParams.MATCH_PARENT,
-                Gravity.CENTER);
-        if (Locale.getDefault().getLanguage().equals("ar")) {
-            typeface = Typeface.createFromAsset(getAssets(), "GE_DINAR_ONE_LIGHT.TTF");
-        }else{
-            typeface = Typeface.createFromAsset(getAssets(), "NTAILU.TTF");
-        }
-        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
-        textviewTitle.setTextColor(Color.parseColor("#FF0000"));
-        textviewTitle.setText(actionBarTitleInFCS(getApplicationContext(),fcsTypeStr));
-        textviewTitle.setTypeface(typeface);
-        abar.setCustomView(viewActionBar, params);
-        abar.setDisplayShowCustomEnabled(true);
-        abar.setDisplayShowTitleEnabled(false);
-        abar.setDisplayHomeAsUpEnabled(false);
-        abar.setHomeButtonEnabled(false);
-    }
+//    private void actionBarTitle() {
+//        Typeface typeface;
+//        final ActionBar abar = getSupportActionBar();
+//        View viewActionBar = getLayoutInflater().inflate(R.layout.actionbar_custom_title_view_centered, null);
+//        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+//                ActionBar.LayoutParams.WRAP_CONTENT,
+//                ActionBar.LayoutParams.MATCH_PARENT,
+//                Gravity.CENTER);
+//        if (Locale.getDefault().getLanguage().equals("ar")) {
+//            typeface = Typeface.createFromAsset(getAssets(), "GE_DINAR_ONE_LIGHT.TTF");
+//        }else{
+//            typeface = Typeface.createFromAsset(getAssets(), "NTAILU.TTF");
+//        }
+//        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
+//        textviewTitle.setTextColor(Color.parseColor("#FF0000"));
+//        textviewTitle.setText(actionBarTitleInFCS(getApplicationContext(),fcsTypeStr));
+//        textviewTitle.setTypeface(typeface);
+//        abar.setCustomView(viewActionBar, params);
+//        abar.setDisplayShowCustomEnabled(true);
+//        abar.setDisplayShowTitleEnabled(false);
+//        abar.setDisplayHomeAsUpEnabled(false);
+//        abar.setHomeButtonEnabled(false);
+//    }
 
-    private void actionListenerToRV() {
-        fcsItemsRecyclerView.addOnScrollListener(new PaginationListener(layoutManager) {
-            @Override
-            protected void loadMoreItems() {
-                isLoading = true;
-                numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size());
-                currentPage++;
-                getData();
-                doApiCall();
-            }
-
-            @Override
-            public boolean isLastPage() {
-                return isLastPage;
-            }
-
-            @Override
-            public boolean isLoading() {
-                return isLoading;
-            }
-        });
-    }
 
     private void createRV() {
+        fcsItemsRecyclerView.setNestedScrollingEnabled(false);
         fcsItemsRecyclerView.setHasFixedSize(true);
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         fcsItemsRecyclerView.setLayoutManager(layoutManager);
-        //adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<SuggestedItem>(),this,fcsTypeStr);
+        adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<CCEMTModel>(),this,"search");
         fcsItemsRecyclerView.setAdapter(adapterShowFCSItems);
     }
 
-    private void doApiCall() {
-        suggestedItemsArrayListDO = new ArrayList<>();
-        new Handler().postDelayed(new Runnable() {
 
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.GONE);
-                suggestedItemsArrayListDO.addAll(suggestedItemsArrayListTest);
-                if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
-                //adapterShowFCSItems.addItems(suggestedItemsArrayListDO);
-                if (getNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size())==false) {
-                    adapterShowFCSItems.addLoading();
-                } else {
-                    isLastPage = true;
-                }
-                isLoading = false;
-            }
-        }, 3100);
-    }
 
     private void getData() {
-        final List<SuggestedItem> fcsItemsArrayList = new ArrayList<>();
-        suggestedItemsArrayListTest = new ArrayList<>();
-        favouriteCallSearchesArrayListNew = new ArrayList<>();
-        int numberOfObject = nowNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size());
-        favouriteCallSearchesArrayListNew = getCategoryList(numberOfObject);
-        if (numberOfObject!=1000)
-        {
-            for (int i =0;i<numberOfObject;i++)
-            {
-                final String category = convertCat(favouriteCallSearchesArrayListNew.get(i).getItemType());
-                final String categoryBefore = favouriteCallSearchesArrayListNew.get(i).getItemType();
-                DocumentReference mRef = null;
-                if (category != null)
-                {
-                    mRef = getDataStoreInstance().collection(category)
-                            .document(favouriteCallSearchesArrayListNew.get(i).getIdInDatabase());
-                    mRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    fcsItemsArrayList.add(FCSFunctions.handelNumberOfObject(document,categoryBefore));
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
-                suggestedItemsArrayListTest.addAll(fcsItemsArrayList);
-            }
-        }, 3000);
+        Log.i("TAG","fcsTypeStr: "+fcsTypeStr);
+        getFCS(this,fcsTypeStr,fcsItemsList,currentPage);
     }
 
-    private ArrayList<FavouriteCallSearch> getCategoryList(int condition) {
-        ArrayList<FavouriteCallSearch> newCat = new ArrayList<>();
-        for (int j=0;j<condition;j++)
+    @Override
+    public void passArrayList(final ArrayList<CCEMTModel> items) {
+        Log.i("TAG","items size: "+String.valueOf(items.size()));
+        numberOfResultAfterRe = 0;
+        int numberOfResultAfterRe = items.size();
+        if (numberOfResultAfterRe>0)
         {
-            if (numberOfObjectReturn < favouriteCallSearchesArrayList.size())
-            {
-                newCat.add(favouriteCallSearchesArrayList.get(numberOfObjectReturn));
-                numberOfObjectReturn++;
-            }
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    adapterShowFCSItems.addItems(items);
+                }
+            }, 50);
         }
-        return newCat;
+
     }
 }

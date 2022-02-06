@@ -31,11 +31,7 @@ import java.util.ArrayList;
 import static com.cars.halamotor_obeidat.algorithms.ArrangingLists.setEditTextFirstAccAndJunk;
 import static com.cars.halamotor_obeidat.algorithms.ArrangingLists.setEditTextFirstItemCCEMTFirstCase;
 import static com.cars.halamotor_obeidat.algorithms.ArrangingLists.setEditTextFirstItemWheelsRim;
-import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getAccAndJunkDatabase;
-import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getCarForSaleDatabase;
-import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getCarPlatesDatabase;
-import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getSuggestedItemFromDatabase;
-import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getWheelsRimDatabase;
+
 
 public class ListsMainScreenFragment extends Fragment {
 
@@ -104,16 +100,7 @@ public class ListsMainScreenFragment extends Fragment {
         accessoriesArrayL = new ArrayList<>();
         junkArrayL = new ArrayList<>();
         suggestedItemsArrayL = new ArrayList<SuggestedItem>();
-        suggestedItemsArrayL = getSuggestedItemFromDatabase(getActivity());
-        carForSaleArrayL = getCarForSaleDatabase(getActivity(),"Car for sale");
-        carForRentArrayL = getCarForSaleDatabase(getActivity(),"Car for rent");
-        carExchangeArrayL = getCarForSaleDatabase(getActivity(),"Exchange car");
-        motorcycleArrayL = getCarForSaleDatabase(getActivity(),"Motorcycle");
-        trucksArrayL = getCarForSaleDatabase(getActivity(),"Trucks");
-        wheelsRimArrayL = getWheelsRimDatabase(getActivity());
-        carPlatesArrayL = getCarPlatesDatabase(getActivity());
-        accessoriesArrayL = getAccAndJunkDatabase(getActivity(),"Accessories");
-        junkArrayL = getAccAndJunkDatabase(getActivity(),"Junk car");
+
     }
 
 

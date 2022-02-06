@@ -142,10 +142,10 @@ public class YearFragment extends Fragment implements AdapterCarYear.PassCarYear
     }
 
     private void saveInDataBase(String year) {
-        getDataBaseInstance(getActivity()).updateCarDetails(
-                "Car year",getActivity().getResources().getString(R.string.car_year_process)
-                ,year
-                ,convertYearToEng(year),"true");
+//        getDataBaseInstance(getActivity()).updateCarDetails(
+//                "Car year",getActivity().getResources().getString(R.string.car_year_process)
+//                ,year
+//                ,convertYearToEng(year),"true");
     }
 
     public void endDriverNationality(){

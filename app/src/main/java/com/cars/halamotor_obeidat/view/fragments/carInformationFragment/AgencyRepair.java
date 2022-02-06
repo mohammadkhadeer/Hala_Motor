@@ -43,11 +43,11 @@ public class AgencyRepair extends Fragment {
         relativeLayoutYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDataBaseInstance(getActivity()).updateCarDetails(
-                        "Agency repair", getActivity().getResources().getString(R.string.agency_repair_process)
-                        , getActivity().getResources().getString(R.string.agency_repair_yes)
-                        , getActivity().getResources().getString(R.string.agency_repair_yes_s)
-                        , "true");
+//                getDataBaseInstance(getActivity()).updateCarDetails(
+//                        "Agency repair", getActivity().getResources().getString(R.string.agency_repair_process)
+//                        , getActivity().getResources().getString(R.string.agency_repair_yes)
+//                        , getActivity().getResources().getString(R.string.agency_repair_yes_s)
+//                        , "true");
 
                 Intent resultIntent = new Intent();
                 getActivity().setResult(Activity.RESULT_OK, resultIntent);
@@ -78,11 +78,11 @@ public class AgencyRepair extends Fragment {
     }
 
     private void saveInDB() {
-        getDataBaseInstance(getActivity()).updateCarDetails(
-                "Agency repair", getActivity().getResources().getString(R.string.agency_repair_process)
-                , getActivity().getResources().getString(R.string.agency_repair_no)
-                , getActivity().getResources().getString(R.string.agency_repair_no_s)
-                , "true");
+//        getDataBaseInstance(getActivity()).updateCarDetails(
+//                "Agency repair", getActivity().getResources().getString(R.string.agency_repair_process)
+//                , getActivity().getResources().getString(R.string.agency_repair_no)
+//                , getActivity().getResources().getString(R.string.agency_repair_no_s)
+//                , "true");
     }
 
     private void inti() {

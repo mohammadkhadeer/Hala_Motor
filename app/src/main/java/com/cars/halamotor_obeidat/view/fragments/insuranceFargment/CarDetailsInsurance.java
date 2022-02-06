@@ -23,9 +23,7 @@ import com.cars.halamotor_obeidat.view.adapters.adapterInsurance.AdapterCarProce
 
 import java.util.ArrayList;
 
-import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getAllCarProcess;
 import static com.cars.halamotor_obeidat.functions.InsuranceFunctions.createCarInfoTable;
-import static com.cars.halamotor_obeidat.functions.InsuranceFunctions.getCarProcess;
 import static com.cars.halamotor_obeidat.functions.InsuranceFunctions.nextCarFragment;
 import static com.cars.halamotor_obeidat.functions.InsuranceFunctions.numberOfCarProcessSelected;
 import static com.cars.halamotor_obeidat.functions.InsuranceFunctions.resetAllCarInfoTable;
@@ -106,7 +104,7 @@ public class CarDetailsInsurance extends Fragment implements AdapterCarProcess.P
 
     private void createProcessRV() {
         carAllProcessArrayL = new ArrayList<>();
-        carAllProcessArrayL = getAllCarProcess(getActivity());
+        //carAllProcessArrayL = getAllCarProcess(getActivity());
 
         layoutManager = new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL, false);
@@ -208,23 +206,23 @@ public class CarDetailsInsurance extends Fragment implements AdapterCarProcess.P
         bundle.putString("processTypeS",carInformation.getCarProcess().getProcessS());
         bundle.putString("processType",carInformation.getCarProcess().getProcess());
 
-        if (!getCarProcess(getActivity(),carInformation.getCarProcess().getProcessS()).getProcessContent().getProcessContentS().equals("empty")
-            && !getCarProcess(getActivity(),carInformation.getCarProcess().getProcessS()).getCarProcess().getProcessS().equals("Car model"))
-        {
-            Intent intent = new Intent(getActivity(), EditInsuranceInfoCarOrDriver.class);
-            intent.putExtras(bundle);
-            com.cars.halamotor_obeidat.view.fragments.insuranceFargment.CarDetailsInsurance.this.startActivityForResult(intent , REQUEST_DETAILS);
-            getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
-        }else{
-            String carMakeProcess = getAllCarProcess(getActivity()).get(0).getProcessContent().getProcessContentS();
-            if (!carMakeProcess.equals("empty"))
-            {
-                Intent intent = new Intent(getActivity(), EditInsuranceInfoCarOrDriver.class);
-                intent.putExtras(bundle);
-                com.cars.halamotor_obeidat.view.fragments.insuranceFargment.CarDetailsInsurance.this.startActivityForResult(intent , REQUEST_DETAILS);
-                getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
-            }
-        }
+//        if (!getCarProcess(getActivity(),carInformation.getCarProcess().getProcessS()).getProcessContent().getProcessContentS().equals("empty")
+//            && !getCarProcess(getActivity(),carInformation.getCarProcess().getProcessS()).getCarProcess().getProcessS().equals("Car model"))
+//        {
+//            Intent intent = new Intent(getActivity(), EditInsuranceInfoCarOrDriver.class);
+//            intent.putExtras(bundle);
+//            com.cars.halamotor_obeidat.view.fragments.insuranceFargment.CarDetailsInsurance.this.startActivityForResult(intent , REQUEST_DETAILS);
+//            getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+//        }else{
+//            String carMakeProcess = getAllCarProcess(getActivity()).get(0).getProcessContent().getProcessContentS();
+//            if (!carMakeProcess.equals("empty"))
+//            {
+//                Intent intent = new Intent(getActivity(), EditInsuranceInfoCarOrDriver.class);
+//                intent.putExtras(bundle);
+//                com.cars.halamotor_obeidat.view.fragments.insuranceFargment.CarDetailsInsurance.this.startActivityForResult(intent , REQUEST_DETAILS);
+//                getActivity().overridePendingTransition(R.anim.right_to_left, R.anim.no_animation);
+//            }
+//        }
     }
 
     @Override

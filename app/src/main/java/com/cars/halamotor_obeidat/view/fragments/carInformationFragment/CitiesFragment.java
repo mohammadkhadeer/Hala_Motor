@@ -145,10 +145,10 @@ public class CitiesFragment extends Fragment implements AdapterCities.PassCities
     }
 
     private void saveInDataBase(CityModel cityModel) {
-        getDataBaseInstance(getActivity()).updateCarDetails(
-                "City",getActivity().getResources().getString(R.string.car_city_process)
-                ,cityModel.getCity()
-                ,cityModel.getCityS(),"true");
+//        getDataBaseInstance(getActivity()).updateCarDetails(
+//                "City",getActivity().getResources().getString(R.string.car_city_process)
+//                ,cityModel.getCity()
+//                ,cityModel.getCityS(),"true");
     }
 
     public void endDriverNationality(){

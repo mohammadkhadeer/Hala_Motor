@@ -94,7 +94,6 @@ public class FragmentSimilarItems extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getDataBaseInstance(getActivity()).deleteSimilarAds();
     }
 
     public void recivedARelativeRe(ArrayList<CCEMTModel> ccemtModelArrayList){

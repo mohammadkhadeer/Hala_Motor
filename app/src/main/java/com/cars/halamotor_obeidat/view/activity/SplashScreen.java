@@ -202,6 +202,8 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     }
 
     private void loginCheck() {
+        Log.i("TAG","getPlatform_id(this): "+getPlatform_id(this));
+        Log.i("TAG","ggetUserAddressFromSP(this): "+getUserAddressFromSP(this));
         if (getPlatform_id(this).equals("empty"))
         {
             transportToLoginScreen();
@@ -302,7 +304,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
         if (getWelcomeNotificationsInSP(this) ==null)
         {
             NotificationComp welcomeNotification = getNotification(
-                    "welcome", "Hala Motor" ,this,"welcome","welcome","welcome"
+                    "welcome", "Hala Motor" ,this,"welcome","welcome","welcome","welcome","welcome","welcome"
                     ,"R.drawable.logo"
             );
             if (insertNotificationTable(welcomeNotification,getDataBaseInstance(this)) == true)
@@ -314,6 +316,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
     }
 
     private void transportToMainActivity() {
+        Log.w("TAG","categoriesPresenter");
         getCategories(categoriesPresenter);
     }
 
@@ -331,6 +334,7 @@ public class SplashScreen extends AppCompatActivity implements CountryCitesAndAr
 
     @Override
     public void whenGetCategoriesSuccess(final ArrayList<CategoryComp> categoriesArrayL) {
+        Log.i("TAG","categories: "+String.valueOf(categoriesArrayL.size()));
         categoriesArrayL2 = categoriesArrayL;
         new Handler().postDelayed(new Runnable() {
 

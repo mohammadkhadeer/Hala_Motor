@@ -8,6 +8,8 @@ import static android.content.Context.MODE_PRIVATE;
 public class NotificationSharedPreferences {
 
     private static final String NOTIFICATION = "NOTIFICATION";
+    SharedPreferences SharedPreferences;
+    SharedPreferences.Editor editor;
 
     public static void updateNumberUnreadNotifications(Context context
             , SharedPreferences SharedPreferences, SharedPreferences.Editor editor

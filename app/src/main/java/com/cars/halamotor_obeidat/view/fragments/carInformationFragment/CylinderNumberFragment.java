@@ -24,7 +24,6 @@ import com.cars.halamotor_obeidat.view.adapters.adapterInsurance.AdapterCylinder
 import java.util.ArrayList;
 
 import static com.cars.halamotor_obeidat.dataBase.DataBaseInstance.getDataBaseInstance;
-import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getAllCarProcess;
 import static com.cars.halamotor_obeidat.functions.InsuranceFunctions.fillCylinderNumberArrayL;
 
 public class CylinderNumberFragment extends Fragment implements AdapterCylinderNumber.PassCylinderNumber{
@@ -41,7 +40,7 @@ public class CylinderNumberFragment extends Fragment implements AdapterCylinderN
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
-            carMakeStr = getAllCarProcess(getActivity()).get(0).getProcessContent().getProcessContent();
+            //carMakeStr = getAllCarProcess(getActivity()).get(0).getProcessContent().getProcessContent();
         }
         super.onAttach(context);
     }
@@ -155,10 +154,10 @@ public class CylinderNumberFragment extends Fragment implements AdapterCylinderN
     }
 
     private void saveInDataBase(CylinderNumber cylinderNumber) {
-        getDataBaseInstance(getActivity()).updateCarDetails(
-                "Car cylinder",getActivity().getResources().getString(R.string.car_cylinder_process)
-                ,cylinderNumber.getCylinderNumber()
-                ,cylinderNumber.getCylinderNumberS(),"true");
+//        getDataBaseInstance(getActivity()).updateCarDetails(
+//                "Car cylinder",getActivity().getResources().getString(R.string.car_cylinder_process)
+//                ,cylinderNumber.getCylinderNumber()
+//                ,cylinderNumber.getCylinderNumberS(),"true");
     }
 
     public void endDriverNationality(){

@@ -44,27 +44,27 @@ public class ModifiedFragment extends Fragment {
         relativeLayoutYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getProcessTypeFromIntent().equals("fill"))
-                {
-                    CompleteInsuranceInfo completeInsuranceInfo = (CompleteInsuranceInfo) getActivity();
-                    completeInsuranceInfo.nextFragmentCar("Insurance policy");
-                    completeInsuranceInfo.updateTitleCar("Insurance policy");
-                    getDataBaseInstance(getActivity()).updateCarDetails(
-                            "Follow GCC", getActivity().getResources().getString(R.string.car_modified_process)
-                            , getActivity().getResources().getString(R.string.car_modified_1)
-                            , getActivity().getResources().getString(R.string.car_modified_1_s)
-                            , "true");
-                }else {
-                    getDataBaseInstance(getActivity()).updateCarDetails(
-                            "Follow GCC", getActivity().getResources().getString(R.string.car_modified_process)
-                            , getActivity().getResources().getString(R.string.car_modified_1)
-                            , getActivity().getResources().getString(R.string.car_modified_1_s)
-                            , "true");
-
-                    Intent resultIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, resultIntent);
-                    getActivity().finish();
-                }
+//                if (getProcessTypeFromIntent().equals("fill"))
+//                {
+//                    CompleteInsuranceInfo completeInsuranceInfo = (CompleteInsuranceInfo) getActivity();
+//                    completeInsuranceInfo.nextFragmentCar("Insurance policy");
+//                    completeInsuranceInfo.updateTitleCar("Insurance policy");
+//                    getDataBaseInstance(getActivity()).updateCarDetails(
+//                            "Follow GCC", getActivity().getResources().getString(R.string.car_modified_process)
+//                            , getActivity().getResources().getString(R.string.car_modified_1)
+//                            , getActivity().getResources().getString(R.string.car_modified_1_s)
+//                            , "true");
+//                }else {
+//                    getDataBaseInstance(getActivity()).updateCarDetails(
+//                            "Follow GCC", getActivity().getResources().getString(R.string.car_modified_process)
+//                            , getActivity().getResources().getString(R.string.car_modified_1)
+//                            , getActivity().getResources().getString(R.string.car_modified_1_s)
+//                            , "true");
+//
+//                    Intent resultIntent = new Intent();
+//                    getActivity().setResult(Activity.RESULT_OK, resultIntent);
+//                    getActivity().finish();
+//                }
             }
         });
     }
@@ -98,11 +98,11 @@ public class ModifiedFragment extends Fragment {
     }
 
     private void saveInDB() {
-        getDataBaseInstance(getActivity()).updateCarDetails(
-                "Follow GCC", getActivity().getResources().getString(R.string.car_modified_process)
-                , getActivity().getResources().getString(R.string.car_modified_2)
-                , getActivity().getResources().getString(R.string.car_modified_2_s)
-                , "true");
+//        getDataBaseInstance(getActivity()).updateCarDetails(
+//                "Follow GCC", getActivity().getResources().getString(R.string.car_modified_process)
+//                , getActivity().getResources().getString(R.string.car_modified_2)
+//                , getActivity().getResources().getString(R.string.car_modified_2_s)
+//                , "true");
     }
 
     private void inti() {

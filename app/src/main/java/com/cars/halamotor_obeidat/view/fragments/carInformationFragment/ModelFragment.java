@@ -24,7 +24,6 @@ import com.cars.halamotor_obeidat.view.adapters.adapterInCarDetails.AdapterCarMo
 import java.util.ArrayList;
 
 import static com.cars.halamotor_obeidat.dataBase.ReadCarsAndCarModels.getModelsToSpecificBrand;
-import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getAllCarProcess;
 import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserLanguage;
 
 public class ModelFragment extends Fragment implements AdapterCarModel.PassCarModel{
@@ -41,7 +40,7 @@ public class ModelFragment extends Fragment implements AdapterCarModel.PassCarMo
     @Override
     public void onAttach(Context context) {
         if (getArguments() != null) {
-            carMakeStr = getAllCarProcess(getActivity()).get(0).getProcessContent().getProcessContent();
+           // carMakeStr = getAllCarProcess(getActivity()).get(0).getProcessContent().getProcessContent();
         }
         super.onAttach(context);
     }

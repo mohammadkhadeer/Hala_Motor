@@ -217,25 +217,38 @@ public class Functions {
     }
 
     public static NotificationComp getNotification(String process, String notificationTitle
-            , Context context,String itemIdInServer,String outOrCome,String AuctionOrItem
+            , Context context,String itemIdInServer,String outOrCome,String creator_name,String creator_image
+            ,String ads_des,String category_id
             ,String itemImage)
     {
         NotificationComp notificationComp = new NotificationComp(
                 process,"0",notificationTitle
                 ,"person","if we want can set user image"
-                ,itemImage,getTimeStamp(),outOrCome,itemIdInServer,AuctionOrItem,getDATE()
+                ,itemImage,getTimeStamp(),outOrCome,itemIdInServer,creator_name,creator_image,ads_des
+                ,category_id,getDATE()
         );
         return notificationComp;
     }
 
     public static NotificationComp getNotificationObject(String process, String notificationTitle
-            ,String itemIdInServer,String outOrCome,String AuctionOrItem
-            ,String itemImage)
+            ,String itemIdInServer,String outOrCome,String creator_name,String creator_image
+            ,String ads_des,String category_id,String itemImage)
     {
         NotificationComp notificationComp = new NotificationComp(
-                process,"0",notificationTitle
-                ,"person","if we want can set user image"
-                ,itemImage,getTimeStamp(),outOrCome,itemIdInServer,AuctionOrItem,getDATE()
+                process
+                , "0"
+                ,notificationTitle
+                ,"person"
+                ,itemImage
+                ,"process_image"
+                ,getTimeStamp()
+                ,outOrCome
+                ,itemIdInServer,
+                creator_name
+                ,creator_image
+                ,ads_des
+                ,category_id
+                ,getDATE()
         );
         return notificationComp;
     }

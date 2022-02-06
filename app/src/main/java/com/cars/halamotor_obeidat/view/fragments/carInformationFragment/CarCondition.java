@@ -41,32 +41,32 @@ public class CarCondition extends Fragment {
     }
 
     private void actionListenerToYes() {
-        relativeLayoutNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getProcessTypeFromIntent().equals("fill"))
-                {
-                    CompleteInsuranceInfo completeInsuranceInfo = (CompleteInsuranceInfo) getActivity();
-                    completeInsuranceInfo.nextFragmentCar("Car cylinder");
-                    completeInsuranceInfo.updateTitleCar("Car cylinder");
-                    getDataBaseInstance(getActivity()).updateCarDetails(
-                            "Car condition", getActivity().getResources().getString(R.string.car_condition_process)
-                            , getActivity().getResources().getString(R.string.car_condition_1)
-                            , getActivity().getResources().getString(R.string.car_condition_1_s)
-                            , "true");
-                }else {
-                    getDataBaseInstance(getActivity()).updateCarDetails(
-                            "Car condition", getActivity().getResources().getString(R.string.licence_expired_process)
-                            , getActivity().getResources().getString(R.string.car_condition_1)
-                            , getActivity().getResources().getString(R.string.car_condition_1_s)
-                            , "true");
-
-                    Intent resultIntent = new Intent();
-                    getActivity().setResult(Activity.RESULT_OK, resultIntent);
-                    getActivity().finish();
-                }
-            }
-        });
+//        relativeLayoutNew.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (getProcessTypeFromIntent().equals("fill"))
+//                {
+//                    CompleteInsuranceInfo completeInsuranceInfo = (CompleteInsuranceInfo) getActivity();
+//                    completeInsuranceInfo.nextFragmentCar("Car cylinder");
+//                    completeInsuranceInfo.updateTitleCar("Car cylinder");
+//                    getDataBaseInstance(getActivity()).updateCarDetails(
+//                            "Car condition", getActivity().getResources().getString(R.string.car_condition_process)
+//                            , getActivity().getResources().getString(R.string.car_condition_1)
+//                            , getActivity().getResources().getString(R.string.car_condition_1_s)
+//                            , "true");
+//                }else {
+//                    getDataBaseInstance(getActivity()).updateCarDetails(
+//                            "Car condition", getActivity().getResources().getString(R.string.licence_expired_process)
+//                            , getActivity().getResources().getString(R.string.car_condition_1)
+//                            , getActivity().getResources().getString(R.string.car_condition_1_s)
+//                            , "true");
+//
+//                    Intent resultIntent = new Intent();
+//                    getActivity().setResult(Activity.RESULT_OK, resultIntent);
+//                    getActivity().finish();
+//                }
+//            }
+//        });
     }
 
     private String getProcessTypeFromIntent() {
@@ -98,11 +98,11 @@ public class CarCondition extends Fragment {
     }
 
     private void saveInDB() {
-                getDataBaseInstance(getActivity()).updateCarDetails(
-                "Car condition", getActivity().getResources().getString(R.string.licence_expired_process)
-                , getActivity().getResources().getString(R.string.car_condition_2)
-                , getActivity().getResources().getString(R.string.car_condition_2_s)
-                , "true");
+//                getDataBaseInstance(getActivity()).updateCarDetails(
+//                "Car condition", getActivity().getResources().getString(R.string.licence_expired_process)
+//                , getActivity().getResources().getString(R.string.car_condition_2)
+//                , getActivity().getResources().getString(R.string.car_condition_2_s)
+//                , "true");
     }
 
     private void inti() {
