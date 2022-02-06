@@ -1,5 +1,6 @@
 package com.cars.halamotor_obeidat.view.fragments.browsingFragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,10 +18,16 @@ import android.widget.TextView;
 import com.cars.halamotor_obeidat.R;
 import com.cars.halamotor_obeidat.functions.FCSFunctions;
 import com.cars.halamotor_obeidat.functions.Functions;
+import com.cars.halamotor_obeidat.model.Attributes;
 import com.cars.halamotor_obeidat.model.BrowsingFilter;
+import com.cars.halamotor_obeidat.model.CCEMTModel;
+import com.cars.halamotor_obeidat.model.CategoryComp;
+import com.cars.halamotor_obeidat.model.CreatorInfo;
 import com.cars.halamotor_obeidat.model.FavouriteCallSearch;
 import com.cars.halamotor_obeidat.model.SuggestedItem;
 import com.cars.halamotor_obeidat.presnter.FCSItems;
+import com.cars.halamotor_obeidat.presnter.FCSItemsList;
+import com.cars.halamotor_obeidat.presnter.RelatedAds;
 import com.cars.halamotor_obeidat.view.adapters.AdapterBrowsingFilter;
 import com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.AdapterShowFCSItems;
 import com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.PaginationListener;
@@ -30,17 +37,32 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.cars.halamotor_obeidat.API.APIS.BASE_API;
 import static com.cars.halamotor_obeidat.dataBase.ReadFunction.getFCSCallSearch;
 import static com.cars.halamotor_obeidat.fireBaseDB.FireStorePaths.getDataStoreInstance;
 import static com.cars.halamotor_obeidat.functions.FCSFunctions.convertCat;
+import static com.cars.halamotor_obeidat.functions.Functions.checkIfAndroidVBiggerThan9;
 import static com.cars.halamotor_obeidat.functions.NewFunction.fillBrowsingArrayL;
 import static com.cars.halamotor_obeidat.functions.NewFunction.getNumberOfObject;
 import static com.cars.halamotor_obeidat.functions.NewFunction.handelNumberOfObject;
 import static com.cars.halamotor_obeidat.functions.NewFunction.nowNumberOfObject;
+import static com.cars.halamotor_obeidat.presnter.FCSFromServer.getFCS;
+import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserLanguage;
+import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserTokenFromServer;
+import static com.cars.halamotor_obeidat.sharedPreferences.SharedPreferencesInApp.getUserTokenInFromSP;
 import static com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.PaginationListener.PAGE_START;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class FragmentBrowsing extends Fragment implements AdapterBrowsingFilter.PassSelectedFilter {
@@ -77,6 +99,7 @@ public class FragmentBrowsing extends Fragment implements AdapterBrowsingFilter.
     TextView textView,browsingDep;
     CardView cardView;
 
+    int number_of_items=0;
     public FragmentBrowsing(){}
 
     @Override
@@ -90,11 +113,13 @@ public class FragmentBrowsing extends Fragment implements AdapterBrowsingFilter.
 
         favouriteCallSearchesArrayList = new ArrayList<FavouriteCallSearch>();
         favouriteCallSearchesArrayList = getFCSCallSearch(filterContentArrayL,getActivity());
-        checkIfHaveFavOrNot();
+        //checkIfHaveFavOrNot();
         createRV();
-        getData();
-        doApiCall();
+        Log.i("TAG","fcsTypeStr: "+fcsTypeStr);
+//        getData();
+//        doApiCall();
         actionListenerToRV();
+        getFCS(getActivity(),"call",currentPage);
 
         return view;
     }
@@ -115,10 +140,11 @@ public class FragmentBrowsing extends Fragment implements AdapterBrowsingFilter.
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size());
+                //numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size());
                 currentPage++;
-                getData();
-                doApiCall();
+                if (number_of_items > 0)
+                    getFCS(getActivity(),fcsTypeStr,currentPage);
+
             }
 
             @Override
@@ -138,69 +164,8 @@ public class FragmentBrowsing extends Fragment implements AdapterBrowsingFilter.
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(getActivity());
         fcsItemsRecyclerView.setLayoutManager(layoutManager);
-        //adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<SuggestedItem>(),getActivity(),fcsTypeStr);
+        adapterShowFCSItems = new AdapterShowFCSItems(new ArrayList<CCEMTModel>(),getActivity(),fcsTypeStr);
         fcsItemsRecyclerView.setAdapter(adapterShowFCSItems);
-    }
-
-    private void doApiCall() {
-        progressBarLoadMore.setVisibility(View.VISIBLE);
-        suggestedItemsArrayListDO = new ArrayList<>();
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                progressBarLoadMore.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
-//                fcsItemsRecyclerView.setVisibility(View.VISIBLE);
-                suggestedItemsArrayListDO.addAll(suggestedItemsArrayListTest);
-                if (currentPage != PAGE_START) adapterShowFCSItems.removeLoading();
-                //adapterShowFCSItems.addItems(suggestedItemsArrayListDO);
-                if (getNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size())==false) {
-                    //adapterShowFCSItems.addLoading();
-                } else {
-                    isLastPage = true;
-                }
-                isLoading = false;
-            }
-        }, 3100);
-    }
-
-    private void getData() {
-        final List<SuggestedItem> fcsItemsArrayList = new ArrayList<>();
-        suggestedItemsArrayListTest = new ArrayList<>();
-        favouriteCallSearchesArrayListNew = new ArrayList<>();
-        int numberOfObject = nowNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size());
-        favouriteCallSearchesArrayListNew = getCategoryList(numberOfObject);
-        if (numberOfObject!=1000)
-        {
-            for (int i =0;i<numberOfObject;i++)
-            {
-                final String category = convertCat(favouriteCallSearchesArrayListNew.get(i).getItemType());
-                final String categoryBefore = favouriteCallSearchesArrayListNew.get(i).getItemType();
-                DocumentReference mRef = null;
-                if(category != null){
-                    mRef = getDataStoreInstance().collection(category)
-                            .document(favouriteCallSearchesArrayListNew.get(i).getIdInDatabase());
-                    mRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    fcsItemsArrayList.add(FCSFunctions.handelNumberOfObject(document,categoryBefore));
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-        }
-
-        new Handler().postDelayed(new Runnable() {
-            @Override public void run() {
-                suggestedItemsArrayListTest.addAll(fcsItemsArrayList);
-            }
-        }, 3000);
     }
 
     private ArrayList<FavouriteCallSearch> getCategoryList(int condition) {
@@ -247,74 +212,140 @@ public class FragmentBrowsing extends Fragment implements AdapterBrowsingFilter.
     }
 
     @Override
-    public void onFilterClicked(ArrayList<BrowsingFilter> selectedFilter) {
-        String filterBy = "";
+    public void onFilterClicked(BrowsingFilter selectedFilter) {
         filterContentArrayL = new ArrayList<>();
-        for (int j =0;j<selectedFilter.size();j++)
-        {
-            if (selectedFilter.get(j).isSelected() == true)
-            {
-                filterContentArrayL.add(selectedFilter.get(j));
-            }
-        }
 
-        if (filterContentArrayL.isEmpty())
-        {
-            filterBy = getActivity().getResources().getString(R.string.all);
-        }else{
-            if (1 <filterContentArrayL.size())
-            {
-                for (int i =0 ;i <filterContentArrayL.size();i++)
-                {
-                    if (i ==0)
-                    {
-                        filterBy = filterContentArrayL.get(i).getFilterString();
-                    }else{
-                        filterBy = filterBy + " | "+  filterContentArrayL.get(i).getFilterString();
-                    }
-                }
-            }else{
-                filterBy = filterContentArrayL.get(0).getFilterString();
-            }
-        }
-        textView.setText(filterBy);
-        message = filterBy;
+        textView.setText(selectedFilter.getFilterString());
+        message = selectedFilter.getFilterString();
+
         progressBar.setVisibility(View.VISIBLE);
 
-        favouriteCallSearchesArrayList = new ArrayList<FavouriteCallSearch>();
-        favouriteCallSearchesArrayList = getFCSCallSearch(filterContentArrayL,getActivity());
-        checkIfHaveFavOrNot();
+        //checkIfHaveFavOrNot();
 
-        refresh();
+        refresh(selectedFilter.getFilterContentStr());
     }
 
-    private void refresh() {
-        Log.i("TAG",message);
+    private void refresh(String type) {
+        //getFCS(this,fcsTypeStr,fcsItemsList,currentPage);
+
+        Log.i("TAG type",type);
         numberOfObjectNow = 0;
         numberOfObjectReturn = 0;
         currentPage = PAGE_START;
         isLastPage = false;
         createRV();
-        getData();
         adapterShowFCSItems.clear();
-        doApiCall();
+        getFCS(getActivity(),type,currentPage);
+
     }
 
-//
-//    private void createBrowsingItemFragment() {
-//        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-//        transaction.replace(R.id.fragment_browsing_filters_container, filterBrowsingFragment);
-//        transaction.commit();
-//    }
+    public void getFCS(Context context,String FCSType,int pageNumber)
+    {
+//        Log.i("TAG Bearer Token",getUserTokenFromServer(context));
+//        Log.i("TAG device Token",getUserTokenInFromSP(context));
+//        //Log.i("TAG API",BASE_API+"/ads?is_active=1&is_hot_price=0&category_id="+categoryComp.getId());
+//        Log.i("TAG","FCSType: "+FCSType);
 
-    //    private void createBrowsingItems() {
-//        Bundle bundle = new Bundle();
-//        bundle.putString("filterBy", message);
-//
-//        browsingItems.setArguments(bundle);
-//        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-//        transaction.replace(R.id.fragment_browsing_items, browsingItems);
-//        transaction.commit();
-//    }
+        if (checkIfAndroidVBiggerThan9()) {
+            JSONObject obj = null;
+            OkHttpClient client = new OkHttpClient().newBuilder()
+                    .build();
+            Request request = new Request.Builder()
+                    .url(BASE_API+"/logs?type="+FCSType+"&page="+pageNumber)
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Authorization", "Bearer " + getUserTokenFromServer(context))
+                    .addHeader("Accept-Language", getUserLanguage(context))
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                try {
+                    obj = new JSONObject(response.body().string());
+                    JSONArray jsonArrayAllAds = obj.getJSONArray("DATA");
+
+                    getAdsList(jsonArrayAllAds);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void getAdsList(JSONArray jsonArrayAllAds) {
+        //create suggested to you as object
+        number_of_items = 0;
+        CategoryComp categoryCompModel =null;
+        JSONObject adsDetails=null,attributes=null,creator_json_info=null,categoryComp=null;
+        ArrayList <String> photosArrayList ;
+        ArrayList <Attributes> attributesArrayList ;
+        final ArrayList <CCEMTModel> adsArrayList = new ArrayList<>();
+        CreatorInfo creatorInfo =null;
+        try {
+            for (int i =0;i<jsonArrayAllAds.length();i++)
+            {
+                adsDetails = jsonArrayAllAds.getJSONObject(i).getJSONObject("ad");
+                //Log.i("TAG","adsDetails: "+adsDetails.toString());
+
+                JSONArray jsonArrayPhotos = adsDetails.getJSONArray("photos");
+                JSONArray jsonArrayAttributes = adsDetails.getJSONArray("attributes");
+                creator_json_info = adsDetails.getJSONObject("creator");
+                creatorInfo = new CreatorInfo(
+                        creator_json_info.getString("id")
+                        ,creator_json_info.getString("name")
+                        ,creator_json_info.getString("ads_count")
+                        ,creator_json_info.getString("followers_count")
+                        ,creator_json_info.getString("following_count")
+                        ,creator_json_info.getString("type")
+                        ,creator_json_info.getString("photo")
+                );
+                photosArrayList =new ArrayList<>();
+                if (jsonArrayPhotos !=null && jsonArrayPhotos.length()>0)
+                {
+                    for (int x=0;x<jsonArrayPhotos.length();x++)
+                    {
+                        photosArrayList.add(jsonArrayPhotos.getString(x));
+                    }
+                }
+
+                attributesArrayList =new ArrayList<>();
+                for (int j=0;j<jsonArrayAttributes.length();j++)
+                {
+                    attributes =  jsonArrayAttributes.getJSONObject(j);
+                    Attributes attributesObj = new Attributes(attributes.getString("type"),attributes.getString("value"),attributes.getString("title"));
+                    attributesArrayList.add(attributesObj);
+                }
+
+                categoryComp = adsDetails.getJSONObject("category");
+
+                categoryCompModel = new CategoryComp(
+                        0
+                        ,categoryComp.getString("id")
+                        ,categoryComp.getString("code")
+                        ,categoryComp.getString("name")
+                        ,categoryComp.getString("name_en")
+                        ,categoryComp.getString("name_ar")
+                );
+
+                CCEMTModel ccemtModel = new CCEMTModel(adsDetails.getString("id"),adsDetails.getString("title"),adsDetails.getString("description"),adsDetails.getString("price"),adsDetails.getString("phone"),adsDetails.getString("created_at"),categoryCompModel,photosArrayList,attributesArrayList,creatorInfo);
+
+                adsArrayList.add(ccemtModel);
+            }
+            progressBar.setVisibility(View.GONE);
+            number_of_items = adsArrayList.size();
+
+            if (number_of_items > 0)
+                adapterShowFCSItems.addItems(adsArrayList);
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

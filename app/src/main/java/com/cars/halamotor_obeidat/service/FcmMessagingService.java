@@ -44,8 +44,6 @@ import org.json.JSONObject;
 
 public class FcmMessagingService extends FirebaseMessagingService {
     private NotificationManagerCompat notificationManager;
-    Bitmap bitmap1;
-    ConvertUrlToBitmap convertUrlToBitmap;
     NotificationHelper helper;
 
     String process_en="",process_ar="",ads_id="",creator_image=""
@@ -57,14 +55,7 @@ public class FcmMessagingService extends FirebaseMessagingService {
     SharedPreferences sharedPreferences;
 
     CategoryComp categoryCompModel =null;
-
-    //String channel_id;
-    String[] titleArray,desArray,optionalArray,optionalAndDesArray;
     DBHelper dbHelper;
-
-    public static final String CHANNEL_1_ID="new_items";
-    public static final String CHANNEL_2_ID="new_offers";
-    public static final String CHANNEL_3_ID="important_message";
 
     @Override
     public void onNewToken(String new_token) {
@@ -85,16 +76,6 @@ public class FcmMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         intiValue();
         Log.i("TAG", "onMessageReceived: ");
-//        if (remoteMessage.getData() != null)
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-//                sendNotificationAPI26(remoteMessage);
-//            else
-//                sendNotificationAPI(remoteMessage);
-//
-//
-//
-//         Check if message contains a notification payload.
-        //remoteMessage.getNotification()
 
         if (remoteMessage.getData() != null) {
 
@@ -211,22 +192,6 @@ public class FcmMessagingService extends FirebaseMessagingService {
         updateNumberUnreadNotifications(this, sharedPreferences, editor, String.valueOf(unreadNotification));
     }
 
-    private class ConvertUrlToBitmap extends AsyncTask<String, Long, Boolean> {
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                Log.i("TAG","ConvertUrlToBitmap: "+"on");
-
-                URL url = new URL(params[0]);
-                bitmap1 = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
-                return true;
-            } catch (Exception e) {
-                Log.e("TAG", e.toString());
-                return false;
-            }
-        }
-    }
 
     private void intiValue() {
         notificationManager = NotificationManagerCompat.from(this);

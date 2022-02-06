@@ -172,7 +172,7 @@ public class FragmentProfile extends Fragment {
         recentSRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveToFCSActivity("search");
+                moveToFCSActivity("search",getActivity().getString(R.string.recent_viewed_ads));
             }
         });
     }
@@ -181,7 +181,7 @@ public class FragmentProfile extends Fragment {
         messageRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveToFCSActivity("message");
+                moveToFCSActivity("message",getActivity().getString(R.string.tab_message));
             }
         });
     }
@@ -190,7 +190,7 @@ public class FragmentProfile extends Fragment {
         callsRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveToFCSActivity("call");
+                moveToFCSActivity("call",getActivity().getString(R.string.calls_ads));
             }
         });
     }
@@ -199,7 +199,7 @@ public class FragmentProfile extends Fragment {
         recentVRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveToFCSActivity("seen");
+                moveToFCSActivity("seen",getActivity().getString(R.string.recent_viewed_ads));
             }
         });
     }
@@ -208,13 +208,14 @@ public class FragmentProfile extends Fragment {
         favouriteRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveToFCSActivity("favorite");
+                moveToFCSActivity("favorite",getActivity().getString(R.string.favourite_ads));
             }
         });
     }
 
-    private void moveToFCSActivity(String fcsTypeStr) {
+    private void moveToFCSActivity(String fcsTypeStr,String type) {
         Bundle bundle = new Bundle();
+        bundle.putString("fcsType",type);
         bundle.putString("fcsTypeStr",fcsTypeStr);
 
         Intent intent = new Intent(getActivity(), ShowFCS.class);

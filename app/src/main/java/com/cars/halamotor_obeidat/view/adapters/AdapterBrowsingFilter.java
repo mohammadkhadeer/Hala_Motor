@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,6 @@ public class AdapterBrowsingFilter extends RecyclerView.Adapter<AdapterBrowsingF
     private final Context context;
     public ArrayList<BrowsingFilter> filterContentArrayL ;
     PassSelectedFilter passSelectedFilter;
-
     public AdapterBrowsingFilter
             (Context context, ArrayList<BrowsingFilter> filterContentArrayL,PassSelectedFilter passSelectedFilter)
     {   this.context = context;
@@ -34,6 +34,7 @@ public class AdapterBrowsingFilter extends RecyclerView.Adapter<AdapterBrowsingF
     {
         View view = LayoutInflater.from(viewGroup.getContext()).
                 inflate(R.layout.adapter_browsing_filter, viewGroup, false);
+
         return new ViewHolder(view);
     }
 
@@ -42,9 +43,9 @@ public class AdapterBrowsingFilter extends RecyclerView.Adapter<AdapterBrowsingF
         changeFont(context,holder);
         holder.filterContentTV.setText(filterContentArrayL.get(position).getFilterString());
         holder.filterContentTV.setTypeface(Functions.changeFontGeneral(context));
-
         actionListener(context,position,holder);
     }
+
 
     private void changeFont(Context context, ViewHolder holder) {
         holder.filterContentTV.setTypeface(Functions.changeFontGeneral(context));
@@ -54,39 +55,9 @@ public class AdapterBrowsingFilter extends RecyclerView.Adapter<AdapterBrowsingF
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fillCoverBG(context,position,holder);
-                passSelectedFilter.onFilterClicked(filterContentArrayL);
+                passSelectedFilter.onFilterClicked(filterContentArrayL.get(position));
             }
         });
-    }
-
-    private void fillCoverBG(Context context, int position, ViewHolder holder) {
-
-        if (filterContentArrayL.get(position).isSelected() == false)
-        {
-            filterContentArrayL.get(position).setSelected(true);
-            holder.relativeLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.filter_selected_bg));
-            changeTextColor(1,context,holder,position);
-        }else{
-            filterContentArrayL.get(position).setSelected(false);
-            holder.relativeLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.filter_bg));
-            changeTextColor(2,context,holder,position);
-        }
-
-    }
-
-    private void changeTextColor(int color, Context context, ViewHolder holder, int position) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if (color == 1)
-                holder.filterContentTV.setTextColor(ContextCompat.getColor(context, R.color.colorWhite));
-            if (color == 2)
-                holder.filterContentTV.setTextColor(ContextCompat.getColor(context, R.color.colorBlack3));
-        }else{
-            if (color == 1)
-                holder.filterContentTV.getResources().getColor(R.color.colorWhite);
-            if (color == 2)
-                holder.filterContentTV.getResources().getColor(R.color.colorBlack3);
-        }
     }
 
     @Override
@@ -107,7 +78,7 @@ public class AdapterBrowsingFilter extends RecyclerView.Adapter<AdapterBrowsingF
     }
 
     public interface PassSelectedFilter {
-        void onFilterClicked(ArrayList<BrowsingFilter> selectedFilter);
+        void onFilterClicked(BrowsingFilter selectedFilter);
     }
 
 }

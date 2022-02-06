@@ -25,7 +25,6 @@ public class FilterBrowsingFragment extends Fragment implements AdapterBrowsingF
     AdapterBrowsingFilter adapterBrowsingFilter;
     RecyclerView.LayoutManager layoutManagerSuggested;
     View view;
-    public ArrayList<BrowsingFilter> filterContentArrayL ;
     TextView textView,browsingDep;
 
     @Override
@@ -64,36 +63,7 @@ public class FilterBrowsingFragment extends Fragment implements AdapterBrowsingF
     }
 
     @Override
-    public void onFilterClicked(ArrayList<BrowsingFilter> selectedFilter) {
-        String filterBy = "";
-        filterContentArrayL = new ArrayList<>();
-        for (int j =0;j<selectedFilter.size();j++)
-        {
-            if (selectedFilter.get(j).isSelected() == true)
-            {
-                filterContentArrayL.add(selectedFilter.get(j));
-            }
-        }
-
-        if (filterContentArrayL.isEmpty())
-        {
-            filterBy = getActivity().getResources().getString(R.string.all);
-        }else{
-            if (1 <filterContentArrayL.size())
-            {
-                for (int i =0 ;i <filterContentArrayL.size();i++)
-                {
-                    if (i ==0)
-                    {
-                        filterBy = filterContentArrayL.get(i).getFilterString();
-                    }else{
-                        filterBy = filterBy + " | "+  filterContentArrayL.get(i).getFilterString();
-                    }
-                }
-            }else{
-                filterBy = filterContentArrayL.get(0).getFilterString();
-            }
-        }
-        textView.setText(filterBy);
+    public void onFilterClicked(BrowsingFilter selectedFilter) {
+        textView.setText(selectedFilter.getFilterString());
     }
 }

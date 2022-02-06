@@ -60,20 +60,25 @@ public class NotificationHelper extends ContextWrapper {
     public NotificationCompat.Builder getEDMTChannelNotification(String title, String body
             , CategoryComp categoryComp,String ad_id,String ad_image)
     {
+        Intent resultIntent = new Intent(getApplicationContext(), ShowItemDetails.class);
+        resultIntent.putExtra("category", categoryComp.getCode());
+        resultIntent.putExtra("category_comp", categoryComp);
+        resultIntent.putExtra("from", "ml");
+        resultIntent.putExtra("itemID", ad_id);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (!ad_image.equals("no_image"))
+        {
+            ad_image = "https://firebasestorage.googleapis.com/v0/b/hala-motor-8ff46.appspot.com/o/images%2Fno-image-icon-6.png?alt=media&token=c0baa658-3788-4b37-987a-9e4f72fe481a";
+        }
         convertUrlToBitmap = new ConvertUrlToBitmap();
         convertUrlToBitmap.doInBackground(ad_image);
         convertUrlToBitmap.execute();
 
-        Intent resultIntent = new Intent(getApplicationContext(), ShowItemDetails.class);
-        resultIntent.putExtra("category",categoryComp.getCode());
-        resultIntent.putExtra("category_comp",categoryComp);
-        resultIntent.putExtra("from","ml");
-        resultIntent.putExtra("itemID",ad_id);
-        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),1,resultIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-        return new NotificationCompat.Builder(getApplicationContext(),EDMT_CHANNEL_ID)
+        return new NotificationCompat.Builder(getApplicationContext(), EDMT_CHANNEL_ID)
                 .setContentText(body)
                 .setContentTitle(title)
                 .setSmallIcon(R.drawable.logo)

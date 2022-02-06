@@ -50,7 +50,7 @@ import static com.cars.halamotor_obeidat.presnter.RelatedAdToSameCreator.getRela
 import static com.cars.halamotor_obeidat.view.adapters.adapterShowFCS.PaginationListener.PAGE_START;
 
 public class ShowFCS extends AppCompatActivity implements FCSItemsList{
-    String fcsTypeStr;
+    String fcsTypeStr,type;
     ArrayList<FavouriteCallSearch> favouriteCallSearchesArrayList;
     ArrayList<FavouriteCallSearch> favouriteCallSearchesArrayListNew;
     public List<SuggestedItem> suggestedItemsArrayListTest;
@@ -69,6 +69,7 @@ public class ShowFCS extends AppCompatActivity implements FCSItemsList{
     FCSItemsList fcsItemsList;
     NestedScrollView nestedScrollView;
     int numberOfResultAfterRe;
+    TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,18 +80,18 @@ public class ShowFCS extends AppCompatActivity implements FCSItemsList{
         statusBarColor();
         fcsItemsList = (FCSItemsList) this;
         init();
-        //changeFont();
+        changeFont();
         getInfoFromIntent();
-        //actionBarTitle();
-        //favouriteCallSearchesArrayList = new ArrayList<FavouriteCallSearch>();
-        //favouriteCallSearchesArrayList = getFavouriteCallSearch(getApplicationContext(),fcsTypeStr);
-//        numberOfObjectNow =handelNumberOfObject(numberOfObjectNow,favouriteCallSearchesArrayList.size());
-        //checkIfHaveFavOrNot();
+        setTitleFCS();
 
         getData();
         createRV();
+        scrollView();
 
+    }
 
+    private void setTitleFCS() {
+        title.setText(type);
     }
 
     private void scrollView() {
@@ -125,50 +126,27 @@ public class ShowFCS extends AppCompatActivity implements FCSItemsList{
         }
     }
 
-//    private void changeFont() {
-//        if (numberOfObjectNow == 0)
-//            messageTV.setTypeface(Functions.changeFontGeneral(getApplicationContext()));
-//    }
+    private void changeFont() {
+        title.setTypeface(Functions.changeFontGeneral(getApplicationContext()));
+    }
 
     private void init() {
         nestedScrollView = (NestedScrollView) findViewById(R.id.nested_fcs);
         fcsItemsRecyclerView = (RecyclerView) findViewById(R.id.show_fcs_RV);
         progressBar = (ProgressBar) findViewById(R.id.show_fcs_progress);
+        title = (TextView) findViewById(R.id.title);
     }
 
     private void getInfoFromIntent() {
         Bundle bundle = getIntent().getExtras();
         fcsTypeStr =bundle.getString("fcsTypeStr");
+        type=bundle.getString("fcsType");
+
     }
 
     private void statusBarColor() {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
-
-//    private void actionBarTitle() {
-//        Typeface typeface;
-//        final ActionBar abar = getSupportActionBar();
-//        View viewActionBar = getLayoutInflater().inflate(R.layout.actionbar_custom_title_view_centered, null);
-//        ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
-//                ActionBar.LayoutParams.WRAP_CONTENT,
-//                ActionBar.LayoutParams.MATCH_PARENT,
-//                Gravity.CENTER);
-//        if (Locale.getDefault().getLanguage().equals("ar")) {
-//            typeface = Typeface.createFromAsset(getAssets(), "GE_DINAR_ONE_LIGHT.TTF");
-//        }else{
-//            typeface = Typeface.createFromAsset(getAssets(), "NTAILU.TTF");
-//        }
-//        TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.actionbar_textview);
-//        textviewTitle.setTextColor(Color.parseColor("#FF0000"));
-//        textviewTitle.setText(actionBarTitleInFCS(getApplicationContext(),fcsTypeStr));
-//        textviewTitle.setTypeface(typeface);
-//        abar.setCustomView(viewActionBar, params);
-//        abar.setDisplayShowCustomEnabled(true);
-//        abar.setDisplayShowTitleEnabled(false);
-//        abar.setDisplayHomeAsUpEnabled(false);
-//        abar.setHomeButtonEnabled(false);
-//    }
-
 
     private void createRV() {
         fcsItemsRecyclerView.setNestedScrollingEnabled(false);

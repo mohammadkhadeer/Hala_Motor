@@ -9,10 +9,12 @@
         <entry key="app/src/main/res/layout/activity_language.xml" value="0.17980072463768115" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17980072463768115" />
         <entry key="app/src/main/res/layout/activity_privacy_policy.xml" value="0.17980072463768115" />
-        <entry key="app/src/main/res/layout/activity_show_fcs.xml" value="0.16983695652173914" />
+        <entry key="app/src/main/res/layout/activity_show_fcs.xml" value="0.75" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.35190217391304346" />
         <entry key="app/src/main/res/layout/activity_user_profile.xml" value="0.17980072463768115" />
         <entry key="app/src/main/res/layout/adapter_fcs_items.xml" value="0.35190217391304346" />
+        <entry key="app/src/main/res/layout/fragment_browsing.xml" value="0.17028985507246377" />
+        <entry key="app/src/main/res/layout/fragment_browsing_filters_fragment.xml" value="0.17028985507246377" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.17980072463768115" />
         <entry key="app/src/main/res/layout/fragment_item_selected_share.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_item_selected_suggested.xml" value="0.4671875" />

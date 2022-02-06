@@ -192,20 +192,19 @@
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    >
+                                    android:layout_height="match_parent">
 
 
                                     <TextView
+                                        android:id="@+id/fragment_profile_recent_v_TV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginStart="8dp"
-                                        android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="14dp"
-                                        android:id="@+id/fragment_profile_recent_v_TV"
-                                        android:text="@string/recent_viewed_ads"/>
+                                        android:layout_marginStart="8dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:text="@string/recent_viewed_ads"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="14dp" />
 
                                 </RelativeLayout>
 
@@ -376,15 +375,15 @@
 
 
                                     <TextView
+                                        android:id="@+id/fragment_profile_favourite_TV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginStart="8dp"
-                                        android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="14dp"
-                                        android:id="@+id/fragment_profile_favourite_TV"
-                                        android:text="@string/favourite_ads"/>
+                                        android:layout_marginStart="8dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:text="@string/favourite_ads"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="14dp" />
 
                                 </RelativeLayout>
 
@@ -465,15 +464,15 @@
                                     >
 
                                     <TextView
+                                        android:id="@+id/fragment_profile_call_TV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginStart="8dp"
-                                        android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="14dp"
-                                        android:id="@+id/fragment_profile_call_TV"
-                                        android:text="@string/calls_ads"/>
+                                        android:layout_marginStart="8dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:text="@string/calls_ads"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="14dp" />
 
                                 </RelativeLayout>
 
@@ -555,15 +554,15 @@
 
 
                                     <TextView
+                                        android:id="@+id/fragment_profile_message_TV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginLeft="10dp"
-                                        android:layout_marginStart="8dp"
-                                        android:textColor="@color/colorBlack"
                                         android:layout_centerVertical="true"
-                                        android:textSize="14dp"
-                                        android:id="@+id/fragment_profile_message_TV"
-                                        android:text="@string/tab_message"/>
+                                        android:layout_marginStart="8dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:text="@string/tab_message"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="14dp" />
 
                                 </RelativeLayout>
 
