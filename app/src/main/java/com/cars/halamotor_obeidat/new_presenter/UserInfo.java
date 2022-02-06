@@ -1,6 +1,7 @@
 package com.cars.halamotor_obeidat.new_presenter;
 
 import static com.cars.halamotor_obeidat.API.APIS.BASE_API;
+import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserID;
 import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserTokenFromServer;
 
 import android.content.Context;
@@ -26,8 +27,9 @@ public class UserInfo {
     public static void userInfo(String user_id, Context context,UserInfoP userInfoP)
     {
         JSONObject obj = null,creator_info = null;
-        //Log.i("TAG","in said user info user_id: "+user_id);
-        //Log.i("TAG","Bearer: "+getUserTokenFromServer(context));
+        Log.i("TAG","in said user info user_id: "+user_id);
+        Log.i("TAG","Bearer: "+getUserTokenFromServer(context));
+        Log.i("TAG","Bearer: "+getUserID(context));
 
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
