@@ -98,25 +98,23 @@
                 android:layout_weight="65">
 
                 <RelativeLayout
+                    android:id="@+id/fragment_user_profile_follow_RL"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginEnd="16dp"
-                    android:id="@+id/fragment_user_profile_follow_RL"
                     android:layout_marginTop="80dp"
-                    android:background="@drawable/follow_bg"
-                    >
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/follow_bg">
 
                     <TextView
+                        android:id="@+id/fragment_user_profile_follow_TV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/follow"
-                        android:textSize="15dp"
-                        android:layout_marginTop="6dp"
-                        android:id="@+id/fragment_user_profile_follow_TV"
-                        android:textColor="@color/colorBlue5"
                         android:layout_centerHorizontal="true"
-                        />
+                        android:layout_marginTop="6dp"
+                        android:text="@string/follow"
+                        android:textColor="@color/colorBlue5"
+                        android:textSize="15dp" />
 
                 </RelativeLayout>
 

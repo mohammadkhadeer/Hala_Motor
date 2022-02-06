@@ -102,7 +102,7 @@ public class UserProfilePostsList extends Fragment {
         progressBar.getIndeterminateDrawable()
                 .setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorRed), PorterDuff.Mode.SRC_IN );
 
-        //here
+
         getRelatedAds(getActivity(),creatorInfo.getUser_id(),creatorInfo.getType(),relatedAds,currentPage);
 
         createRV();

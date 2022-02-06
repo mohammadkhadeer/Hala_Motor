@@ -109,7 +109,7 @@ public class FcmMessagingService extends FirebaseMessagingService {
 //                convertUrlToBitmap = (ConvertUrlToBitmap) new ConvertUrlToBitmap().execute(ads_image);
 
         }else{
-            //Log.i("TAG", "onMessageReceived: remoteMessage.getNotification() == null");
+            Log.i("TAG", "onMessageReceived: remoteMessage.getNotification() == null");
             //Log.d("TAG", "remoteMessage: " + remoteMessage.getData().toString());
         }
     }

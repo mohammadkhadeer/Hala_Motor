@@ -267,13 +267,15 @@ public class ProfileDetailsInfo extends Fragment {
 
                 Log.i("TAG","creatorInfo followers: "+followers_count);
 
+                //creator_info.getString("type")
+
                 creatorInfo = new CreatorInfo(
                         creator_info.getString("id")
                         ,creator_info.getString("name")
                         ,creator_info.getString("ads_count")
                         ,creator_info.getString("followers_count")
                         ,creator_info.getString("following_count")
-                        ,"person"
+                        ,"user"
                         ,creator_info.getString("photo")
 
                 );

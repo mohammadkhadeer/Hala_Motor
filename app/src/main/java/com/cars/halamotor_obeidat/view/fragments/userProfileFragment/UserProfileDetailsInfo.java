@@ -40,6 +40,7 @@ import static com.cars.halamotor_obeidat.fireBaseDB.FireBaseDBPaths.insertNewUse
 import static com.cars.halamotor_obeidat.functions.HandelItemObjectBeforePass.getFollowingObjectFromDB;
 import static com.cars.halamotor_obeidat.new_presenter.AddAndDeleteFollower.addNewFollower;
 import static com.cars.halamotor_obeidat.new_presenter.AddAndDeleteFollower.deleteFollow;
+import static com.cars.halamotor_obeidat.sharedPreferences.PersonalSP.getUserID;
 import static com.cars.halamotor_obeidat.sharedPreferences.SharedPreferencesInApp.checkIfUserRegisterOrNotFromSP;
 import static com.cars.halamotor_obeidat.sharedPreferences.UserInfoSP.getUserInfoFromSP;
 
@@ -88,10 +89,18 @@ public class UserProfileDetailsInfo extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        inti();
         myDB = getDataBaseInstance(getActivity());
         followingArrayList =getFollowing(getActivity());
+        if (creatorInfo.getUser_id().equals(getUserID(getActivity())))
+        {
+            followRL.setVisibility(View.GONE);
+        }else{
+            followRL.setVisibility(View.VISIBLE);
+        }
         numberOfFollowing = checkIfTableFollowing(getActivity());
-        inti();
+
+
         changeFont();
 
         fillInfo();

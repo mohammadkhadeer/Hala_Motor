@@ -43,6 +43,7 @@ public class UserProfile extends AppCompatActivity implements RelatedAds, UserIn
     }
 
     private void intiUserPostsFragment() {
+        Log.i("TAG","Type: "+creatorInfo.getType());
         Bundle bundle = new Bundle();
         bundle.putParcelable("creator_info", creatorInfo);
         userProfilePostsList.setArguments(bundle);
